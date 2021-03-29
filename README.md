@@ -27,6 +27,7 @@ export MESOS_PRINCIPAL="<mesos_principal>"
 export MESOS_USERNAME="<mesos_user>"
 export MESOS_PASSWORD="<mesos_password>"
 export MESOS_MASTER="<mesos_master_server>:5050"
+export MESOS_CNI="weave"
 export LOGLEVEL="DEBUG"
 export DOMAIN="weave.local"
 export ZOOKEEPER_COUNT=1

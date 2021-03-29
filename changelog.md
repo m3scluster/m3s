@@ -1,6 +1,8 @@
 # Changelog
 
 ## dev
+- Update Mesos Protobuf to the current Mesos Version
+- Add custom MesosCNI via env
 
 ## v0.0.4
 

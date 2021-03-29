@@ -51,20 +51,19 @@ func StartK3SAgent(id int) {
 	status := StatusK3SAgent(id)
 	if status != nil {
 		if status.Status.State == mesosproto.TASK_STAGING.Enum() {
-			logrus.Info("startK3SAgent: zookeeper is staging ", id)
+			logrus.Info("startK3SAgent: kubernetes is staging ", id)
 			return
 		}
 		if status.Status.State == mesosproto.TASK_STARTING.Enum() {
-			logrus.Info("startK3SAgent: zookeeper is starting ", id)
+			logrus.Info("startK3SAgent: kubernetes is starting ", id)
 			return
 		}
 		if status.Status.State == mesosproto.TASK_RUNNING.Enum() {
-			logrus.Info("startK3SAgent: zookeeper already running ", id)
+			logrus.Info("startK3SAgent: kubernetes already running ", id)
 			return
 		}
 	}
 
-	networkIsolator := "weave"
 	var hostport, containerport uint32
 	hostport = 31210 + uint32(newTaskID)
 	containerport = 2181
@@ -76,7 +75,7 @@ func StartK3SAgent(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &networkIsolator,
+		Name: &config.MesosCNI,
 	}}
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{{
 		HostPort:      hostport,
@@ -86,21 +85,19 @@ func StartK3SAgent(id int) {
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.Command = "/bin/k3s agent "
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
-	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomString + "." + config.Domain
+	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
+	cmd.Command = "/bin/k3s agent --docker --kubelet-args cgroup-driver=systemd --node-external-ip " + cmd.Hostname + " --with-node-id " + strconv.Itoa(id) + " " + config.K3SAgentString
 	cmd.InternalID = id
 	cmd.IsK3SAgent = true
-
 	cmd.Volumes = []mesosproto.Volume{
 		{
-			ContainerPath: "/var/lib/rancher/k3s",
+			ContainerPath: "/var/run/docker.sock",
 			Mode:          mesosproto.RW.Enum(),
 			Source: &mesosproto.Volume_Source{
 				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
 				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &config.VolumeDriver,
-					Name:   config.VolumeK3SAgent,
+					Name: "/var/run/docker.sock",
 				},
 			},
 		},
@@ -138,7 +135,7 @@ func initStartK3SAgent() {
 
 // CreateK3SServerString create the K3S_URL string
 func CreateK3SServerString() {
-	server := "https://" + config.PrefixHostname + "server" + config.K3SCustomString + "." + config.Domain + ":6443"
+	server := "https://" + config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain + ":6443"
 
 	config.K3SServerURL = server
 }

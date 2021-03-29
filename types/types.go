@@ -18,6 +18,7 @@ type Config struct {
 	MesosMasterServer     string
 	MesosSSL              bool
 	MesosStreamID         string
+	MesosCNI              string
 	TaskID                uint64
 	SSL                   bool
 	LogLevel              string
@@ -34,7 +35,9 @@ type Config struct {
 	K3SAgentMax           int
 	K3SServerCount        int
 	K3SServerMax          int
-	K3SCustomString       string
+	K3SCustomDomain       string
+	K3SServerString       string
+	K3SAgentString        string
 	K3SAgent              map[string]string
 	ResCPU                float64
 	ResMEM                float64

@@ -27,6 +27,7 @@ func init() {
 	config.Username = os.Getenv("MESOS_USERNAME")
 	config.Password = os.Getenv("MESOS_PASSWORD")
 	config.MesosMasterServer = os.Getenv("MESOS_MASTER")
+	config.MesosCNI = util.Getenv("MESOS_CNI", "weave")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
 	config.Domain = os.Getenv("DOMAIN")
 	config.K3SAgentMax, _ = strconv.Atoi(os.Getenv("K3S_AGENT_COUNT"))
@@ -36,7 +37,9 @@ func init() {
 	config.Credentials.Username = os.Getenv("AUTH_USERNAME")
 	config.Credentials.Password = os.Getenv("AUTH_PASSWORD")
 	config.AppName = "Mesos K3S Framework"
-	config.K3SCustomString = os.Getenv("K3S_CUSTOM_DOMAIN")
+	config.K3SCustomDomain = os.Getenv("K3S_CUSTOM_DOMAIN")
+	config.K3SServerString = os.Getenv("K3S_SERVER_STRING")
+	config.K3SAgentString = os.Getenv("K3S_AGENT_STRING")
 	config.ImageK3S = util.Getenv("IMAGE_K3S", "confluentinc/cp-k3s:5.4.1")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s")

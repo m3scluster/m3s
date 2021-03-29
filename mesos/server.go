@@ -60,32 +60,42 @@ func StartK3SServer(id int) {
 			return
 		}
 	}
-	networkIsolator := "weave"
 
 	cmd.TaskID = newTaskID
-	cmd.Command = "/bin/k3s server --cluster-cidr \"10.1.0.0/16\" --service-cidr \"10.2.0.0/16\" --cluster-dns 10.2.0.10 "
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
 	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &networkIsolator,
+		Name: &config.MesosCNI,
 	}}
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.InternalID = id
 	cmd.IsK3SServer = true
 	cmd.TaskName = config.PrefixTaskName + "server"
-	cmd.Hostname = config.PrefixHostname + "server"
-	cmd.Domain = config.K3SCustomString + "." + config.Domain
+	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
+	cmd.Command = "/bin/k3s server --snapshotter=native --flannel-backend host-gw " + config.K3SServerString
 	cmd.Volumes = []mesosproto.Volume{
+		/*
+			{
+				ContainerPath: "/var/lib/rancher/k3s",
+				Mode:          mesosproto.RW.Enum(),
+				Source: &mesosproto.Volume_Source{
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+						Driver: &config.VolumeDriver,
+						Name:   config.VolumeK3SServer,
+					},
+				},
+			},
+		*/
 		{
-			ContainerPath: "/var/lib/rancher/k3s",
+			ContainerPath: "/var/run/docker.sock",
 			Mode:          mesosproto.RW.Enum(),
 			Source: &mesosproto.Volume_Source{
 				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
 				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &config.VolumeDriver,
-					Name:   config.VolumeK3SServer,
+					Name: "/var/run/docker.sock",
 				},
 			},
 		},
