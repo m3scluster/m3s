@@ -74,7 +74,7 @@ func StartK3SServer(id int) {
 	cmd.IsK3SServer = true
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s server --snapshotter=native --flannel-backend host-gw " + config.K3SServerString
+	cmd.Command = "/bin/k3s server " + config.K3SServerString
 	cmd.Volumes = []mesosproto.Volume{
 		/*
 			{

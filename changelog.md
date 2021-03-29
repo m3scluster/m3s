@@ -3,6 +3,7 @@
 ## dev
 - Update Mesos Protobuf to the current Mesos Version
 - Add custom MesosCNI via env
+- Fix snapshooter, flannel and cgroups error
 
 ## v0.0.4
 

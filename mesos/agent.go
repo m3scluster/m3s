@@ -70,6 +70,7 @@ func StartK3SAgent(id int) {
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
+	taskID := strconv.FormatUint(newTaskID, 10)
 
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
@@ -85,9 +86,9 @@ func StartK3SAgent(id int) {
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
-	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s agent --docker --kubelet-args cgroup-driver=systemd --node-external-ip " + cmd.Hostname + " --with-node-id " + strconv.Itoa(id) + " " + config.K3SAgentString
+	cmd.TaskName = config.PrefixTaskName + "agent" + taskID
+	cmd.Hostname = config.PrefixTaskName + "agent" + taskID + config.K3SCustomDomain + "." + config.Domain
+	cmd.Command = "/bin/k3s agent --with-node-id " + taskID + " " + config.K3SAgentString
 	cmd.InternalID = id
 	cmd.IsK3SAgent = true
 	cmd.Volumes = []mesosproto.Volume{
