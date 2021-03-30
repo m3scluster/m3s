@@ -2,6 +2,7 @@
 
 [![Donate](https://img.shields.io/liberapay/receives/AVENTER.svg?logo=liberapay)](https://liberapay.com/mesos)
 [![Support Chat](https://img.shields.io/static/v1?label=Chat&message=Support&color=brightgreen)](https://riot.im/app/#/room/#support:matrix.aventer.biz)
+[![Community](https://img.shields.io/static/v1?label=Community&message=Support&color=brightgreen)](https://community.aventer.biz/post/46)
 
 Dies ist ein K3S Framework für Apache Mesos
 
