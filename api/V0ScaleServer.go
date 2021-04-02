@@ -14,7 +14,7 @@ import (
 
 // V0ScaleK3S will scale the k3s service
 // example:
-// curl -X GET 127.0.0.1:10000/v0/k3s/scale/{count of instances} -d 'JSON'
+// curl -X GET http://username_password@127.0.0.1:10000/v0/server/scale/{count of instances} -d 'JSON'
 func V0ScaleK3S(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	auth := CheckAuth(r, w)

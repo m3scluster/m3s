@@ -227,11 +227,19 @@ func Kill(taskID string) error {
 
 	logrus.Debug("Kill task ", taskID, task)
 
-	return Call(&mesosproto.Call{
+	// tell mesos to shutdonw the given task
+	err := Call(&mesosproto.Call{
 		Type: mesosproto.Call_KILL,
 		Kill: &mesosproto.Call_Kill{
 			TaskID:  task.Status.TaskID,
 			AgentID: task.Status.AgentID,
 		},
 	})
+
+	// remove deleted task from state
+	if err == nil {
+		deleteOldTask(task.Status.TaskID)
+	}
+
+	return err
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingK3SAgent Check if all zookeepers are running. If one is missing, restart it.
+// SearchMissingK3SAgent Check if all agents are running. If one is missing, restart it.
 func SearchMissingK3SAgent() {
 	if config.State != nil {
 		for i := 0; i < config.K3SAgentMax; i++ {
@@ -27,12 +27,12 @@ func SearchMissingK3SAgent() {
 	}
 }
 
-// StatusK3SAgent Get out Status of the given zookeeper ID
+// StatusK3SAgent Get out Status of the given agent ID
 func StatusK3SAgent(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
 			if element.Status != nil {
-				if element.Command.InternalID == id {
+				if element.Command.InternalID == id && element.Command.IsK3SAgent == true {
 					return &element
 				}
 			}
@@ -41,13 +41,13 @@ func StatusK3SAgent(id int) *cfg.State {
 	return nil
 }
 
-// StartK3SAgent is starting a zookeeper container with the given IDs
+// StartK3SAgent is starting a agent container with the given IDs
 func StartK3SAgent(id int) {
 	newTaskID := atomic.AddUint64(&config.TaskID, 1)
 
 	var cmd cfg.Command
 
-	// before we will start a new zookeeper, we should be sure its not already running
+	// before we will start a new agent, we should be sure its not already running
 	status := StatusK3SAgent(id)
 	if status != nil {
 		if status.Status.State == mesosproto.TASK_STAGING.Enum() {
@@ -86,10 +86,10 @@ func StartK3SAgent(id int) {
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.TaskName = config.PrefixTaskName + "agent" + taskID
-	cmd.Hostname = config.PrefixTaskName + "agent" + taskID + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s agent --with-node-id " + taskID + " " + config.K3SAgentString
 	cmd.InternalID = id
+	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
+	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
+	cmd.Command = "/bin/k3s agent --with-node-id " + taskID + " " + config.K3SAgentString
 	cmd.IsK3SAgent = true
 	cmd.Volumes = []mesosproto.Volume{
 		{

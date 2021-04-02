@@ -29,7 +29,7 @@ func StatusK3SServer(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
 			if element.Status != nil {
-				if element.Command.InternalID == id {
+				if element.Command.InternalID == id && element.Command.IsK3SServer == true {
 					return &element
 				}
 			}
@@ -76,19 +76,17 @@ func StartK3SServer(id int) {
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "/bin/k3s server " + config.K3SServerString
 	cmd.Volumes = []mesosproto.Volume{
-		/*
-			{
-				ContainerPath: "/var/lib/rancher/k3s",
-				Mode:          mesosproto.RW.Enum(),
-				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-						Driver: &config.VolumeDriver,
-						Name:   config.VolumeK3SServer,
-					},
+		{
+			ContainerPath: "/var/lib/rancher/k3s",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &config.VolumeDriver,
+					Name:   config.VolumeK3SServer,
 				},
 			},
-		*/
+		},
 		{
 			ContainerPath: "/var/run/docker.sock",
 			Mode:          mesosproto.RW.Enum(),

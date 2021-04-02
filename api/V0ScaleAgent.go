@@ -11,9 +11,9 @@ import (
 	mesosproto "mesos-k3s/proto"
 )
 
-// V0ScaleK3SAgent will scale the zookeeper service
+// V0ScaleK3SAgent will scale the k3s agent service
 // example:
-// curl -X GET 127.0.0.1:10000/v0/zookeeper/scale/{count of instances} -d 'JSON'
+// curl -X GET http://user:password@127.0.0.1:10000/v0/agent/scale/{count of instances} -d 'JSON'
 func V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	auth := CheckAuth(r, w)
@@ -50,11 +50,13 @@ func V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 			for x := newCount; x < oldCount; x++ {
 				task := mesos.StatusK3SAgent(x)
-				id := task.Status.TaskID.Value
-				ret := mesos.Kill(id)
+				if task != nil {
+					id := task.Status.TaskID.Value
+					ret := mesos.Kill(id)
 
-				logrus.Info("V0TaskKill: ", ret)
-				config.K3SAgentCount--
+					logrus.Info("V0TaskKill: ", ret)
+					config.K3SAgentCount--
+				}
 			}
 		}
 

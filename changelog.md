@@ -1,9 +1,11 @@
 # Changelog
 
-## dev
+## master
 - Update Mesos Protobuf to the current Mesos Version
 - Add custom MesosCNI via env
 - Fix snapshooter, flannel and cgroups error
+- Fix server/agent mismatch during shutdown
+- Removes via api killed tasks from config. Same with scale down agents/servers.
 
 ## v0.0.4
 
