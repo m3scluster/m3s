@@ -76,17 +76,19 @@ func StartK3SServer(id int) {
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "/bin/k3s server " + config.K3SServerString
 	cmd.Volumes = []mesosproto.Volume{
-		{
-			ContainerPath: "/var/lib/rancher/k3s",
-			Mode:          mesosproto.RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &config.VolumeDriver,
-					Name:   config.VolumeK3SServer,
+		/*
+			{
+				ContainerPath: "/var/lib/rancher/k3s",
+				Mode:          mesosproto.RW.Enum(),
+				Source: &mesosproto.Volume_Source{
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+						Driver: &config.VolumeDriver,
+						Name:   config.VolumeK3SServer,
+					},
 				},
 			},
-		},
+		*/
 		{
 			ContainerPath: "/var/run/docker.sock",
 			Mode:          mesosproto.RW.Enum(),
@@ -114,6 +116,13 @@ func StartK3SServer(id int) {
 		{
 			Name:  "K3S_KUBECONFIG_MODE",
 			Value: func() *string { x := "666"; return &x }(),
+		},
+		{
+			Name: "K3S_DATASTORE_ENDPOINT",
+			Value: func() *string {
+				x := "http://" + config.PrefixTaskName + "etcd" + config.K3SCustomDomain + "." + config.Domain + ":2379"
+				return &x
+			}(),
 		},
 	}
 

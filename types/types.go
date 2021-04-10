@@ -43,12 +43,15 @@ type Config struct {
 	ResMEM                float64
 	Credentials           UserCredentials
 	ImageK3S              string
+	ImageETCD             string
 	VolumeDriver          string
 	VolumeK3SServer       string
 	VolumeK3SAgent        string
 	PrefixHostname        string
 	PrefixTaskName        string
 	K3SToken              string
+	ETCDCount             int
+	ETCDMax               int
 }
 
 // Command is a chan which include all the Information about the started tasks
@@ -74,6 +77,7 @@ type Command struct {
 	TaskID             uint64
 	IsK3SAgent         bool
 	IsK3SServer        bool
+	IsETCD             bool
 	Agent              string
 }
 

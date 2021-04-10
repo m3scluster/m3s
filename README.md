@@ -34,14 +34,15 @@ export DOMAIN="weave.local"
 export ZOOKEEPER_COUNT=1
 export K3S_SERVER_COUNT=1
 export K3S_AGENT_COUNT=1
+export ETCD_COUNT=1
 export RES_CPU=0.1
 export RES_MEM=1200
 export AUTH_PASSWORD="password"
 export AUTH_USERNAME="user"
 export MESOS_SSL="true"
-export ZOOKEEPER_CUSTOM_DOMAIN=""
 export K3S_CUSTOM_DOMAIN=""
 export IMAGE_K3S="rancher/k3s:v1.20.0-k3s2"
+export IMAGE_ETCD=bitnami/etcd"
 export VOLUME_DRIVER="local"
 export VOLUME_K3S_SERVER="/tmp/k3s1"
 

@@ -88,6 +88,7 @@ func Subscribe() error {
 		}
 		logrus.Debug("Subscribe Got: ", event.GetType())
 		if config.MesosStreamID != "" {
+			initStartEtcd()
 			initStartK3SServer()
 			CreateK3SServerString()
 			initStartK3SAgent()
@@ -189,6 +190,10 @@ func restartFailedContainer() {
 					if element.Command.IsK3SServer == true {
 						logrus.Info("RestartK3SServer: ", element.Status.TaskID)
 						StartK3SServer(element.Command.InternalID)
+					}
+					if element.Command.IsETCD == true {
+						logrus.Info("RestartETCD: ", element.Status.TaskID)
+						StartEtcd(element.Command.InternalID)
 					}
 					deleteOldTask(element.Status.TaskID)
 				case mesosproto.TASK_KILLED:
