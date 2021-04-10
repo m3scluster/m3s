@@ -6,6 +6,7 @@
 - Fix snapshooter, flannel and cgroups error
 - Fix server/agent mismatch during shutdown
 - Removes via api killed tasks from config. Same with scale down agents/servers.
+- Add support of external etcd service
 
 ## v0.0.4
 
