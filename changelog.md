@@ -7,6 +7,9 @@
 - Fix server/agent mismatch during shutdown
 - Removes via api killed tasks from config. Same with scale down agents/servers.
 - Add support of external etcd service
+- Add configurable docker socket
+- Add scale up/down from etcd
+- Change to containerd
 
 ## v0.0.4
 

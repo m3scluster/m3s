@@ -90,7 +90,6 @@ func Subscribe() error {
 		if config.MesosStreamID != "" {
 			initStartEtcd()
 			initStartK3SServer()
-			CreateK3SServerString()
 			initStartK3SAgent()
 		}
 

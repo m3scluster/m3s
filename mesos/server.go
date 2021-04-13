@@ -74,36 +74,33 @@ func StartK3SServer(id int) {
 	cmd.IsK3SServer = true
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s server " + config.K3SServerString
-	cmd.Volumes = []mesosproto.Volume{
-		/*
-			{
-				ContainerPath: "/var/lib/rancher/k3s",
-				Mode:          mesosproto.RW.Enum(),
-				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-						Driver: &config.VolumeDriver,
-						Name:   config.VolumeK3SServer,
+	cmd.Command = "/bin/k3s --debug server " + config.K3SServerString
+	/*
+		cmd.Volumes = []mesosproto.Volume{
+				{
+					ContainerPath: "/var/lib/rancher/k3s",
+					Mode:          mesosproto.RW.Enum(),
+					Source: &mesosproto.Volume_Source{
+						Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+						DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+							Driver: &config.VolumeDriver,
+							Name:   config.VolumeK3SServer,
+						},
 					},
 				},
-			},
-		*/
-		{
-			ContainerPath: "/var/run/docker.sock",
-			Mode:          mesosproto.RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Name: "/var/run/docker.sock",
-				},
-			},
-		},
-	}
+		}
+	*/
+
+	CreateK3SServerString()
+
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
 		{
 			Name:  "SERVICE_NAME",
 			Value: &cmd.TaskName,
+		},
+		{
+			Name:  "K3S_URL",
+			Value: &config.K3SServerURL,
 		},
 		{
 			Name:  "K3S_TOKEN",
@@ -111,7 +108,7 @@ func StartK3SServer(id int) {
 		},
 		{
 			Name:  "K3S_KUBECONFIG_OUTPUT",
-			Value: func() *string { x := "/output/kubeconfig.yaml"; return &x }(),
+			Value: func() *string { x := "/var/lib/rancher/k3s/output/kubeconfig.yaml"; return &x }(),
 		},
 		{
 			Name:  "K3S_KUBECONFIG_MODE",
@@ -140,4 +137,11 @@ func initStartK3SServer() {
 		StartK3SServer(config.K3SServerCount)
 		config.K3SServerCount++
 	}
+}
+
+// CreateK3SServerString create the K3S_URL string
+func CreateK3SServerString() {
+	server := "https://" + config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain + ":6443"
+
+	config.K3SServerURL = server
 }

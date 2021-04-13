@@ -89,19 +89,22 @@ func StartK3SAgent(id int) {
 	cmd.InternalID = id
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s agent --with-node-id " + taskID + " " + config.K3SAgentString
+	cmd.Command = "/bin/k3s --debug agent --with-node-id " + taskID + " " + config.K3SAgentString
 	cmd.IsK3SAgent = true
-	cmd.Volumes = []mesosproto.Volume{
-		{
-			ContainerPath: "/var/run/docker.sock",
-			Mode:          mesosproto.RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Name: "/var/run/docker.sock",
+
+	if config.DockerSock != "" {
+		cmd.Volumes = []mesosproto.Volume{
+			{
+				ContainerPath: "/var/run/docker.sock",
+				Mode:          mesosproto.RW.Enum(),
+				Source: &mesosproto.Volume_Source{
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+						Name: config.DockerSock,
+					},
 				},
 			},
-		},
+		}
 	}
 
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
@@ -132,11 +135,4 @@ func initStartK3SAgent() {
 		StartK3SAgent(config.K3SAgentCount)
 		config.K3SAgentCount++
 	}
-}
-
-// CreateK3SServerString create the K3S_URL string
-func CreateK3SServerString() {
-	server := "https://" + config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain + ":6443"
-
-	config.K3SServerURL = server
 }

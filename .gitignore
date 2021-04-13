@@ -3,3 +3,4 @@ init
 test
 k3sframe
 vendor
+stop.sh

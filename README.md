@@ -44,43 +44,30 @@ export IMAGE_K3S="rancher/k3s:v1.20.0-k3s2"
 export IMAGE_ETCD=bitnami/etcd:latest"
 export VOLUME_DRIVER="local"
 export VOLUME_K3S_SERVER="/tmp/k3s1"
+export DOCKER_SOCK="/var/run/docker.sock"
 
 go run init.go app.go
 ```
 
-![K3S Framework in Mesos](k3s_mesos.gif)
-
-Faellt ein Container aus, wird dieser neugestartet.
-
-![K3S Framework in Mesos](k3s_mesos1.gif)
-
-## Task Status Abfragen
-
-Um den Status eines Tasks über das Framework abzufragen, folgendes Kommando verwenden:
+## Get mesos task status
 
 ```Bash
 curl -X GET 127.0.0.1:10000/v0/container/<taskId> -d 'JSON'  | jq
 ```
 
-## Fehlende K3S oder Agentr Starten
-
-Sollte aus bestimmten Gründen der Healthcheck Status im Framework nicht mit der Realität übereinstimmen, kann über den nachfolgenden Aufruf erzwungen werden die fehlenden Container zu starten.
+## Reflate missing K3S server or agent
 
 ```Bash
 curl -X GET 127.0.0.1:10000/v0/<server|agent>/reflate -d 'JSON'
 ```
 
-## K3S Server oder Agent skalieren
-
-Um K3S oder Zookeeper im Betrieb zu skalieren, wird dem Framework die zu laufende Anzahl an Containern angegeben. Soll der Zookeeper also drei mal laufen, muss als <count> eine "3" angegeben werden. Beim Scaledown wird der zuletzt hinzugefügte Container entfernt.
+## Scale up/down K3S Server, Agent, Etcd
 
 ```Bash
-curl -X GET 127.0.0.1:10000/v0/<server|agent>/scale/<count> -d 'JSON'
+curl -X GET 127.0.0.1:10000/v0/<server|agent|etcd>/scale/<count> -d 'JSON'
 ```
 
 ## Task killen
-
-Sollte es notwendig sein einen Task zu benden, erfolgt dies mit dem nachfolgenden aufruf. Der beendete Container wird nicht automatisch neu gestartet.
 
 ```Bash
 curl -X GET 127.0.0.1:10000/v0/task/kill/<taskId> -d 'JSON'
