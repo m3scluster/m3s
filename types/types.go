@@ -46,7 +46,6 @@ type Config struct {
 	ImageETCD             string
 	VolumeDriver          string
 	VolumeK3SServer       string
-	VolumeK3SAgent        string
 	PrefixHostname        string
 	PrefixTaskName        string
 	K3SToken              string

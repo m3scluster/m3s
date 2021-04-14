@@ -74,22 +74,20 @@ func StartK3SServer(id int) {
 	cmd.IsK3SServer = true
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s --debug server " + config.K3SServerString
-	/*
-		cmd.Volumes = []mesosproto.Volume{
-				{
-					ContainerPath: "/var/lib/rancher/k3s",
-					Mode:          mesosproto.RW.Enum(),
-					Source: &mesosproto.Volume_Source{
-						Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-						DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-							Driver: &config.VolumeDriver,
-							Name:   config.VolumeK3SServer,
-						},
-					},
+	cmd.Command = "/bin/k3s --debug server --tls-san *." + cmd.Domain + " " + config.K3SServerString
+	cmd.Volumes = []mesosproto.Volume{
+		{
+			ContainerPath: "/var/lib/rancher/k3s",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &config.VolumeDriver,
+					Name:   config.VolumeK3SServer,
 				},
-		}
-	*/
+			},
+		},
+	}
 
 	CreateK3SServerString()
 
@@ -108,7 +106,7 @@ func StartK3SServer(id int) {
 		},
 		{
 			Name:  "K3S_KUBECONFIG_OUTPUT",
-			Value: func() *string { x := "/var/lib/rancher/k3s/output/kubeconfig.yaml"; return &x }(),
+			Value: func() *string { x := "/output/kubeconfig.yaml"; return &x }(),
 		},
 		{
 			Name:  "K3S_KUBECONFIG_MODE",

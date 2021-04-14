@@ -44,7 +44,6 @@ func init() {
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:latest")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s")
-	config.VolumeK3SAgent = util.Getenv("VOLUME_K3S_AGENT", "/data/k3s")
 	config.PrefixTaskName = util.Getenv("PREFIX_TASKNAME", "k3s")
 	config.PrefixHostname = util.Getenv("PREFIX_HOSTNAME", "k3s")
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")

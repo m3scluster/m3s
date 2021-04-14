@@ -9,7 +9,9 @@
 - Add support of external etcd service
 - Add configurable docker socket
 - Add scale up/down from etcd
-- Change to containerd
+- Change container engine to to containerd
+- Enable persistent storage for K3S server
+- Add wildcard certificate for K3S to prevent certificate error during K3S server restart
 
 ## v0.0.4
 
