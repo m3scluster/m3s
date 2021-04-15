@@ -65,7 +65,6 @@ func V0ScaleEtcd(w http.ResponseWriter, r *http.Request) {
 
 	logrus.Debug("HTTP GET V0ScaleEtcd: ", string(d))
 
-	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 

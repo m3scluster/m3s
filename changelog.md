@@ -12,6 +12,8 @@
 - Change container engine to to containerd
 - Enable persistent storage for K3S server
 - Add wildcard certificate for K3S to prevent certificate error during K3S server restart
+- Enable Traefik and ServiceLB
+- Add startup order
 
 ## v0.0.4
 
@@ -42,3 +44,4 @@
 - Add Call_Suppress to tell mesos it does not send us offers until we ask
 - Add default values for some env
 - Add custom image name via env
+- Add schedule start order

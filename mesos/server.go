@@ -75,6 +75,7 @@ func StartK3SServer(id int) {
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "/bin/k3s --debug server --tls-san *." + cmd.Domain + " " + config.K3SServerString
+	cmd.DockerParameter = []mesosproto.Parameter{}
 	cmd.Volumes = []mesosproto.Volume{
 		{
 			ContainerPath: "/var/lib/rancher/k3s",
@@ -131,7 +132,13 @@ func StartK3SServer(id int) {
 
 // the first run should be in ta strict order.
 func initStartK3SServer() {
-	if config.K3SServerCount <= (config.K3SServerMax - 1) {
+	etcdState := StatusEtcd(config.ETCDMax - 1)
+
+	if etcdState == nil {
+		return
+	}
+
+	if config.K3SServerCount <= (config.K3SServerMax-1) && etcdState.Status.GetState() == 1 {
 		StartK3SServer(config.K3SServerCount)
 		config.K3SServerCount++
 	}

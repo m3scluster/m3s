@@ -73,6 +73,7 @@ func StartEtcd(id int) {
 	cmd.TaskName = config.PrefixTaskName + "etcd"
 	cmd.Hostname = config.PrefixTaskName + "etcd" + config.K3SCustomDomain + "." + config.Domain
 	cmd.IsETCD = true
+	cmd.DockerParameter = []mesosproto.Parameter{}
 
 	AllowNoneAuthentication := "yes"
 	AdvertiseURL := "http://" + cmd.Hostname + ":2379"

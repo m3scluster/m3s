@@ -78,6 +78,7 @@ type Command struct {
 	IsK3SAgent         bool
 	IsK3SServer        bool
 	IsETCD             bool
+	Memory             float64
 	Agent              string
 }
 

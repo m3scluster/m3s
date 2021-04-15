@@ -55,6 +55,7 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 					Network:      networkMode,
 					PortMappings: cmd.DockerPortMappings,
 					Privileged:   &cmd.Privileged,
+					Parameters:   cmd.DockerParameter,
 				},
 				NetworkInfos: cmd.NetworkInfo,
 			},

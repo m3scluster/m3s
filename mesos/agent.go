@@ -90,6 +90,7 @@ func StartK3SAgent(id int) {
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "/bin/k3s --debug agent --with-node-id " + taskID + " " + config.K3SAgentString
+	cmd.DockerParameter = []mesosproto.Parameter{}
 	cmd.IsK3SAgent = true
 
 	if config.DockerSock != "" {
@@ -131,7 +132,13 @@ func StartK3SAgent(id int) {
 
 // The first run have to be in a right sequence
 func initStartK3SAgent() {
-	if config.K3SAgentCount <= (config.K3SAgentMax - 1) {
+	serverState := StatusK3SServer(config.K3SServerMax - 1)
+
+	if serverState == nil {
+		return
+	}
+
+	if config.K3SAgentCount <= (config.K3SAgentMax-1) && serverState.Status.GetState() == 1 {
 		StartK3SAgent(config.K3SAgentCount)
 		config.K3SAgentCount++
 	}
