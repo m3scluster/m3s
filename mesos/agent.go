@@ -87,12 +87,29 @@ func StartK3SAgent(id int) {
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.InternalID = id
+	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s --debug agent --with-node-id " + taskID + " " + config.K3SAgentString
-	cmd.DockerParameter = []mesosproto.Parameter{}
+	cmd.Command = "/bin/k3s --debug agent " + config.K3SAgentString + " --with-node-id " + taskID
+	cmd.DockerParameter = []mesosproto.Parameter{
+		{
+			Key:   "cap-add",
+			Value: "NET_ADMIN",
+		},
+	}
 	cmd.IsK3SAgent = true
-
+	cmd.Volumes = []mesosproto.Volume{
+		{
+			ContainerPath: "/opt/cni/net.d",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Name: "/etc/mesos/cni/net.d",
+				},
+			},
+		},
+	}
 	if config.DockerSock != "" {
 		cmd.Volumes = []mesosproto.Volume{
 			{
@@ -102,6 +119,16 @@ func StartK3SAgent(id int) {
 					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
 					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
 						Name: config.DockerSock,
+					},
+				},
+			},
+			{
+				ContainerPath: "/opt/cni/net.d",
+				Mode:          mesosproto.RW.Enum(),
+				Source: &mesosproto.Volume_Source{
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+						Name: "/etc/mesos/cni/net.d",
 					},
 				},
 			},

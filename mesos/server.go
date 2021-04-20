@@ -62,20 +62,28 @@ func StartK3SServer(id int) {
 	}
 
 	cmd.TaskID = newTaskID
+
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
 	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
 		Name: &config.MesosCNI,
 	}}
+
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.InternalID = id
 	cmd.IsK3SServer = true
+	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s --debug server --tls-san *." + cmd.Domain + " " + config.K3SServerString
-	cmd.DockerParameter = []mesosproto.Parameter{}
+	cmd.Command = "/bin/k3s --debug server --tls-san=" + cmd.Domain + " " + config.K3SServerString
+	cmd.DockerParameter = []mesosproto.Parameter{
+		{
+			Key:   "cap-add",
+			Value: "NET_ADMIN",
+		},
+	}
 	cmd.Volumes = []mesosproto.Volume{
 		{
 			ContainerPath: "/var/lib/rancher/k3s",
@@ -85,6 +93,16 @@ func StartK3SServer(id int) {
 				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
 					Driver: &config.VolumeDriver,
 					Name:   config.VolumeK3SServer,
+				},
+			},
+		},
+		{
+			ContainerPath: "/opt/cni/net.d",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Name: "/etc/mesos/cni/net.d",
 				},
 			},
 		},

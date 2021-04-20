@@ -14,6 +14,7 @@
 - Add wildcard certificate for K3S to prevent certificate error during K3S server restart
 - Enable Traefik and ServiceLB
 - Add startup order
+- Fix communication between pods via different mesos agents
 
 ## v0.0.4
 
