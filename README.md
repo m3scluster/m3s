@@ -40,7 +40,7 @@ export AUTH_PASSWORD="password"
 export AUTH_USERNAME="user"
 export MESOS_SSL="true"
 export IMAGE_K3S="rancher/k3s:v1.20.0-k3s2"
-export IMAGE_ETCD=bitnami/etcd:latest"
+export IMAGE_ETCD="bitnami/etcd:latest"
 export VOLUME_DRIVER="rbd"
 export VOLUME_K3S_SERVER="k3sserver"
 
@@ -70,3 +70,13 @@ curl -X GET 127.0.0.1:10000/v0/<server|agent|etcd>/scale/<count> -d 'JSON'
 ```Bash
 curl -X GET 127.0.0.1:10000/v0/task/kill/<taskId> -d 'JSON'
 ```
+
+# Screenshots
+
+## Kubernetes Dashboard
+
+![image_2021-05-01-15-09-30](vx_images/image_2021-05-01-15-09-30.png)
+
+## Apache Mesos running K3S Framework
+
+![image_2021-05-01-15-10-54](vx_images/image_2021-05-01-15-10-54.png)
