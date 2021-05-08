@@ -52,6 +52,7 @@ type Config struct {
 	ETCDCount             int
 	ETCDMax               int
 	DockerSock            string
+	BootstrapURL          string
 }
 
 // Command is a chan which include all the Information about the started tasks

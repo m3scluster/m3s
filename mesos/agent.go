@@ -90,11 +90,20 @@ func StartK3SAgent(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s --debug agent " + config.K3SAgentString + " --with-node-id " + taskID
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '/usr/local/bin/k3s --debug agent " + config.K3SAgentString + " --with-node-id " + taskID + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
 			Key:   "cap-add",
 			Value: "NET_ADMIN",
+		},
+	}
+	cmd.Uris = []mesosproto.CommandInfo_URI{
+		{
+			Value:      config.BootstrapURL,
+			Extract:    func() *bool { x := false; return &x }(),
+			Executable: func() *bool { x := true; return &x }(),
+			Cache:      func() *bool { x := false; return &x }(),
+			OutputFile: func() *string { x := "bootstrap"; return &x }(),
 		},
 	}
 	cmd.IsK3SAgent = true
@@ -139,6 +148,10 @@ func StartK3SAgent(id int) {
 		{
 			Name:  "SERVICE_NAME",
 			Value: &cmd.TaskName,
+		},
+		{
+			Name:  "K3SFRAMEWORK_TYPE",
+			Value: func() *string { x := "agent"; return &x }(),
 		},
 		{
 			Name:  "K3S_TOKEN",

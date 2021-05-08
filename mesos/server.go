@@ -77,11 +77,20 @@ func StartK3SServer(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "/bin/k3s --debug server --tls-san=" + cmd.Domain + " " + config.K3SServerString
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '/usr/local/bin/k3s --debug server --tls-san=" + cmd.Domain + " " + config.K3SServerString + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
 			Key:   "cap-add",
 			Value: "NET_ADMIN",
+		},
+	}
+	cmd.Uris = []mesosproto.CommandInfo_URI{
+		{
+			Value:      config.BootstrapURL,
+			Extract:    func() *bool { x := false; return &x }(),
+			Executable: func() *bool { x := true; return &x }(),
+			Cache:      func() *bool { x := false; return &x }(),
+			OutputFile: func() *string { x := "bootstrap"; return &x }(),
 		},
 	}
 	cmd.Volumes = []mesosproto.Volume{
@@ -114,6 +123,10 @@ func StartK3SServer(id int) {
 		{
 			Name:  "SERVICE_NAME",
 			Value: &cmd.TaskName,
+		},
+		{
+			Name:  "K3SFRAMEWORK_TYPE",
+			Value: func() *string { x := "server"; return &x }(),
 		},
 		{
 			Name:  "K3S_URL",

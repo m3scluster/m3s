@@ -15,6 +15,11 @@
 - Enable Traefik and ServiceLB
 - Add startup order
 - Fix communication between pods via different mesos agents
+- Add fetch custom bootstrap script to init kubernetes
+- Change Mesos TASK ID's
+- Change the K3S Image to plain debian. The bootstrap will install K3S.
+- Add Dashbaord configuration
+- Add K3S Framework API Server into the Container
 
 ## v0.0.4
 

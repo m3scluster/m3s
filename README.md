@@ -39,10 +39,11 @@ export RES_MEM=1200
 export AUTH_PASSWORD="password"
 export AUTH_USERNAME="user"
 export MESOS_SSL="true"
-export IMAGE_K3S="rancher/k3s:v1.20.0-k3s2"
+export IMAGE_K3S="debian:sid"
 export IMAGE_ETCD="bitnami/etcd:latest"
 export VOLUME_DRIVER="rbd"
 export VOLUME_K3S_SERVER="k3sserver"
+export BOOTSTRAP_URL="https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh"
 
 go run init.go app.go
 ```

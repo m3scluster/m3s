@@ -38,9 +38,9 @@ func init() {
 	config.Credentials.Password = os.Getenv("AUTH_PASSWORD")
 	config.AppName = "Mesos K3S Framework"
 	config.K3SCustomDomain = os.Getenv("K3S_CUSTOM_DOMAIN")
-	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "--cluster-cidr=\"10.2.0.0/16\" --service-cidr=\"10.3.0.0/16\" --cluster-dns=\"10.3.0.10\" --disable=metrics-server --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe ")
+	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "--cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --disable=metrics-server --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe ")
 	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "--snapshotter=native --flannel-iface=ethwe --flannel-backend=vxlan")
-	config.ImageK3S = util.Getenv("IMAGE_K3S", "docker.io/rancher/k3s:v1.20.0-k3s2")
+	config.ImageK3S = util.Getenv("IMAGE_K3S", "debian:sid")
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:latest")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s")
@@ -48,6 +48,7 @@ func init() {
 	config.PrefixHostname = util.Getenv("PREFIX_HOSTNAME", "k3s")
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
 	config.ETCDMax, _ = strconv.Atoi(util.Getenv("ETCD_COUNT", "1"))
+	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 
 	// The comunication to the mesos server should be via ssl or not
