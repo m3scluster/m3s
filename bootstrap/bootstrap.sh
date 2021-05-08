@@ -15,6 +15,7 @@ curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/re
 
 if [ "$K3SFRAMEWORK_TYPE" == "server" ]
 then
+  chmod +x $MESOS_SANDBOX/server
   exec $MESOS_SANDBOX/server
   $1
 else
