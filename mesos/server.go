@@ -77,7 +77,7 @@ func StartK3SServer(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '/usr/local/bin/k3s --debug server --tls-san=" + cmd.Domain + " " + config.K3SServerString + "'"
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + " --tls-san=" + cmd.Domain + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
 			Key:   "cap-add",

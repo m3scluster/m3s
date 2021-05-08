@@ -90,7 +90,7 @@ func StartK3SAgent(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '/usr/local/bin/k3s --debug agent " + config.K3SAgentString + " --with-node-id " + taskID + "'"
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + taskID + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
 			Key:   "cap-add",
