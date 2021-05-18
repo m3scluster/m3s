@@ -5,5 +5,5 @@ k3sframe
 vendor
 stop.sh
 bootstrap/.owncloudsync.log
-bpootstrap/*.db
-bpootstrap/*.db-wal
+bootstrap/*.db
+bootstrap/*.db-wal
