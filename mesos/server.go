@@ -84,6 +84,7 @@ func StartK3SServer(id int) {
 			Value: "NET_ADMIN",
 		},
 	}
+
 	cmd.Uris = []mesosproto.CommandInfo_URI{
 		{
 			Value:      config.BootstrapURL,
@@ -117,6 +118,15 @@ func StartK3SServer(id int) {
 		},
 	}
 
+	var hostport uint32
+	hostport = 31210 + uint32(newTaskID)
+	protocol := "tcp"
+	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{{
+		HostPort:      hostport,
+		ContainerPort: 10422,
+		Protocol:      &protocol,
+	}}
+
 	CreateK3SServerString()
 
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
@@ -138,7 +148,7 @@ func StartK3SServer(id int) {
 		},
 		{
 			Name:  "K3S_KUBECONFIG_OUTPUT",
-			Value: func() *string { x := "/output/kubeconfig.yaml"; return &x }(),
+			Value: func() *string { x := "/mnt/mesos/sandbox/kubeconfig.yaml"; return &x }(),
 		},
 		{
 			Name:  "K3S_KUBECONFIG_MODE",

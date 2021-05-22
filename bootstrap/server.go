@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"io/ioutil"
 	"net/http"
 	_ "net/http/pprof"
 
@@ -18,6 +19,7 @@ func Commands() *mux.Router {
 
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/versions", APIVersions).Methods("GET")
+	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
 
 	return rtr
 }
@@ -27,6 +29,22 @@ func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "-")
 	w.Write([]byte("/api/k3s/v0"))
+}
+
+// APIGetKubeConfig
+func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
+
+	content, err := ioutil.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
+	if err != nil {
+		logrus.Error("Error reading file:", err)
+		w.Write([]byte("Error reading kubeconf.yaml"))
+	} else {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Header().Set("Api-Service", "v0")
+
+		w.Write(content)
+	}
+
 }
 
 func main() {
