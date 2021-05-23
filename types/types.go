@@ -35,6 +35,7 @@ type Config struct {
 	K3SAgentMax           int
 	K3SServerCount        int
 	K3SServerMax          int
+	K3SServerPort         int
 	K3SCustomDomain       string
 	K3SServerString       string
 	K3SAgentString        string
@@ -53,6 +54,8 @@ type Config struct {
 	ETCDMax               int
 	DockerSock            string
 	BootstrapURL          string
+	K3SServerAPIHostname  string
+	K3SServerAPIPort      int
 }
 
 // Command is a chan which include all the Information about the started tasks

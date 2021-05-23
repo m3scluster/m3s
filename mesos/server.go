@@ -118,14 +118,20 @@ func StartK3SServer(id int) {
 		},
 	}
 
-	var hostport uint32
-	hostport = 31210 + uint32(newTaskID)
+	hostport := 31210 + uint32(newTaskID)
 	protocol := "tcp"
-	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{{
-		HostPort:      hostport,
-		ContainerPort: 10422,
-		Protocol:      &protocol,
-	}}
+	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+		{
+			HostPort:      hostport,
+			ContainerPort: 10422,
+			Protocol:      &protocol,
+		},
+		{
+			HostPort:      hostport + 1,
+			ContainerPort: 6443,
+			Protocol:      &protocol,
+		},
+	}
 
 	CreateK3SServerString()
 

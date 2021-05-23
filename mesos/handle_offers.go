@@ -14,11 +14,7 @@ func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 	mem := config.ResMEM
 	PORT := "ports"
 
-	var portBegin, portEnd uint64
-	portBegin = 31210 + uint64(cmd.TaskID)
-	portEnd = 31210 + uint64(cmd.TaskID)
-
-	return []mesosproto.Resource{
+	res := []mesosproto.Resource{
 		{
 			Name:   CPU,
 			Type:   mesosproto.SCALAR.Enum(),
@@ -29,15 +25,41 @@ func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 			Type:   mesosproto.SCALAR.Enum(),
 			Scalar: &mesosproto.Value_Scalar{Value: mem},
 		},
-		{
-			Name: PORT,
-			Type: mesosproto.RANGES.Enum(),
-			Ranges: &mesosproto.Value_Ranges{Range: []mesosproto.Value_Range{{
-				Begin: portBegin,
-				End:   portEnd,
-			}}},
-		},
 	}
+
+	var portBegin, portEnd uint64
+
+	if cmd.DockerPortMappings != nil {
+		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
+		portEnd = portBegin + 2
+
+		res = []mesosproto.Resource{
+			{
+				Name:   CPU,
+				Type:   mesosproto.SCALAR.Enum(),
+				Scalar: &mesosproto.Value_Scalar{Value: cpu},
+			},
+			{
+				Name:   MEM,
+				Type:   mesosproto.SCALAR.Enum(),
+				Scalar: &mesosproto.Value_Scalar{Value: mem},
+			},
+			{
+				Name: PORT,
+				Type: mesosproto.RANGES.Enum(),
+				Ranges: &mesosproto.Value_Ranges{
+					Range: []mesosproto.Value_Range{
+						{
+							Begin: portBegin,
+							End:   portEnd,
+						},
+					},
+				},
+			},
+		}
+	}
+
+	return res
 }
 
 // HandleOffers will handle the offers event of mesos
@@ -58,14 +80,16 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0
 
-		switch cmd.ContainerType {
-		case "MESOS":
-			taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
-		case "DOCKER":
-			taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
-		}
+		taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
 
 		logrus.Debug("HandleOffers cmd: ", taskInfo)
+
+		// if its the K3SServer, remember the mesos agents hostename and hostport
+		if cmd.IsK3SServer {
+			config.K3SServerAPIHostname = takeOffer.GetHostname()
+			config.K3SServerAPIPort = int(cmd.DockerPortMappings[0].HostPort)
+			config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
+		}
 
 		accept := &mesosproto.Call{
 			Type: mesosproto.Call_ACCEPT,

@@ -37,7 +37,7 @@ func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
 	if err != nil {
 		logrus.Error("Error reading file:", err)
-		w.Write([]byte("Error reading kubeconf.yaml"))
+		w.Write([]byte("Error reading kubeconfig.yaml"))
 	} else {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 		w.Header().Set("Api-Service", "v0")

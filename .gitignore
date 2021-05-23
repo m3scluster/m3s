@@ -6,4 +6,5 @@ vendor
 stop.sh
 bootstrap/.owncloudsync.log
 bootstrap/*.db
+bootstrap/*.db-shm
 bootstrap/*.db-wal
