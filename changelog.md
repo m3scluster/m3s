@@ -21,6 +21,7 @@
 - Add Dashbaord configuration
 - Add K3S Framework API Server into the Container
 - Add API to get Kubeconfig
+- Add Kubernetes server check to scheduler the agent only if the server is running
 
 ## v0.0.4
 

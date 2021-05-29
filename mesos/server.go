@@ -225,6 +225,7 @@ func IsK3SServerRunning() bool {
 	}
 
 	if string(content) == "ok" {
+		logrus.Debug("IsK3SServerRunning: True")
 		return true
 	}
 
