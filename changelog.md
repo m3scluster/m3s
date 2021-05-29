@@ -20,6 +20,7 @@
 - Change the K3S Image to plain ubuntu. The bootstrap will install K3S.
 - Add Dashbaord configuration
 - Add K3S Framework API Server into the Container
+- Add API to get Kubeconfig
 
 ## v0.0.4
 

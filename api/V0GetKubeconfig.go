@@ -3,6 +3,8 @@ package api
 import (
 	"io/ioutil"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/sirupsen/logrus"
 )
@@ -14,7 +16,7 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeconfig")
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.K3SServerAPIHostname+":"+config.K3SServerAPIPort+"/api/k3s/v0/config", nil)
+	req, _ := http.NewRequest("GET", "http://"+config.K3SServerAPIHostname+":"+strconv.Itoa(config.K3SServerAPIPort)+"/api/k3s/v0/config", nil)
 	res, err := client.Do(req)
 
 	if err != nil {
@@ -34,9 +36,13 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// replace the localhost server string with the mesos agent hostname and dynamic port
+	destUrl := config.K3SServerAPIHostname + ":" + strconv.Itoa(config.K3SServerPort)
+	kubconf := strings.Replace(string(content), "127.0.0.1:6443", destUrl, -1)
+
 	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
-	w.Write(content)
+	w.Write([]byte(kubconf))
 
 }

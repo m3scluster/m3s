@@ -50,6 +50,7 @@ func init() {
 	config.ETCDMax, _ = strconv.Atoi(util.Getenv("ETCD_COUNT", "1"))
 	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
+	config.K3SServerAPIPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_API_PORT", "6443"))
 
 	// The comunication to the mesos server should be via ssl or not
 	if strings.Compare(os.Getenv("MESOS_SSL"), "true") == 0 {

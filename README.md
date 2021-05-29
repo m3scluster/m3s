@@ -71,6 +71,12 @@ curl -X GET 127.0.0.1:10000/v0/<server|agent|etcd>/scale/<count> -d 'JSON'
 curl -X GET 127.0.0.1:10000/v0/task/kill/<taskId> -d 'JSON'
 ```
 
+## Get Kubeconfig
+
+```Bash
+curl -X GET 127.0.0.1:10000/v0/k3s/config -d 'JSON'
+```
+
 # Screenshots
 
 ## Kubernetes Dashboard
