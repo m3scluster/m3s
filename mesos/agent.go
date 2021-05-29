@@ -179,7 +179,9 @@ func initStartK3SAgent() {
 	}
 
 	if config.K3SAgentCount <= (config.K3SAgentMax-1) && serverState.Status.GetState() == 1 {
-		StartK3SAgent(config.K3SAgentCount)
-		config.K3SAgentCount++
+		if IsK3SServerRunning() {
+			StartK3SAgent(config.K3SAgentCount)
+			config.K3SAgentCount++
+		}
 	}
 }

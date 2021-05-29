@@ -2,6 +2,9 @@ package mesos
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"strconv"
 	"sync/atomic"
 
 	mesosproto "mesos-k3s/proto"
@@ -196,4 +199,34 @@ func CreateK3SServerString() {
 	server := "https://" + config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain + ":6443"
 
 	config.K3SServerURL = server
+}
+
+// IsK3SServerRunning check if the kubernetes server is already running
+func IsK3SServerRunning() bool {
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", "http://"+config.K3SServerAPIHostname+":"+strconv.Itoa(config.K3SServerAPIPort)+"/status", nil)
+	res, err := client.Do(req)
+
+	if err != nil {
+		logrus.Error("IsK3SServerRunning: Error 1: ", err, res)
+		return false
+	}
+
+	if res.StatusCode != 200 {
+		logrus.Error("IsK3SServerRunning: Error Status is not 200")
+		return false
+	}
+
+	content, err := ioutil.ReadAll(res.Body)
+
+	if err != nil {
+		logrus.Error("IsK3SServerRunning: Error 2: ", err, res)
+		return false
+	}
+
+	if string(content) == "ok" {
+		return true
+	}
+
+	return false
 }
