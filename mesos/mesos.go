@@ -106,6 +106,8 @@ func Subscribe() error {
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
 		case mesosproto.Event_HEARTBEAT:
+			// K3S API Server Heatbeat
+			K3SHeartbeat()
 		case mesosproto.Event_OFFERS:
 			restartFailedContainer()
 			logrus.Debug("Offer Got: ", event.Offers.Offers[0].GetID())

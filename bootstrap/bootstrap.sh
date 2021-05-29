@@ -19,12 +19,6 @@ if [ "$K3SFRAMEWORK_TYPE" = "server" ]
 then
   chmod +x $MESOS_SANDBOX/server
   exec $MESOS_SANDBOX/server &
-
-  if [ $(curl -o -I -L -s -w "%{http_code}" http://localhost:10422/status) -eq 200 ]
-  then
-    kubectl apply -f $MESOS_SANDBOX/dashboard.yaml
-    kubectl apply -f $MESOS_SANDBOX/dashboard_auth.yaml
-  fi
 fi
 
 echo $1

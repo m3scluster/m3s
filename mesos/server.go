@@ -231,3 +231,8 @@ func IsK3SServerRunning() bool {
 
 	return false
 }
+
+// K3SHeartbeat to execute K3S Bootstrap API Server commands
+func K3SHeartbeat() {
+	IsK3SServerRunning()
+}
