@@ -13,6 +13,7 @@ import (
 )
 
 var MinVersion string
+var DashboardInstalled bool
 
 // Commands is the main function of this package
 func Commands() *mux.Router {
@@ -65,9 +66,35 @@ func APIHealth(w http.ResponseWriter, r *http.Request) {
 	if string(stdout) == "ok" {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("ok"))
+
+		// if kubernetes server is running and the dashboard is not installed, then do it
+		if !DashboardInstalled {
+			deployDashboard()
+		}
 	} else {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
+}
+
+// deployDashboard will deploy the kubernetes dashboard
+// if the server is in the running state
+func deployDashboard() {
+	err := exec.Command("kubectl", "apply", "-f", "$MESOS_SANDBOX/dashboar_auth.yaml").Run()
+
+	if err != nil {
+		logrus.Error("Install Kubernetes Dashboard Auth: ", err)
+		return
+	}
+
+	err = exec.Command("kubectl", "apply", "-f", "$MESOS_SANDBOX/dashboard.yaml").Run()
+
+	if err != nil {
+		logrus.Error("Install Kubernetes Dashboard: ", err)
+		return
+	}
+
+	DashboardInstalled = true
+
 }
 
 func main() {
@@ -77,6 +104,8 @@ func main() {
 	port := flag.String("port", "10422", "The port to listen")
 
 	logrus.Println("GO-K3S-API build"+MinVersion, *bind, *port)
+
+	DashboardInstalled = false
 
 	http.Handle("/", Commands())
 

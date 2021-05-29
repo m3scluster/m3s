@@ -22,7 +22,7 @@
 - Add K3S Framework API Server into the Container
 - Add API to get Kubeconfig
 - Add Kubernetes server check to scheduler the agent only if the server is running
-- Add automatic Kubernetes dashboard deploy to the bootstrap
+- Add automatic Kubernetes dashboard deploy to the API server
 
 ## v0.0.4
 
