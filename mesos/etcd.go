@@ -113,6 +113,7 @@ func StartEtcd(id int) {
 func initStartEtcd() {
 	if config.ETCDCount <= (config.ETCDMax - 1) {
 		StartEtcd(config.ETCDCount)
+		Revive()
 		config.ETCDCount++
 	}
 }

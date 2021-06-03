@@ -190,6 +190,7 @@ func initStartK3SServer() {
 
 	if config.K3SServerCount <= (config.K3SServerMax-1) && etcdState.Status.GetState() == 1 {
 		StartK3SServer(config.K3SServerCount)
+		Revive()
 		config.K3SServerCount++
 	}
 }

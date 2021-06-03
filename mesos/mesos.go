@@ -87,11 +87,10 @@ func Subscribe() error {
 			logrus.Error(err)
 		}
 		logrus.Debug("Subscribe Got: ", event.GetType())
-		if config.MesosStreamID != "" {
-			initStartEtcd()
-			initStartK3SServer()
-			initStartK3SAgent()
-		}
+
+		initStartEtcd()
+		initStartK3SServer()
+		initStartK3SAgent()
 		// K3S API Server Heatbeat
 		K3SHeartbeat()
 
@@ -177,6 +176,14 @@ func Reconcile() {
 	}
 }
 
+// Revice will
+func Revive() {
+	revive := &mesosproto.Call{
+		Type: mesosproto.Call_REVIVE,
+	}
+	Call(revive)
+}
+
 // Restart failed container
 func restartFailedContainer() {
 	if config.State != nil {
@@ -225,6 +232,8 @@ func deleteOldTask(taskID mesosproto.TaskID) {
 
 		config.State = copy
 	}
+
+	Revive()
 }
 
 // Kill a Task with the given taskID

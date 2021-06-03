@@ -107,7 +107,7 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 					}}}}}
 
 		logrus.Info("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
-		Call(accept)
+		return Call(accept)
 
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)

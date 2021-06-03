@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	mesos "mesos-k3s/mesos"
-	mesosproto "mesos-k3s/proto"
 
 	"github.com/sirupsen/logrus"
 )
@@ -20,10 +19,7 @@ func V0ReflateK3S(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	revive := &mesosproto.Call{
-		Type: mesosproto.Call_REVIVE,
-	}
-	mesos.Call(revive)
+	mesos.Revive()
 
 	mesos.SearchMissingK3SServer()
 
