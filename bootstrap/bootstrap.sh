@@ -6,6 +6,8 @@ apt-get update -y
 apt-get install -y containernetworking-plugins containerd tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2
 mkdir -p /etc/cni/net.d
 
+export KUBERNETES_VERSION=v1.21.1
+export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export KUBECONFIG=$MESOS_SANDBOX/kubeconfig.yaml
@@ -16,9 +18,9 @@ curl https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/
 curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml > $MESOS_SANDBOX/dashboard.yaml
 if [ "$K3SFRAMEWORK_TYPE" = "server" ]
 then
-  curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" > /usr/local/bin/kubectl
+  curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl > $MESOS_SANDBOX/kubectl
   curl https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/server > $MESOS_SANDBOX/server
-  chmod +x /usr/local/bin/kubectl
+  chmod +x $MESOS_SANDBOX/kubectl
   chmod +x $MESOS_SANDBOX/server
   exec $MESOS_SANDBOX/server &
 fi

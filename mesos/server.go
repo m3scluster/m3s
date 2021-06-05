@@ -17,11 +17,13 @@ import (
 func SearchMissingK3SServer() {
 	if config.State != nil {
 		for i := 0; i < config.K3SServerMax; i++ {
-			state := *StatusK3SServer(i).Status.State
-			if state != mesosproto.TASK_RUNNING {
-				logrus.Debug("Missing K3S: ", i)
-				CreateK3SServerString()
-				StartK3SServer(i)
+			state := StatusK3SServer(i)
+			if state != nil {
+				if *state.Status.State != mesosproto.TASK_RUNNING {
+					logrus.Debug("Missing K3S: ", i)
+					CreateK3SServerString()
+					StartK3SServer(i)
+				}
 			}
 		}
 	}
@@ -78,6 +80,8 @@ func StartK3SServer(id int) {
 	cmd.InternalID = id
 	cmd.IsK3SServer = true
 	cmd.ContainerImage = config.ImageK3S
+	cmd.Memory = config.K3SMEM
+	cmd.CPU = config.K3SCPU
 	cmd.TaskName = config.PrefixTaskName + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + " --tls-san=" + cmd.Domain + "'"
@@ -121,7 +125,7 @@ func StartK3SServer(id int) {
 		},
 	}
 
-	hostport := 31210 + uint32(newTaskID)
+	hostport := 31859 + uint32(newTaskID)
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
@@ -173,10 +177,10 @@ func StartK3SServer(id int) {
 	}
 
 	d, _ := json.Marshal(&cmd)
-	logrus.Debug("Scheduled K3S: ", string(d))
+	logrus.Debug("Scheduled K3S Server: ", string(d))
 
 	config.CommandChan <- cmd
-	logrus.Info("Scheduled K3S")
+	logrus.Info("Scheduled K3S Server")
 
 }
 
@@ -190,7 +194,6 @@ func initStartK3SServer() {
 
 	if config.K3SServerCount <= (config.K3SServerMax-1) && etcdState.Status.GetState() == 1 {
 		StartK3SServer(config.K3SServerCount)
-		Revive()
 		config.K3SServerCount++
 	}
 }
@@ -235,5 +238,9 @@ func IsK3SServerRunning() bool {
 
 // K3SHeartbeat to execute K3S Bootstrap API Server commands
 func K3SHeartbeat() {
-	IsK3SServerRunning()
+	if !IsK3SServerRunning() {
+		initStartK3SServer()
+	} else {
+		initStartK3SAgent()
+	}
 }

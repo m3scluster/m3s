@@ -56,7 +56,7 @@ func APIHealth(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("Health Check")
 
 	// check if the kubernetes server is working
-	stdout, err := exec.Command("kubectl", "get", "--raw=/livez/ping").Output()
+	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "get", "--raw=/livez/ping").Output()
 
 	if err != nil {
 		logrus.Error("Health to Kubernetes Server: ", err)
@@ -79,7 +79,7 @@ func APIHealth(w http.ResponseWriter, r *http.Request) {
 // deployDashboard will deploy the kubernetes dashboard
 // if the server is in the running state
 func deployDashboard() {
-	err := exec.Command("kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard.yaml").Run()
+	err := exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard.yaml").Run()
 	logrus.Info("Install Kubernetes Dashboard")
 
 	if err != nil {
@@ -87,7 +87,7 @@ func deployDashboard() {
 		return
 	}
 
-	err = exec.Command("kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard_auth.yaml").Run()
+	err = exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard_auth.yaml").Run()
 
 	if err != nil {
 		logrus.Error("Install Kubernetes Dashboard Auth: ", err)

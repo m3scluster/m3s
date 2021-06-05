@@ -40,8 +40,6 @@ type Config struct {
 	K3SServerString       string
 	K3SAgentString        string
 	K3SAgent              map[string]string
-	ResCPU                float64
-	ResMEM                float64
 	Credentials           UserCredentials
 	ImageK3S              string
 	ImageETCD             string
@@ -56,6 +54,10 @@ type Config struct {
 	BootstrapURL          string
 	K3SServerAPIHostname  string
 	K3SServerAPIPort      int
+	K3SCPU                float64
+	K3SMEM                float64
+	ETCDCPU               float64
+	ETCDMEM               float64
 }
 
 // Command is a chan which include all the Information about the started tasks
@@ -83,6 +85,7 @@ type Command struct {
 	IsK3SServer        bool
 	IsETCD             bool
 	Memory             float64
+	CPU                float64
 	Agent              string
 }
 

@@ -32,14 +32,12 @@ func init() {
 	config.Domain = os.Getenv("DOMAIN")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
-	config.ResCPU, _ = strconv.ParseFloat(util.Getenv("RES_CPU", "0.1"), 64)
-	config.ResMEM, _ = strconv.ParseFloat(util.Getenv("RES_MEM", "1200"), 64)
 	config.Credentials.Username = os.Getenv("AUTH_USERNAME")
 	config.Credentials.Password = os.Getenv("AUTH_PASSWORD")
 	config.AppName = "Mesos K3S Framework"
 	config.K3SCustomDomain = os.Getenv("K3S_CUSTOM_DOMAIN")
-	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s --debug server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --disable=metrics-server --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe ")
-	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s --debug agent --snapshotter=native --flannel-iface=ethwe --flannel-backend=vxlan")
+	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --disable=metrics-server --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe ")
+	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s agent --snapshotter=native --flannel-iface=ethwe --flannel-backend=vxlan")
 	config.ImageK3S = util.Getenv("IMAGE_K3S", "ubuntu:groovy")
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:latest")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
@@ -51,6 +49,10 @@ func init() {
 	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.K3SServerAPIPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_API_PORT", "6443"))
+	config.K3SCPU, _ = strconv.ParseFloat(util.Getenv("K3S_CPU", "0.1"), 64)
+	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1000"), 64)
+	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
+	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 
 	// The comunication to the mesos server should be via ssl or not
 	if strings.Compare(os.Getenv("MESOS_SSL"), "true") == 0 {

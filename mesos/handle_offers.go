@@ -10,8 +10,8 @@ import (
 func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 	CPU := "cpus"
 	MEM := "mem"
-	cpu := config.ResCPU
-	mem := config.ResMEM
+	cpu := cmd.CPU
+	mem := cmd.Memory
 	PORT := "ports"
 
 	res := []mesosproto.Resource{
@@ -107,7 +107,7 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 					}}}}}
 
 		logrus.Info("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
-		return Call(accept)
+		Call(accept)
 
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)
@@ -123,13 +123,7 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 			Type:    mesosproto.Call_DECLINE,
 			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
 		}
-		Call(decline)
+		return Call(decline)
 
-		// tell mesos he dont have to offer again until we ask
-		logrus.Info("Framework Suppress: ", offerIds)
-		suppress := &mesosproto.Call{
-			Type: mesosproto.Call_SUPPRESS,
-		}
-		return Call(suppress)
 	}
 }

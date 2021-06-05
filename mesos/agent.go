@@ -65,8 +65,8 @@ func StartK3SAgent(id int) {
 	}
 
 	var hostport, containerport uint32
-	hostport = 31210 + uint32(newTaskID)
-	containerport = 2181
+	hostport = 31859 + uint32(newTaskID)
+	containerport = 443
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
@@ -88,6 +88,8 @@ func StartK3SAgent(id int) {
 	cmd.Privileged = true
 	cmd.InternalID = id
 	cmd.ContainerImage = config.ImageK3S
+	cmd.Memory = config.K3SMEM
+	cmd.CPU = config.K3SCPU
 	cmd.TaskName = config.PrefixTaskName + "agent" + strconv.Itoa(id)
 	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + config.K3SCustomDomain + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + taskID + "'"
@@ -164,10 +166,10 @@ func StartK3SAgent(id int) {
 	}
 
 	d, _ := json.Marshal(&cmd)
-	logrus.Debug("Scheduled K3SAgent: ", string(d))
+	logrus.Debug("Scheduled K3S Agent: ", string(d))
 
 	config.CommandChan <- cmd
-	logrus.Info("Scheduled K3SAgent")
+	logrus.Info("Scheduled K3S Agent")
 }
 
 // The first run have to be in a right sequence
@@ -181,7 +183,6 @@ func initStartK3SAgent() {
 	if config.K3SAgentCount <= (config.K3SAgentMax-1) && serverState.Status.GetState() == 1 {
 		if IsK3SServerRunning() {
 			StartK3SAgent(config.K3SAgentCount)
-			Revive()
 			config.K3SAgentCount++
 		}
 	}

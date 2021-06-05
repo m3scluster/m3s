@@ -70,6 +70,8 @@ func StartEtcd(id int) {
 	cmd.Shell = true
 	cmd.Privileged = false
 	cmd.InternalID = id
+	cmd.Memory = config.ETCDMEM
+	cmd.CPU = config.ETCDCPU
 	cmd.TaskName = config.PrefixTaskName + "etcd"
 	cmd.Hostname = config.PrefixTaskName + "etcd" + config.K3SCustomDomain + "." + config.Domain
 	cmd.IsETCD = true
@@ -113,7 +115,6 @@ func StartEtcd(id int) {
 func initStartEtcd() {
 	if config.ETCDCount <= (config.ETCDMax - 1) {
 		StartEtcd(config.ETCDCount)
-		Revive()
 		config.ETCDCount++
 	}
 }

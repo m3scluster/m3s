@@ -23,6 +23,8 @@
 - Add API to get Kubeconfig
 - Add Kubernetes server check to scheduler the agent only if the server is running
 - Add automatic Kubernetes dashboard deploy to the API server
+- Add seperated memory and CPU resources for ETCD and K3S
+- Add Heatbeat for ETCD and K3S services
 
 ## v0.0.4
 

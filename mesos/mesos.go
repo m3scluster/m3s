@@ -72,6 +72,13 @@ func Subscribe() error {
 	line, _ := reader.ReadString('\n')
 	bytesCount, _ := strconv.Atoi(strings.Trim(line, "\n"))
 
+	// Search missing services after the framework was restarted
+	if config.MesosStreamID != "" {
+		SearchMissingEtcd()
+		SearchMissingK3SServer()
+		SearchMissingK3SAgent()
+	}
+
 	for {
 		// Read line from Mesos
 		line, _ = reader.ReadString('\n')
@@ -89,10 +96,6 @@ func Subscribe() error {
 		logrus.Debug("Subscribe Got: ", event.GetType())
 
 		initStartEtcd()
-		initStartK3SServer()
-		initStartK3SAgent()
-		// K3S API Server Heatbeat
-		K3SHeartbeat()
 
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:
@@ -107,6 +110,8 @@ func Subscribe() error {
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
 		case mesosproto.Event_HEARTBEAT:
+			// K3S API Server Heatbeat
+			K3SHeartbeat()
 		case mesosproto.Event_OFFERS:
 			restartFailedContainer()
 			logrus.Debug("Offer Got: ", event.Offers.Offers[0].GetID())
@@ -154,6 +159,7 @@ func Call(message *mesosproto.Call) error {
 // Reconcile will reconcile the task states after the framework was restarted
 func Reconcile() {
 	var oldTasks []mesosproto.Call_Reconcile_Task
+	logrus.Debug("Reconvcle Tasks")
 	maxID := 0
 	if config != nil {
 		for _, t := range config.State {
@@ -178,6 +184,7 @@ func Reconcile() {
 
 // Revice will
 func Revive() {
+	logrus.Debug("Revive Tasks")
 	revive := &mesosproto.Call{
 		Type: mesosproto.Call_REVIVE,
 	}
@@ -214,6 +221,16 @@ func restartFailedContainer() {
 	}
 }
 
+/*
+	default:
+		// tell mesos he dont have to offer again until we ask
+		logrus.Info("Framework Suppress: ", offerIds)
+		suppress := &mesosproto.Call{
+			Type: mesosproto.Call_SUPPRESS,
+		}
+		return Call(suppress)
+	}
+*/
 // Delete Failed Tasks from the config
 func deleteOldTask(taskID mesosproto.TaskID) {
 	copy := make(map[string]cfg.State)
@@ -232,8 +249,6 @@ func deleteOldTask(taskID mesosproto.TaskID) {
 
 		config.State = copy
 	}
-
-	Revive()
 }
 
 // Kill a Task with the given taskID
