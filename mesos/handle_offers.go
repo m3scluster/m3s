@@ -80,16 +80,18 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0
 
-		taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
-
-		logrus.Debug("HandleOffers cmd: ", taskInfo)
-
 		// if its the K3SServer, remember the mesos agents hostename and hostport
 		if cmd.IsK3SServer {
 			config.K3SServerAPIHostname = takeOffer.GetHostname()
 			config.K3SServerAPIPort = int(cmd.DockerPortMappings[0].HostPort)
 			config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
 		}
+
+		logrus.Debug("Schedule Command: ", cmd.Command)
+
+		taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
+
+		logrus.Debug("HandleOffers cmd: ", taskInfo)
 
 		accept := &mesosproto.Call{
 			Type: mesosproto.Call_ACCEPT,

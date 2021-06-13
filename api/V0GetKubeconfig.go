@@ -11,7 +11,7 @@ import (
 
 // V0StatusContainer will return the status of the taskID
 // example:
-// curl -X GET 127.0.0.1:10000/v0/k3s/config'
+// curl -X GET 127.0.0.1:10000/v0/server/config'
 func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeconfig")
 

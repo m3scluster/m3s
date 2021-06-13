@@ -81,10 +81,29 @@ curl -X GET 127.0.0.1:10000/v0/k3s/config -d 'JSON'
 
 # Screenshots
 
-## Kubernetes Dashboard
+## Access Kubernetes Dashboard
+
+```bash
+kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
+kubectl proxy
+```
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/
+
 
 ![image_2021-05-01-15-09-30](vx_images/image_2021-05-01-15-09-30.png)
 
 ## Apache Mesos running K3S Framework
 
 ![image_2021-05-01-15-10-54](vx_images/image_2021-05-01-15-10-54.png)
+
+## Access Traefik Dashboard
+
+```bash
+kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name -n kube-system) -n kube-system 9000:9000
+```
+
+http://127.0.0.1:9000/dashboard/
+
+
+![image_2021-06-13-17-15-45](vx_images/image_2021-06-13-17-15-45.png)

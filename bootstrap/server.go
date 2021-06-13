@@ -14,6 +14,7 @@ import (
 
 var MinVersion string
 var DashboardInstalled bool
+var TraefikDashboardInstalled bool
 
 // Commands is the main function of this package
 func Commands() *mux.Router {
@@ -71,6 +72,10 @@ func APIHealth(w http.ResponseWriter, r *http.Request) {
 		if !DashboardInstalled {
 			deployDashboard()
 		}
+		// if kubernetes server is running and the traefik dashboard is not installed, then do it
+		if !TraefikDashboardInstalled {
+			deployTraefikDashboard()
+		}
 	} else {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
@@ -96,6 +101,21 @@ func deployDashboard() {
 
 	logrus.Info("Install Kubernetes Dashboard: Done")
 	DashboardInstalled = true
+}
+
+// deployTraefikDashboard will deploy the traefik dashboard
+// if the server is in the running state
+func deployTraefikDashboard() {
+	err := exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard_traefik.yaml").Run()
+	logrus.Info("Install Traefik Dashboard")
+
+	if err != nil {
+		logrus.Error("Install Traefik Dashboard: ", err)
+		return
+	}
+
+	logrus.Info("Install Traefik Dashboard: Done")
+	TraefikDashboardInstalled = true
 }
 
 func main() {

@@ -73,7 +73,7 @@ func StartEtcd(id int) {
 	cmd.Memory = config.ETCDMEM
 	cmd.CPU = config.ETCDCPU
 	cmd.TaskName = config.PrefixTaskName + "etcd"
-	cmd.Hostname = config.PrefixTaskName + "etcd" + config.K3SCustomDomain + "." + config.Domain
+	cmd.Hostname = config.PrefixTaskName + "etcd" + "." + config.Domain
 	cmd.IsETCD = true
 	cmd.DockerParameter = []mesosproto.Parameter{}
 

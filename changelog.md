@@ -25,6 +25,7 @@
 - Add automatic Kubernetes dashboard deploy to the API server
 - Add seperated memory and CPU resources for ETCD and K3S
 - Add Heatbeat for ETCD and K3S services
+- Add automatic Traefik dashboard deploy
 
 ## v0.0.4
 
