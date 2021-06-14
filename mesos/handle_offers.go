@@ -31,7 +31,7 @@ func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 
 	if cmd.DockerPortMappings != nil {
 		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
-		portEnd = portBegin + 2
+		portEnd = portBegin + 1
 
 		res = []mesosproto.Resource{
 			{

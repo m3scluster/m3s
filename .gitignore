@@ -4,6 +4,7 @@ test
 k3sframe
 vendor
 stop.sh
+docs/book
 bootstrap/.owncloudsync.log
 bootstrap/*.db
 bootstrap/*.db-shm

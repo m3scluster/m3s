@@ -64,9 +64,8 @@ func StartK3SAgent(id int) {
 		}
 	}
 
-	var hostport, containerport uint32
+	var hostport uint32
 	hostport = 31859 + uint32(newTaskID)
-	containerport = 443
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
@@ -78,11 +77,18 @@ func StartK3SAgent(id int) {
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
 		Name: &config.MesosCNI,
 	}}
-	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{{
-		HostPort:      hostport,
-		ContainerPort: containerport,
-		Protocol:      &protocol,
-	}}
+	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+		{
+			HostPort:      hostport,
+			ContainerPort: 80,
+			Protocol:      &protocol,
+		},
+		{
+			HostPort:      hostport + 1,
+			ContainerPort: 443,
+			Protocol:      &protocol,
+		},
+	}
 
 	cmd.Shell = true
 	cmd.Privileged = true
