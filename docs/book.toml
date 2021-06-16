@@ -5,9 +5,7 @@ multilingual = false
 src = "src"
 title = "M3S - Apache Mesos Kubernetes Framework"
 
-[preprocessor.open-on-gh]
-command = "mdbook-open-on-gh"
-renderer = ["html"]
+[build]
+create-missing = true
+preprocess = ["links", "index"]
 
-[output.html]
-git-repository-url = "https://github.com/AVENTER-UG/go-mesos-framework-k3s"
