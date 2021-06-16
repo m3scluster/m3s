@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">1.</strong> Create NGINX ingress with traefik</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">2.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">3.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">4.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">5.</strong> Create NGINX ingress with traefik</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -138,10 +138,6 @@
                         </a>
                         
                         
-                        <a href="https://github.com/AVENTER-UG/go-mesos-framework-k3s" title="Git repository" aria-label="Git repository">
-                            <i id="git-repository-button" class="fa fa-github"></i>
-                        </a>
-                        
                         
 
                     </div>
@@ -171,7 +167,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="create-nginx-ingress-with-traefik-in-m3s"><a class="header" href="#create-nginx-ingress-with-traefik-in-m3s">Create NGINX ingress with traefik in M3S</a></h1>
+                        <h1 id="m3s---apache-mesos-kubernetes-framework"><a class="header" href="#m3s---apache-mesos-kubernetes-framework">M3s - Apache Mesos Kubernetes Framework</a></h1>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.</p>
+<h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
+<ul>
+<li>Apache Mesos min 1.6.0</li>
+<li>Mesos with SSL and Authentication is optional</li>
+<li>Persistent Storage to store Kubernetes data</li>
+</ul>
+<h2 id="screenshots"><a class="header" href="#screenshots">Screenshots</a></h2>
+<h3 id="mesos"><a class="header" href="#mesos">Mesos</a></h3>
+<p><img src="vx_images/Mesos.png" alt="Mesos" /></p>
+<h3 id="kubernetes"><a class="header" href="#kubernetes">Kubernetes</a></h3>
+<p><img src="vx_images/Kubernetes.png" alt="Kubernetes" /></p>
+<h3 id="traefik"><a class="header" href="#traefik">Traefik</a></h3>
+<p><img src="vx_images/Traefik.png" alt="Traefik" /></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="reflate-kubernetes-server-or-agent"><a class="header" href="#reflate-kubernetes-server-or-agent">Reflate Kubernetes Server or Agent</a></h1>
+<p>To reflate Kubernetes services, we have to call the following API.</p>
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/reflate -d 'JSON'
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="scale-updown-kubernetes-service"><a class="header" href="#scale-updown-kubernetes-service">Scale up/down Kubernetes Service</a></h1>
+<p>To scale Kubernetes services, we have to call the following API. <code>&lt;count&gt;</code> is the number of all running processes.</p>
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent|etcd&gt;/scale/&lt;count&gt; -d 'JSON'
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="get-kubeconfig"><a class="header" href="#get-kubeconfig">Get Kubeconfig</a></h1>
+<p>Get out the kubernetes config file</p>
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/k3s/config -d 'JSON'
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="create-nginx-ingress-with-traefik-in-m3s"><a class="header" href="#create-nginx-ingress-with-traefik-in-m3s">Create NGINX ingress with traefik in M3S</a></h1>
 <p>With these example we will create a nginx Webserver and publish the Website with the traefik 2.x ingress.</p>
 <pre><code class="language-bash">kubectl create  -f nginx.yaml
 </code></pre>
