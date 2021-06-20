@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">2.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">3.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">4.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">5.</strong> Create NGINX ingress with traefik</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">4.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">5.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">6.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">7.</strong> Create NGINX ingress with traefik</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -183,6 +183,39 @@
 <p><img src="vx_images/Kubernetes.png" alt="Kubernetes" /></p>
 <h3 id="traefik"><a class="header" href="#traefik">Traefik</a></h3>
 <p><img src="vx_images/Traefik.png" alt="Traefik" /></p>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
+<p>The installation of the M3s plugin for mesos-cli is done in few steps. </p>
+<p>First, edit the mesos-cli config file.</p>
+<pre><code class="language-bash">vim .mesos/config.toml
+</code></pre>
+<p>Add the absolute path of the plugin into the plugin array:</p>
+<pre><code class="language-bash"># The `plugins` array lists the absolute paths of the
+# plugins you want to add to the CLI.
+plugins = [
+  &quot;/example/go-mesos-framework-k3s/mesos_cli/m3s&quot;
+]
+</code></pre>
+<p>Now we will see the M3s plugin in mesos cli:</p>
+<pre><code class="language-bash">mesos help
+Mesos CLI
+
+Usage:
+  mesos (-h | --help)
+  mesos --version
+  mesos &lt;command&gt; [&lt;args&gt;...]
+
+Options:
+  -h --help  Show this screen.
+  --version  Show version info.
+
+Commands:
+  agent   Interacts with the Mesos agents
+  config  Interacts with the Mesos CLI configuration file
+  m3s     Interacts with the Kubernetes Framework M3s
+  task    Interacts with the tasks running in a Mesos cluster
+
+</code></pre>
+<div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-usage"><a class="header" href="#m3s-cli-usage">M3s CLI Usage</a></h1>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="reflate-kubernetes-server-or-agent"><a class="header" href="#reflate-kubernetes-server-or-agent">Reflate Kubernetes Server or Agent</a></h1>
 <p>To reflate Kubernetes services, we have to call the following API.</p>
 <pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/reflate -d 'JSON'
