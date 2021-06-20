@@ -26,6 +26,7 @@
 - Add seperated memory and CPU resources for ETCD and K3S
 - Add Heatbeat for ETCD and K3S services
 - Add automatic Traefik dashboard deploy
+- Add mesos-cli plugin
 
 ## v0.0.4
 

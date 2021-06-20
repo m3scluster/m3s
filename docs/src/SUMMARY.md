@@ -2,6 +2,11 @@
 
 - [Introduction](README.md)
 
+# CLI
+
+- [M3s CLI Installation for Mesos-CLI](cli/install.md)
+- [M3s CLI Usage](cli/usage.md)
+
 # API
 
 - [Reflate Kubernetes Server or Agent](api/reflate.md)
