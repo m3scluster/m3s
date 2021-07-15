@@ -32,58 +32,39 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 	tmp.Command = cmd
 	config.State[newTaskID] = tmp
 
-	if cmd.Shell == true {
-		return []mesosproto.TaskInfo{{
-			Name: cmd.TaskName,
-			TaskID: mesosproto.TaskID{
-				Value: newTaskID,
-			},
-			AgentID:   agent,
-			Resources: defaultResources(cmd),
-			Command: &mesosproto.CommandInfo{
-				Shell:       &cmd.Shell,
-				Value:       &cmd.Command,
-				URIs:        cmd.Uris,
-				Environment: &cmd.Environment,
-			},
-			Container: &mesosproto.ContainerInfo{
-				Type:     contype,
-				Volumes:  cmd.Volumes,
-				Hostname: &cmd.Hostname,
-				Docker: &mesosproto.ContainerInfo_DockerInfo{
-					Image:        cmd.ContainerImage,
-					Network:      networkMode,
-					PortMappings: cmd.DockerPortMappings,
-					Privileged:   &cmd.Privileged,
-					Parameters:   cmd.DockerParameter,
-				},
-				NetworkInfos: cmd.NetworkInfo,
-			},
-		}}, nil
+	var msg mesosproto.TaskInfo
+
+	msg.Name = cmd.TaskName
+	msg.TaskID = mesosproto.TaskID{
+		Value: newTaskID,
 	}
-	return []mesosproto.TaskInfo{{
-		Name: cmd.TaskName,
-		TaskID: mesosproto.TaskID{
-			Value: newTaskID,
+	msg.AgentID = agent
+	msg.Resources = defaultResources(cmd)
+
+	msg.Command = &mesosproto.CommandInfo{
+		Shell:       &cmd.Shell,
+		Value:       &cmd.Command,
+		URIs:        cmd.Uris,
+		Environment: &cmd.Environment,
+	}
+
+	msg.Container = &mesosproto.ContainerInfo{
+		Type:     contype,
+		Volumes:  cmd.Volumes,
+		Hostname: &cmd.Hostname,
+		Docker: &mesosproto.ContainerInfo_DockerInfo{
+			Image:        cmd.ContainerImage,
+			Network:      networkMode,
+			PortMappings: cmd.DockerPortMappings,
+			Privileged:   &cmd.Privileged,
+			Parameters:   cmd.DockerParameter,
 		},
-		AgentID:   agent,
-		Resources: defaultResources(cmd),
-		Command: &mesosproto.CommandInfo{
-			Shell:       &cmd.Shell,
-			URIs:        cmd.Uris,
-			Environment: &cmd.Environment,
-		},
-		Container: &mesosproto.ContainerInfo{
-			Type:     contype,
-			Volumes:  cmd.Volumes,
-			Hostname: &cmd.Hostname,
-			Docker: &mesosproto.ContainerInfo_DockerInfo{
-				Image:        cmd.ContainerImage,
-				Network:      networkMode,
-				PortMappings: cmd.DockerPortMappings,
-				Privileged:   &cmd.Privileged,
-			},
-			NetworkInfos: cmd.NetworkInfo,
-		},
-	}}, nil
+		NetworkInfos: cmd.NetworkInfo,
+	}
+
+	if cmd.Discovery != (mesosproto.DiscoveryInfo{}) {
+		msg.Discovery = &cmd.Discovery
+	}
+
+	return []mesosproto.TaskInfo{msg}, nil
 }

@@ -104,6 +104,11 @@ func StartEtcd(id int) {
 		},
 	}
 
+	cmd.Discovery = mesosproto.DiscoveryInfo{
+		Visibility: 1,
+		Name:       &cmd.TaskName,
+	}
+
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("Scheduled Etcd: ", string(d))
 

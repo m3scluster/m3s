@@ -152,6 +152,25 @@ func StartK3SAgent(id int) {
 		}
 	}
 
+	cmd.Discovery = mesosproto.DiscoveryInfo{
+		Visibility: 2,
+		Name:       &cmd.TaskName,
+		Ports: &mesosproto.Ports{
+			Ports: []mesosproto.Port{
+				{
+					Number:   cmd.DockerPortMappings[0].HostPort,
+					Name:     func() *string { x := "http"; return &x }(),
+					Protocol: cmd.DockerPortMappings[0].Protocol,
+				},
+				{
+					Number:   cmd.DockerPortMappings[1].HostPort,
+					Name:     func() *string { x := "https"; return &x }(),
+					Protocol: cmd.DockerPortMappings[1].Protocol,
+				},
+			},
+		},
+	}
+
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
 		{
 			Name:  "SERVICE_NAME",
