@@ -216,6 +216,34 @@ Commands:
 
 </code></pre>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-usage"><a class="header" href="#m3s-cli-usage">M3s CLI Usage</a></h1>
+<p>The M3s framework does support the new version of mesos-cli.</p>
+<p>The following parameters are currently supported:</p>
+<pre><code class="language-bash">mesos m3s
+Interacts with the Kubernetes Framework M3s
+
+Usage:
+  mesos m3s (-h | --help)
+  mesos m3s --version
+  mesos m3s &lt;command&gt; (-h | --help)
+  mesos m3s [options] &lt;command&gt; [&lt;args&gt;...]
+
+Options:
+  -h --help  Show this screen.
+  --version  Show version info.
+
+Commands:
+  kubeconfig  Get kubernetes configuration file
+  list        Show list of running M3s frameworks
+
+</code></pre>
+<h2 id="list-all-m3s-frameworks"><a class="header" href="#list-all-m3s-frameworks">List all M3s frameworks</a></h2>
+<pre><code class="language-bash">mesos m3s list
+ID                                         Active  WebUI                    Name  
+2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s   
+</code></pre>
+<h2 id="get-the-kubeconfig-from-the-running-m3s-framework"><a class="header" href="#get-the-kubeconfig-from-the-running-m3s-framework">Get the kubeconfig from the running m3s framework</a></h2>
+<pre><code class="language-bash">mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0003
+</code></pre>
 <div id="chapter_begin" style="break-before: page; page-break-before: always;"></div><h1 id="reflate-kubernetes-server-or-agent"><a class="header" href="#reflate-kubernetes-server-or-agent">Reflate Kubernetes Server or Agent</a></h1>
 <p>To reflate Kubernetes services, we have to call the following API.</p>
 <pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/reflate -d 'JSON'
