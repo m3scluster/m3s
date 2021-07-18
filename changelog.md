@@ -27,6 +27,8 @@
 - Add Heatbeat for ETCD and K3S services
 - Add automatic Traefik dashboard deploy
 - Add mesos-cli plugin
+- Mesos-CLI: Show all running M3s frameworks
+- Mesos-CLI: Get kubeconfig from a selected running m3s
 
 ## v0.0.4
 

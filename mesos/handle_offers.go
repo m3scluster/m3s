@@ -82,8 +82,8 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 
 		// if its the K3SServer, remember the mesos agents hostename and hostport
 		if cmd.IsK3SServer {
-			config.K3SServerAPIHostname = takeOffer.GetHostname()
-			config.K3SServerAPIPort = int(cmd.DockerPortMappings[0].HostPort)
+			config.M3SBootstrapServerHostname = takeOffer.GetHostname()
+			config.M3SBootstrapServerPort = int(cmd.DockerPortMappings[0].HostPort)
 			config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
 		}
 

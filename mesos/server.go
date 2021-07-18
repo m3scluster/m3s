@@ -227,7 +227,7 @@ func CreateK3SServerString() {
 // IsK3SServerRunning check if the kubernetes server is already running
 func IsK3SServerRunning() bool {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.K3SServerAPIHostname+":"+strconv.Itoa(config.K3SServerAPIPort)+"/status", nil)
+	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/status", nil)
 	res, err := client.Do(req)
 
 	if err != nil {

@@ -19,8 +19,8 @@ func init() {
 	config.K3SServerCount = 0
 
 	config.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")
-	config.FrameworkName = util.Getenv("FRAMEWORK_NAME", "k3s")
-	config.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "k3s")
+	config.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
+	config.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")
 	config.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
 	config.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
 	config.Principal = os.Getenv("MESOS_PRINCIPAL")
@@ -48,7 +48,7 @@ func init() {
 	config.ETCDMax, _ = strconv.Atoi(util.Getenv("ETCD_COUNT", "1"))
 	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
-	config.K3SServerAPIPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_API_PORT", "6443"))
+	config.M3SBootstrapServerPort, _ = strconv.Atoi(util.Getenv("M3S_BOOTSTRAP_SERVER_PORT", "6443"))
 	config.K3SCPU, _ = strconv.ParseFloat(util.Getenv("K3S_CPU", "0.1"), 64)
 	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1000"), 64)
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
