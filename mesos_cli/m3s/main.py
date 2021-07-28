@@ -22,7 +22,7 @@ from cli.exceptions import CLIException
 from cli.plugins import PluginBase
 from cli.util import Table
 
-from cli.mesos import TaskIO
+from cli.mesos import get_frameworks, get_framework_address
 from cli import http
 from cli.exceptions import CLIException
 
@@ -33,34 +33,6 @@ PLUGIN_CLASS = "M3s"
 VERSION = "0.1.0"
 
 SHORT_HELP = "Interacts with the Kubernetes Framework M3s"
-
-def get_framework_address(framework_id, master, config):
-    """
-    Given a master and an framework id, return the framework address
-    by checking the /master/frameworks endpoint of the master.
-    """
-    frameworks = get_frameworks(master, config)
-
-    for framework in frameworks:
-        if framework["id"] == framework_id:
-            return framework["webui_url"]
-    raise CLIException("Unable to find framework '{id}'".format(id=framework_id))
-
-
-def get_frameworks(master, config):
-    """
-    Get the frameworks in a Mesos cluster.
-    """
-    endpoint = "master/frameworks/"
-    keyword="frameworks"
-    try:
-        data = http.get_json(master, endpoint, config)["frameworks"]
-    except Exception as exception:
-        raise CLIException(
-            "Could not open '/{endpoint}' on master: {error}"
-            .format(endpoint=endpoint, error=exception))
-
-    return data
 
 class M3s(PluginBase):
     """
