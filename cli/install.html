@@ -146,17 +146,26 @@
                         <h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
 <p>The installation of the M3s plugin for mesos-cli is done in few steps.</p>
 <p>First, edit the mesos-cli config file.</p>
-<pre><code class="language-bash">vim .mesos/config.toml
+<pre><code class="language-bash">
+vim .mesos/config.toml
+
 </code></pre>
 <p>Add the absolute path of the plugin into the plugin array:</p>
-<pre><code class="language-bash"># The `plugins` array lists the absolute paths of the
+<pre><code class="language-bash">
+# The `plugins` array lists the absolute paths of the
 # plugins you want to add to the CLI.
 plugins = [
   &quot;/example/go-mesos-framework-k3s/mesos_cli/m3s&quot;
 ]
+
+[m3s]
+  principal = &quot;&lt;framework username&gt;&quot;
+  secret = &quot;&lt;framework password&gt;&quot;
+
 </code></pre>
 <p>Now we will see the M3s plugin in mesos cli:</p>
-<pre><code class="language-bash">mesos help
+<pre><code class="language-bash">
+mesos help
 Mesos CLI
 
 Usage:

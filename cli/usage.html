@@ -146,7 +146,9 @@
                         <h1 id="m3s-cli-usage"><a class="header" href="#m3s-cli-usage">M3s CLI Usage</a></h1>
 <p>The M3s framework does support the new version of mesos-cli.</p>
 <p>The following parameters are currently supported:</p>
-<pre><code class="language-bash">mesos m3s
+<pre><code class="language-bash">
+mesos m3s
+
 Interacts with the Kubernetes Framework M3s
 
 Usage:
@@ -162,15 +164,46 @@ Options:
 Commands:
   kubeconfig  Get kubernetes configuration file
   list        Show list of running M3s frameworks
+  scale       Scale up/down the Manager or Agent of Kubernetes
 
 </code></pre>
 <h2 id="list-all-m3s-frameworks"><a class="header" href="#list-all-m3s-frameworks">List all M3s frameworks</a></h2>
-<pre><code class="language-bash">mesos m3s list
+<pre><code class="language-bash">
+mesos m3s list
+
 ID                                         Active  WebUI                    Name
 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s
+
 </code></pre>
 <h2 id="get-the-kubeconfig-from-the-running-m3s-framework"><a class="header" href="#get-the-kubeconfig-from-the-running-m3s-framework">Get the kubeconfig from the running m3s framework</a></h2>
-<pre><code class="language-bash">mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0003
+<pre><code class="language-bash">
+mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004
+
+</code></pre>
+<h2 id="scale-updown-kubernetes-services"><a class="header" href="#scale-updown-kubernetes-services">Scale up/down Kubernetes services</a></h2>
+<p>We can scale up/down several Kubernetes services.</p>
+<pre><code class="language-bash">
+mesos m3s scale
+Scale up/down the Manager or Agent of Kubernetes
+
+Usage:
+  mesos m3s scale (-h | --help)
+  mesos m3s scale --version
+  mesos m3s scale [options] &lt;framework-id&gt; &lt;count&gt;
+
+Options:
+  -a --agent    Scale up/down Kubernetes agents
+  -e --etcd     Scale up/down etcd
+  -h --help     Show this screen.
+  -m --manager  Scale up/down Kubernetes manager
+
+
+</code></pre>
+<p>The &quot;count&quot; is the number of how many instances of the selected service should run.</p>
+<p>As example:</p>
+<pre><code class="language-bash">
+ mesos m3s scale --agent 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004 2
+
 </code></pre>
 
                     </main>

@@ -167,17 +167,26 @@ kubectl port-forward $(kubectl get pods --selector &quot;app.kubernetes.io/name=
 <div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
 <p>The installation of the M3s plugin for mesos-cli is done in few steps.</p>
 <p>First, edit the mesos-cli config file.</p>
-<pre><code class="language-bash">vim .mesos/config.toml
+<pre><code class="language-bash">
+vim .mesos/config.toml
+
 </code></pre>
 <p>Add the absolute path of the plugin into the plugin array:</p>
-<pre><code class="language-bash"># The `plugins` array lists the absolute paths of the
+<pre><code class="language-bash">
+# The `plugins` array lists the absolute paths of the
 # plugins you want to add to the CLI.
 plugins = [
   &quot;/example/go-mesos-framework-k3s/mesos_cli/m3s&quot;
 ]
+
+[m3s]
+  principal = &quot;&lt;framework username&gt;&quot;
+  secret = &quot;&lt;framework password&gt;&quot;
+
 </code></pre>
 <p>Now we will see the M3s plugin in mesos cli:</p>
-<pre><code class="language-bash">mesos help
+<pre><code class="language-bash">
+mesos help
 Mesos CLI
 
 Usage:
@@ -199,7 +208,9 @@ Commands:
 <div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-usage"><a class="header" href="#m3s-cli-usage">M3s CLI Usage</a></h1>
 <p>The M3s framework does support the new version of mesos-cli.</p>
 <p>The following parameters are currently supported:</p>
-<pre><code class="language-bash">mesos m3s
+<pre><code class="language-bash">
+mesos m3s
+
 Interacts with the Kubernetes Framework M3s
 
 Usage:
@@ -215,15 +226,46 @@ Options:
 Commands:
   kubeconfig  Get kubernetes configuration file
   list        Show list of running M3s frameworks
+  scale       Scale up/down the Manager or Agent of Kubernetes
 
 </code></pre>
 <h2 id="list-all-m3s-frameworks"><a class="header" href="#list-all-m3s-frameworks">List all M3s frameworks</a></h2>
-<pre><code class="language-bash">mesos m3s list
+<pre><code class="language-bash">
+mesos m3s list
+
 ID                                         Active  WebUI                    Name
 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s
+
 </code></pre>
 <h2 id="get-the-kubeconfig-from-the-running-m3s-framework"><a class="header" href="#get-the-kubeconfig-from-the-running-m3s-framework">Get the kubeconfig from the running m3s framework</a></h2>
-<pre><code class="language-bash">mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0003
+<pre><code class="language-bash">
+mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004
+
+</code></pre>
+<h2 id="scale-updown-kubernetes-services"><a class="header" href="#scale-updown-kubernetes-services">Scale up/down Kubernetes services</a></h2>
+<p>We can scale up/down several Kubernetes services.</p>
+<pre><code class="language-bash">
+mesos m3s scale
+Scale up/down the Manager or Agent of Kubernetes
+
+Usage:
+  mesos m3s scale (-h | --help)
+  mesos m3s scale --version
+  mesos m3s scale [options] &lt;framework-id&gt; &lt;count&gt;
+
+Options:
+  -a --agent    Scale up/down Kubernetes agents
+  -e --etcd     Scale up/down etcd
+  -h --help     Show this screen.
+  -m --manager  Scale up/down Kubernetes manager
+
+
+</code></pre>
+<p>The &quot;count&quot; is the number of how many instances of the selected service should run.</p>
+<p>As example:</p>
+<pre><code class="language-bash">
+ mesos m3s scale --agent 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004 2
+
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="kubectl-usage-with-m3s"><a class="header" href="#kubectl-usage-with-m3s">Kubectl Usage with M3s</a></h1>
 <p>There are a lot of website abotu &quot;how to use kubectl&quot;. Therefore we will only describe how to use it together with M3s.</p>
