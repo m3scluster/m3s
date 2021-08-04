@@ -18,6 +18,9 @@
 The m3s plugin.
 """
 
+import os
+import toml
+
 from cli.exceptions import CLIException
 from cli.plugins import PluginBase
 from cli.util import Table
@@ -53,8 +56,49 @@ class M3s(PluginBase):
             },
             "short_help": "Show list of running M3s frameworks",
             "long_help": "Show list of running M3s frameworks",
+        },
+        "scale": {
+            "arguments": ['<framework-id>', '<count>'],
+            "flags": {
+                "-a --agent": "Scale up/down Kubernetes agents",
+                "-m --manager": "Scale up/down Kubernetes manager",
+                "-e --etcd": "Scale up/down etcd",
+            },
+            "short_help": "Scale up/down the Manager or Agent of Kubernetes",
+            "long_help": "Scale up/down the Manager or Agent of Kubernetes",
         }
     }
+
+    def scale(self, argv):
+        """
+        Scale up/down Kubernetes Manager or Agents
+        """
+
+        try:
+            master = self.config.master()
+            config = self.config
+            self.m3sconfig = self._get_config()
+        except Exception as exception:
+            raise CLIException("Unable to get leading master address: {error}"
+                               .format(error=exception))
+
+        service = None
+        if argv["--agent"]:
+            service = "agent"
+        elif argv["--manager"]:
+            service = "server"
+        elif argv["--etcd"]:
+            service = "etcd"
+
+        if service != None:
+            print ("Scale up/down " + service)
+
+            framework_address = get_framework_address(argv["<framework-id>"], master, config)
+            data = http.read_endpoint(framework_address, "/v0/"+ service + "/scale/"+ argv["<count>"], self)
+            print (data)
+        else:
+            print ("Nothing to scale")
+
 
     def kubeconfig(self, argv):
         """
@@ -64,12 +108,13 @@ class M3s(PluginBase):
         try:
             master = self.config.master()
             config = self.config
+            self.m3sconfig = self._get_config()
         except Exception as exception:
             raise CLIException("Unable to get leading master address: {error}"
                                .format(error=exception))
 
         framework_address = get_framework_address(argv["<framework-id>"], master, config)
-        data = http.read_endpoint(framework_address, "/v0/server/config", config)
+        data = http.read_endpoint(framework_address, "/v0/server/config", self)
 
         print (data)
 
@@ -106,3 +151,34 @@ class M3s(PluginBase):
                                .format(error=exception))
 
         print(str(table))
+
+    def principal(self):
+        """
+        Return the principal in the configuration file
+        """
+        return self.m3sconfig["m3s"].get("principal")
+
+    def secret(self):
+        """
+        Return the secret in the configuration file
+        """
+        return self.m3sconfig["m3s"].get("secret")
+
+    def agent_timeout(self, default=5):
+        """
+        Return the connection timeout of the agent
+        """
+        return default
+
+    def _get_config(self):
+        """
+        Get authentication header for the framework
+        """
+
+        try:
+            data = toml.load(self.config.path)
+        except Exception as exception:
+            raise CLIException("Error loading config file as TOML: {error}"
+                               .format(error=exception))
+
+        return data
