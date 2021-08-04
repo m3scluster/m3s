@@ -6,6 +6,7 @@
 
 - [M3s CLI Installation for Mesos-CLI](cli/install.md)
 - [M3s CLI Usage](cli/usage.md)
+- [Kubectl Usage with M3s](cli/kubectl.md)
 
 # API
 
