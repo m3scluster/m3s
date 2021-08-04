@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">4.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">5.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">6.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">7.</strong> Create NGINX ingress with traefik</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">5.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">6.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">8.</strong> Create NGINX ingress with traefik</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -160,12 +160,12 @@
 <p><img src="vx_images/Kubernetes.png" alt="Kubernetes" /></p>
 <h3 id="traefik"><a class="header" href="#traefik">Traefik</a></h3>
 <pre><code class="language-bash">
-kubectl port-forward $(kubectl get pods --selector &quot;app.kubernetes.io/name=traefik&quot; --output=name -n kube-system) -n kube-system 9000:9000  
+kubectl port-forward $(kubectl get pods --selector &quot;app.kubernetes.io/name=traefik&quot; --output=name -n kube-system) -n kube-system 9000:9000
 
 </code></pre>
 <p><img src="vx_images/Traefik.png" alt="Traefik" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
-<p>The installation of the M3s plugin for mesos-cli is done in few steps. </p>
+<p>The installation of the M3s plugin for mesos-cli is done in few steps.</p>
 <p>First, edit the mesos-cli config file.</p>
 <pre><code class="language-bash">vim .mesos/config.toml
 </code></pre>
@@ -219,11 +219,75 @@ Commands:
 </code></pre>
 <h2 id="list-all-m3s-frameworks"><a class="header" href="#list-all-m3s-frameworks">List all M3s frameworks</a></h2>
 <pre><code class="language-bash">mesos m3s list
-ID                                         Active  WebUI                    Name  
-2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s   
+ID                                         Active  WebUI                    Name
+2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s
 </code></pre>
 <h2 id="get-the-kubeconfig-from-the-running-m3s-framework"><a class="header" href="#get-the-kubeconfig-from-the-running-m3s-framework">Get the kubeconfig from the running m3s framework</a></h2>
 <pre><code class="language-bash">mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0003
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kubectl-usage-with-m3s"><a class="header" href="#kubectl-usage-with-m3s">Kubectl Usage with M3s</a></h1>
+<p>There are a lot of website abotu &quot;how to use kubectl&quot;. Therefore we will only describe how to use it together with M3s.</p>
+<p>First of all, we need the kubernetes config. To get it, we have to use the mesos-cli. M3s can run multiple times, thats
+why we have to choose the right M3s framework.</p>
+<pre><code class="language-bash">
+mesos m3s list
+
+ID                                         Active  WebUI                    Name
+2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://m3sframeworkserver:10000  m3s
+
+</code></pre>
+<p>With the framework ID, we can get out the kubernetes config.</p>
+<pre><code class="language-bash">
+mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004 &gt; .kube/config
+
+</code></pre>
+<p>Let us have a look into the config file.</p>
+<pre><code class="language-bash">
+cat .kube/config
+
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: &lt;DATA&gt;
+    server: https://&lt;MESOS-WORKER&gt;:31862
+  name: default
+contexts:
+- context:
+    cluster: default
+    user: default
+  name: default
+current-context: default
+kind: Config
+preferences: {}
+
+</code></pre>
+<p>The config file include the certificate to authenticate against the kubernetes cluster, and also the server URL.
+Like you see, the server URL is one of the Mesos Agents with a dynamic port.</p>
+<p>With these config file, we can use kubernetes as we know it.</p>
+<p>As example:</p>
+<pre><code class="language-bash">
+kubectl get nodes
+
+NAME                             STATUS   ROLES                  AGE   VERSION
+k3sagent0.weave.local-b5d0de31   Ready    &lt;none&gt;                 40m   v1.21.1+k3s1
+k3sserver.weave.local            Ready    control-plane,master   42m   v1.21.1+k3s1
+
+</code></pre>
+<p>In our case, we use weaveworks as container network under Mesos, thats why the names of the kubernetes nodes
+contain a &quot;weave.local&quot; domain. Basically, M3s can run under every container network. But it's important that
+the names of the containers are resolvable.</p>
+<p>Now let us have a look which Kubernetes services are running by default.</p>
+<pre><code class="language-bash">
+kubectl get svc --all-namespaces
+
+NAMESPACE              NAME                        TYPE           CLUSTER-IP     EXTERNAL-IP               PORT(S)                      AGE
+default                kubernetes                  ClusterIP      10.3.0.1       &lt;none&gt;                    443/TCP                      47m
+kube-system            kube-dns                    ClusterIP      10.3.0.10      &lt;none&gt;                    53/UDP,53/TCP,9153/TCP       46m
+kube-system            metrics-server              ClusterIP      10.3.198.101   &lt;none&gt;                    443/TCP                      46m
+kube-system            traefik                     LoadBalancer   10.3.48.210    10.1.1.10,10.1.1.11       80:31455/TCP,443:31347/TCP   44m
+kubernetes-dashboard   dashboard-metrics-scraper   ClusterIP      10.3.201.186   &lt;none&gt;                    8000/TCP                     47m
+kubernetes-dashboard   kubernetes-dashboard        ClusterIP      10.3.43.87     &lt;none&gt;                    443/TCP                      47m
+
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="reflate-kubernetes-server-or-agent"><a class="header" href="#reflate-kubernetes-server-or-agent">Reflate Kubernetes Server or Agent</a></h1>
 <p>To reflate Kubernetes services, we have to call the following API.</p>
@@ -252,7 +316,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 1 
+  replicas: 1
   template:
     metadata:
       labels:
@@ -328,9 +392,9 @@ k3sagent-cuoph-s1.k3s.slave.mesos. 60 IN A	192.168.1.20
 ;; WHEN: Mon Jun 14 11:00:01 UTC 2021
 ;; MSG SIZE  rcvd: 170
 </code></pre>
-<p>As we can see, the port is 31865 for the port 80 and 31866 for the port 443. The agents IP is 192.168.1.20. 
+<p>As we can see, the port is 31865 for the port 80 and 31866 for the port 443. The agents IP is 192.168.1.20.
 If we have multiple k3sagents, we will see all IP adresses.</p>
-<p>These IP adress we have to add into the /etc/hosts file. </p>
+<p>These IP adress we have to add into the /etc/hosts file.</p>
 <pre><code class="language-bash">192.168.1.20 your.example.com
 </code></pre>
 <p>Now we can access nginx:</p>
