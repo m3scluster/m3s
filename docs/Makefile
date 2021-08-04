@@ -8,5 +8,5 @@ deploy: book
 	cp -rp book/* /tmp/book/
 	cd /tmp/book && \
 		git add -A && \
-		git commit -m "deployed on $(shell date) by ${USER}" && \
+		PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m "deployed on $(shell date) by ${USER}" && \
 		git push origin gh-pages
