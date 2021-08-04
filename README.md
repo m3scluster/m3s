@@ -57,7 +57,7 @@ kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
 kubectl proxy
 ```
 
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services
 
 
 ![image_2021-05-01-15-09-30](vx_images/image_2021-05-01-15-09-30.png)
