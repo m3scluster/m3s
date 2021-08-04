@@ -48,36 +48,6 @@ export BOOTSTRAP_URL="https://raw.githubusercontent.com/AVENTER-UG/go-mesos-fram
 go run init.go app.go
 ```
 
-## Get mesos task status
-
-```Bash
-curl -X GET 127.0.0.1:10000/v0/container/<taskId> -d 'JSON'  | jq
-```
-
-## Reflate missing K3S server or agent
-
-```Bash
-curl -X GET 127.0.0.1:10000/v0/<server|agent>/reflate -d 'JSON'
-```
-
-## Scale up/down K3S Server, Agent, Etcd
-
-```Bash
-curl -X GET 127.0.0.1:10000/v0/<server|agent|etcd>/scale/<count> -d 'JSON'
-```
-
-## Task killen
-
-```Bash
-curl -X GET 127.0.0.1:10000/v0/task/kill/<taskId> -d 'JSON'
-```
-
-## Get Kubeconfig
-
-```Bash
-curl -X GET 127.0.0.1:10000/v0/k3s/config -d 'JSON'
-```
-
 # Screenshots
 
 ## Access Kubernetes Dashboard
