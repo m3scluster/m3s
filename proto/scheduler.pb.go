@@ -531,7 +531,7 @@ func (m *Event_UpdateOperationStatus) GetStatus() OperationStatus {
 type Event_Message struct {
 	AgentID    AgentID    `protobuf:"bytes,1,req,name=agent_id,json=agentId" json:"agent_id"`
 	ExecutorID ExecutorID `protobuf:"bytes,2,req,name=executor_id,json=executorId" json:"executor_id"`
-	Data       []byte                `protobuf:"bytes,3,req,name=data" json:"data,omitempty"`
+	Data       []byte     `protobuf:"bytes,3,req,name=data" json:"data,omitempty"`
 }
 
 func (m *Event_Message) Reset()                    { *m = Event_Message{} }
@@ -1113,7 +1113,7 @@ func (m *Call_Shutdown) GetAgentID() AgentID {
 type Call_Acknowledge struct {
 	AgentID AgentID `protobuf:"bytes,1,req,name=agent_id,json=agentId" json:"agent_id"`
 	TaskID  TaskID  `protobuf:"bytes,2,req,name=task_id,json=taskId" json:"task_id"`
-	UUID    []byte             `protobuf:"bytes,3,req,name=uuid" json:"uuid,omitempty"`
+	UUID    []byte  `protobuf:"bytes,3,req,name=uuid" json:"uuid,omitempty"`
 }
 
 func (m *Call_Acknowledge) Reset()                    { *m = Call_Acknowledge{} }
@@ -1156,7 +1156,7 @@ type Call_AcknowledgeOperationStatus struct {
 	// `resource_provider_id` has to be set.
 	AgentID            *AgentID            `protobuf:"bytes,1,opt,name=agent_id,json=agentId" json:"agent_id,omitempty"`
 	ResourceProviderID *ResourceProviderID `protobuf:"bytes,2,opt,name=resource_provider_id,json=resourceProviderId" json:"resource_provider_id,omitempty"`
-	UUID               []byte                         `protobuf:"bytes,3,req,name=uuid" json:"uuid,omitempty"`
+	UUID               []byte              `protobuf:"bytes,3,req,name=uuid" json:"uuid,omitempty"`
 	OperationID        OperationID         `protobuf:"bytes,4,req,name=operation_id,json=operationId" json:"operation_id"`
 }
 
@@ -1308,7 +1308,7 @@ func (m *Call_ReconcileOperations_Operation) GetResourceProviderID() *ResourcePr
 type Call_Message struct {
 	AgentID    AgentID    `protobuf:"bytes,1,req,name=agent_id,json=agentId" json:"agent_id"`
 	ExecutorID ExecutorID `protobuf:"bytes,2,req,name=executor_id,json=executorId" json:"executor_id"`
-	Data       []byte                `protobuf:"bytes,3,req,name=data" json:"data,omitempty"`
+	Data       []byte     `protobuf:"bytes,3,req,name=data" json:"data,omitempty"`
 }
 
 func (m *Call_Message) Reset()                    { *m = Call_Message{} }

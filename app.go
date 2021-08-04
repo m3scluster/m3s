@@ -15,6 +15,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// MinVersion is the version number of this program
 var MinVersion string
 
 func main() {

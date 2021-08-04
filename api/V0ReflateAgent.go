@@ -8,7 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// V0ReflateMissingK3SAgent will scale the agent service
+// V0ReflateK3SAgent will scale the agent service
 // example:
 // curl -X GET 127.0.0.1:10000/v0/agent/reflate -d 'JSON'
 func V0ReflateK3SAgent(w http.ResponseWriter, r *http.Request) {

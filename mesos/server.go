@@ -13,7 +13,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingK3S Check if all k3ss are running. If one is missing, restart it.
+// SearchMissingK3SServer Check if all k3ss are running. If one is missing, restart it.
 func SearchMissingK3SServer() {
 	if config.State != nil {
 		for i := 0; i < config.K3SServerMax; i++ {
@@ -29,7 +29,7 @@ func SearchMissingK3SServer() {
 	}
 }
 
-// StatusK3S Get out Status of the given k3s ID
+// StatusK3SServer Get out Status of the given k3s ID
 func StatusK3SServer(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
@@ -43,7 +43,7 @@ func StatusK3SServer(id int) *cfg.State {
 	return nil
 }
 
-// Start K3S with the given id
+// StartK3SServer Start K3S with the given id
 func StartK3SServer(id int) {
 	newTaskID := atomic.AddUint64(&config.TaskID, 1)
 

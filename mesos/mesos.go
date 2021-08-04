@@ -182,7 +182,7 @@ func Reconcile() {
 	}
 }
 
-// Revice will
+// Revive will revive the mesos tasks to clean up
 func Revive() {
 	logrus.Debug("Revive Tasks")
 	revive := &mesosproto.Call{

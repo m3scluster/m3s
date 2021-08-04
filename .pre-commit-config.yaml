@@ -1,0 +1,19 @@
+repos:
+- repo: git://github.com/pre-commit/pre-commit-hooks
+  rev: v4.0.1
+  hooks:
+  - id: check-merge-conflict
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+- repo: https://github.com/jorisroovers/gitlint
+  rev:  v0.15.1
+  hooks:
+  - id: gitlint
+    stages: [commit-msg]
+
+- repo: git://github.com/dnephin/pre-commit-golang
+  rev: v0.4.0
+  hooks:
+    - id: go-fmt
+    - id: go-lint
+    - id: go-imports

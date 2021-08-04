@@ -12,8 +12,13 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+// MinVersion is the version number of this program
 var MinVersion string
+
+// DashboardInstalled is true if the dashboard is already installed
 var DashboardInstalled bool
+
+// TraefikDashboardInstalled is true if the traefik dashboard is installed
 var TraefikDashboardInstalled bool
 
 // Commands is the main function of this package
@@ -35,7 +40,7 @@ func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("/api/k3s/v0"))
 }
 
-// APIGetKubeConfig
+// APIGetKubeConfig get out the kubernetes config file
 func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
 	content, err := ioutil.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
 	if err != nil {

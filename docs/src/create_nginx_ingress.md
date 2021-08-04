@@ -20,7 +20,7 @@ spec:
   selector:
     matchLabels:
       app: nginx
-  replicas: 1 
+  replicas: 1
   template:
     metadata:
       labels:
@@ -78,11 +78,18 @@ spec:
 
 In the traefik Dasboard we will see our new rule:
 
+```bash
+
+kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name -n kube-system) -n kube-system 9000:9000
+
+```
+
+
 ![image_2021-06-14-13-05-55](vx_images/image_2021-06-14-13-05-55.png)
 
 
 
-Now we can try to access nginx via traefik. First, we have to now the port of the k3sagent.
+Now we can try to access nginx via traefik. First, we have to know the port of the k3sagent.
 
 ```bash
 dig _k3sagent._tcp.k3s.slave.mesos SRV
@@ -109,10 +116,10 @@ k3sagent-cuoph-s1.k3s.slave.mesos. 60 IN A	192.168.1.20
 ;; MSG SIZE  rcvd: 170
 ```
 
-As we can see, the port is 31865 for the port 80 and 31866 for the port 443. The agents IP is 192.168.1.20. 
+As we can see, the port is 31865 for the port 80 and 31866 for the port 443. The agents IP is 192.168.1.20.
 If we have multiple k3sagents, we will see all IP adresses.
 
-These IP adress we have to add into the /etc/hosts file. 
+These IP adress we have to add into the /etc/hosts file.
 
 ```bash
 192.168.1.20 your.example.com

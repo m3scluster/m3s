@@ -106,7 +106,3 @@ class M3s(PluginBase):
                                .format(error=exception))
 
         print(str(table))
-        
-
-
-

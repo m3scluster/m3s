@@ -2,7 +2,7 @@
 
 cat /etc/resolv.conf
 
-apt-get update -y 
+apt-get update -y
 apt-get install -y dnsmasq containernetworking-plugins containerd tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2 dnsutils net-tools
 mkdir -p /etc/cni/net.d
 
@@ -27,4 +27,4 @@ then
 fi
 
 echo $1
-$1 
+$1

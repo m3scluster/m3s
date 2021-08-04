@@ -39,7 +39,7 @@ func StatusEtcd(id int) *cfg.State {
 	return nil
 }
 
-// StartK3SAgent is starting a agent container with the given IDs
+// StartEtcd is starting the etcd
 func StartEtcd(id int) {
 	var cmd cfg.Command
 

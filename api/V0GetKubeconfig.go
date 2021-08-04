@@ -9,7 +9,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// V0StatusContainer will return the status of the taskID
+// V0GetKubeconfig will return the kubernetes config file
 // example:
 // curl -X GET 127.0.0.1:10000/v0/server/config'
 func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +37,7 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// replace the localhost server string with the mesos agent hostname and dynamic port
-	destUrl := config.M3SBootstrapServerHostname + ":" + strconv.Itoa(config.K3SServerPort)
+	destURL := config.M3SBootstrapServerHostname + ":" + strconv.Itoa(config.K3SServerPort)
 	kubconf := strings.Replace(string(content), "127.0.0.1:6443", destUrl, -1)
 
 	w.WriteHeader(http.StatusAccepted)

@@ -29,8 +29,8 @@ Commands:
 
 ```bash
 mesos m3s list
-ID                                         Active  WebUI                    Name  
-2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s   
+ID                                         Active  WebUI                    Name
+2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004  True    http://andreas-pc:10000  m3s
 ```
 
 ## Get the kubeconfig from the running m3s framework
@@ -38,4 +38,3 @@ ID                                         Active  WebUI                    Name
 ```bash
 mesos m3s kubeconfig 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0003
 ```
-

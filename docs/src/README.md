@@ -25,4 +25,10 @@ M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.
 
 ### Traefik
 
+```bash
+
+kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name -n kube-system) -n kube-system 9000:9000
+
+```
+
 ![Traefik](vx_images/Traefik.png)

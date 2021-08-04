@@ -11,7 +11,7 @@ Mesos Framework to run Kubernetes (K3S)
 - Mesos with SSL and Authentication is optional
 - Persistent Storage to keep K3S data (not object storage)
 
-## Run Framework 
+## Run Framework
 
 The following environment parameters are only a example. All parameters and der default values are documented in the `init.go` file (real documentation will be coming later)
 

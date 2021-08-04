@@ -1,6 +1,6 @@
 # M3s CLI Installation for Mesos-CLI
 
-The installation of the M3s plugin for mesos-cli is done in few steps. 
+The installation of the M3s plugin for mesos-cli is done in few steps.
 
 First, edit the mesos-cli config file.
 
@@ -40,5 +40,3 @@ Commands:
   task    Interacts with the tasks running in a Mesos cluster
 
 ```
-
-

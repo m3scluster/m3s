@@ -8,4 +8,3 @@ title = "M3S - Apache Mesos Kubernetes Framework"
 [build]
 create-missing = true
 preprocess = ["links", "index"]
-
