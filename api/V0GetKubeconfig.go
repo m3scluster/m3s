@@ -15,6 +15,12 @@ import (
 func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeconfig")
 
+	auth := CheckAuth(r, w)
+
+	if !auth {
+		return
+	}
+
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/k3s/v0/config", nil)
 	res, err := client.Do(req)
