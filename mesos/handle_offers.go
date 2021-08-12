@@ -31,7 +31,7 @@ func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 
 	if cmd.DockerPortMappings != nil {
 		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
-		portEnd = portBegin + 1
+		portEnd = portBegin + 2
 
 		res = []mesosproto.Resource{
 			{
@@ -108,7 +108,8 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 						TaskInfos: taskInfo,
 					}}}}}
 
-		logrus.Info("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
+		logrus.Debug("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
+		logrus.Info("Offer Accept: ", takeOffer.GetID())
 		Call(accept)
 
 		// decline unneeded offer

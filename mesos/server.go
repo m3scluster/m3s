@@ -138,6 +138,11 @@ func StartK3SServer(id int) {
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
+		{
+			HostPort:      hostport + 2,
+			ContainerPort: 8080,
+			Protocol:      &protocol,
+		},
 	}
 
 	cmd.Discovery = mesosproto.DiscoveryInfo{
