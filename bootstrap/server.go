@@ -29,6 +29,7 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/versions", APIVersions).Methods("GET")
 	rtr.HandleFunc("/status", APIHealth).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
+	rtr.HandleFunc("/api/k3s/v0/version", APIGetKubeVersion).Methods("GET")
 
 	return rtr
 }
@@ -52,6 +53,20 @@ func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
 
 		w.Write(content)
 	}
+}
+
+// APIGetKubeVersion get out the kubernetes version number
+func APIGetKubeVersion(w http.ResponseWriter, r *http.Request) {
+	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "get", "--raw=/livez/ping").Output()
+	if err != nil {
+		logrus.Error("Health to Kubernetes Server: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	w.Write(stdout)
 }
 
 // APIHealth give out the status of the kubernetes server

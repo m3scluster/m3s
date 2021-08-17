@@ -56,6 +56,12 @@ class M3s(PluginBase):
             "short_help": "Show list of running M3s frameworks",
             "long_help": "Show list of running M3s frameworks",
         },
+        "version": {
+            "arguments": ["<framework-id>"],
+            "flags": {},
+            "short_help": "Get the version number of Kubernetes",
+            "long_help": "Get the version number of Kubernetes",
+        },
         "scale": {
             "arguments": ["<framework-id>", "<count>"],
             "flags": {
@@ -123,6 +129,28 @@ class M3s(PluginBase):
             argv["<framework-id>"], master, config
         )
         data = http.read_endpoint(framework_address, "/v0/server/config", self)
+
+        print(data)
+
+    def version(self, argv):
+        """
+        Get the version information of Kubernetes
+        """
+
+        try:
+            master = self.config.master()
+            config = self.config
+            # pylint: disable=attribute-defined-outside-init
+            self.m3sconfig = self._get_config()
+        except Exception as exception:
+            raise CLIException(
+                "Unable to get leading master address: {error}".format(error=exception)
+            ) from exception
+
+        framework_address = get_framework_address(
+            argv["<framework-id>"], master, config
+        )
+        data = http.read_endpoint(framework_address, "/v0/server/version", self)
 
         print(data)
 

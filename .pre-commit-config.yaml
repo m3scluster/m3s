@@ -6,12 +6,6 @@ repos:
   - id: end-of-file-fixer
   - id: trailing-whitespace
 
-- repo: https://github.com/jorisroovers/gitlint
-  rev:  v0.15.1
-  hooks:
-  - id: gitlint
-    stages: [commit-msg]
-
 - repo: https://github.com/ambv/black
   rev: 21.7b0
   hooks:
