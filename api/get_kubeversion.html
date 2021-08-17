@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Create NGINX ingress with traefik - M3S - Apache Mesos Kubernetes Framework</title>
+        <title>Get Kubernetes Version - M3S - Apache Mesos Kubernetes Framework</title>
                 
 
         <!-- Custom HTML head -->
@@ -14,21 +14,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-                <link rel="icon" href="favicon.svg">
-                        <link rel="shortcut icon" href="favicon.png">
-                <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-                <link rel="stylesheet" href="css/print.css" media="print">
+                <link rel="icon" href="../favicon.svg">
+                        <link rel="shortcut icon" href="../favicon.png">
+                <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+                <link rel="stylesheet" href="../css/print.css" media="print">
         
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
-                <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+                <link rel="stylesheet" href="../fonts/fonts.css">
         
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -36,7 +36,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/reflate.html"><strong aria-hidden="true">5.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">6.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="api/get_kubeversion.html"><strong aria-hidden="true">8.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html" class="active"><strong aria-hidden="true">9.</strong> Create NGINX ingress with traefik</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="../cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="../cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="../cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../api/reflate.html"><strong aria-hidden="true">5.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="../api/scale_k3s.html"><strong aria-hidden="true">6.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="../api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="../api/get_kubeversion.html" class="active"><strong aria-hidden="true">8.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="../create_nginx_ingress.html"><strong aria-hidden="true">9.</strong> Create NGINX ingress with traefik</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -114,7 +114,7 @@
                     <h1 class="menu-title">M3S - Apache Mesos Kubernetes Framework</h1>
 
                     <div class="right-buttons">
-                                                <a href="print.html" title="Print this book" aria-label="Print this book">
+                                                <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                                                                         
@@ -143,115 +143,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="create-nginx-ingress-with-traefik-in-m3s"><a class="header" href="#create-nginx-ingress-with-traefik-in-m3s">Create NGINX ingress with traefik in M3S</a></h1>
-<p>With these example we will create a nginx Webserver and publish the Website with the traefik 2.x ingress.</p>
-<pre><code class="language-bash">kubectl create  -f nginx.yaml
-</code></pre>
-<pre><code class="language-yaml">apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-  namespace: default
-  labels:
-    app: nginx
-spec:
-  selector:
-    matchLabels:
-      app: nginx
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:1.14.2
-        ports:
-          - name: web
-            containerPort: 80
-</code></pre>
-<pre><code class="language-bash">kubectl create  -f nginx-service.yaml
-</code></pre>
-<pre><code class="language-yaml">apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-
-spec:
-  ports:
-    - protocol: TCP
-      name: web
-      port: 80
-  selector:
-    app: nginx
-
-</code></pre>
-<pre><code class="language-bash">kubectl create  -f nginx-traefik.yaml
-</code></pre>
-<pre><code class="language-yaml">apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: nginx-traefik
-  namespace: default
-spec:
-  entryPoints:
-    - web
-  routes:
-  - match: Host(`your.example.com`)
-    kind: Rule
-    services:
-    - name: nginx-service
-      port: 80
-</code></pre>
-<p>In the traefik Dasboard we will see our new rule:</p>
-<pre><code class="language-bash">
-kubectl port-forward $(kubectl get pods --selector &quot;app.kubernetes.io/name=traefik&quot; --output=name -n kube-system) -n kube-system 9000:9000
-
-</code></pre>
-<p><img src="vx_images/image_2021-06-14-13-05-55.png" alt="image_2021-06-14-13-05-55" /></p>
-<p>Now we can try to access nginx via traefik. First, we have to know the port of the k3sagent.</p>
-<pre><code class="language-bash">dig _http._k3sagent._tcp.m3s.mesos SRV
-
-; &lt;&lt;&gt;&gt; DiG 9.11.4-P2-RedHat-9.11.4-26.P2.el7_9.3 &lt;&lt;&gt;&gt; _http._k3sagent._tcp.m3s.mesos SRV
-;; global options: +cmd
-;; Got answer:
-;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 4134
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
-
-;; QUESTION SECTION:
-;_http._k3sagent._tcp.m3s.mesos.	IN	SRV
-
-;; ANSWER SECTION:
-_http._k3sagent._tcp.m3s.mesos.	60 IN	SRV	0 1 31863 k3sagent-kzk51-s0.m3s.mesos.
-
-;; ADDITIONAL SECTION:
-k3sagent-kzk51-s0.m3s.mesos. 60	IN	A	10.1.1.11
-
-;; Query time: 2 msec
-;; SERVER: 127.0.0.1#53(127.0.0.1)
-;; WHEN: Wed Aug 04 09:08:47 UTC 2021
-;; MSG SIZE  rcvd: 111
-
-
-</code></pre>
-<p>As we can see, the port is 31863 for the port 80. The agents IP is 10.1.1.11.
-If we have multiple k3sagents, we will see all IP adresses.</p>
-<p>These IP adress we have to add into the /etc/hosts file.</p>
-<pre><code class="language-bash">10.1.1.11 your.example.com
-</code></pre>
-<p>Now we can access nginx:</p>
-<pre><code class="language-bash">curl -vvv your.example.com:31863
+                        <h1 id="get-kubernetes-version"><a class="header" href="#get-kubernetes-version">Get Kubernetes Version</a></h1>
+<p>Get out the kubernetes version</p>
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/server/version -d 'JSON'
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="api/get_kubeversion.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../api/get_kubeconfig.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
+                                                    <a rel="next" href="../create_nginx_ingress.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
                         <div style="clear: both"></div>
                     </nav>
@@ -259,10 +166,13 @@ If we have multiple k3sagents, we will see all IP adresses.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="api/get_kubeversion.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../api/get_kubeconfig.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
+                                    <a rel="next" href="../create_nginx_ingress.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                             </nav>
 
         </div>
@@ -275,13 +185,13 @@ If we have multiple k3sagents, we will see all IP adresses.</p>
         </script>
         
         
-                <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+                <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
