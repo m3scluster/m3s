@@ -13,6 +13,7 @@
 - [Reflate Kubernetes Server or Agent](api/reflate.md)
 - [Scale up/down Kubernetes Service](api/scale_k3s.md)
 - [Get Kubeconfig](api/get_kubeconfig.md)
+- [Get Kubernetes Version](api/get_kubeversion.md)
 
 # Examples
 
