@@ -29,6 +29,7 @@
 - Add mesos-cli plugin
 - Mesos-CLI: Show all running M3s frameworks
 - Mesos-CLI: Get kubeconfig from a selected running m3s
+- Add supress offers if every services are running
 
 ## v0.0.4
 
