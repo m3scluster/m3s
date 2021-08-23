@@ -112,6 +112,7 @@ func Subscribe() error {
 		case mesosproto.Event_HEARTBEAT:
 			// K3S API Server Heatbeat
 			K3SHeartbeat()
+			suppressFramework()
 		case mesosproto.Event_OFFERS:
 			restartFailedContainer()
 			logrus.Debug("Offer Got: ", event.Offers.Offers[0].GetID())
@@ -218,6 +219,20 @@ func restartFailedContainer() {
 				}
 			}
 		}
+	}
+}
+
+// if all Tasks are running, suppress framework offers
+func suppressFramework() {
+	if config.ETCDCount == config.ETCDMax &&
+		config.K3SServerCount == config.K3SServerMax &&
+		config.K3SAgentCount == config.K3SAgentMax {
+
+		logrus.Info("Framework Suppress")
+		suppress := &mesosproto.Call{
+			Type: mesosproto.Call_SUPPRESS,
+		}
+		Call(suppress)
 	}
 }
 
