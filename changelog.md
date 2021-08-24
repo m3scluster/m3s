@@ -1,6 +1,12 @@
 # Changelog
 
 ## master
+
+- Add status information about the M3s services.
+- Mesos-CLI: Get out the M3s status information.
+
+## v0.1.0
+
 - Update Mesos Protobuf to the current Mesos Version
 - Add custom MesosCNI via env
 - Fix snapshooter, flannel and cgroups error

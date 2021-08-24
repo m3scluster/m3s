@@ -35,6 +35,7 @@ func StatusK3SServer(id int) *cfg.State {
 		for _, element := range config.State {
 			if element.Status != nil {
 				if element.Command.InternalID == id && element.Command.IsK3SServer == true {
+					config.M3SStatus.Server = element.Status.State
 					return &element
 				}
 			}
@@ -212,6 +213,7 @@ func StartK3SServer(id int) {
 func initStartK3SServer() {
 	etcdState := StatusEtcd(config.ETCDMax - 1)
 
+	// if etcd still not run, then do not start K3S Manager
 	if etcdState == nil {
 		return
 	}
@@ -254,9 +256,11 @@ func IsK3SServerRunning() bool {
 
 	if string(content) == "ok" {
 		logrus.Debug("IsK3SServerRunning: True")
+		config.M3SStatus.API = "ok"
 		return true
 	}
 
+	config.M3SStatus.API = "nok"
 	return false
 }
 

@@ -30,6 +30,7 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/v0/server/config", V0GetKubeconfig).Methods("GET")
 	rtr.HandleFunc("/v0/etcd/scale/{count}", V0ScaleEtcd).Methods("GET")
 	rtr.HandleFunc("/v0/task/kill/{id}", V0KillTask).Methods("GET")
+	rtr.HandleFunc("/v0/status/m3s", V0StatusM3s).Methods("GET")
 
 	return rtr
 }

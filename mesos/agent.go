@@ -33,6 +33,7 @@ func StatusK3SAgent(id int) *cfg.State {
 		for _, element := range config.State {
 			if element.Status != nil {
 				if element.Command.InternalID == id && element.Command.IsK3SAgent == true {
+					config.M3SStatus.Agent = element.Status.State
 					return &element
 				}
 			}

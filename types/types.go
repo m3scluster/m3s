@@ -58,6 +58,15 @@ type Config struct {
 	K3SMEM                     float64
 	ETCDCPU                    float64
 	ETCDMEM                    float64
+	M3SStatus                  M3SStatus
+}
+
+// M3SStatus store the current TaskState of the M3s services
+type M3SStatus struct {
+	Server *mesosproto.TaskState
+	Agent  *mesosproto.TaskState
+	API    string
+	Etcd   *mesosproto.TaskState
 }
 
 // Command is a chan which include all the Information about the started tasks

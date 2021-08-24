@@ -31,6 +31,7 @@ func StatusEtcd(id int) *cfg.State {
 		for _, element := range config.State {
 			if element.Status != nil {
 				if element.Command.InternalID == id && element.Command.IsETCD == true {
+					config.M3SStatus.Etcd = element.Status.State
 					return &element
 				}
 			}
