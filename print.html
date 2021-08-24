@@ -227,7 +227,8 @@ Commands:
   kubeconfig  Get kubernetes configuration file
   list        Show list of running M3s frameworks
   scale       Scale up/down the Manager or Agent of Kubernetes
-
+  status      Get out live status information
+  version     Get the version number of Kubernetes
 </code></pre>
 <h2 id="list-all-m3s-frameworks"><a class="header" href="#list-all-m3s-frameworks">List all M3s frameworks</a></h2>
 <pre><code class="language-bash">
@@ -265,6 +266,34 @@ Options:
 <p>As example:</p>
 <pre><code class="language-bash">
  mesos m3s scale --agent 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004 2
+
+</code></pre>
+<h2 id="m3s-status-overview"><a class="header" href="#m3s-status-overview">M3s Status overview</a></h2>
+<p>The status command support two different flags.</p>
+<pre><code class="language-bash">
+mesos m3s status
+Get out live status information
+
+Usage:
+  mesos m3s status (-h | --help)
+  mesos m3s status --version
+  mesos m3s status [options] &lt;framework-id&gt;
+
+Options:
+  -h --help        Show this screen.
+  -k --kubernetes  Give out the Kubernetes status.
+  -m --m3s         Give out the M3s status.
+
+Description:
+  Get out live status information
+
+</code></pre>
+<p><code>--kubernetes</code> (in developing) will give out the stats of the kubernetes environment.</p>
+<p><code>--m3s</code> Show the current status of the M3s services.</p>
+<pre><code class="language-bash">
+mesos m3s status -m 2f0fc78c-bf81-4fe0-8720-e27ba217adae-0004
+{&quot;Server&quot;:&quot;TASK_RUNNING&quot;,&quot;Agent&quot;:&quot;TASK_RUNNING&quot;,&quot;API&quot;:&quot;ok&quot;,&quot;Etcd&quot;:&quot;TASK_RUNNING&quot;}
+
 
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="kubectl-usage-with-m3s"><a class="header" href="#kubectl-usage-with-m3s">Kubectl Usage with M3s</a></h1>
