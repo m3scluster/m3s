@@ -41,6 +41,7 @@ func StatusK3SServer(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Server = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 

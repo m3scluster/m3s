@@ -39,6 +39,7 @@ func StatusK3SAgent(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Agent = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 

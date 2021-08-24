@@ -37,6 +37,7 @@ func StatusEtcd(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Etcd = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 
