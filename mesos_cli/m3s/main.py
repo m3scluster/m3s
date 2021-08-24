@@ -62,6 +62,15 @@ class M3s(PluginBase):
             "short_help": "Get the version number of Kubernetes",
             "long_help": "Get the version number of Kubernetes",
         },
+        "status": {
+            "arguments": ["<framework-id>"],
+            "flags": {
+                "-m --m3s": "Give out the M3s status.",
+                "-k --kubernetes": "Give out the Kubernetes status.",
+            },
+            "short_help": "Get out live status information",
+            "long_help": "Get out live status information",
+        },
         "scale": {
             "arguments": ["<framework-id>", "<count>"],
             "flags": {
@@ -151,6 +160,30 @@ class M3s(PluginBase):
             argv["<framework-id>"], master, config
         )
         data = http.read_endpoint(framework_address, "/v0/server/version", self)
+
+        print(data)
+
+    def status(self, argv):
+        """
+        Get the status information of these framework and or Kubernetes
+        """
+
+        try:
+            master = self.config.master()
+            config = self.config
+            # pylint: disable=attribute-defined-outside-init
+            self.m3sconfig = self._get_config()
+        except Exception as exception:
+            raise CLIException(
+                "Unable to get leading master address: {error}".format(error=exception)
+            ) from exception
+
+        framework_address = get_framework_address(
+            argv["<framework-id>"], master, config
+        )
+
+        if argv["--m3s"]:
+            data = http.read_endpoint(framework_address, "/v0/status/m3s", self)
 
         print(data)
 
