@@ -96,6 +96,8 @@ func Subscribe() error {
 		logrus.Debug("Subscribe Got: ", event.GetType())
 
 		initStartEtcd()
+		initStartK3SServer()
+		initStartK3SAgent()
 
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:
