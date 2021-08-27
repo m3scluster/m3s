@@ -59,6 +59,7 @@ type Config struct {
 	ETCDCPU                    float64
 	ETCDMEM                    float64
 	M3SStatus                  M3SStatus
+	K3SAgentLabels             []mesosproto.Label
 }
 
 // M3SStatus store the current TaskState of the M3s services
@@ -97,6 +98,7 @@ type Command struct {
 	Memory             float64
 	CPU                float64
 	Agent              string
+	Labels             []mesosproto.Label
 }
 
 // State will have the state of all tasks stated by this framework

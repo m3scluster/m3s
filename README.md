@@ -44,6 +44,12 @@ export IMAGE_ETCD="bitnami/etcd:latest"
 export VOLUME_DRIVER="rbd"
 export VOLUME_K3S_SERVER="k3sserver"
 export BOOTSTRAP_URL="https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh"
+export K3S_AGENT_LABELS='[
+    {"key":"traefik.enable","value":"true"},
+    {"key":"traefik.http.routers.m3s.entrypoints","value":"web"},
+    {"key":"traefik.http.routers.m3s.service","value":"m3s-http"},
+    {"key":"traefik.http.routers.m3s.rule","value":"Host(`*.example.com`)"}
+]'
 
 go run init.go app.go
 ```

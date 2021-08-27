@@ -161,12 +161,12 @@ func StartK3SAgent(id int) {
 			Ports: []mesosproto.Port{
 				{
 					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := "http"; return &x }(),
+					Name:     func() *string { x := "m3s-http"; return &x }(),
 					Protocol: cmd.DockerPortMappings[0].Protocol,
 				},
 				{
 					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := "https"; return &x }(),
+					Name:     func() *string { x := "m3s-https"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
 				},
 			},
@@ -190,6 +190,10 @@ func StartK3SAgent(id int) {
 			Name:  "K3S_URL",
 			Value: &config.K3SServerURL,
 		},
+	}
+
+	if config.K3SAgentLabels != nil {
+		cmd.Labels = config.K3SAgentLabels
 	}
 
 	d, _ := json.Marshal(&cmd)

@@ -66,5 +66,11 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 		msg.Discovery = &cmd.Discovery
 	}
 
+	if cmd.Labels != nil {
+		msg.Labels = &mesosproto.Labels{
+			Labels: cmd.Labels,
+		}
+	}
+
 	return []mesosproto.TaskInfo{msg}, nil
 }
