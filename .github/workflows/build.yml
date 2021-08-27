@@ -43,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./mesos-k3s
-          asset_name: mesos-k3s
+          asset_path: ./mesos-m3s
+          asset_name: mesos-m3s
           asset_content_type: application/binary
