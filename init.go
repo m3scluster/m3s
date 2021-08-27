@@ -7,7 +7,7 @@ import (
 
 	util "github.com/AVENTER-UG/util"
 
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 )
 
 var config cfg.Config

@@ -8,7 +8,7 @@ import (
 	//"io/ioutil"
 	"net/http"
 
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 )
 
 // Service include all the current vars and global config

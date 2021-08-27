@@ -1,6 +1,6 @@
 package types
 
-import mesosproto "mesos-k3s/proto"
+import mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
 // Config is a struct of the framework configuration
 type Config struct {

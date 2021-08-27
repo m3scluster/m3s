@@ -7,9 +7,9 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 
-	mesosproto "mesos-k3s/proto"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
-	mesos "mesos-k3s/mesos"
+	mesos "github.com/AVENTER-UG/mesos-m3s/mesos"
 )
 
 // V0ScaleK3S will scale the k3s service

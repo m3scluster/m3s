@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	mesosproto "mesos-k3s/proto"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	"github.com/sirupsen/logrus"
 )

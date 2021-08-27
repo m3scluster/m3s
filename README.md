@@ -1,7 +1,7 @@
-# go-mesos-framework-k3s
+# mesos-m3s
 
 [![Chat](https://img.shields.io/static/v1?label=Chat&message=Support&color=brightgreen)](https://matrix.to/#/#mesosk3s:matrix.aventer.biz?via=matrix.aventer.biz)
-[![Docs](https://img.shields.io/static/v1?label=Docs&message=Support&color=brightgreen)](https://aventer-ug.github.io/go-mesos-framework-k3s/index.html)
+[![Docs](https://img.shields.io/static/v1?label=Docs&message=Support&color=brightgreen)](https://aventer-ug.github.io/mesos-m3s/index.html)
 
 Mesos Framework to run Kubernetes (K3S)
 

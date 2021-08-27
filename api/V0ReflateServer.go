@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	mesos "mesos-k3s/mesos"
+	mesos "github.com/AVENTER-UG/mesos-m3s/mesos"
 
 	"github.com/sirupsen/logrus"
 )

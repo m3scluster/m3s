@@ -3,8 +3,9 @@ package mesos
 import (
 	"github.com/sirupsen/logrus"
 
-	mesosproto "mesos-k3s/proto"
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 )
 
 func defaultResources(cmd cfg.Command) []mesosproto.Resource {
