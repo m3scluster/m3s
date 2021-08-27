@@ -6,7 +6,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 
-	mesos "mesos-k3s/mesos"
+	mesos "github.com/AVENTER-UG/mesos-m3s/mesos"
 )
 
 // V0KillTask will kill the given task id

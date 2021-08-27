@@ -5,9 +5,9 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	mesosproto "mesos-k3s/proto"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	"github.com/sirupsen/logrus"
 )
@@ -39,6 +39,7 @@ func StatusK3SAgent(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Agent = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 

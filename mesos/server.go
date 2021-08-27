@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"sync/atomic"
 
-	mesosproto "mesos-k3s/proto"
-	cfg "mesos-k3s/types"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	"github.com/sirupsen/logrus"
 )
@@ -41,6 +41,7 @@ func StatusK3SServer(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Server = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 

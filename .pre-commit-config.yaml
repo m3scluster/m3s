@@ -3,18 +3,23 @@ repos:
   rev: v4.0.1
   hooks:
   - id: check-merge-conflict
+    exclude: ^vendor/
   - id: end-of-file-fixer
+    exclude: ^vendor/
   - id: trailing-whitespace
+    exclude: ^vendor/
 
 - repo: https://github.com/ambv/black
   rev: 21.7b0
   hooks:
   - id: black
+    exclude: ^vendor/
     language_version: python3.9
 
 - repo: local
   hooks:
   - id: pylint
+    exclude: ^vendor/
     name: pylint
     entry: pylint
     language: system
@@ -24,5 +29,8 @@ repos:
   rev: v0.4.0
   hooks:
     - id: go-fmt
+      exclude: ^vendor/
     - id: go-lint
+      exclude: ^vendor/
     - id: go-imports
+      exclude: ^vendor/

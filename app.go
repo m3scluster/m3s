@@ -6,9 +6,9 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	"mesos-k3s/api"
-	"mesos-k3s/mesos"
-	cfg "mesos-k3s/types"
+	"github.com/AVENTER-UG/mesos-m3s/api"
+	"github.com/AVENTER-UG/mesos-m3s/mesos"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	util "github.com/AVENTER-UG/util"
 	"github.com/Showmax/go-fqdn"

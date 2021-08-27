@@ -1,4 +1,4 @@
-module mesos-k3s
+module github.com/AVENTER-UG/mesos-m3s
 
 go 1.16
 

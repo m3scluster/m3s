@@ -2,7 +2,6 @@ run.sh
 init
 test
 k3sframe
-vendor
 stop.sh
 docs/book
 bootstrap/.owncloudsync.log
