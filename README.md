@@ -48,7 +48,7 @@ export K3S_AGENT_LABELS='[
     {"key":"traefik.enable","value":"true"},
     {"key":"traefik.http.routers.m3s.entrypoints","value":"web"},
     {"key":"traefik.http.routers.m3s.service","value":"m3s-http"},
-    {"key":"traefik.http.routers.m3s.rule","value":"Host(`*.example.com`)"}
+    {"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}
 ]'
 
 go run init.go app.go

@@ -14,13 +14,13 @@ export KUBECONFIG=$MESOS_SANDBOX/kubeconfig.yaml
 
 update-alternatives --set iptables /usr/sbin/iptables-legacy
 curl -sfL https://get.k3s.io | sh -
-curl https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/dashboard_auth.yaml > $MESOS_SANDBOX/dashboard_auth.yaml
-curl https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/dashboard_traefik.yaml > $MESOS_SANDBOX/dashboard_traefik.yaml
+curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/dashboard_auth.yaml > $MESOS_SANDBOX/dashboard_auth.yaml
+curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/dashboard_traefik.yaml > $MESOS_SANDBOX/dashboard_traefik.yaml
 curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml > $MESOS_SANDBOX/dashboard.yaml
 if [ "$K3SFRAMEWORK_TYPE" = "server" ]
 then
   curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl > $MESOS_SANDBOX/kubectl
-  curl https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/server > $MESOS_SANDBOX/server
+  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/server > $MESOS_SANDBOX/server
   chmod +x $MESOS_SANDBOX/kubectl
   chmod +x $MESOS_SANDBOX/server
   exec $MESOS_SANDBOX/server &
