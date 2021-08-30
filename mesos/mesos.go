@@ -14,8 +14,8 @@ import (
 	"strings"
 	"sync/atomic"
 
-	mesosproto "mesos-k3s/proto"
-	cfg "mesos-k3s/types"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/sirupsen/logrus"
@@ -96,6 +96,8 @@ func Subscribe() error {
 		logrus.Debug("Subscribe Got: ", event.GetType())
 
 		initStartEtcd()
+		initStartK3SServer()
+		initStartK3SAgent()
 
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:

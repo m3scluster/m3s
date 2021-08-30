@@ -1,0 +1,24 @@
+name: Binary Build
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup
+      uses: actions/setup-go@v1
+      with:
+        go-version: '1.16.6'
+
+    - name: Build
+      run: |
+        go get -d
+        go build .
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: mesos-m3s
+        path: ./mesos-m3s

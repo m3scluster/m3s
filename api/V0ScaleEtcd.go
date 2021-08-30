@@ -7,8 +7,8 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 
-	mesos "mesos-k3s/mesos"
-	mesosproto "mesos-k3s/proto"
+	mesos "github.com/AVENTER-UG/mesos-m3s/mesos"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 )
 
 // V0ScaleEtcd will scale the k3s agent service

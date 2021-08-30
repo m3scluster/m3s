@@ -29,6 +29,8 @@ func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	defer res.Body.Close()
+
 	if res.StatusCode != 200 {
 		logrus.Error("GetKubeVersion: Error Status is not 200")
 		return

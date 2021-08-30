@@ -1,0 +1,52 @@
+# github.com/AVENTER-UG/go-logrus-formatter v0.0.0-20181204170756-e4bb1d931585
+## explicit
+github.com/AVENTER-UG/go-logrus-formatter
+# github.com/AVENTER-UG/util v0.1.1
+## explicit
+github.com/AVENTER-UG/util
+# github.com/Showmax/go-fqdn v1.0.0
+## explicit
+github.com/Showmax/go-fqdn
+# github.com/gogo/protobuf v1.3.2
+## explicit
+github.com/gogo/protobuf/gogoproto
+github.com/gogo/protobuf/jsonpb
+github.com/gogo/protobuf/proto
+github.com/gogo/protobuf/protoc-gen-gogo/descriptor
+github.com/gogo/protobuf/sortkeys
+github.com/gogo/protobuf/types
+# github.com/gorilla/mux v1.8.0
+## explicit
+github.com/gorilla/mux
+# github.com/mattn/go-colorable v0.1.8
+## explicit
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.13
+## explicit
+github.com/mattn/go-isatty
+# github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d
+## explicit
+github.com/mgutz/ansi
+# github.com/onsi/ginkgo v1.15.2
+## explicit
+# github.com/onsi/gomega v1.11.0
+## explicit
+# github.com/russross/blackfriday v1.6.0
+## explicit
+github.com/russross/blackfriday
+# github.com/sirupsen/logrus v1.8.1
+## explicit
+github.com/sirupsen/logrus
+github.com/sirupsen/logrus/hooks/syslog
+# golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97
+## explicit
+golang.org/x/crypto/ssh/terminal
+# golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c
+## explicit
+golang.org/x/sys/internal/unsafeheader
+golang.org/x/sys/plan9
+golang.org/x/sys/unix
+golang.org/x/sys/windows
+# golang.org/x/term v0.0.0-20210615171337-6886f2dfbf5b
+## explicit
+golang.org/x/term

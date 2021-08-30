@@ -3,8 +3,8 @@ package mesos
 import (
 	"strconv"
 
-	mesosproto "mesos-k3s/proto"
-	cfg "mesos-k3s/types"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 )
 
 func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) ([]mesosproto.TaskInfo, error) {
@@ -64,6 +64,12 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 
 	if cmd.Discovery != (mesosproto.DiscoveryInfo{}) {
 		msg.Discovery = &cmd.Discovery
+	}
+
+	if cmd.Labels != nil {
+		msg.Labels = &mesosproto.Labels{
+			Labels: cmd.Labels,
+		}
 	}
 
 	return []mesosproto.TaskInfo{msg}, nil

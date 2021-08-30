@@ -1,6 +1,6 @@
 package types
 
-import mesosproto "mesos-k3s/proto"
+import mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
 // Config is a struct of the framework configuration
 type Config struct {
@@ -59,6 +59,7 @@ type Config struct {
 	ETCDCPU                    float64
 	ETCDMEM                    float64
 	M3SStatus                  M3SStatus
+	K3SAgentLabels             []mesosproto.Label
 }
 
 // M3SStatus store the current TaskState of the M3s services
@@ -97,6 +98,7 @@ type Command struct {
 	Memory             float64
 	CPU                float64
 	Agent              string
+	Labels             []mesosproto.Label
 }
 
 // State will have the state of all tasks stated by this framework

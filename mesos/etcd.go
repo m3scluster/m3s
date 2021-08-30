@@ -3,9 +3,9 @@ package mesos
 import (
 	"encoding/json"
 
-	mesosproto "mesos-k3s/proto"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
-	cfg "mesos-k3s/types"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	"github.com/sirupsen/logrus"
 )
@@ -37,6 +37,7 @@ func StatusEtcd(id int) *cfg.State {
 			}
 		}
 	}
+	config.M3SStatus.Etcd = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 

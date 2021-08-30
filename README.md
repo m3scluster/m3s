@@ -1,7 +1,7 @@
-# go-mesos-framework-k3s
+# mesos-m3s
 
 [![Chat](https://img.shields.io/static/v1?label=Chat&message=Support&color=brightgreen)](https://matrix.to/#/#mesosk3s:matrix.aventer.biz?via=matrix.aventer.biz)
-[![Docs](https://img.shields.io/static/v1?label=Docs&message=Support&color=brightgreen)](https://aventer-ug.github.io/go-mesos-framework-k3s/index.html)
+[![Docs](https://img.shields.io/static/v1?label=Docs&message=Support&color=brightgreen)](https://aventer-ug.github.io/mesos-m3s/index.html)
 
 Mesos Framework to run Kubernetes (K3S)
 
@@ -44,6 +44,12 @@ export IMAGE_ETCD="bitnami/etcd:latest"
 export VOLUME_DRIVER="rbd"
 export VOLUME_K3S_SERVER="k3sserver"
 export BOOTSTRAP_URL="https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh"
+export K3S_AGENT_LABELS='[
+    {"key":"traefik.enable","value":"true"},
+    {"key":"traefik.http.routers.m3s.entrypoints","value":"web"},
+    {"key":"traefik.http.routers.m3s.service","value":"m3s-http"},
+    {"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}
+]'
 
 go run init.go app.go
 ```

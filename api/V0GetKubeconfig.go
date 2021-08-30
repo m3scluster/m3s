@@ -30,6 +30,8 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	defer res.Body.Close()
+
 	if res.StatusCode != 200 {
 		logrus.Error("GetKubeConfig: Error Status is not 200")
 		return
