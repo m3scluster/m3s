@@ -1,11 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"os"
 	"strconv"
 	"strings"
 
 	util "github.com/AVENTER-UG/util"
+	"github.com/sirupsen/logrus"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 )
@@ -53,6 +55,15 @@ func init() {
 	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1000"), 64)
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
+
+	labels := os.Getenv("K3S_AGENT_LABELS")
+	if labels != "" {
+		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
+
+		if err != nil {
+			logrus.Fatal("The env variable K3S_AGENT_LABELS have a syntax failure: ", err)
+		}
+	}
 
 	// The comunication to the mesos server should be via ssl or not
 	if strings.Compare(os.Getenv("MESOS_SSL"), "true") == 0 {

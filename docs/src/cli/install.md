@@ -1,5 +1,7 @@
 # M3s CLI Installation for Mesos-CLI
 
+If you do not already have installe the mesos cli, please follow the steps under "Install Mesos-CLI" first.
+
 The installation of the M3s plugin for mesos-cli is done in few steps.
 
 First, edit the mesos-cli config file.
@@ -17,7 +19,7 @@ Add the absolute path of the plugin into the plugin array:
 # The `plugins` array lists the absolute paths of the
 # plugins you want to add to the CLI.
 plugins = [
-  "/example/go-mesos-framework-k3s/mesos_cli/m3s"
+  "/example/mesos-m3s/mesos_cli/m3s"
 ]
 
 [m3s]
@@ -47,5 +49,17 @@ Commands:
   config  Interacts with the Mesos CLI configuration file
   m3s     Interacts with the Kubernetes Framework M3s
   task    Interacts with the tasks running in a Mesos cluster
+
+```
+
+## Install Mesos-CLI
+
+```bash
+yum install python3 python3-venv
+git clone http://github.com/apache/mesos
+cd mesos/src/python/cli_new
+export VIRTUALENV_DIRECTORY=~/.virtualenvs/mesos-cli
+export PYTHON=python3
+./bootstrap
 
 ```
