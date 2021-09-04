@@ -55,7 +55,7 @@ func Subscribe() error {
 	}
 
 	protocol := "https"
-	if config.MesosSSL == false {
+	if !config.MesosSSL {
 		protocol = "http"
 	}
 	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
@@ -87,7 +87,6 @@ func Subscribe() error {
 		data := line[:bytesCount]
 		// Rest data will be bytes of next message
 		bytesCount, _ = strconv.Atoi((line[bytesCount:]))
-		logrus.Debug(data)
 		var event mesosproto.Event // Event as ProtoBuf
 		err := jsonpb.UnmarshalString(data, &event)
 		if err != nil {
@@ -108,17 +107,23 @@ func Subscribe() error {
 			config.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
 			// Save framework info
 			persConf, _ := json.Marshal(&config)
-			ioutil.WriteFile(config.FrameworkInfoFile, persConf, 0644)
+			err = ioutil.WriteFile(config.FrameworkInfoFile, persConf, 0644)
+			if err != nil {
+				logrus.Error("Write FrameWork State File: ", err)
+			}
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
 		case mesosproto.Event_HEARTBEAT:
 			// K3S API Server Heatbeat
 			K3SHeartbeat()
-			suppressFramework()
+			//suppressFramework()
 		case mesosproto.Event_OFFERS:
 			restartFailedContainer()
-			logrus.Debug("Offer Got: ", event.Offers.Offers[0].GetID())
-			HandleOffers(event.Offers)
+			logrus.Debug("Offer Got: ", event.Offers)
+			err = HandleOffers(event.Offers)
+			if err != nil {
+				logrus.Error("Switch Event HandleOffers: ", err)
+			}
 		default:
 			logrus.Debug("DEFAULT EVENT: ", event.Offers)
 		}
@@ -136,7 +141,7 @@ func Call(message *mesosproto.Call) error {
 	}
 
 	protocol := "https"
-	if config.MesosSSL == false {
+	if !config.MesosSSL {
 		protocol = "http"
 	}
 	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
@@ -146,13 +151,17 @@ func Call(message *mesosproto.Call) error {
 	res, err := client.Do(req)
 
 	if err != nil {
+		logrus.Error("Call Message: ", err)
 		return err
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 202 {
-		io.Copy(os.Stderr, res.Body)
+		_, err := io.Copy(os.Stderr, res.Body)
+		if err != nil {
+			logrus.Error("Call Handling: ", err)
+		}
 		return fmt.Errorf("Error %d", res.StatusCode)
 	}
 
@@ -178,10 +187,14 @@ func Reconcile() {
 			}
 		}
 		atomic.StoreUint64(&config.TaskID, uint64(maxID))
-		Call(&mesosproto.Call{
+		err := Call(&mesosproto.Call{
 			Type:      mesosproto.Call_RECONCILE,
 			Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
 		})
+
+		if err != nil {
+			logrus.Error("Call Reconcile: ", err)
+		}
 	}
 }
 
@@ -191,7 +204,10 @@ func Revive() {
 	revive := &mesosproto.Call{
 		Type: mesosproto.Call_REVIVE,
 	}
-	Call(revive)
+	err := Call(revive)
+	if err != nil {
+		logrus.Error("Call Revive: ", err)
+	}
 }
 
 // Restart failed container
@@ -201,15 +217,15 @@ func restartFailedContainer() {
 			if element.Status != nil {
 				switch *element.Status.State {
 				case mesosproto.TASK_FAILED, mesosproto.TASK_ERROR:
-					if element.Command.IsK3SAgent == true {
+					if element.Command.IsK3SAgent {
 						logrus.Info("RestartK3SAgent: ", element.Status.TaskID)
 						StartK3SAgent(element.Command.InternalID)
 					}
-					if element.Command.IsK3SServer == true {
+					if element.Command.IsK3SServer {
 						logrus.Info("RestartK3SServer: ", element.Status.TaskID)
 						StartK3SServer(element.Command.InternalID)
 					}
-					if element.Command.IsETCD == true {
+					if element.Command.IsETCD {
 						logrus.Info("RestartETCD: ", element.Status.TaskID)
 						StartEtcd(element.Command.InternalID)
 					}

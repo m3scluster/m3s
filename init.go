@@ -56,12 +56,35 @@ func init() {
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 
+	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
 
 		if err != nil {
 			logrus.Fatal("The env variable K3S_AGENT_LABELS have a syntax failure: ", err)
+		}
+	}
+
+	// if the constraint is set, determine which kind of
+	config.K3SServerConstraint = util.Getenv("K3S_SERVER_CONSTRAINT", "")
+	if strings.Contains(config.K3SServerConstraint, ":") {
+		constraint := strings.Split(config.K3SServerConstraint, ":")
+
+		switch strings.ToLower(constraint[0]) {
+		case "hostname":
+			config.K3SServerConstraintHostname = strings.ToLower(constraint[1])
+		}
+	}
+
+	// if the constraint is set, determine which kind of
+	config.K3SAgentConstraint = util.Getenv("K3S_AGENT_CONSTRAINT", "")
+	if strings.Contains(config.K3SAgentConstraint, ":") {
+		constraint := strings.Split(config.K3SAgentConstraint, ":")
+
+		switch strings.ToLower(constraint[0]) {
+		case "hostname":
+			config.K3SAgentConstraintHostname = strings.ToLower(constraint[1])
 		}
 	}
 
