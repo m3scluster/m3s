@@ -6,6 +6,7 @@
 - Mesos-CLI: Get out the M3s status information.
 - Add Mesos Label support to (as example) control traefik
 - Add possibility to run the K8 Server and Agent on a specified hostname
+- Fix status information of all m3s services
 
 ## v0.1.0
 

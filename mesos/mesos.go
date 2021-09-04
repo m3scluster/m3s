@@ -74,9 +74,9 @@ func Subscribe() error {
 
 	// Search missing services after the framework was restarted
 	if config.MesosStreamID != "" {
-		SearchMissingEtcd()
-		SearchMissingK3SServer()
-		SearchMissingK3SAgent()
+		SearchMissingEtcd(true)
+		SearchMissingK3SServer(true)
+		SearchMissingK3SAgent(true)
 	}
 
 	for {
@@ -114,12 +114,18 @@ func Subscribe() error {
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
 		case mesosproto.Event_HEARTBEAT:
-			// K3S API Server Heatbeat
+			// K3S API Server Heartbeat. If K3S Server is running,
+			// it will also init the K3S Agents if its not already running
 			K3SHeartbeat()
-			//suppressFramework()
+			// Search missing servers to get the status. But do not restart them.
+			// If everyone is started, then suppress framework
+			if SearchMissingEtcd(false) && SearchMissingK3SAgent(false) && SearchMissingK3SServer(false) {
+				suppressFramework()
+			}
 		case mesosproto.Event_OFFERS:
+			// Search Failed containers and restart them
 			restartFailedContainer()
-			logrus.Debug("Offer Got: ", event.Offers)
+			logrus.Debug("Offer Got")
 			err = HandleOffers(event.Offers)
 			if err != nil {
 				logrus.Error("Switch Event HandleOffers: ", err)
@@ -242,28 +248,16 @@ func restartFailedContainer() {
 
 // if all Tasks are running, suppress framework offers
 func suppressFramework() {
-	if config.ETCDCount == config.ETCDMax &&
-		config.K3SServerCount == config.K3SServerMax &&
-		config.K3SAgentCount == config.K3SAgentMax {
-
-		logrus.Info("Framework Suppress")
-		suppress := &mesosproto.Call{
-			Type: mesosproto.Call_SUPPRESS,
-		}
-		Call(suppress)
+	logrus.Info("Framework Suppress")
+	suppress := &mesosproto.Call{
+		Type: mesosproto.Call_SUPPRESS,
+	}
+	err := Call(suppress)
+	if err != nil {
+		logrus.Error("Supress Framework Call: ")
 	}
 }
 
-/*
-	default:
-		// tell mesos he dont have to offer again until we ask
-		logrus.Info("Framework Suppress: ", offerIds)
-		suppress := &mesosproto.Call{
-			Type: mesosproto.Call_SUPPRESS,
-		}
-		return Call(suppress)
-	}
-*/
 // Delete Failed Tasks from the config
 func deleteOldTask(taskID mesosproto.TaskID) {
 	copy := make(map[string]cfg.State)

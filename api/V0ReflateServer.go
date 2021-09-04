@@ -21,7 +21,7 @@ func V0ReflateK3S(w http.ResponseWriter, r *http.Request) {
 
 	mesos.Revive()
 
-	mesos.SearchMissingK3SServer()
+	mesos.SearchMissingK3SServer(true)
 
 	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")

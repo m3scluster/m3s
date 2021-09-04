@@ -21,7 +21,7 @@ func V0ReflateK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 	mesos.Revive()
 
-	mesos.SearchMissingK3SAgent()
+	mesos.SearchMissingK3SAgent(true)
 
 	//	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")

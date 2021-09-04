@@ -90,7 +90,7 @@ func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offe
 
 // HandleOffers will handle the offers event of mesos
 func HandleOffers(offers *mesosproto.Event_Offers) error {
-	offerIds := []mesosproto.OfferID{}
+	_, offerIds := getOffer(offers, cfg.Command{})
 
 	select {
 	case cmd := <-config.CommandChan:
@@ -144,7 +144,7 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 		return Call(decline)
 	default:
 		// decline unneeded offer
-		logrus.Info("Offer Decline: ", offerIds)
+		logrus.Info("Decline unneeded offer: ", offerIds)
 		decline := &mesosproto.Call{
 			Type:    mesosproto.Call_DECLINE,
 			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},

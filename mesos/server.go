@@ -13,20 +13,32 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingK3SServer Check if all k3ss are running. If one is missing, restart it.
-func SearchMissingK3SServer() {
+// SearchMissingK3SServer Check if all k3ss are running.
+func SearchMissingK3SServer(restart bool) bool {
+	status := make([]mesosproto.TaskState, config.K3SServerMax)
+	allRunning := true
 	if config.State != nil {
 		for i := 0; i < config.K3SServerMax; i++ {
 			state := StatusK3SServer(i)
 			if state != nil {
+				status[i] = *state.Status.State
 				if *state.Status.State != mesosproto.TASK_RUNNING {
+					allRunning = false
 					logrus.Debug("Missing K3S: ", i)
-					CreateK3SServerString()
-					StartK3SServer(i)
+					if restart {
+						CreateK3SServerString()
+						StartK3SServer(i)
+					}
 				}
+			} else {
+				allRunning = false
 			}
 		}
+	} else {
+		allRunning = false
 	}
+	config.M3SStatus.Server = status
+	return allRunning
 }
 
 // StatusK3SServer Get out Status of the given k3s ID
@@ -34,14 +46,12 @@ func StatusK3SServer(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
 			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsK3SServer == true {
-					config.M3SStatus.Server = element.Status.State
+				if element.Command.InternalID == id && element.Command.IsK3SServer {
 					return &element
 				}
 			}
 		}
 	}
-	config.M3SStatus.Server = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 
