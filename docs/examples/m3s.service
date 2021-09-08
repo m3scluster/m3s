@@ -1,0 +1,12 @@
+[Unit]
+Description=Apache Mesos Kubernetes Framework M3s
+After=docker.service
+
+[Service]
+EnvironmentFile=/etc/m3s/m3s.env
+ExecStart=/usr/bin/mesos-m3s
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
