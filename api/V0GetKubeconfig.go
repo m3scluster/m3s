@@ -23,6 +23,7 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/k3s/v0/config", nil)
+	req.Close = true
 	res, err := client.Do(req)
 
 	if err != nil {

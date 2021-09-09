@@ -246,6 +246,7 @@ func CreateK3SServerString() {
 func IsK3SServerRunning() bool {
 	client := &http.Client{}
 	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/status", nil)
+	req.Close = true
 	res, err := client.Do(req)
 
 	if err != nil {

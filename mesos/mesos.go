@@ -59,6 +59,7 @@ func Subscribe() error {
 		protocol = "http"
 	}
 	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
+	req.Close = true
 	req.SetBasicAuth(config.Username, config.Password)
 	req.Header.Set("Content-Type", "application/json")
 	res, err := client.Do(req)
@@ -151,6 +152,7 @@ func Call(message *mesosproto.Call) error {
 		protocol = "http"
 	}
 	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
+	req.Close = true
 	req.SetBasicAuth(config.Username, config.Password)
 	req.Header.Set("Mesos-Stream-Id", config.MesosStreamID)
 	req.Header.Set("Content-Type", "application/json")
@@ -177,7 +179,7 @@ func Call(message *mesosproto.Call) error {
 // Reconcile will reconcile the task states after the framework was restarted
 func Reconcile() {
 	var oldTasks []mesosproto.Call_Reconcile_Task
-	logrus.Debug("Reconvcle Tasks")
+	logrus.Debug("Reconcile Tasks")
 	maxID := 0
 	if config != nil {
 		for _, t := range config.State {
