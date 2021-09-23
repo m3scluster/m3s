@@ -43,7 +43,7 @@ class M3s(PluginBase):
 
     COMMANDS = {
         "kubeconfig": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-id|framework-name>"],
             "flags": {},
             "short_help": "Get kubernetes configuration file",
             "long_help": "Get kubernetes configuration file",
@@ -57,13 +57,13 @@ class M3s(PluginBase):
             "long_help": "Show list of running M3s frameworks",
         },
         "version": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-id|framework-name>"],
             "flags": {},
             "short_help": "Get the version number of Kubernetes",
             "long_help": "Get the version number of Kubernetes",
         },
         "status": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-id|framework-name>"],
             "flags": {
                 "-m --m3s": "Give out the M3s status.",
                 "-k --kubernetes": "Give out the Kubernetes status.",
@@ -72,7 +72,7 @@ class M3s(PluginBase):
             "long_help": "Get out live status information",
         },
         "scale": {
-            "arguments": ["<framework-id>", "<count>"],
+            "arguments": ["<framework-id|framework-name>", "<count>"],
             "flags": {
                 "-a --agent": "Scale up/down Kubernetes agents",
                 "-m --manager": "Scale up/down Kubernetes manager",
@@ -135,7 +135,7 @@ class M3s(PluginBase):
             ) from exception
 
         framework_address = get_framework_address(
-            argv["<framework-id>"], master, config
+            self.get_framework_id(argv), master, config
         )
         data = http.read_endpoint(framework_address, "/v0/server/config", self)
 
@@ -157,7 +157,7 @@ class M3s(PluginBase):
             ) from exception
 
         framework_address = get_framework_address(
-            argv["<framework-id>"], master, config
+            self.get_framework_id(argv), master, config
         )
         data = http.read_endpoint(framework_address, "/v0/server/version", self)
 
@@ -179,13 +179,12 @@ class M3s(PluginBase):
             ) from exception
 
         framework_address = get_framework_address(
-            argv["<framework-id>"], master, config
+            self.get_framework_id(argv), master, config
         )
 
         if argv["--m3s"]:
             data = http.read_endpoint(framework_address, "/v0/status/m3s", self)
-
-        print(data)
+            print(data)
 
     def list(self, argv):
         """
@@ -225,16 +224,34 @@ class M3s(PluginBase):
 
         print(str(table))
 
+    def get_framework_id(self, argv):
+        """
+        Resolv the id of a framework by the name of a framework
+        """
+
+        if argv["<framework-id>"].count("-") != 5:
+            data = get_frameworks(self.config.master(), self.config)
+            for framework in data:
+                if (
+                    framework["active"] is not True
+                    or framework["name"].lower() != argv["<framework-id>"].lower()
+                ):
+                    continue
+                return framework["id"]
+        return argv["<framework-id>"]
+
     def principal(self):
         """
         Return the principal in the configuration file
         """
+
         return self.m3sconfig["m3s"].get("principal")
 
     def secret(self):
         """
         Return the secret in the configuration file
         """
+
         return self.m3sconfig["m3s"].get("secret")
 
     # pylint: disable=no-self-use
@@ -242,6 +259,7 @@ class M3s(PluginBase):
         """
         Return the connection timeout of the agent
         """
+
         return default
 
     def _get_config(self):

@@ -16,15 +16,6 @@ repos:
     exclude: ^vendor/
     language_version: python3.9
 
-- repo: local
-  hooks:
-  - id: pylint
-    exclude: ^vendor/
-    name: pylint
-    entry: pylint
-    language: system
-    types: [python]
-
 - repo: git://github.com/dnephin/pre-commit-golang
   rev: v0.4.0
   hooks:
