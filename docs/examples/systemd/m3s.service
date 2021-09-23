@@ -1,6 +1,6 @@
 [Unit]
 Description=Apache Mesos Kubernetes Framework M3s
-After=docker.service
+After=mesos-master.service
 
 [Service]
 EnvironmentFile=/etc/m3s/m3s.env

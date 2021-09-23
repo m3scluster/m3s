@@ -31,7 +31,7 @@ func init() {
 	config.MesosMasterServer = os.Getenv("MESOS_MASTER")
 	config.MesosCNI = util.Getenv("MESOS_CNI", "weave")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
-	config.Domain = os.Getenv("DOMAIN")
+	config.Domain = util.Getenv("DOMAIN", "local")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
 	config.Credentials.Username = os.Getenv("AUTH_USERNAME")
@@ -52,7 +52,7 @@ func init() {
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.M3SBootstrapServerPort, _ = strconv.Atoi(util.Getenv("M3S_BOOTSTRAP_SERVER_PORT", "6443"))
 	config.K3SCPU, _ = strconv.ParseFloat(util.Getenv("K3S_CPU", "0.1"), 64)
-	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1000"), 64)
+	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1200"), 64)
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 

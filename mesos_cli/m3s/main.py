@@ -43,7 +43,7 @@ class M3s(PluginBase):
 
     COMMANDS = {
         "kubeconfig": {
-            "arguments": ["<framework-id|framework-name>"],
+            "arguments": ["<framework-id>"],
             "flags": {},
             "short_help": "Get kubernetes configuration file",
             "long_help": "Get kubernetes configuration file",
@@ -57,13 +57,13 @@ class M3s(PluginBase):
             "long_help": "Show list of running M3s frameworks",
         },
         "version": {
-            "arguments": ["<framework-id|framework-name>"],
+            "arguments": ["<framework-id>"],
             "flags": {},
             "short_help": "Get the version number of Kubernetes",
             "long_help": "Get the version number of Kubernetes",
         },
         "status": {
-            "arguments": ["<framework-id|framework-name>"],
+            "arguments": ["<framework-id>"],
             "flags": {
                 "-m --m3s": "Give out the M3s status.",
                 "-k --kubernetes": "Give out the Kubernetes status.",
@@ -72,7 +72,7 @@ class M3s(PluginBase):
             "long_help": "Get out live status information",
         },
         "scale": {
-            "arguments": ["<framework-id|framework-name>", "<count>"],
+            "arguments": ["<framework-id>", "<count>"],
             "flags": {
                 "-a --agent": "Scale up/down Kubernetes agents",
                 "-m --manager": "Scale up/down Kubernetes manager",
