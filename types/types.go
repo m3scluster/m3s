@@ -4,6 +4,7 @@ import mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
 // Config is a struct of the framework configuration
 type Config struct {
+	FrameworkHostname           string
 	FrameworkPort               string
 	FrameworkBind               string
 	FrameworkUser               string

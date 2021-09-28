@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	util "github.com/AVENTER-UG/util"
+	"github.com/Showmax/go-fqdn"
 	"github.com/sirupsen/logrus"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -24,6 +25,7 @@ func init() {
 	config.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
 	config.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")
 	config.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
+	config.FrameworkHostname = util.Getenv("FRAMEWORK_HOSTNAME", fqdn.Get())
 	config.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
 	config.Principal = os.Getenv("MESOS_PRINCIPAL")
 	config.Username = os.Getenv("MESOS_USERNAME")

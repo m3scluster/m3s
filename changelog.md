@@ -8,6 +8,7 @@
 - Add possibility to run the K8 Server and Agent on a specified hostname
 - Fix status information of all m3s services
 - Mesos-CLI: Resolve framework ID also by name
+- Add configurable FrameworkHostname
 
 ## v0.1.0
 
