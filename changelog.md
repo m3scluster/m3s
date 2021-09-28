@@ -9,6 +9,7 @@
 - Fix status information of all m3s services
 - Mesos-CLI: Resolve framework ID also by name
 - Add configurable FrameworkHostname
+- Add FrameworkName to Port Label
 
 ## v0.1.0
 

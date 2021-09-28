@@ -3,6 +3,7 @@ package mesos
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 	"sync/atomic"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
@@ -171,12 +172,12 @@ func StartK3SAgent(id int) {
 			Ports: []mesosproto.Port{
 				{
 					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := "m3s-http"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-http"; return &x }(),
 					Protocol: cmd.DockerPortMappings[0].Protocol,
 				},
 				{
 					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := "m3s-https"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-https"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
 				},
 			},
