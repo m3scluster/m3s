@@ -14,7 +14,9 @@
 - [Scale up/down Kubernetes Service](api/scale_k3s.md)
 - [Get Kubeconfig](api/get_kubeconfig.md)
 - [Get Kubernetes Version](api/get_kubeversion.md)
+- [Get M3s status information](api/get_status.md)
 
 # Examples
 
 - [Create NGINX ingress with traefik](create_nginx_ingress.md)
+- [Containerd sideload configuration](containerd.md)
