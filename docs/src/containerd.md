@@ -2,7 +2,7 @@
 
 
 M3s is a high flexible mesos framework. The decision to use a [bootstap script](https://github.com/AVENTER-UG/mesos-m3s/blob/master/bootstrap/bootstrap.sh)
-give us the posibility to change the default configuration of K3s. These feature is important if we need access to a private insecure container registry.
+give us the possibility to change the default configuration of K3s. These feature is important if we need access to a private insecure container registry.
 The following steps should be a example how to use it.
 
 
