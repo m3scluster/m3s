@@ -22,7 +22,6 @@ func SetConfig(cfg *cfg.Config) {
 // Commands is the main function of this package
 func Commands() *mux.Router {
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/v0/container/{taskID}", V0StatusContainer).Methods("GET")
 	rtr.HandleFunc("/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
 	rtr.HandleFunc("/v0/agent/reflate", V0ReflateK3SAgent).Methods("GET")
 	rtr.HandleFunc("/v0/server/scale/{count}", V0ScaleK3S).Methods("GET")
