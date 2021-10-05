@@ -376,7 +376,7 @@ kubernetes-dashboard   kubernetes-dashboard        ClusterIP      10.3.43.87    
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="scale-updown-kubernetes-service"><a class="header" href="#scale-updown-kubernetes-service">Scale up/down Kubernetes Service</a></h1>
 <p>To scale Kubernetes services, we have to call the following API. <code>&lt;count&gt;</code> is the number of all running processes.</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent|etcd&gt;/scale/&lt;count&gt; -d 'JSON'
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent|etcd&gt;/scale/&lt;count&gt;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-kubeconfig"><a class="header" href="#get-kubeconfig">Get Kubeconfig</a></h1>
 <p>Get out the kubernetes config file</p>
