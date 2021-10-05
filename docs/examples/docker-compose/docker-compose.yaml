@@ -2,12 +2,11 @@ version: '3'
 services:
   customer1:
     image: avhost/mesos-m3s:dev
-    hostname: ${HOSTNAME}
     environment:
     - FRAMEWORK_NAME=customer1
+    - FRAMEWORK_HOSTNAME=${HOSTNAME}
     - PREFIX_HOSTNAME=customer1
     - PREFIX_TASKNAME=customer1
-    - HOSTNAME=${HOSTNAME}
     - MESOS_USERNAME=
     - MESOS_PASSWORD=
     - MESOS_MASTER=
