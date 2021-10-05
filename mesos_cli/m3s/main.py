@@ -186,6 +186,10 @@ class M3s(PluginBase):
             data = http.read_endpoint(framework_address, "/v0/status/m3s", self)
             print(data)
 
+        if argv["--kubernetes"]:
+            data = http.read_endpoint(framework_address, "/v0/status/k8", self)
+            print(data)
+
     def list(self, argv):
         """
         Show a list of running M3s frameworks

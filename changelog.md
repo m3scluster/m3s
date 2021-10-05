@@ -10,6 +10,7 @@
 - Mesos-CLI: Resolve framework ID also by name
 - Add configurable FrameworkHostname
 - Add FrameworkName to Port Label
+- Add Kubernetes Status to Framework, bootstrap Server and Mesos-CLI
 
 ## v0.1.0
 
