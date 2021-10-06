@@ -201,6 +201,10 @@ func StartK3SAgent(id int) {
 			Name:  "K3S_URL",
 			Value: &config.K3SServerURL,
 		},
+		{
+			Name:  "MESOS_SANDBOX_VAR",
+			Value: &config.MesosSandboxVar,
+		},
 	}
 
 	if config.K3SAgentLabels != nil {

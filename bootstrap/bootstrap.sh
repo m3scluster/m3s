@@ -3,7 +3,7 @@
 cat /etc/resolv.conf
 
 apt-get update -y
-apt-get install -y containerd dnsmasq containernetworking-plugins tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2 dnsutils net-tools
+apt-get install -y jq containerd dnsmasq containernetworking-plugins tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2 dnsutils net-tools
 mkdir -p /etc/cni/net.d
 
 export KUBERNETES_VERSION=v1.21.1
@@ -11,6 +11,14 @@ export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export KUBECONFIG=$MESOS_SANDBOX/kubeconfig.yaml
+
+## Export json as environment variables
+## example: MESOS_SANDBOX_VAR='{ "CUSTOMER":"test-ltd" }'
+## echo $CUSTOMER >> test-ltd
+for s in $(echo $MESOS_SANDBOX_VAR | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ); do
+  export $s
+done
+
 
 update-alternatives --set iptables /usr/sbin/iptables-legacy
 curl -sfL https://get.k3s.io | sh -

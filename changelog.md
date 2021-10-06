@@ -11,6 +11,7 @@
 - Add configurable FrameworkHostname
 - Add FrameworkName to Port Label
 - Add Kubernetes Status to Framework, bootstrap Server and Mesos-CLI
+- Add the possibility to set custom environment variables for the bootstrap.sh
 
 ## v0.1.0
 

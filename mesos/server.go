@@ -210,6 +210,10 @@ func StartK3SServer(id int) {
 				return &x
 			}(),
 		},
+		{
+			Name:  "MESOS_SANDBOX_VAR",
+			Value: &config.MesosSandboxVar,
+		},
 	}
 
 	d, _ := json.Marshal(&cmd)

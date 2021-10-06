@@ -30,6 +30,7 @@ func init() {
 	config.Principal = os.Getenv("MESOS_PRINCIPAL")
 	config.Username = os.Getenv("MESOS_USERNAME")
 	config.Password = os.Getenv("MESOS_PASSWORD")
+	config.MesosSandboxVar = util.Getenv("MESOS_SANDBOX_VAR", "")
 	config.MesosMasterServer = os.Getenv("MESOS_MASTER")
 	config.MesosCNI = util.Getenv("MESOS_CNI", "weave")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
