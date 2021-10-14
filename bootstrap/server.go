@@ -58,14 +58,15 @@ func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
 
 // APIGetKubeVersion get out the kubernetes version number
 func APIGetKubeVersion(w http.ResponseWriter, r *http.Request) {
-	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "get", "--raw=/livez/ping").Output()
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "version", "-o=json").Output()
 	if err != nil {
-		logrus.Error("Health to Kubernetes Server: ", err)
+		logrus.Error("Get Kubernetes Version: ", err, stdout)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Api-Service", "v0")
 
 	w.Write(stdout)
 }

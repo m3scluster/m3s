@@ -12,7 +12,7 @@ import (
 // example:
 // curl -X GET 127.0.0.1:10000/v0/server/version'
 func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
-	logrus.Debug("HTTP GET V0GetKubeconfig")
+	logrus.Debug("HTTP GET V0GetKubeVersion")
 
 	auth := CheckAuth(r, w)
 
