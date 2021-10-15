@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Reflate Kubernetes Server or Agent - M3S - Apache Mesos Kubernetes Framework</title>
+        <title>Count of running Kubernetes Server/Agents - M3S - Apache Mesos Kubernetes Framework</title>
                 
 
         <!-- Custom HTML head -->
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="../cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="../cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="../cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../api/reflate.html" class="active"><strong aria-hidden="true">5.</strong> Reflate Kubernetes Server or Agent</a></li><li class="chapter-item expanded "><a href="../api/scale_k3s.html"><strong aria-hidden="true">6.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="../api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="../api/get_kubeversion.html"><strong aria-hidden="true">8.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded "><a href="../api/get_status.html"><strong aria-hidden="true">9.</strong> Get M3s status information</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="../create_nginx_ingress.html"><strong aria-hidden="true">10.</strong> Create NGINX ingress with traefik</a></li><li class="chapter-item expanded "><a href="../containerd.html"><strong aria-hidden="true">11.</strong> Containerd sideload configuration</a></li></ol>            </div>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="../cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="../cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="../cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../api/scale_k3s.html"><strong aria-hidden="true">5.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="../api/count_k3s.html" class="active"><strong aria-hidden="true">6.</strong> Count of running Kubernetes Server/Agents</a></li><li class="chapter-item expanded "><a href="../api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="../api/get_kubeversion.html"><strong aria-hidden="true">8.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded "><a href="../api/get_status.html"><strong aria-hidden="true">9.</strong> Get M3s status information</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="../create_nginx_ingress.html"><strong aria-hidden="true">10.</strong> Create NGINX ingress with traefik</a></li><li class="chapter-item expanded "><a href="../containerd.html"><strong aria-hidden="true">11.</strong> Containerd sideload configuration</a></li></ol>            </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
@@ -143,20 +143,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="reflate-kubernetes-server-or-agent"><a class="header" href="#reflate-kubernetes-server-or-agent">Reflate Kubernetes Server or Agent</a></h1>
-<p>To reflate Kubernetes services, we have to call the following API.</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/reflate -d 'JSON'
+                        <h1 id="show-count-of-running-kubernetes-serversagents"><a class="header" href="#show-count-of-running-kubernetes-serversagents">Show count of running Kubernetes Servers/Agents</a></h1>
+<p>To get out information about the current running and/or expected Kubernetes Servers/Agents, we can do
+the following call.</p>
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/scale
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                                                    <a rel="prev" href="../cli/kubectl.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                                    <a rel="prev" href="../api/scale_k3s.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
-                                                    <a rel="next" href="../api/scale_k3s.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                                    <a rel="next" href="../api/get_kubeconfig.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -166,11 +167,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                                    <a rel="prev" href="../cli/kubectl.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                    <a rel="prev" href="../api/scale_k3s.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
-                                    <a rel="next" href="../api/scale_k3s.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                    <a rel="next" href="../api/get_kubeconfig.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                             </nav>
