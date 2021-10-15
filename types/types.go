@@ -118,3 +118,9 @@ type UserCredentials struct {
 	Username string
 	Password string
 }
+
+// Count shows the current scale state of agent/server
+type Count struct {
+	Scale   int // how many should run
+	Running int // how many are running
+}

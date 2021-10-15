@@ -13,6 +13,7 @@
 - Add Kubernetes Status to Framework, bootstrap Server and Mesos-CLI
 - Add the possibility to set custom environment variables for the bootstrap.sh
 - Remove unneeded API calls
+- Add API call to get the current count of running and expected Kubernetes Server/Agents.
 
 ## v0.1.0
 

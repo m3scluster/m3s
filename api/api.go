@@ -23,7 +23,9 @@ func SetConfig(cfg *cfg.Config) {
 func Commands() *mux.Router {
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
+	rtr.HandleFunc("/v0/agent/scale", V0GetCountK3SAgent).Methods("GET")
 	rtr.HandleFunc("/v0/server/scale/{count}", V0ScaleK3S).Methods("GET")
+	rtr.HandleFunc("/v0/server/scale", V0GetCountK3S).Methods("GET")
 	rtr.HandleFunc("/v0/server/config", V0GetKubeconfig).Methods("GET")
 	rtr.HandleFunc("/v0/server/version", V0GetKubeVersion).Methods("GET")
 	rtr.HandleFunc("/v0/etcd/scale/{count}", V0ScaleEtcd).Methods("GET")

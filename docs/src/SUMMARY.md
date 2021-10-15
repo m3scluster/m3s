@@ -11,6 +11,7 @@
 # API
 
 - [Scale up/down Kubernetes Service](api/scale_k3s.md)
+- [Count of running Kubernetes Server/Agents](api/count_k3s.md)
 - [Get Kubeconfig](api/get_kubeconfig.md)
 - [Get Kubernetes Version](api/get_kubeversion.md)
 - [Get M3s status information](api/get_status.md)

@@ -27,21 +27,21 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("GetKubeConfig: Error 1: ", err, res)
+		logrus.Error("V0GetKubeConfig: Error 1: ", err, res)
 		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		logrus.Error("GetKubeConfig: Error Status is not 200")
+		logrus.Error("V0GetKubeConfig: Error Status is not 200")
 		return
 	}
 
 	content, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
-		logrus.Error("GetKubeConfig: Error 2: ", err, res)
+		logrus.Error("V0GetKubeConfig: Error 2: ", err, res)
 		return
 	}
 
