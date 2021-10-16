@@ -2,6 +2,8 @@
 
 ## master
 
+## v0.2.0
+
 - Add status information about the M3s services.
 - Mesos-CLI: Get out the M3s status information.
 - Add Mesos Label support to (as example) control traefik
