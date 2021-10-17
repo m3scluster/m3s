@@ -211,6 +211,10 @@ func StartK3SAgent(id int) {
 		cmd.Labels = config.K3SAgentLabels
 	}
 
+	if config.K3SAgentLabels != nil {
+		cmd.Labels = config.K3SAgentLabels
+	}
+
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("Scheduled K3S Agent: ", string(d))
 
