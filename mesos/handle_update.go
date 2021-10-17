@@ -33,7 +33,7 @@ func HandleUpdate(event *mesosproto.Event) error {
 	tmp := config.State[taskID]
 	tmp.Status = &update.Status
 
-	logrus.Debug("HandleUpdate: ", update.Status)
+	logrus.Debugf("HandleUpdate: %s Status %s ", taskID, update.Status.State.String())
 
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED:

@@ -11,7 +11,6 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
 	util "github.com/AVENTER-UG/util"
-	"github.com/Showmax/go-fqdn"
 	"github.com/sirupsen/logrus"
 )
 
@@ -22,25 +21,21 @@ func main() {
 	util.SetLogging(config.LogLevel, config.EnableSyslog, config.AppName)
 	logrus.Println(config.AppName + " build " + MinVersion)
 
-	hostname := fqdn.Get()
 	listen := fmt.Sprintf(":%s", config.FrameworkPort)
-
-	logrus.Info(hostname)
 
 	failoverTimeout := 5000.0
 	checkpoint := true
-	webuiurl := fmt.Sprintf("http://%s%s", hostname, listen)
+	webuiurl := fmt.Sprintf("http://%s%s", config.FrameworkHostname, listen)
 
 	config.FrameworkInfoFile = fmt.Sprintf("%s/%s", config.FrameworkInfoFilePath, "framework.json")
 	config.CommandChan = make(chan cfg.Command, 100)
-	config.Hostname = hostname
+	config.Hostname = config.FrameworkHostname
 	config.Listen = listen
 
 	config.State = map[string]cfg.State{}
 
 	config.FrameworkInfo.User = config.FrameworkUser
 	config.FrameworkInfo.Name = config.FrameworkName
-	config.FrameworkInfo.Hostname = &hostname
 	config.FrameworkInfo.WebUiURL = &webuiurl
 	config.FrameworkInfo.FailoverTimeout = &failoverTimeout
 	config.FrameworkInfo.Checkpoint = &checkpoint
@@ -56,6 +51,8 @@ func main() {
 		json.Unmarshal([]byte(frameworkJSON), &config)
 		mesos.Reconcile()
 	}
+	// The Hostname should ever be set after reading the state file.
+	config.FrameworkInfo.Hostname = &config.FrameworkHostname
 
 	mesos.SetConfig(&config)
 	api.SetConfig(&config)
