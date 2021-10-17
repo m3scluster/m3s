@@ -30,6 +30,7 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/status", APIHealth).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/version", APIGetKubeVersion).Methods("GET")
+	rtr.HandleFunc("/status?verbose", APIStatus).Methods("GET")
 
 	return rtr
 }
@@ -57,14 +58,15 @@ func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
 
 // APIGetKubeVersion get out the kubernetes version number
 func APIGetKubeVersion(w http.ResponseWriter, r *http.Request) {
-	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "get", "--raw=/livez/ping").Output()
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "version", "-o=json").Output()
 	if err != nil {
-		logrus.Error("Health to Kubernetes Server: ", err)
+		logrus.Error("Get Kubernetes Version: ", err, stdout)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Api-Service", "v0")
 
 	w.Write(stdout)
 }
@@ -138,6 +140,25 @@ func deployTraefikDashboard() {
 	TraefikDashboardInstalled = true
 }
 
+// APIStatus give out the status of the kubernetes server
+func APIStatus(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	logrus.Debug("Status Information")
+
+	// check if the kubernetes server is working
+	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "get", "--raw='/readyz?verbose'").Output()
+
+	if err != nil {
+		logrus.Error("Health to Kubernetes Server: ", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Write(stdout)
+}
+
 func main() {
 	util.SetLogging("INFO", false, "GO-K3S-API")
 
@@ -153,5 +174,4 @@ func main() {
 	if err := http.ListenAndServe(*bind+":"+*port, nil); err != nil {
 		logrus.Fatalln("ListenAndServe: ", err)
 	}
-
 }

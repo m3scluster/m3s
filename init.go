@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	util "github.com/AVENTER-UG/util"
+	"github.com/Showmax/go-fqdn"
 	"github.com/sirupsen/logrus"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -24,14 +25,16 @@ func init() {
 	config.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
 	config.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")
 	config.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
+	config.FrameworkHostname = util.Getenv("FRAMEWORK_HOSTNAME", fqdn.Get())
 	config.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
 	config.Principal = os.Getenv("MESOS_PRINCIPAL")
 	config.Username = os.Getenv("MESOS_USERNAME")
 	config.Password = os.Getenv("MESOS_PASSWORD")
+	config.MesosSandboxVar = util.Getenv("MESOS_SANDBOX_VAR", "")
 	config.MesosMasterServer = os.Getenv("MESOS_MASTER")
 	config.MesosCNI = util.Getenv("MESOS_CNI", "weave")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
-	config.Domain = os.Getenv("DOMAIN")
+	config.Domain = util.Getenv("DOMAIN", "local")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
 	config.Credentials.Username = os.Getenv("AUTH_USERNAME")
@@ -52,16 +55,39 @@ func init() {
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.M3SBootstrapServerPort, _ = strconv.Atoi(util.Getenv("M3S_BOOTSTRAP_SERVER_PORT", "6443"))
 	config.K3SCPU, _ = strconv.ParseFloat(util.Getenv("K3S_CPU", "0.1"), 64)
-	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1000"), 64)
+	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1200"), 64)
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 
+	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
 
 		if err != nil {
 			logrus.Fatal("The env variable K3S_AGENT_LABELS have a syntax failure: ", err)
+		}
+	}
+
+	// if the constraint is set, determine which kind of
+	config.K3SServerConstraint = util.Getenv("K3S_SERVER_CONSTRAINT", "")
+	if strings.Contains(config.K3SServerConstraint, ":") {
+		constraint := strings.Split(config.K3SServerConstraint, ":")
+
+		switch strings.ToLower(constraint[0]) {
+		case "hostname":
+			config.K3SServerConstraintHostname = strings.ToLower(constraint[1])
+		}
+	}
+
+	// if the constraint is set, determine which kind of
+	config.K3SAgentConstraint = util.Getenv("K3S_AGENT_CONSTRAINT", "")
+	if strings.Contains(config.K3SAgentConstraint, ":") {
+		constraint := strings.Split(config.K3SAgentConstraint, ":")
+
+		switch strings.ToLower(constraint[0]) {
+		case "hostname":
+			config.K3SAgentConstraintHostname = strings.ToLower(constraint[1])
 		}
 	}
 

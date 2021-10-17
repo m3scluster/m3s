@@ -2,9 +2,20 @@
 
 ## master
 
+## v0.2.0
+
 - Add status information about the M3s services.
 - Mesos-CLI: Get out the M3s status information.
 - Add Mesos Label support to (as example) control traefik
+- Add possibility to run the K8 Server and Agent on a specified hostname
+- Fix status information of all m3s services
+- Mesos-CLI: Resolve framework ID also by name
+- Add configurable FrameworkHostname
+- Add FrameworkName to Port Label
+- Add Kubernetes Status to Framework, bootstrap Server and Mesos-CLI
+- Add the possibility to set custom environment variables for the bootstrap.sh
+- Remove unneeded API calls
+- Add API call to get the current count of running and expected Kubernetes Server/Agents.
 
 ## v0.1.0
 

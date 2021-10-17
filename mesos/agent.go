@@ -3,6 +3,7 @@ package mesos
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 	"sync/atomic"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
@@ -13,33 +14,43 @@ import (
 )
 
 // SearchMissingK3SAgent Check if all agents are running. If one is missing, restart it.
-func SearchMissingK3SAgent() {
+func SearchMissingK3SAgent(restart bool) bool {
+	status := make([]mesosproto.TaskState, config.K3SAgentMax)
+	allRunning := true
 	if config.State != nil {
 		for i := 0; i < config.K3SAgentMax; i++ {
 			state := StatusK3SAgent(i)
 			if state != nil {
+				status[i] = *state.Status.State
 				if *state.Status.State != mesosproto.TASK_RUNNING {
+					allRunning = false
 					logrus.Debug("Missing K3SAgent: ", i)
-					StartK3SAgent(i)
+					if restart {
+						StartK3SAgent(i)
+					}
 				}
+			} else {
+				allRunning = false
 			}
 		}
+	} else {
+		allRunning = false
 	}
+	config.M3SStatus.Agent = status
+	return allRunning
 }
 
-// StatusK3SAgent Get out Status of the given agent ID
+// StatusK3SAgent Get out Status of the given agent
 func StatusK3SAgent(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
 			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsK3SAgent == true {
-					config.M3SStatus.Agent = element.Status.State
+				if element.Command.InternalID == id && element.Command.IsK3SAgent {
 					return &element
 				}
 			}
 		}
 	}
-	config.M3SStatus.Agent = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 
@@ -161,12 +172,12 @@ func StartK3SAgent(id int) {
 			Ports: []mesosproto.Port{
 				{
 					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := "m3s-http"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-http"; return &x }(),
 					Protocol: cmd.DockerPortMappings[0].Protocol,
 				},
 				{
 					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := "m3s-https"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-https"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
 				},
 			},
@@ -190,6 +201,14 @@ func StartK3SAgent(id int) {
 			Name:  "K3S_URL",
 			Value: &config.K3SServerURL,
 		},
+		{
+			Name:  "MESOS_SANDBOX_VAR",
+			Value: &config.MesosSandboxVar,
+		},
+	}
+
+	if config.K3SAgentLabels != nil {
+		cmd.Labels = config.K3SAgentLabels
 	}
 
 	if config.K3SAgentLabels != nil {

@@ -27,7 +27,7 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 	}
 
 	// Save state of the new task
-	newTaskID := "k3sframework_" + cmd.TaskName + "_" + strconv.Itoa(int(cmd.TaskID))
+	newTaskID := "m3s_" + cmd.TaskName + "_" + strconv.Itoa(int(cmd.TaskID))
 	tmp := config.State[newTaskID]
 	tmp.Command = cmd
 	config.State[newTaskID] = tmp

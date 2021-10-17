@@ -11,18 +11,31 @@ import (
 )
 
 // SearchMissingEtcd Check if all agents are running. If one is missing, restart it.
-func SearchMissingEtcd() {
+func SearchMissingEtcd(restart bool) bool {
+	status := make([]mesosproto.TaskState, config.ETCDMax)
+	allRunning := true
+
 	if config.State != nil {
 		for i := 0; i < config.ETCDMax; i++ {
 			state := StatusEtcd(i)
 			if state != nil {
+				status[i] = *state.Status.State
 				if *state.Status.State != mesosproto.TASK_RUNNING {
+					allRunning = false
 					logrus.Debug("Missing ETCD: ", i)
-					StartEtcd(i)
+					if restart {
+						StartEtcd(i)
+					}
 				}
+			} else {
+				allRunning = false
 			}
 		}
+	} else {
+		allRunning = false
 	}
+	config.M3SStatus.Etcd = status
+	return allRunning
 }
 
 // StatusEtcd Get out Status of the given ID
@@ -30,14 +43,12 @@ func StatusEtcd(id int) *cfg.State {
 	if config.State != nil {
 		for _, element := range config.State {
 			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsETCD == true {
-					config.M3SStatus.Etcd = element.Status.State
+				if element.Command.InternalID == id && element.Command.IsETCD {
 					return &element
 				}
 			}
 		}
 	}
-	config.M3SStatus.Etcd = mesosproto.TASK_UNKNOWN.Enum()
 	return nil
 }
 
