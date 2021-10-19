@@ -2,6 +2,8 @@
 
 ## master
 
+- Bootstrap: Add update call to update the bootstrap server
+
 ## v0.2.0
 
 - Add status information about the M3s services.

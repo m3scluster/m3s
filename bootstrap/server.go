@@ -5,7 +5,9 @@ import (
 	"io/ioutil"
 	"net/http"
 	_ "net/http/pprof"
+	"os"
 	"os/exec"
+	"strconv"
 
 	"github.com/AVENTER-UG/util"
 	"github.com/gorilla/mux"
@@ -27,6 +29,7 @@ func Commands() *mux.Router {
 
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/versions", APIVersions).Methods("GET")
+	rtr.HandleFunc("/update", APIUpdate).Methods("GET")
 	rtr.HandleFunc("/status", APIHealth).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/version", APIGetKubeVersion).Methods("GET")
@@ -40,6 +43,20 @@ func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "-")
 	w.Write([]byte("/api/k3s/v0"))
+}
+
+// APIUpdate do a update of the bootstrap server
+func APIUpdate(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	stdout, err := exec.Command("/mnt/mesos/sandbox/update", strconv.Itoa(os.Getpid())).Output()
+	if err != nil {
+		logrus.Error("Do update", err, stdout)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 }
 
 // APIGetKubeConfig get out the kubernetes config file
@@ -165,7 +182,7 @@ func main() {
 	bind := flag.String("bind", "0.0.0.0", "The IP address to bind")
 	port := flag.String("port", "10422", "The port to listen")
 
-	logrus.Println("GO-K3S-API build"+MinVersion, *bind, *port)
+	logrus.Println("GO-K3S-API build "+MinVersion, *bind, *port)
 
 	DashboardInstalled = false
 
