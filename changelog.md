@@ -2,7 +2,8 @@
 
 ## master
 
-- Bootstrap: Add update call to update the bootstrap server
+- Bootstrap: Add update call to update the bootstrap server.
+- Add update api call to update the bootstrap server.
 
 ## v0.2.0
 

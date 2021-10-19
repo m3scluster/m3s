@@ -137,19 +137,18 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)
-		decline := &mesosproto.Call{
-			Type:    mesosproto.Call_DECLINE,
-			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
-		}
-		return Call(decline)
+		return Call(declineOffer(offerIds))
 	default:
 		// decline unneeded offer
 		logrus.Info("Decline unneeded offer: ", offerIds)
-		decline := &mesosproto.Call{
-			Type:    mesosproto.Call_DECLINE,
-			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
-		}
-		return Call(decline)
-
+		return Call(declineOffer(offerIds))
 	}
+}
+
+func declineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
+	decline := &mesosproto.Call{
+		Type:    mesosproto.Call_DECLINE,
+		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
+	}
+	return decline
 }
