@@ -32,6 +32,7 @@ then
   curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/dev/bootstrap/update.sh > $MESOS_SANDBOX/update
   chmod +x $MESOS_SANDBOX/kubectl
   chmod +x $MESOS_SANDBOX/server
+  chmod +x $MESOS_SANDBOX/update
   exec $MESOS_SANDBOX/server &
 fi
 if [[ "$K3SFRAMEWORK_TYPE" == "agent" ]]
