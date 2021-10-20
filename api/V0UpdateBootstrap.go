@@ -1,6 +1,7 @@
 package api
 
 import (
+	"io/ioutil"
 	"net/http"
 	"strconv"
 
@@ -36,8 +37,10 @@ func V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	content, err := ioutil.ReadAll(res.Body)
+
 	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
-	w.Write([]byte("ok"))
+	w.Write(content)
 }

@@ -88,6 +88,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 
 	// check if the current Version diffs to the online version. If yes, then start the update.
 	if version.BootstrapBuild != MinVersion {
+		w.Write([]byte("Start bootstrap Server update"))
 		logrus.Info("Start update")
 		stdout, err := exec.Command("/mnt/mesos/sandbox/update", strconv.Itoa(os.Getpid())).Output()
 		if err != nil {
@@ -96,7 +97,6 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
 }
 
 // APIGetKubeConfig get out the kubernetes config file
