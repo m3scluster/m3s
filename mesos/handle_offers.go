@@ -73,13 +73,13 @@ func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offe
 		if cmd.IsK3SServer {
 			if config.K3SServerConstraintHostname != "" && config.K3SServerConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
-				count = n
+				return offers.Offers[n], offerIds
 			}
 		}
 		if cmd.IsK3SAgent {
 			if config.K3SAgentConstraintHostname != "" && config.K3SAgentConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
-				count = n
+				return offers.Offers[n], offerIds
 			}
 		}
 	}
