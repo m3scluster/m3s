@@ -124,3 +124,10 @@ type Count struct {
 	Scale   int // how many should run
 	Running int // how many are running
 }
+
+// Version shows the current version of m3s
+type Version struct {
+	BootstrapBuild string `json:"bootstrap_build"`
+	M3sBuild       string `json:"m3s_build"`
+	M3sBersion     string `json:"m3s_version"`
+}
