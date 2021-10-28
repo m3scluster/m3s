@@ -51,7 +51,6 @@ func CheckAuth(r *http.Request, w http.ResponseWriter) bool {
 	}
 
 	if username == config.Credentials.Username && password == config.Credentials.Password {
-		w.WriteHeader(http.StatusOK)
 		return true
 	}
 
