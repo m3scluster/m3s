@@ -73,13 +73,13 @@ func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offe
 		if cmd.IsK3SServer {
 			if config.K3SServerConstraintHostname != "" && config.K3SServerConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
-				count = n
+				return offers.Offers[n], offerIds
 			}
 		}
 		if cmd.IsK3SAgent {
 			if config.K3SAgentConstraintHostname != "" && config.K3SAgentConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
-				count = n
+				return offers.Offers[n], offerIds
 			}
 		}
 	}
@@ -137,19 +137,18 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)
-		decline := &mesosproto.Call{
-			Type:    mesosproto.Call_DECLINE,
-			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
-		}
-		return Call(decline)
+		return Call(declineOffer(offerIds))
 	default:
 		// decline unneeded offer
 		logrus.Info("Decline unneeded offer: ", offerIds)
-		decline := &mesosproto.Call{
-			Type:    mesosproto.Call_DECLINE,
-			Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
-		}
-		return Call(decline)
-
+		return Call(declineOffer(offerIds))
 	}
+}
+
+func declineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
+	decline := &mesosproto.Call{
+		Type:    mesosproto.Call_DECLINE,
+		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
+	}
+	return decline
 }

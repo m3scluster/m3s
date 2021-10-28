@@ -18,7 +18,20 @@ M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.
 ![Mesos](vx_images/Mesos.png)
 
 
-### Kubernetes
+### Kubernetes Dashboard
+
+Get the token and start the proxy.
+
+```bash
+
+kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
+kubectl proxy
+
+```
+
+And then open the browser:
+
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
 ![Kubernetes](vx_images/Kubernetes.png)
 

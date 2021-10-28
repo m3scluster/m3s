@@ -28,9 +28,11 @@ curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/re
 if [[ "$K3SFRAMEWORK_TYPE" == "server" ]]
 then
   curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl > $MESOS_SANDBOX/kubectl
-  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/server > $MESOS_SANDBOX/server
+  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/dev/bootstrap/server > $MESOS_SANDBOX/server
+  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/dev/bootstrap/update.sh > $MESOS_SANDBOX/update
   chmod +x $MESOS_SANDBOX/kubectl
   chmod +x $MESOS_SANDBOX/server
+  chmod +x $MESOS_SANDBOX/update
   exec $MESOS_SANDBOX/server &
 fi
 if [[ "$K3SFRAMEWORK_TYPE" == "agent" ]]

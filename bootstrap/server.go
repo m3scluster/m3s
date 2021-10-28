@@ -1,15 +1,20 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"io/ioutil"
 	"net/http"
 	_ "net/http/pprof"
+	"os"
 	"os/exec"
+	"strconv"
 
 	"github.com/AVENTER-UG/util"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
+
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 )
 
 // MinVersion is the version number of this program
@@ -27,6 +32,7 @@ func Commands() *mux.Router {
 
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/versions", APIVersions).Methods("GET")
+	rtr.HandleFunc("/update", APIUpdate).Methods("PUT")
 	rtr.HandleFunc("/status", APIHealth).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
 	rtr.HandleFunc("/api/k3s/v0/version", APIGetKubeVersion).Methods("GET")
@@ -40,6 +46,59 @@ func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "-")
 	w.Write([]byte("/api/k3s/v0"))
+}
+
+// APIUpdate do a update of the bootstrap server
+func APIUpdate(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+
+	// check first if there is a update
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", "https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/.version.json", nil)
+	req.Close = true
+	res, err := client.Do(req)
+
+	if err != nil {
+		logrus.Error("APIUpdate: Error 1: ", err, res)
+		return
+	}
+
+	defer res.Body.Close()
+
+	if res.StatusCode != 200 {
+		logrus.Error("APIUpdate: Error Status is not 200")
+		return
+	}
+
+	body, err := ioutil.ReadAll(r.Body)
+
+	if err != nil {
+		logrus.Error("APIUpdate: Error 2: ", err, res)
+		return
+	}
+
+	var version cfg.Version
+	err = json.Unmarshal(body, &version)
+
+	if err != nil {
+		logrus.Error("APIUpdate: Error 3: ", err, res)
+		return
+	}
+
+	// check if the current Version diffs to the online version. If yes, then start the update.
+	if version.BootstrapBuild != MinVersion {
+		w.Write([]byte("Start bootstrap server update"))
+		logrus.Info("Start update")
+		stdout, err := exec.Command("/mnt/mesos/sandbox/update", strconv.Itoa(os.Getpid())).Output()
+		if err != nil {
+			logrus.Error("Do update", err, stdout)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+	} else {
+		w.Write([]byte("No update for the bootstrap server"))
+	}
 }
 
 // APIGetKubeConfig get out the kubernetes config file
@@ -165,7 +224,7 @@ func main() {
 	bind := flag.String("bind", "0.0.0.0", "The IP address to bind")
 	port := flag.String("port", "10422", "The port to listen")
 
-	logrus.Println("GO-K3S-API build"+MinVersion, *bind, *port)
+	logrus.Println("GO-K3S-API build "+MinVersion, *bind, *port)
 
 	DashboardInstalled = false
 
