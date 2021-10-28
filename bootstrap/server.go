@@ -82,7 +82,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &version)
 
 	if err != nil {
-		logrus.Error("APIUpdate: Error 3: ", err, res)
+		logrus.Error("APIUpdate: Error 3: ", err, body)
 		return
 	}
 
