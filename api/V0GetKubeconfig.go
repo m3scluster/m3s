@@ -49,7 +49,6 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	destURL := config.M3SBootstrapServerHostname + ":" + strconv.Itoa(config.K3SServerPort)
 	kubconf := strings.Replace(string(content), "127.0.0.1:6443", destURL, -1)
 
-	w.WriteHeader(http.StatusAccepted)
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write([]byte(kubconf))
