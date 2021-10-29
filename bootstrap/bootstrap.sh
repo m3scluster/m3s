@@ -3,7 +3,7 @@
 cat /etc/resolv.conf
 
 apt-get update -y
-apt-get install -y jq containerd dnsmasq containernetworking-plugins tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2 dnsutils net-tools
+apt-get install -y jq containerd dnsmasq containernetworking-plugins tcpdump curl inetutils-ping iptables fuse-overlayfs procps bash iproute2 dnsutils net-tools systemctl
 mkdir -p /etc/cni/net.d
 
 export KUBERNETES_VERSION=v1.21.1
