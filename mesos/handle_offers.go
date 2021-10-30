@@ -1,6 +1,8 @@
 package mesos
 
 import (
+	"errors"
+
 	"github.com/sirupsen/logrus"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -64,8 +66,9 @@ func defaultResources(cmd cfg.Command) []mesosproto.Resource {
 }
 
 // getOffer get out the offer for the mesos task
-func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offer, []mesosproto.OfferID) {
+func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offer, []mesosproto.OfferID, bool) {
 	offerIds := []mesosproto.OfferID{}
+	var empty mesosproto.Offer
 	count := 0
 	for n, offer := range offers.Offers {
 		logrus.Debug("Got Offer From:", offer.GetHostname())
@@ -73,29 +76,42 @@ func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offe
 		if cmd.IsK3SServer {
 			if config.K3SServerConstraintHostname != "" && config.K3SServerConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
-				return offers.Offers[n], offerIds
+				return offers.Offers[n], offerIds, true
 			}
 		}
 		if cmd.IsK3SAgent {
 			if config.K3SAgentConstraintHostname != "" && config.K3SAgentConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
-				return offers.Offers[n], offerIds
+				return offers.Offers[n], offerIds, true
 			}
 		}
 	}
 
-	return offers.Offers[count], offerIds
+	if (cmd.IsK3SServer && config.K3SServerConstraintHostname != "") || (cmd.IsK3SAgent && config.K3SAgentConstraintHostname != "") {
+		return empty, nil, false
+	}
+
+	return offers.Offers[count], offerIds, true
 
 }
 
 // HandleOffers will handle the offers event of mesos
 func HandleOffers(offers *mesosproto.Event_Offers) error {
-	_, offerIds := getOffer(offers, cfg.Command{})
+	_, offerIds, found := getOffer(offers, cfg.Command{})
+
+	if !found {
+		return errors.New("constraint: could not find matched offer")
+	}
 
 	select {
 	case cmd := <-config.CommandChan:
 
-		takeOffer, offerIds := getOffer(offers, cmd)
+		takeOffer, offerIds, found := getOffer(offers, cmd)
+
+		if !found {
+			return errors.New("constraint: could not find matched offer")
+		}
+
 		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
 
 		var taskInfo []mesosproto.TaskInfo
