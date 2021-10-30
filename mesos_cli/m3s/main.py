@@ -110,7 +110,7 @@ class M3s(PluginBase):
             print("Scale up/down " + service)
 
             framework_address = get_framework_address(
-                argv["<framework-id>"], master, config
+                self.get_framework_id(argv), master, config
             )
             data = http.read_endpoint(
                 framework_address, "/v0/" + service + "/scale/" + argv["<count>"], self
