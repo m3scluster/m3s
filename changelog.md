@@ -8,6 +8,7 @@
   on a other worker as defined in the contrains variable.
 - Fix mesos-cli to determine framework uuid by name.
 
+
 ## v0.2.0
 
 - Add status information about the M3s services.

@@ -67,6 +67,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
+		w.WriteHeader(http.StatusInternalServerError)
 		logrus.Error("APIUpdate: Error Status is not 200")
 		return
 	}
@@ -74,6 +75,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		logrus.Error("APIUpdate: Error 2: ", err, res)
 		return
 	}
@@ -82,6 +84,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &version)
 
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		logrus.Error("APIUpdate: Error 3: ", err, body)
 		return
 	}
