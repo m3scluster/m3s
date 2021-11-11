@@ -106,7 +106,6 @@ func StartK3SAgent(id int) {
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.InternalID = id
-	cmd.ContainerImage = config.ImageK3S
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
 	cmd.TaskName = config.PrefixTaskName + "agent"

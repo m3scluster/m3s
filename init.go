@@ -27,7 +27,6 @@ func init() {
 	config.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
 	config.FrameworkHostname = util.Getenv("FRAMEWORK_HOSTNAME", fqdn.Get())
 	config.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
-	config.Principal = os.Getenv("MESOS_PRINCIPAL")
 	config.Username = os.Getenv("MESOS_USERNAME")
 	config.Password = os.Getenv("MESOS_PASSWORD")
 	config.MesosSandboxVar = util.Getenv("MESOS_SANDBOX_VAR", "")

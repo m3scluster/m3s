@@ -39,7 +39,6 @@ func main() {
 	config.FrameworkInfo.WebUiURL = &webuiurl
 	config.FrameworkInfo.FailoverTimeout = &failoverTimeout
 	config.FrameworkInfo.Checkpoint = &checkpoint
-	config.FrameworkInfo.Principal = &config.Principal
 	config.FrameworkInfo.Role = &config.FrameworkRole
 	//	config.FrameworkInfo.Capabilities = []mesosproto.FrameworkInfo_Capability{
 	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
