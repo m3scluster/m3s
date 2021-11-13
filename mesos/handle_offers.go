@@ -1,85 +1,28 @@
 package mesos
 
 import (
-	"errors"
-
 	"github.com/sirupsen/logrus"
 
-	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 )
 
-func defaultResources(cmd cfg.Command) []mesosproto.Resource {
-	CPU := "cpus"
-	MEM := "mem"
-	cpu := cmd.CPU
-	mem := cmd.Memory
-	PORT := "ports"
-
-	res := []mesosproto.Resource{
-		{
-			Name:   CPU,
-			Type:   mesosproto.SCALAR.Enum(),
-			Scalar: &mesosproto.Value_Scalar{Value: cpu},
-		},
-		{
-			Name:   MEM,
-			Type:   mesosproto.SCALAR.Enum(),
-			Scalar: &mesosproto.Value_Scalar{Value: mem},
-		},
-	}
-
-	var portBegin, portEnd uint64
-
-	if cmd.DockerPortMappings != nil {
-		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
-		portEnd = portBegin + 2
-
-		res = []mesosproto.Resource{
-			{
-				Name:   CPU,
-				Type:   mesosproto.SCALAR.Enum(),
-				Scalar: &mesosproto.Value_Scalar{Value: cpu},
-			},
-			{
-				Name:   MEM,
-				Type:   mesosproto.SCALAR.Enum(),
-				Scalar: &mesosproto.Value_Scalar{Value: mem},
-			},
-			{
-				Name: PORT,
-				Type: mesosproto.RANGES.Enum(),
-				Ranges: &mesosproto.Value_Ranges{
-					Range: []mesosproto.Value_Range{
-						{
-							Begin: portBegin,
-							End:   portEnd,
-						},
-					},
-				},
-			},
-		}
-	}
-
-	return res
-}
-
 // getOffer get out the offer for the mesos task
-func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offer, []mesosproto.OfferID, bool) {
+func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID, bool) {
 	offerIds := []mesosproto.OfferID{}
 	var empty mesosproto.Offer
 	count := 0
 	for n, offer := range offers.Offers {
 		logrus.Debug("Got Offer From:", offer.GetHostname())
 		offerIds = append(offerIds, offer.ID)
-		if cmd.IsK3SServer {
+		if cmd.TaskName == "k3sserver" {
 			if config.K3SServerConstraintHostname != "" && config.K3SServerConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
 				return offers.Offers[n], offerIds, true
 			}
 		}
-		if cmd.IsK3SAgent {
+		if cmd.TaskName == "k3sagent" {
 			if config.K3SAgentConstraintHostname != "" && config.K3SAgentConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
 				return offers.Offers[n], offerIds, true
@@ -87,48 +30,38 @@ func getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offe
 		}
 	}
 
-	if (cmd.IsK3SServer && config.K3SServerConstraintHostname != "") || (cmd.IsK3SAgent && config.K3SAgentConstraintHostname != "") {
+	if (cmd.TaskName == "k3sserver") && (config.K3SServerConstraintHostname != "") || (cmd.TaskName == "k3sagent") && (config.K3SAgentConstraintHostname != "") {
 		return empty, nil, false
 	}
-
 	return offers.Offers[count], offerIds, true
-
 }
 
 // HandleOffers will handle the offers event of mesos
 func HandleOffers(offers *mesosproto.Event_Offers) error {
-	_, offerIds, found := getOffer(offers, cfg.Command{})
-
-	if !found {
-		return errors.New("constraint: could not find matched offer")
-	}
-
+	_, offerIds, found := getOffer(offers, mesosutil.Command{})
 	select {
-	case cmd := <-config.CommandChan:
-
-		takeOffer, offerIds, found := getOffer(offers, cmd)
+	case cmd := <-framework.CommandChan:
+		if cmd.TaskID == "" {
+			return nil
+		}
+		var takeOffer mesosproto.Offer
+		takeOffer, offerIds, found = getOffer(offers, cmd)
+		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
 
 		if !found {
-			return errors.New("constraint: could not find matched offer")
+			return nil
 		}
-
-		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
 
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0
 
-		// if its the K3SServer, remember the mesos agents hostename and hostport
-		if cmd.IsK3SServer {
+		taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
+
+		if cmd.TaskName == "k3sserver" {
 			config.M3SBootstrapServerHostname = takeOffer.GetHostname()
 			config.M3SBootstrapServerPort = int(cmd.DockerPortMappings[0].HostPort)
 			config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
 		}
-
-		logrus.Debug("Schedule Command: ", cmd.Command)
-
-		taskInfo, _ = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
-
-		logrus.Debug("HandleOffers cmd: ", taskInfo)
 
 		accept := &mesosproto.Call{
 			Type: mesosproto.Call_ACCEPT,
@@ -146,25 +79,17 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 					}}}}}
 
 		logrus.Info("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
-		err := Call(accept)
+		err := mesosutil.Call(accept)
 		if err != nil {
 			logrus.Error("Handle Offers: ", err)
 		}
 
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)
-		return Call(declineOffer(offerIds))
+		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	default:
 		// decline unneeded offer
 		logrus.Info("Decline unneeded offer: ", offerIds)
-		return Call(declineOffer(offerIds))
+		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	}
-}
-
-func declineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
-	decline := &mesosproto.Call{
-		Type:    mesosproto.Call_DECLINE,
-		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
-	}
-	return decline
 }

@@ -5,17 +5,15 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"fmt"
-	"io"
-	"io/ioutil"
+	"math/rand"
 	"net/http"
-	"os"
 	"strconv"
 	"strings"
-	"sync/atomic"
+	"time"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/sirupsen/logrus"
@@ -23,6 +21,7 @@ import (
 
 // Service include all the current vars and global config
 var config *cfg.Config
+var framework *mesosutil.FrameworkConfig
 
 // Marshaler to serialize Protobuf Message to JSON
 var marshaller = jsonpb.Marshaler{
@@ -32,18 +31,19 @@ var marshaller = jsonpb.Marshaler{
 }
 
 // SetConfig set the global config
-func SetConfig(cfg *cfg.Config) {
+func SetConfig(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) {
 	config = cfg
+	framework = frm
 }
 
 // Subscribe to the mesos backend
 func Subscribe() error {
 
 	subscribeCall := &mesosproto.Call{
-		FrameworkID: config.FrameworkInfo.ID,
+		FrameworkID: framework.FrameworkInfo.ID,
 		Type:        mesosproto.Call_SUBSCRIBE,
 		Subscribe: &mesosproto.Call_Subscribe{
-			FrameworkInfo: &config.FrameworkInfo,
+			FrameworkInfo: &framework.FrameworkInfo,
 		},
 	}
 	logrus.Debug(subscribeCall)
@@ -55,12 +55,12 @@ func Subscribe() error {
 	}
 
 	protocol := "https"
-	if !config.MesosSSL {
+	if !framework.MesosSSL {
 		protocol = "http"
 	}
-	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
+	req, _ := http.NewRequest("POST", protocol+"://"+framework.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
 	req.Close = true
-	req.SetBasicAuth(config.Username, config.Password)
+	req.SetBasicAuth(framework.Username, framework.Password)
 	req.Header.Set("Content-Type", "application/json")
 	res, err := client.Do(req)
 
@@ -73,11 +73,9 @@ func Subscribe() error {
 	line, _ := reader.ReadString('\n')
 	bytesCount, _ := strconv.Atoi(strings.Trim(line, "\n"))
 
-	// Search missing services after the framework was restarted
-	if config.MesosStreamID != "" {
-		SearchMissingEtcd(true)
-		SearchMissingK3SServer(true)
-		SearchMissingK3SAgent(true)
+	// initialstart
+	if framework.MesosStreamID == "" {
+		StartEtcd("")
 	}
 
 	for {
@@ -95,37 +93,30 @@ func Subscribe() error {
 		}
 		logrus.Debug("Subscribe Got: ", event.GetType())
 
-		initStartEtcd()
-		initStartK3SServer()
-		initStartK3SAgent()
-
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:
 			logrus.Debug(event)
 			logrus.Info("Subscribed")
 			logrus.Info("FrameworkId: ", event.Subscribed.GetFrameworkID())
-			config.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
-			config.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
-			// Save framework info
-			persConf, _ := json.Marshal(&config)
-			err = ioutil.WriteFile(config.FrameworkInfoFile, persConf, 0644)
+			framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
+			framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
+			d, _ := json.Marshal(&framework)
+			err := config.RedisClient.Set(config.RedisCTX, "framework", d, 0).Err()
 			if err != nil {
-				logrus.Error("Write FrameWork State File: ", err)
+				logrus.Error("Framework save config and state into redis Error: ", err)
 			}
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
-		case mesosproto.Event_HEARTBEAT:
-			// K3S API Server Heartbeat. If K3S Server is running,
-			// it will also init the K3S Agents if its not already running
-			K3SHeartbeat()
-			// Search missing servers to get the status. But do not restart them.
-			// If everyone is started, then suppress framework
-			if SearchMissingEtcd(false) && SearchMissingK3SAgent(false) && SearchMissingK3SServer(false) {
-				suppressFramework()
+			// save configuration
+			d, _ := json.Marshal(&config)
+			err := config.RedisClient.Set(config.RedisCTX, "framework_config", d, 0).Err()
+			if err != nil {
+				logrus.Error("Framework save config and state into redis Error: ", err)
 			}
+		case mesosproto.Event_HEARTBEAT:
+			Heartbeat()
 		case mesosproto.Event_OFFERS:
 			// Search Failed containers and restart them
-			restartFailedContainer()
 			logrus.Debug("Offer Got")
 			err = HandleOffers(event.Offers)
 			if err != nil {
@@ -137,168 +128,21 @@ func Subscribe() error {
 	}
 }
 
-// Call will send messages to mesos
-func Call(message *mesosproto.Call) error {
-	message.FrameworkID = config.FrameworkInfo.ID
-	body, _ := marshaller.MarshalToString(message)
-
-	client := &http.Client{}
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	protocol := "https"
-	if !config.MesosSSL {
-		protocol = "http"
-	}
-	req, _ := http.NewRequest("POST", protocol+"://"+config.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
-	req.Close = true
-	req.SetBasicAuth(config.Username, config.Password)
-	req.Header.Set("Mesos-Stream-Id", config.MesosStreamID)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := client.Do(req)
-
-	if err != nil {
-		logrus.Error("Call Message: ", err)
-		return err
-	}
-
-	defer res.Body.Close()
-
-	if res.StatusCode != 202 {
-		_, err := io.Copy(os.Stderr, res.Body)
-		if err != nil {
-			logrus.Error("Call Handling: ", err)
-		}
-		return fmt.Errorf("Error %d", res.StatusCode)
-	}
-
-	return nil
-}
-
-// Reconcile will reconcile the task states after the framework was restarted
-func Reconcile() {
-	var oldTasks []mesosproto.Call_Reconcile_Task
-	logrus.Debug("Reconcile Tasks")
-	maxID := 0
-	if config != nil {
-		for _, t := range config.State {
-			if t.Status != nil {
-				oldTasks = append(oldTasks, mesosproto.Call_Reconcile_Task{
-					TaskID:  t.Status.TaskID,
-					AgentID: t.Status.AgentID,
-				})
-				numericID, err := strconv.Atoi(t.Status.TaskID.GetValue())
-				if err == nil && numericID > maxID {
-					maxID = numericID
-				}
-			}
-		}
-		atomic.StoreUint64(&config.TaskID, uint64(maxID))
-		err := Call(&mesosproto.Call{
-			Type:      mesosproto.Call_RECONCILE,
-			Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
-		})
-
-		if err != nil {
-			logrus.Error("Call Reconcile: ", err)
-		}
-	}
-}
-
-// Revive will revive the mesos tasks to clean up
-func Revive() {
-	logrus.Debug("Revive Tasks")
-	revive := &mesosproto.Call{
-		Type: mesosproto.Call_REVIVE,
-	}
-	err := Call(revive)
-	if err != nil {
-		logrus.Error("Call Revive: ", err)
-	}
-}
-
-// Restart failed container
-func restartFailedContainer() {
-	if config.State != nil {
-		for _, element := range config.State {
-			if element.Status != nil {
-				switch *element.Status.State {
-				case mesosproto.TASK_FAILED, mesosproto.TASK_ERROR:
-					if element.Command.IsK3SAgent {
-						logrus.Info("RestartK3SAgent: ", element.Status.TaskID)
-						StartK3SAgent(element.Command.InternalID)
-					}
-					if element.Command.IsK3SServer {
-						logrus.Info("RestartK3SServer: ", element.Status.TaskID)
-						StartK3SServer(element.Command.InternalID)
-					}
-					if element.Command.IsETCD {
-						logrus.Info("RestartETCD: ", element.Status.TaskID)
-						StartEtcd(element.Command.InternalID)
-					}
-					deleteOldTask(element.Status.TaskID)
-				case mesosproto.TASK_KILLED:
-					deleteOldTask(element.Status.TaskID)
-				case mesosproto.TASK_LOST:
-					deleteOldTask(element.Status.TaskID)
-				}
-			}
-		}
-	}
-}
-
 // if all Tasks are running, suppress framework offers
 func suppressFramework() {
 	logrus.Info("Framework Suppress")
 	suppress := &mesosproto.Call{
 		Type: mesosproto.Call_SUPPRESS,
 	}
-	err := Call(suppress)
+	err := mesosutil.Call(suppress)
 	if err != nil {
 		logrus.Error("Supress Framework Call: ")
 	}
 }
 
-// Delete Failed Tasks from the config
-func deleteOldTask(taskID mesosproto.TaskID) {
-	copy := make(map[string]cfg.State)
-
-	if config.State != nil {
-		for _, element := range config.State {
-			if element.Status != nil {
-				tmpID := element.Status.GetTaskID().Value
-				if element.Status.TaskID != taskID {
-					copy[tmpID] = element
-				} else {
-					logrus.Debug("Delete Task from config: ", tmpID)
-				}
-			}
-		}
-
-		config.State = copy
-	}
-}
-
-// Kill a Task with the given taskID
-func Kill(taskID string) error {
-	task := config.State[taskID]
-
-	logrus.Debug("Kill task ", taskID, task)
-
-	// tell mesos to shutdonw the given task
-	err := Call(&mesosproto.Call{
-		Type: mesosproto.Call_KILL,
-		Kill: &mesosproto.Call_Kill{
-			TaskID:  task.Status.TaskID,
-			AgentID: task.Status.AgentID,
-		},
-	})
-
-	// remove deleted task from state
-	if err == nil {
-		deleteOldTask(task.Status.TaskID)
-	}
-
-	return err
+// Generate random host portnumber
+func getRandomHostPort() int {
+	rand.Seed(time.Now().UnixNano())
+	v := rand.Intn(framework.PortRangeTo-framework.PortRangeFrom) + framework.PortRangeFrom
+	return v
 }

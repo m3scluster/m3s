@@ -2,13 +2,8 @@ package api
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
-
-	mesos "github.com/AVENTER-UG/mesos-m3s/mesos"
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 )
 
 // V0ScaleEtcd will scale the k3s agent service
@@ -24,47 +19,49 @@ func V0ScaleEtcd(w http.ResponseWriter, r *http.Request) {
 
 	d := []byte("nok")
 
-	if vars["count"] != "" {
-		newCount, _ := strconv.Atoi(vars["count"])
-		oldCount := config.ETCDMax
-		logrus.Debug("V0ScaleEtcd: oldCount: ", oldCount)
-		config.ETCDMax = newCount
-		i := (newCount - oldCount)
-		// change the number to be positiv
-		if i < 0 {
-			i = i * -1
-		}
+	/*
 
-		// Scale Up
-		if newCount > oldCount {
-			logrus.Info("Etcd Scale Up ", i)
-			revive := &mesosproto.Call{
-				Type: mesosproto.Call_REVIVE,
+		if vars["count"] != "" {
+			newCount, _ := strconv.Atoi(vars["count"])
+			oldCount := config.ETCDMax
+			logrus.Debug("V0ScaleEtcd: oldCount: ", oldCount)
+			config.ETCDMax = newCount
+			i := (newCount - oldCount)
+			// change the number to be positiv
+			if i < 0 {
+				i = i * -1
 			}
-			mesos.Call(revive)
-		}
 
-		// Scale Down
-		if newCount < oldCount {
-			logrus.Info("Etcd Scale Down ", i)
+			// Scale Up
+			if newCount > oldCount {
+				logrus.Info("Etcd Scale Up ", i)
+				revive := &mesosproto.Call{
+					Type: mesosproto.Call_REVIVE,
+				}
+				mesosutil.Call(revive)
+			}
 
-			for x := newCount; x < oldCount; x++ {
-				task := mesos.StatusEtcd(x)
-				if task != nil {
-					id := task.Status.TaskID.Value
-					ret := mesos.Kill(id)
+			// Scale Down
+			if newCount < oldCount {
+				logrus.Info("Etcd Scale Down ", i)
 
-					logrus.Info("V0TaskKill: ", ret)
-					config.ETCDCount--
+				for x := newCount; x < oldCount; x++ {
+					task := mesos.StatusEtcd(x)
+					if task != nil {
+						id := task.Status.TaskID.Value
+						ret := mesos.Kill(id)
+
+						logrus.Info("V0TaskKill: ", ret)
+						config.ETCDCount--
+					}
 				}
 			}
+
+			d = []byte(strconv.Itoa(newCount - oldCount))
 		}
 
-		d = []byte(strconv.Itoa(newCount - oldCount))
-	}
-
-	logrus.Debug("HTTP GET V0ScaleEtcd: ", string(d))
-
+		logrus.Debug("HTTP GET V0ScaleEtcd: ", string(d))
+	*/
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 

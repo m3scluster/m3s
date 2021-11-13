@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 	util "github.com/AVENTER-UG/util"
 	"github.com/Showmax/go-fqdn"
 	"github.com/sirupsen/logrus"
@@ -14,6 +15,7 @@ import (
 )
 
 var config cfg.Config
+var framework mesosutil.FrameworkConfig
 
 func init() {
 	config.K3SAgentMax = 0
@@ -21,17 +23,18 @@ func init() {
 	config.K3SAgentCount = 0
 	config.K3SServerCount = 0
 
-	config.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")
-	config.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
-	config.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")
-	config.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
-	config.FrameworkHostname = util.Getenv("FRAMEWORK_HOSTNAME", fqdn.Get())
-	config.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
-	config.Username = os.Getenv("MESOS_USERNAME")
-	config.Password = os.Getenv("MESOS_PASSWORD")
-	config.MesosSandboxVar = util.Getenv("MESOS_SANDBOX_VAR", "")
-	config.MesosMasterServer = os.Getenv("MESOS_MASTER")
-	config.MesosCNI = util.Getenv("MESOS_CNI", "weave")
+	framework.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")
+	framework.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
+	framework.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")
+	framework.FrameworkPort = util.Getenv("FRAMEWORK_PORT", "10000")
+	framework.FrameworkHostname = util.Getenv("FRAMEWORK_HOSTNAME", fqdn.Get())
+	framework.FrameworkInfoFilePath = util.Getenv("FRAMEWORK_STATEFILE_PATH", "/tmp")
+	framework.Username = os.Getenv("MESOS_USERNAME")
+	framework.Password = os.Getenv("MESOS_PASSWORD")
+	framework.MesosMasterServer = os.Getenv("MESOS_MASTER")
+	framework.MesosCNI = util.Getenv("MESOS_CNI", "weave")
+	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "32000"))
+	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "38000"))
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
 	config.Domain = util.Getenv("DOMAIN", "local")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
@@ -57,6 +60,7 @@ func init() {
 	config.K3SMEM, _ = strconv.ParseFloat(util.Getenv("K3S_MEM", "1200"), 64)
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
+	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
 
 	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
@@ -92,9 +96,9 @@ func init() {
 
 	// The comunication to the mesos server should be via ssl or not
 	if strings.Compare(os.Getenv("MESOS_SSL"), "true") == 0 {
-		config.MesosSSL = true
+		framework.MesosSSL = true
 	} else {
-		config.MesosSSL = false
+		framework.MesosSSL = false
 	}
 
 }

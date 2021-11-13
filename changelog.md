@@ -7,6 +7,7 @@
 - Fix hostname constraint method. The server/agent should never run
   on a other worker as defined in the contrains variable.
 - Fix mesos-cli to determine framework uuid by name.
+- Move statefile to Redis DB
 
 
 ## v0.2.0

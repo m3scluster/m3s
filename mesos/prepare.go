@@ -1,13 +1,73 @@
 package mesos
 
 import (
-	"strconv"
+	"encoding/json"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
-	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
+	"github.com/AVENTER-UG/util"
+	"github.com/sirupsen/logrus"
 )
 
-func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) ([]mesosproto.TaskInfo, error) {
+func defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
+	CPU := "cpus"
+	MEM := "mem"
+	cpu := cmd.CPU
+	mem := cmd.Memory
+	PORT := "ports"
+
+	res := []mesosproto.Resource{
+		{
+			Name:   CPU,
+			Type:   mesosproto.SCALAR.Enum(),
+			Scalar: &mesosproto.Value_Scalar{Value: cpu},
+		},
+		{
+			Name:   MEM,
+			Type:   mesosproto.SCALAR.Enum(),
+			Scalar: &mesosproto.Value_Scalar{Value: mem},
+		},
+	}
+
+	var portBegin, portEnd uint64
+
+	if cmd.DockerPortMappings != nil {
+		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
+		portEnd = portBegin + uint64(len(cmd.DockerPortMappings)) - 1
+
+		res = []mesosproto.Resource{
+			{
+				Name:   CPU,
+				Type:   mesosproto.SCALAR.Enum(),
+				Scalar: &mesosproto.Value_Scalar{Value: cpu},
+			},
+			{
+				Name:   MEM,
+				Type:   mesosproto.SCALAR.Enum(),
+				Scalar: &mesosproto.Value_Scalar{Value: mem},
+			},
+			{
+				Name: PORT,
+				Type: mesosproto.RANGES.Enum(),
+				Ranges: &mesosproto.Value_Ranges{
+					Range: []mesosproto.Value_Range{
+						{
+							Begin: portBegin,
+							End:   portEnd,
+						},
+					},
+				},
+			},
+		}
+	}
+
+	return res
+}
+
+func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Command) ([]mesosproto.TaskInfo, error) {
+	d, _ := json.Marshal(&cmd)
+	logrus.Debug("HandleOffers cmd: ", util.PrettyJSON(d))
+
 	contype := mesosproto.ContainerInfo_DOCKER.Enum()
 
 	// Set Container Network Mode
@@ -26,26 +86,28 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 		networkMode = mesosproto.ContainerInfo_DockerInfo_BRIDGE.Enum()
 	}
 
-	// Save state of the new task
-	newTaskID := "m3s_" + cmd.TaskName + "_" + strconv.Itoa(int(cmd.TaskID))
-	tmp := config.State[newTaskID]
-	tmp.Command = cmd
-	config.State[newTaskID] = tmp
-
 	var msg mesosproto.TaskInfo
 
 	msg.Name = cmd.TaskName
 	msg.TaskID = mesosproto.TaskID{
-		Value: newTaskID,
+		Value: cmd.TaskID,
 	}
 	msg.AgentID = agent
 	msg.Resources = defaultResources(cmd)
 
-	msg.Command = &mesosproto.CommandInfo{
-		Shell:       &cmd.Shell,
-		Value:       &cmd.Command,
-		URIs:        cmd.Uris,
-		Environment: &cmd.Environment,
+	if cmd.Command == "" {
+		msg.Command = &mesosproto.CommandInfo{
+			Shell:       &cmd.Shell,
+			URIs:        cmd.Uris,
+			Environment: &cmd.Environment,
+		}
+	} else {
+		msg.Command = &mesosproto.CommandInfo{
+			Shell:       &cmd.Shell,
+			Value:       &cmd.Command,
+			URIs:        cmd.Uris,
+			Environment: &cmd.Environment,
+		}
 	}
 
 	msg.Container = &mesosproto.ContainerInfo{
@@ -71,6 +133,9 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) 
 			Labels: cmd.Labels,
 		}
 	}
+
+	d, _ = json.Marshal(&msg)
+	logrus.Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
 	return []mesosproto.TaskInfo{msg}, nil
 }
