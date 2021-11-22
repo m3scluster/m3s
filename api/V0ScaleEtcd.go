@@ -1,9 +1,13 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
+	"strconv"
 
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
 )
 
 // V0ScaleEtcd will scale the k3s agent service
@@ -16,52 +20,39 @@ func V0ScaleEtcd(w http.ResponseWriter, r *http.Request) {
 	if vars == nil || !auth {
 		return
 	}
+	d := ErrorMessage(0, "V0ScaleEtcd", "ok")
 
-	d := []byte("nok")
+	if vars["count"] != "" {
+		newCount, _ := strconv.Atoi(vars["count"])
+		oldCount := config.ETCDMax
+		logrus.Debug("V0ScaleEtcd: oldCount: ", oldCount)
+		config.ETCDMax = newCount
 
-	/*
+		d = []byte(strconv.Itoa(newCount - oldCount))
 
-		if vars["count"] != "" {
-			newCount, _ := strconv.Atoi(vars["count"])
-			oldCount := config.ETCDMax
-			logrus.Debug("V0ScaleEtcd: oldCount: ", oldCount)
-			config.ETCDMax = newCount
-			i := (newCount - oldCount)
-			// change the number to be positiv
-			if i < 0 {
-				i = i * -1
-			}
-
-			// Scale Up
-			if newCount > oldCount {
-				logrus.Info("Etcd Scale Up ", i)
-				revive := &mesosproto.Call{
-					Type: mesosproto.Call_REVIVE,
-				}
-				mesosutil.Call(revive)
-			}
-
-			// Scale Down
-			if newCount < oldCount {
-				logrus.Info("Etcd Scale Down ", i)
-
-				for x := newCount; x < oldCount; x++ {
-					task := mesos.StatusEtcd(x)
-					if task != nil {
-						id := task.Status.TaskID.Value
-						ret := mesos.Kill(id)
-
-						logrus.Info("V0TaskKill: ", ret)
-						config.ETCDCount--
-					}
-				}
-			}
-
-			d = []byte(strconv.Itoa(newCount - oldCount))
+		err := SaveConfig()
+		if err != nil {
+			d = ErrorMessage(1, "V0ScaleEtcd", "Could not save config data")
 		}
+		// if scale down, kill not needes agents
+		if newCount < oldCount {
+			keys := GetAllRedisKeys("k3sagent:*")
 
-		logrus.Debug("HTTP GET V0ScaleEtcd: ", string(d))
-	*/
+			for keys.Next(config.RedisCTX) {
+				if newCount < oldCount {
+					key := GetRedisKey(keys.Val())
+
+					var task mesosutil.Command
+					json.Unmarshal([]byte(key), &task)
+					mesosutil.Kill(task.TaskID, task.Agent)
+					logrus.Debug("V0ScaleEtcd: ", task.TaskID)
+				}
+				oldCount = oldCount - 1
+			}
+		}
+	}
+
+	logrus.Debug("HTTP GET V0ScaleEtcd: ", string(d))
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 

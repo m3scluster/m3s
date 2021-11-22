@@ -20,8 +20,6 @@ var framework mesosutil.FrameworkConfig
 func init() {
 	config.K3SAgentMax = 0
 	config.K3SServerMax = 0
-	config.K3SAgentCount = 0
-	config.K3SServerCount = 0
 
 	framework.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")
 	framework.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
@@ -33,8 +31,8 @@ func init() {
 	framework.Password = os.Getenv("MESOS_PASSWORD")
 	framework.MesosMasterServer = os.Getenv("MESOS_MASTER")
 	framework.MesosCNI = util.Getenv("MESOS_CNI", "weave")
-	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "32000"))
-	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "38000"))
+	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "31000"))
+	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "32000"))
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
 	config.Domain = util.Getenv("DOMAIN", "local")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
@@ -49,7 +47,6 @@ func init() {
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:latest")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s")
-	config.PrefixTaskName = util.Getenv("PREFIX_TASKNAME", "k3s")
 	config.PrefixHostname = util.Getenv("PREFIX_HOSTNAME", "k3s")
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
 	config.ETCDMax, _ = strconv.Atoi(util.Getenv("ETCD_COUNT", "1"))

@@ -35,6 +35,7 @@ func HandleUpdate(event *mesosproto.Event) error {
 	// get the task of the current event, change the state
 	task := api.GetTaskFromEvent(update)
 	task.State = update.Status.State.String()
+	task.Agent = update.Status.GetAgentID().Value
 
 	if task.TaskID == "" {
 		return nil

@@ -9,46 +9,62 @@ import (
 )
 
 // getOffer get out the offer for the mesos task
-func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID, bool) {
-	offerIds := []mesosproto.OfferID{}
-	var empty mesosproto.Offer
-	count := 0
+func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID) {
+	var offerIds []mesosproto.OfferID
+	var offerret mesosproto.Offer
+	// if the constraints does not match, return an empty offer
+	logrus.Debug("Get Offer for: ", cmd.TaskName)
 	for n, offer := range offers.Offers {
 		logrus.Debug("Got Offer From:", offer.GetHostname())
 		offerIds = append(offerIds, offer.ID)
-		if cmd.TaskName == "k3sserver" {
-			if config.K3SServerConstraintHostname != "" && config.K3SServerConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
-				return offers.Offers[n], offerIds, true
-			}
-		}
-		if cmd.TaskName == "k3sagent" {
-			if config.K3SAgentConstraintHostname != "" && config.K3SAgentConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
-				return offers.Offers[n], offerIds, true
-			}
-		}
-	}
 
-	if (cmd.TaskName == "k3sserver") && (config.K3SServerConstraintHostname != "") || (cmd.TaskName == "k3sagent") && (config.K3SAgentConstraintHostname != "") {
-		return empty, nil, false
+		if cmd.TaskName == "" {
+			continue
+		}
+
+		// if the ressources of this offer does not matched what the command need, the skip
+		if !isRessourceMatched(offer.Resources, cmd) {
+			logrus.Debug("Could not found any matched ressources, get next offer")
+			mesosutil.Call(mesosutil.DeclineOffer(offerIds))
+			continue
+		}
+		if cmd.TaskName == "k3sserver" {
+			if config.K3SServerConstraintHostname == "" {
+				offerret = offers.Offers[n]
+			} else if config.K3SServerConstraintHostname == offer.GetHostname() {
+				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
+				offerret = offers.Offers[n]
+			}
+		} else if cmd.TaskName == "k3sagent" {
+			if config.K3SAgentConstraintHostname == "" {
+				offerret = offers.Offers[n]
+			} else if config.K3SAgentConstraintHostname == offer.GetHostname() {
+				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
+				offerret = offers.Offers[n]
+			}
+		} else if cmd.TaskName == "k3setcd" {
+			offerret = offers.Offers[n]
+		}
 	}
-	return offers.Offers[count], offerIds, true
+	return offerret, offerIds
 }
 
 // HandleOffers will handle the offers event of mesos
 func HandleOffers(offers *mesosproto.Event_Offers) error {
-	_, offerIds, found := getOffer(offers, mesosutil.Command{})
+	var offerIds []mesosproto.OfferID
 	select {
 	case cmd := <-framework.CommandChan:
 		if cmd.TaskID == "" {
 			return nil
 		}
 		var takeOffer mesosproto.Offer
-		takeOffer, offerIds, found = getOffer(offers, cmd)
+		takeOffer, offerIds = getOffer(offers, cmd)
+		if takeOffer.GetHostname() == "" {
+			return nil
+		}
 		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
 
-		if !found {
+		if offerIds == nil {
 			return nil
 		}
 
@@ -82,14 +98,38 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 		err := mesosutil.Call(accept)
 		if err != nil {
 			logrus.Error("Handle Offers: ", err)
+			return err
 		}
-
 		// decline unneeded offer
 		logrus.Info("Offer Decline: ", offerIds)
 		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
+
 	default:
 		// decline unneeded offer
+		var empty mesosutil.Command
+		_, offerIds = getOffer(offers, empty)
 		logrus.Info("Decline unneeded offer: ", offerIds)
 		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	}
+
+	return nil
+}
+
+// check if the ressources of the offer are matching the needs of the cmd
+func isRessourceMatched(ressource []mesosproto.Resource, cmd mesosutil.Command) bool {
+	mem := false
+	cpu := false
+
+	for _, v := range ressource {
+		if v.GetName() == "cpus" && v.Scalar.GetValue() >= cmd.CPU {
+			logrus.Debug("Matched Offer CPU")
+			cpu = true
+		}
+		if v.GetName() == "mem" && v.Scalar.GetValue() >= cmd.Memory {
+			logrus.Debug("Matched Offer Memory")
+			mem = true
+		}
+	}
+
+	return mem && cpu
 }

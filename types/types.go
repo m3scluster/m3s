@@ -19,9 +19,7 @@ type Config struct {
 	Listen                      string
 	Domain                      string
 	K3SServerURL                string
-	K3SAgentCount               int
 	K3SAgentMax                 int
-	K3SServerCount              int
 	K3SServerMax                int
 	K3SServerPort               int
 	K3SCustomDomain             string
@@ -39,9 +37,7 @@ type Config struct {
 	VolumeDriver                string
 	VolumeK3SServer             string
 	PrefixHostname              string
-	PrefixTaskName              string
 	K3SToken                    string
-	ETCDCount                   int
 	ETCDMax                     int
 	DockerSock                  string
 	BootstrapURL                string
@@ -89,4 +85,11 @@ type Version struct {
 	BootstrapBuild string `json:"bootstrap_build"`
 	M3sBuild       string `json:"m3s_build"`
 	M3sBersion     string `json:"m3s_version"`
+}
+
+// ErrorMsg hold the structure of error messages
+type ErrorMsg struct {
+	Message  string
+	Number   int
+	Function string
 }

@@ -4,6 +4,8 @@ import (
 
 	//"encoding/json"
 
+	"encoding/json"
+
 	"github.com/gorilla/mux"
 	//"io/ioutil"
 	"net/http"
@@ -27,8 +29,6 @@ func Commands() *mux.Router {
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
 	rtr.HandleFunc("/v0/agent/scale", V0GetCountK3SAgent).Methods("GET")
-	rtr.HandleFunc("/v0/server/scale/{count}", V0ScaleK3S).Methods("GET")
-	rtr.HandleFunc("/v0/server/scale", V0GetCountK3S).Methods("GET")
 	rtr.HandleFunc("/v0/server/config", V0GetKubeconfig).Methods("GET")
 	rtr.HandleFunc("/v0/server/version", V0GetKubeVersion).Methods("GET")
 	rtr.HandleFunc("/v0/bootstrap/update", V0UpdateBootstrap).Methods("PUT")
@@ -60,4 +60,16 @@ func CheckAuth(r *http.Request, w http.ResponseWriter) bool {
 
 	w.WriteHeader(http.StatusUnauthorized)
 	return false
+}
+
+// ErrorMessage will create a message json
+func ErrorMessage(number int, function string, msg string) []byte {
+	var err cfg.ErrorMsg
+	err.Function = function
+	err.Number = number
+	err.Message = msg
+
+	data, _ := json.Marshal(err)
+	return []byte(data)
+
 }

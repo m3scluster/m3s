@@ -32,9 +32,7 @@ func Heartbeat() {
 			if err != nil {
 				logrus.Error("HandleUpdate Redis set Error: ", err)
 			}
-
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
-
 		}
 
 	}
@@ -42,11 +40,17 @@ func Heartbeat() {
 
 // K3SHeartbeat to execute K3S Bootstrap API Server commands
 func K3SHeartbeat() {
-	StartEtcd("")
+	if api.CountRedisKey("k3setcd:*") < config.ETCDMax {
+		StartEtcd("")
+	}
 	if getEtcdStatus() == "TASK_RUNNING" && !IsK3SServerRunning() {
-		StartK3SServer("")
+		if api.CountRedisKey("k3sserver:*") < config.K3SServerMax {
+			StartK3SServer("")
+		}
 	}
 	if IsK3SServerRunning() {
-		StartK3SAgent("")
+		if api.CountRedisKey("k3sagent:*") < config.K3SAgentMax {
+			StartK3SAgent("")
+		}
 	}
 }

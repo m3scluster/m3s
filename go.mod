@@ -3,7 +3,7 @@ module github.com/AVENTER-UG/mesos-m3s
 go 1.17
 
 require (
-	github.com/AVENTER-UG/mesos-util v0.0.15
+	github.com/AVENTER-UG/mesos-util v0.0.18
 	github.com/AVENTER-UG/util v0.2.0
 	github.com/Showmax/go-fqdn v1.0.0
 	github.com/go-redis/redis/v8 v8.11.4

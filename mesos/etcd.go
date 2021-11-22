@@ -25,11 +25,6 @@ func getEtcdStatus() string {
 
 // StartEtcd is starting the etcd
 func StartEtcd(taskID string) {
-	// if etcd max count is reach, do not start a new server
-	if config.ETCDCount == config.ETCDMax {
-		return
-	}
-
 	var cmd mesosutil.Command
 
 	// if taskID is 0, then its a new task and we have to create a new ID
@@ -50,8 +45,8 @@ func StartEtcd(taskID string) {
 	cmd.Privileged = false
 	cmd.Memory = config.ETCDMEM
 	cmd.CPU = config.ETCDCPU
-	cmd.TaskName = config.PrefixTaskName + "etcd"
-	cmd.Hostname = config.PrefixTaskName + "etcd" + "." + config.Domain
+	cmd.TaskName = "k3setcd"
+	cmd.Hostname = "k3setcd" + "." + config.Domain
 	cmd.DockerParameter = []mesosproto.Parameter{}
 
 	AllowNoneAuthentication := "yes"
@@ -94,6 +89,4 @@ func StartEtcd(taskID string) {
 	if err != nil {
 		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
-
-	config.ETCDCount = config.ETCDCount + 1
 }

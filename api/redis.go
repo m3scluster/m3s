@@ -46,3 +46,25 @@ func GetTaskFromEvent(update *mesosproto.Event_Update) mesosutil.Command {
 	}
 	return mesosutil.Command{}
 }
+
+// CountRedisKey will get back the count of the redis key
+func CountRedisKey(pattern string) int {
+	keys := GetAllRedisKeys(pattern)
+	count := 0
+	for keys.Next(config.RedisCTX) {
+		count++
+	}
+	logrus.Debug("CountRedisKey: ", pattern, count)
+	return count
+}
+
+// SaveConfig store the current framework config
+func SaveConfig() error {
+	data, _ := json.Marshal(config)
+	err := config.RedisClient.Set(config.RedisCTX, "framework_config", data, 0).Err()
+	if err != nil {
+		logrus.Error("getRedisKey: ", err)
+		return err
+	}
+	return nil
+}

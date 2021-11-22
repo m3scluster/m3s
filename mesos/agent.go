@@ -13,10 +13,6 @@ import (
 
 // StartK3SAgent is starting a agent container with the given IDs
 func StartK3SAgent(taskID string) {
-	// if agent max count is reach, do not start a new server
-	if config.K3SAgentCount == config.K3SAgentMax {
-		return
-	}
 	var cmd mesosutil.Command
 
 	// if taskID is 0, then its a new task and we have to create a new ID
@@ -25,6 +21,7 @@ func StartK3SAgent(taskID string) {
 		newTaskID, _ = util.GenUUID()
 	}
 
+	hostport := uint32(getRandomHostPort())
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
@@ -35,14 +32,15 @@ func StartK3SAgent(taskID string) {
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
 		Name: &framework.MesosCNI,
 	}}
+
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      uint32(getRandomHostPort()),
+			HostPort:      hostport,
 			ContainerPort: 80,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(getRandomHostPort()),
+			HostPort:      uint32(hostport + 1),
 			ContainerPort: 443,
 			Protocol:      &protocol,
 		},
@@ -52,8 +50,8 @@ func StartK3SAgent(taskID string) {
 	cmd.Privileged = true
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixTaskName + "agent"
-	cmd.Hostname = config.PrefixTaskName + "agent" + "." + config.Domain
+	cmd.TaskName = "k3sagent"
+	cmd.Hostname = "k3sagent" + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + newTaskID + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
@@ -164,6 +162,4 @@ func StartK3SAgent(taskID string) {
 	if err != nil {
 		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
-
-	config.K3SAgentCount = config.K3SAgentCount + 1
 }

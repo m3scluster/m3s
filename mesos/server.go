@@ -15,11 +15,6 @@ import (
 
 // StartK3SServer Start K3S with the given id
 func StartK3SServer(taskID string) {
-	// if k3s max count is reach, do not start a new server
-	if config.K3SServerCount == config.K3SServerMax {
-		return
-	}
-
 	// if taskID is 0, then its a new task and we have to create a new ID
 	newTaskID := taskID
 	if taskID == "" {
@@ -42,8 +37,8 @@ func StartK3SServer(taskID string) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixTaskName + "server"
-	cmd.Hostname = config.PrefixHostname + "server" + "." + config.Domain
+	cmd.TaskName = "k3sserver"
+	cmd.Hostname = "k3sserver" + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + "--tls-san=" + config.Domain + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
@@ -85,20 +80,21 @@ func StartK3SServer(taskID string) {
 		},
 	}
 
+	hostport := uint32(getRandomHostPort())
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      uint32(getRandomHostPort()),
+			HostPort:      hostport,
 			ContainerPort: 10422,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(getRandomHostPort()),
+			HostPort:      uint32(hostport + 1),
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(getRandomHostPort()),
+			HostPort:      uint32(hostport + 2),
 			ContainerPort: 8080,
 			Protocol:      &protocol,
 		},
@@ -153,7 +149,7 @@ func StartK3SServer(taskID string) {
 		{
 			Name: "K3S_DATASTORE_ENDPOINT",
 			Value: func() *string {
-				x := "http://" + config.PrefixTaskName + "etcd" + "." + config.Domain + ":2379"
+				x := "http://k3setcd" + "." + config.Domain + ":2379"
 				return &x
 			}(),
 		},
@@ -165,16 +161,12 @@ func StartK3SServer(taskID string) {
 
 	// store mesos task in DB
 	d, _ := json.Marshal(&cmd)
-	logrus.Debug("Scheduled K3S Server: ", string(d))
+	logrus.Debug("Scheduled K3S Server: ", util.PrettyJSON(d))
 	logrus.Info("Scheduled K3S Server")
 	err := config.RedisClient.Set(config.RedisCTX, cmd.TaskName+":"+newTaskID, d, 0).Err()
 	if err != nil {
 		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
-
-	config.K3SServerCount = config.K3SServerCount + 1
-	logrus.Debug(config.K3SServerCount)
-
 }
 
 // CreateK3SServerString create the K3S_URL string

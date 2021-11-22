@@ -1,8 +1,11 @@
 package api
 
 import (
+	"encoding/json"
 	"net/http"
+	"strconv"
 
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -18,52 +21,42 @@ func V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	d := []byte("nok")
-	/*
+	d := ErrorMessage(0, "V0ScaleK3SAgent", "ok")
 
-		if vars["count"] != "" {
-			newCount, _ := strconv.Atoi(vars["count"])
-			oldCount := config.K3SAgentMax
-			logrus.Debug("V0ScaleK3SAgent: oldCount: ", oldCount)
-			config.K3SAgentMax = newCount
-			i := (newCount - oldCount)
-			// change the number to be positiv
-			if i < 0 {
-				i = i * -1
-			}
+	if vars["count"] != "" {
+		newCount, _ := strconv.Atoi(vars["count"])
+		oldCount := config.K3SAgentMax
+		logrus.Debug("V0ScaleK3SAgent: oldCount: ", oldCount)
+		config.K3SAgentMax = newCount
 
-			// Scale Up
-			if newCount > oldCount {
-				logrus.Info("K3SAgent Scale Up ", i)
-				revive := &mesosproto.Call{
-					Type: mesosproto.Call_REVIVE,
-				}
-				mesosutil.Call(revive)
-			}
+		d = []byte(strconv.Itoa(newCount - oldCount))
 
-			// Scale Down
-			if newCount < oldCount {
-				logrus.Info("K3SAgent Scale Down ", i)
-
-				for x := newCount; x < oldCount; x++ {
-					task := mesos.StatusK3SAgent(x)
-					if task != nil {
-						id := task.Status.TaskID.Value
-						ret := mesos.Kill(id)
-
-						logrus.Info("V0TaskKill: ", ret)
-						config.K3SAgentCount--
-					}
-				}
-			}
-
-			d = []byte(strconv.Itoa(newCount - oldCount))
+		err := SaveConfig()
+		if err != nil {
+			d = ErrorMessage(1, "V0ScaleK3SAgent", "Could not save config data")
 		}
-	*/
+
+		// if scale down, kill not needes agents
+		if newCount < oldCount {
+			keys := GetAllRedisKeys("k3sagent:*")
+
+			for keys.Next(config.RedisCTX) {
+				if newCount < oldCount {
+					key := GetRedisKey(keys.Val())
+
+					var task mesosutil.Command
+					json.Unmarshal([]byte(key), &task)
+					mesosutil.Kill(task.TaskID, task.Agent)
+					logrus.Debug("V0ScaleK3SAgent: ", task.TaskID)
+				}
+				oldCount = oldCount - 1
+			}
+		}
+	}
 
 	logrus.Debug("HTTP GET V0ScaleK3SAgent: ", string(d))
 
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 
 	w.Write(d)
