@@ -52,6 +52,7 @@ type Config struct {
 	RedisServer                 string
 	RedisClient                 *goredis.Client
 	RedisCTX                    context.Context
+	RedisPassword               string
 }
 
 // M3SStatus store the current TaskState of the M3s services

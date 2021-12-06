@@ -50,8 +50,8 @@ func StartK3SAgent(taskID string) {
 	cmd.Privileged = true
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
-	cmd.TaskName = "k3sagent"
-	cmd.Hostname = "k3sagent" + "." + config.Domain
+	cmd.TaskName = config.PrefixHostname + "agent"
+	cmd.Hostname = config.PrefixHostname + "agent" + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + newTaskID + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{

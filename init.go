@@ -33,6 +33,7 @@ func init() {
 	framework.MesosCNI = util.Getenv("MESOS_CNI", "weave")
 	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "31000"))
 	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "32000"))
+	config.Principal = os.Getenv("MESOS_PRINCIPAL")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
 	config.Domain = util.Getenv("DOMAIN", "local")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
@@ -58,6 +59,7 @@ func init() {
 	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
+	config.RedisPassword = os.Getenv("REDIS_PASSWORD")
 
 	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")

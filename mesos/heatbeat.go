@@ -12,6 +12,8 @@ import (
 func Heartbeat() {
 	K3SHeartbeat()
 	keys := api.GetAllRedisKeys("*")
+	suppress := true
+
 	for keys.Next(config.RedisCTX) {
 		// get the values of the current key
 		key := api.GetRedisKey(keys.Val())
@@ -35,21 +37,29 @@ func Heartbeat() {
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
 		}
 
+		if task.State == "__NEW" {
+			mesosutil.Revive()
+			suppress = false
+		}
+	}
+
+	if suppress {
+		mesosutil.SuppressFramework()
 	}
 }
 
 // K3SHeartbeat to execute K3S Bootstrap API Server commands
 func K3SHeartbeat() {
-	if api.CountRedisKey("k3setcd:*") < config.ETCDMax {
+	if api.CountRedisKey(config.PrefixHostname+"etcd:*") < config.ETCDMax {
 		StartEtcd("")
 	}
 	if getEtcdStatus() == "TASK_RUNNING" && !IsK3SServerRunning() {
-		if api.CountRedisKey("k3sserver:*") < config.K3SServerMax {
+		if api.CountRedisKey(config.PrefixHostname+"server:*") < config.K3SServerMax {
 			StartK3SServer("")
 		}
 	}
 	if IsK3SServerRunning() {
-		if api.CountRedisKey("k3sagent:*") < config.K3SAgentMax {
+		if api.CountRedisKey(config.PrefixHostname+"agent:*") < config.K3SAgentMax {
 			StartK3SAgent("")
 		}
 	}

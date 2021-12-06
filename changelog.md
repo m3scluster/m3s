@@ -2,6 +2,7 @@
 
 ## master
 
+- Add Redis Authentication Support
 - Bootstrap: Add update call to update the bootstrap server.
 - Add update api call to update the bootstrap server.
 - Fix hostname constraint method. The server/agent should never run

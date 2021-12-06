@@ -20,10 +20,13 @@ var MinVersion string
 
 // init the redis cache
 func initCache() {
-	client := goredis.NewClient(&goredis.Options{
-		Addr: config.RedisServer,
-		DB:   0,
-	})
+	var redisOptions goredis.Options
+	redisOptions.Addr = config.RedisServer
+	redisOptions.DB = 0
+	if config.RedisPassword != "" {
+		redisOptions.Password = config.RedisPassword
+	}
+	client := goredis.NewClient(&redisOptions)
 	config.RedisCTX = context.Background()
 	pong, err := client.Ping(config.RedisCTX).Result()
 	logrus.Debug("Redis Health: ", pong, err)

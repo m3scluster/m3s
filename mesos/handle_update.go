@@ -49,6 +49,8 @@ func HandleUpdate(event *mesosproto.Event) error {
 		task.State = ""
 	case mesosproto.TASK_KILLED:
 		// remove task
+		api.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		return mesosutil.Call(msg)
 	case mesosproto.TASK_LOST:
 		// restart task
 		task.State = ""
@@ -63,5 +65,6 @@ func HandleUpdate(event *mesosproto.Event) error {
 	if err != nil {
 		logrus.Error("HandleUpdate Redis set Error: ", err)
 	}
+
 	return mesosutil.Call(msg)
 }

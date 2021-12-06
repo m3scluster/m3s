@@ -27,6 +27,16 @@ func GetRedisKey(key string) string {
 	return val
 }
 
+// DelRedisKey will delete a redis key
+func DelRedisKey(key string) int64 {
+	val, err := config.RedisClient.Del(config.RedisCTX, key).Result()
+	if err != nil {
+		logrus.Error("delRedisKey: ", err)
+	}
+
+	return val
+}
+
 // GetTaskFromEvent get out the task to an event
 func GetTaskFromEvent(update *mesosproto.Event_Update) mesosutil.Command {
 	// search matched taskid in redis and update the status
