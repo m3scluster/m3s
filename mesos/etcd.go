@@ -3,91 +3,50 @@ package mesos
 import (
 	"encoding/json"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
-
-	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	api "github.com/AVENTER-UG/mesos-m3s/api"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
+	"github.com/AVENTER-UG/util"
 
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingEtcd Check if all agents are running. If one is missing, restart it.
-func SearchMissingEtcd(restart bool) bool {
-	status := make([]mesosproto.TaskState, config.ETCDMax)
-	allRunning := true
+func getEtcdStatus() string {
+	keys := api.GetAllRedisKeys(config.PrefixHostname + "etcd:*")
 
-	if config.State != nil {
-		for i := 0; i < config.ETCDMax; i++ {
-			state := StatusEtcd(i)
-			if state != nil {
-				status[i] = *state.Status.State
-				if *state.Status.State != mesosproto.TASK_RUNNING {
-					allRunning = false
-					logrus.Debug("Missing ETCD: ", i)
-					if restart {
-						StartEtcd(i)
-					}
-				}
-			} else {
-				allRunning = false
-			}
-		}
-	} else {
-		allRunning = false
+	for keys.Next(config.RedisCTX) {
+		key := api.GetRedisKey(keys.Val())
+		var task mesosutil.Command
+		json.Unmarshal([]byte(key), &task)
+		return task.State
 	}
-	config.M3SStatus.Etcd = status
-	return allRunning
-}
-
-// StatusEtcd Get out Status of the given ID
-func StatusEtcd(id int) *cfg.State {
-	if config.State != nil {
-		for _, element := range config.State {
-			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsETCD {
-					return &element
-				}
-			}
-		}
-	}
-	return nil
+	return ""
 }
 
 // StartEtcd is starting the etcd
-func StartEtcd(id int) {
-	var cmd cfg.Command
+func StartEtcd(taskID string) {
+	var cmd mesosutil.Command
 
-	// before we will start a new agent, we should be sure its not already running
-	status := StatusEtcd(id)
-	if status != nil {
-		if status.Status.State == mesosproto.TASK_STAGING.Enum() {
-			logrus.Info("startETCD: etcd is staging ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_STARTING.Enum() {
-			logrus.Info("startETCD: etcd is starting ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_RUNNING.Enum() {
-			logrus.Info("startETCD: etcd already running ", id)
-			return
-		}
+	// if taskID is 0, then its a new task and we have to create a new ID
+	newTaskID := taskID
+	if taskID == "" {
+		newTaskID, _ = util.GenUUID()
 	}
 
+	cmd.TaskID = newTaskID
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageETCD
 	cmd.NetworkMode = "bridge"
 
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &config.MesosCNI,
+		Name: &framework.MesosCNI,
 	}}
 	cmd.Shell = true
 	cmd.Privileged = false
-	cmd.InternalID = id
 	cmd.Memory = config.ETCDMEM
 	cmd.CPU = config.ETCDCPU
-	cmd.TaskName = config.PrefixTaskName + "etcd"
-	cmd.Hostname = config.PrefixTaskName + "etcd" + "." + config.Domain
-	cmd.IsETCD = true
+	cmd.TaskName = config.PrefixHostname + "etcd"
+	cmd.Hostname = config.PrefixHostname + "etcd" + "." + config.Domain
 	cmd.DockerParameter = []mesosproto.Parameter{}
 
 	AllowNoneAuthentication := "yes"
@@ -122,17 +81,12 @@ func StartEtcd(id int) {
 		Name:       &cmd.TaskName,
 	}
 
+	// store mesos task in DB
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("Scheduled Etcd: ", string(d))
-
-	config.CommandChan <- cmd
 	logrus.Info("Scheduled Etcd")
-}
-
-// The first run have to be in a right sequence
-func initStartEtcd() {
-	if config.ETCDCount <= (config.ETCDMax - 1) {
-		StartEtcd(config.ETCDCount)
-		config.ETCDCount++
+	err := config.RedisClient.Set(config.RedisCTX, cmd.TaskName+":"+newTaskID, d, 0).Err()
+	if err != nil {
+		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
 }

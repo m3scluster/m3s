@@ -10,6 +10,7 @@ Mesos Framework to run Kubernetes (K3S)
 - Apache Mesos min 1.6.0
 - Mesos with SSL and Authentication is optional
 - Persistent Storage to keep K3S data (not object storage)
+- Redis DB
 
 ## Run Framework
 

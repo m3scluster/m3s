@@ -2,94 +2,37 @@ package mesos
 
 import (
 	"encoding/json"
-	"strconv"
 	"strings"
-	"sync/atomic"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
-
-	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
+	"github.com/AVENTER-UG/util"
 
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingK3SAgent Check if all agents are running. If one is missing, restart it.
-func SearchMissingK3SAgent(restart bool) bool {
-	status := make([]mesosproto.TaskState, config.K3SAgentMax)
-	allRunning := true
-	if config.State != nil {
-		for i := 0; i < config.K3SAgentMax; i++ {
-			state := StatusK3SAgent(i)
-			if state != nil {
-				status[i] = *state.Status.State
-				if *state.Status.State != mesosproto.TASK_RUNNING {
-					allRunning = false
-					logrus.Debug("Missing K3SAgent: ", i)
-					if restart {
-						StartK3SAgent(i)
-					}
-				}
-			} else {
-				allRunning = false
-			}
-		}
-	} else {
-		allRunning = false
-	}
-	config.M3SStatus.Agent = status
-	return allRunning
-}
-
-// StatusK3SAgent Get out Status of the given agent
-func StatusK3SAgent(id int) *cfg.State {
-	if config.State != nil {
-		for _, element := range config.State {
-			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsK3SAgent {
-					return &element
-				}
-			}
-		}
-	}
-	return nil
-}
-
 // StartK3SAgent is starting a agent container with the given IDs
-func StartK3SAgent(id int) {
-	newTaskID := atomic.AddUint64(&config.TaskID, 1)
+func StartK3SAgent(taskID string) {
+	var cmd mesosutil.Command
 
-	var cmd cfg.Command
-
-	// before we will start a new agent, we should be sure its not already running
-	status := StatusK3SAgent(id)
-	if status != nil {
-		if status.Status.State == mesosproto.TASK_STAGING.Enum() {
-			logrus.Info("startK3SAgent: kubernetes is staging ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_STARTING.Enum() {
-			logrus.Info("startK3SAgent: kubernetes is starting ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_RUNNING.Enum() {
-			logrus.Info("startK3SAgent: kubernetes already running ", id)
-			return
-		}
+	// if taskID is 0, then its a new task and we have to create a new ID
+	newTaskID := taskID
+	if taskID == "" {
+		newTaskID, _ = util.GenUUID()
 	}
 
-	var hostport uint32
-	hostport = 31859 + uint32(newTaskID)
+	hostport := uint32(getRandomHostPort())
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
-	taskID := strconv.FormatUint(newTaskID, 10)
 
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
 	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &config.MesosCNI,
+		Name: &framework.MesosCNI,
 	}}
+
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
 			HostPort:      hostport,
@@ -97,7 +40,7 @@ func StartK3SAgent(id int) {
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 1,
+			HostPort:      uint32(hostport + 1),
 			ContainerPort: 443,
 			Protocol:      &protocol,
 		},
@@ -105,13 +48,11 @@ func StartK3SAgent(id int) {
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.InternalID = id
-	cmd.ContainerImage = config.ImageK3S
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixTaskName + "agent"
-	cmd.Hostname = config.PrefixTaskName + "agent" + strconv.Itoa(id) + "." + config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + taskID + "'"
+	cmd.TaskName = config.PrefixHostname + "agent"
+	cmd.Hostname = config.PrefixHostname + "agent" + "." + config.Domain
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + newTaskID + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
 		{
 			Key:   "cap-add",
@@ -127,7 +68,6 @@ func StartK3SAgent(id int) {
 			OutputFile: func() *string { x := "bootstrap"; return &x }(),
 		},
 	}
-	cmd.IsK3SAgent = true
 	cmd.Volumes = []mesosproto.Volume{
 		{
 			ContainerPath: "/opt/cni/net.d",
@@ -172,12 +112,12 @@ func StartK3SAgent(id int) {
 			Ports: []mesosproto.Port{
 				{
 					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-http"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(framework.FrameworkName) + "-http"; return &x }(),
 					Protocol: cmd.DockerPortMappings[0].Protocol,
 				},
 				{
 					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := strings.ToLower(config.FrameworkName) + "-https"; return &x }(),
+					Name:     func() *string { x := strings.ToLower(framework.FrameworkName) + "-https"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
 				},
 			},
@@ -214,26 +154,12 @@ func StartK3SAgent(id int) {
 	if config.K3SAgentLabels != nil {
 		cmd.Labels = config.K3SAgentLabels
 	}
-
+	// store mesos task in DB
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("Scheduled K3S Agent: ", string(d))
-
-	config.CommandChan <- cmd
 	logrus.Info("Scheduled K3S Agent")
-}
-
-// The first run have to be in a right sequence
-func initStartK3SAgent() {
-	serverState := StatusK3SServer(config.K3SServerMax - 1)
-
-	if serverState == nil {
-		return
-	}
-
-	if config.K3SAgentCount <= (config.K3SAgentMax-1) && serverState.Status.GetState() == 1 {
-		if IsK3SServerRunning() {
-			StartK3SAgent(config.K3SAgentCount)
-			config.K3SAgentCount++
-		}
+	err := config.RedisClient.Set(config.RedisCTX, cmd.TaskName+":"+newTaskID, d, 0).Err()
+	if err != nil {
+		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
 }

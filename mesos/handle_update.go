@@ -2,20 +2,24 @@ package mesos
 
 import (
 	"encoding/json"
-	"io/ioutil"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	api "github.com/AVENTER-UG/mesos-m3s/api"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 
 	"github.com/sirupsen/logrus"
 )
 
 // HandleUpdate will handle the offers event of mesos
 func HandleUpdate(event *mesosproto.Event) error {
+
+	logrus.Debug("HandleUpdate")
 	// unsuppress
 	revive := &mesosproto.Call{
 		Type: mesosproto.Call_REVIVE,
 	}
-	Call(revive)
+	mesosutil.Call(revive)
 
 	update := event.Update
 
@@ -28,26 +32,39 @@ func HandleUpdate(event *mesosproto.Event) error {
 		},
 	}
 
-	// Save state of the task
-	taskID := update.Status.GetTaskID().Value
-	tmp := config.State[taskID]
-	tmp.Status = &update.Status
+	// get the task of the current event, change the state
+	task := api.GetTaskFromEvent(update)
+	task.State = update.Status.State.String()
+	task.Agent = update.Status.GetAgentID().Value
 
-	logrus.Debugf("HandleUpdate: %s Status %s ", taskID, update.Status.State.String())
+	if task.TaskID == "" {
+		return nil
+	}
+
+	logrus.Debug(task.State)
 
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED:
-		deleteOldTask(tmp.Status.TaskID)
+		// restart task
+		task.State = ""
 	case mesosproto.TASK_KILLED:
-		deleteOldTask(tmp.Status.TaskID)
+		// remove task
+		api.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		return mesosutil.Call(msg)
 	case mesosproto.TASK_LOST:
-		deleteOldTask(tmp.Status.TaskID)
+		// restart task
+		task.State = ""
+	case mesosproto.TASK_ERROR:
+		// restart task
+		task.State = ""
 	}
 
-	// Update Framework State File
-	config.State[taskID] = tmp
-	persConf, _ := json.Marshal(&config)
-	ioutil.WriteFile(config.FrameworkInfoFile, persConf, 0644)
+	// save the new state
+	data, _ := json.Marshal(task)
+	err := config.RedisClient.Set(config.RedisCTX, task.TaskName+":"+task.TaskID, data, 0).Err()
+	if err != nil {
+		logrus.Error("HandleUpdate Redis set Error: ", err)
+	}
 
-	return Call(msg)
+	return mesosutil.Call(msg)
 }

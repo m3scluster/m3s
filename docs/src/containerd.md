@@ -31,7 +31,7 @@ The following steps should be a example how to use it.
   runtime_type = "io.containerd.runc.v2"
 
 [plugins.cri.registry.mirrors."<MY_INSECURE_REGISTRY>"]
-endpoint=https://<MY_INSECURE_REGISTRY>
+endpoint=["https://<MY_INSECURE_REGISTRY>"]
 
 [plugins.cri.registry.configs."<MY_INSECURE_REGISTRY>".tls]
 insecure_skip_verify = true

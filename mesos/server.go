@@ -5,78 +5,23 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strconv"
-	"sync/atomic"
 
-	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
-	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
+	"github.com/AVENTER-UG/util"
 
 	"github.com/sirupsen/logrus"
 )
 
-// SearchMissingK3SServer Check if all k3ss are running.
-func SearchMissingK3SServer(restart bool) bool {
-	status := make([]mesosproto.TaskState, config.K3SServerMax)
-	allRunning := true
-	if config.State != nil {
-		for i := 0; i < config.K3SServerMax; i++ {
-			state := StatusK3SServer(i)
-			if state != nil {
-				status[i] = *state.Status.State
-				if *state.Status.State != mesosproto.TASK_RUNNING {
-					allRunning = false
-					logrus.Debug("Missing K3S: ", i)
-					if restart {
-						CreateK3SServerString()
-						StartK3SServer(i)
-					}
-				}
-			} else {
-				allRunning = false
-			}
-		}
-	} else {
-		allRunning = false
-	}
-	config.M3SStatus.Server = status
-	return allRunning
-}
-
-// StatusK3SServer Get out Status of the given k3s ID
-func StatusK3SServer(id int) *cfg.State {
-	if config.State != nil {
-		for _, element := range config.State {
-			if element.Status != nil {
-				if element.Command.InternalID == id && element.Command.IsK3SServer {
-					return &element
-				}
-			}
-		}
-	}
-	return nil
-}
-
 // StartK3SServer Start K3S with the given id
-func StartK3SServer(id int) {
-	newTaskID := atomic.AddUint64(&config.TaskID, 1)
-
-	var cmd cfg.Command
-
-	// be sure, that there is no k3s with this id already running
-	status := StatusK3SServer(id)
-	if status != nil {
-		if status.Status.State == mesosproto.TASK_STAGING.Enum() {
-			logrus.Info("startK3SServer: k3s is staging ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_STARTING.Enum() {
-			logrus.Info("startK3SServer: k3s is starting ", id)
-			return
-		}
-		if status.Status.State == mesosproto.TASK_RUNNING.Enum() {
-			logrus.Info("startK3SServer: k3s already running ", id)
-			return
-		}
+func StartK3SServer(taskID string) {
+	// if taskID is 0, then its a new task and we have to create a new ID
+	newTaskID := taskID
+	if taskID == "" {
+		newTaskID, _ = util.GenUUID()
 	}
+
+	var cmd mesosutil.Command
 
 	cmd.TaskID = newTaskID
 
@@ -84,17 +29,15 @@ func StartK3SServer(id int) {
 	cmd.ContainerImage = config.ImageK3S
 	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &config.MesosCNI,
+		Name: &framework.MesosCNI,
 	}}
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.InternalID = id
-	cmd.IsK3SServer = true
 	cmd.ContainerImage = config.ImageK3S
 	cmd.Memory = config.K3SMEM
 	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixTaskName + "server"
+	cmd.TaskName = config.PrefixHostname + "server"
 	cmd.Hostname = config.PrefixHostname + "server" + "." + config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + "--tls-san=" + config.Domain + "'"
 	cmd.DockerParameter = []mesosproto.Parameter{
@@ -137,7 +80,7 @@ func StartK3SServer(id int) {
 		},
 	}
 
-	hostport := 31859 + uint32(newTaskID)
+	hostport := uint32(getRandomHostPort())
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
@@ -146,12 +89,12 @@ func StartK3SServer(id int) {
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 1,
+			HostPort:      uint32(hostport + 1),
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 2,
+			HostPort:      uint32(hostport + 2),
 			ContainerPort: 8080,
 			Protocol:      &protocol,
 		},
@@ -206,7 +149,7 @@ func StartK3SServer(id int) {
 		{
 			Name: "K3S_DATASTORE_ENDPOINT",
 			Value: func() *string {
-				x := "http://" + config.PrefixTaskName + "etcd" + "." + config.Domain + ":2379"
+				x := "http://" + config.PrefixHostname + "etcd" + "." + config.Domain + ":2379"
 				return &x
 			}(),
 		},
@@ -216,26 +159,13 @@ func StartK3SServer(id int) {
 		},
 	}
 
+	// store mesos task in DB
 	d, _ := json.Marshal(&cmd)
-	logrus.Debug("Scheduled K3S Server: ", string(d))
-
-	config.CommandChan <- cmd
+	logrus.Debug("Scheduled K3S Server: ", util.PrettyJSON(d))
 	logrus.Info("Scheduled K3S Server")
-
-}
-
-// the first run should be in ta strict order.
-func initStartK3SServer() {
-	etcdState := StatusEtcd(config.ETCDMax - 1)
-
-	// if etcd still not run, then do not start K3S Manager
-	if etcdState == nil {
-		return
-	}
-
-	if config.K3SServerCount <= (config.K3SServerMax-1) && etcdState.Status.GetState() == 1 {
-		StartK3SServer(config.K3SServerCount)
-		config.K3SServerCount++
+	err := config.RedisClient.Set(config.RedisCTX, cmd.TaskName+":"+newTaskID, d, 0).Err()
+	if err != nil {
+		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
 }
 
@@ -280,13 +210,4 @@ func IsK3SServerRunning() bool {
 
 	config.M3SStatus.API = "nok"
 	return false
-}
-
-// K3SHeartbeat to execute K3S Bootstrap API Server commands
-func K3SHeartbeat() {
-	if !IsK3SServerRunning() {
-		initStartK3SServer()
-	} else {
-		initStartK3SAgent()
-	}
 }

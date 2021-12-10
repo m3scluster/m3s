@@ -21,7 +21,7 @@ func V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 	var count cfg.Count
 
 	count.Scale = config.K3SAgentMax
-	count.Running = config.K3SAgentCount
+	count.Running = CountRedisKey(config.PrefixHostname + "agent:*")
 
 	d, err := json.Marshal(count)
 
@@ -32,7 +32,7 @@ func V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 	logrus.Debug("HTTP GET V0GetCountK3SAgent")
 
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 
 	w.Write(d)

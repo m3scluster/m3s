@@ -75,7 +75,6 @@ class M3s(PluginBase):
             "arguments": ["<framework-id>", "<count>"],
             "flags": {
                 "-a --agent": "Scale up/down Kubernetes agents",
-                "-m --manager": "Scale up/down Kubernetes manager",
                 "-e --etcd": "Scale up/down etcd",
             },
             "short_help": "Scale up/down the Manager or Agent of Kubernetes",
@@ -101,8 +100,6 @@ class M3s(PluginBase):
         service = None
         if argv["--agent"]:
             service = "agent"
-        elif argv["--manager"]:
-            service = "server"
         elif argv["--etcd"]:
             service = "etcd"
 
@@ -110,7 +107,7 @@ class M3s(PluginBase):
             print("Scale up/down " + service)
 
             framework_address = get_framework_address(
-                argv["<framework-id>"], master, config
+                self.get_framework_id(argv), master, config
             )
             data = http.read_endpoint(
                 framework_address, "/v0/" + service + "/scale/" + argv["<count>"], self
