@@ -60,6 +60,7 @@ func init() {
 	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
 	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
 	config.RedisPassword = os.Getenv("REDIS_PASSWORD")
+	config.RedisDB, _ = strconv.Atoi(util.Getenv("REDIS_DB", "1"))
 
 	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")

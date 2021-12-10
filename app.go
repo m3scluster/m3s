@@ -22,7 +22,7 @@ var MinVersion string
 func initCache() {
 	var redisOptions goredis.Options
 	redisOptions.Addr = config.RedisServer
-	redisOptions.DB = 0
+	redisOptions.DB = config.RedisDB
 	if config.RedisPassword != "" {
 		redisOptions.Password = config.RedisPassword
 	}
@@ -61,9 +61,6 @@ func main() {
 	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
 	//	}
 
-	// The Hostname should ever be set after reading the state file.
-	framework.FrameworkInfo.Hostname = &framework.FrameworkHostname
-
 	initCache()
 
 	mesosutil.SetConfig(&framework)
@@ -81,6 +78,9 @@ func main() {
 	if key != "" {
 		json.Unmarshal([]byte(key), &config)
 	}
+
+	// The Hostname should ever be set after reading the state file.
+	framework.FrameworkInfo.Hostname = &framework.FrameworkHostname
 
 	http.Handle("/", api.Commands())
 
