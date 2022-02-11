@@ -371,24 +371,24 @@ kubernetes-dashboard   kubernetes-dashboard        ClusterIP      10.3.43.87    
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="scale-updown-kubernetes-service"><a class="header" href="#scale-updown-kubernetes-service">Scale up/down Kubernetes Service</a></h1>
 <p>To scale Kubernetes services, we have to call the following API. <code>&lt;count&gt;</code> is the number of all running processes.</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent|etcd&gt;/scale/&lt;count&gt;
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/api/m3s/v0/&lt;server|agent|etcd&gt;/scale/&lt;count&gt;
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="show-count-of-running-kubernetes-serversagents"><a class="header" href="#show-count-of-running-kubernetes-serversagents">Show count of running Kubernetes Servers/Agents</a></h1>
 <p>To get out information about the current running and/or expected Kubernetes Servers/Agents, we can do
 the following call.</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/&lt;server|agent&gt;/scale
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/api/m3s/v0/&lt;server|agent&gt;/scale
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-kubeconfig"><a class="header" href="#get-kubeconfig">Get Kubeconfig</a></h1>
 <p>Get out the kubernetes config file</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/server/config
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/api/m3s/v0/server/config
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-kubernetes-version"><a class="header" href="#get-kubernetes-version">Get Kubernetes Version</a></h1>
 <p>Get out the kubernetes version</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/server/version
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/api/m3s/v0/server/version
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="get-status-of-the-m3s-services"><a class="header" href="#get-status-of-the-m3s-services">Get status of the M3s services</a></h1>
 <p>Get out the M3s status information</p>
-<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/v0/status/m3s
+<pre><code class="language-bash">curl -X GET -u &lt;username&gt;:&lt;password&gt; http://127.0.0.1:10000/api/m3s/v0/status/m3s
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="create-nginx-ingress-with-traefik-in-m3s"><a class="header" href="#create-nginx-ingress-with-traefik-in-m3s">Create NGINX ingress with traefik in M3S</a></h1>
 <p>With these example we will create a nginx Webserver and publish the Website with the traefik 2.x ingress.</p>
@@ -519,7 +519,7 @@ The following steps should be a example how to use it.</p>
   runtime_type = &quot;io.containerd.runc.v2&quot;
 
 [plugins.cri.registry.mirrors.&quot;&lt;MY_INSECURE_REGISTRY&gt;&quot;]
-endpoint=https://&lt;MY_INSECURE_REGISTRY&gt;
+endpoint=[&quot;https://&lt;MY_INSECURE_REGISTRY&gt;&quot;]
 
 [plugins.cri.registry.configs.&quot;&lt;MY_INSECURE_REGISTRY&gt;&quot;.tls]
 insecure_skip_verify = true
