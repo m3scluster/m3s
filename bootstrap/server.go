@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"flag"
+	"fmt"
 	"io/ioutil"
 	"net/http"
-	_ "net/http/pprof"
 	"os"
 	"os/exec"
 	"strconv"
@@ -15,10 +15,17 @@ import (
 	"github.com/sirupsen/logrus"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	chkVersion "github.com/hashicorp/go-version"
 )
 
-// MinVersion is the version number of this program
-var MinVersion string
+// BuildVersion of m3s
+var BuildVersion string
+
+// GitVersion is the revision and commit number
+var GitVersion string
+
+// VersionURL is the URL of the .version.json file
+var VersionURL string
 
 // DashboardInstalled is true if the dashboard is already installed
 var DashboardInstalled bool
@@ -31,12 +38,12 @@ func Commands() *mux.Router {
 	// Connect with database
 
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/versions", APIVersions).Methods("GET")
-	rtr.HandleFunc("/update", APIUpdate).Methods("PUT")
-	rtr.HandleFunc("/status", APIHealth).Methods("GET")
-	rtr.HandleFunc("/api/k3s/v0/config", APIGetKubeConfig).Methods("GET")
-	rtr.HandleFunc("/api/k3s/v0/version", APIGetKubeVersion).Methods("GET")
-	rtr.HandleFunc("/status?verbose", APIStatus).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/versions", APIVersions).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/update", APIUpdate).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/status", APIHealth).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/config", APIGetKubeConfig).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/version", APIGetKubeVersion).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/status?verbose", APIStatus).Methods("GET")
 
 	return rtr
 }
@@ -45,7 +52,7 @@ func Commands() *mux.Router {
 func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "-")
-	w.Write([]byte("/api/k3s/v0"))
+	w.Write([]byte("/api/m3s/v0"))
 }
 
 // APIUpdate do a update of the bootstrap server
@@ -54,8 +61,9 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Api-Service", "v0")
 
 	// check first if there is a update
+	logrus.Info("Get version file: ", VersionURL)
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/.version.json", nil)
+	req, _ := http.NewRequest("GET", VersionURL, nil)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -72,7 +80,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := ioutil.ReadAll(res.Body)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -80,7 +88,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var version cfg.Version
+	var version cfg.M3SVersion
 	err = json.Unmarshal(body, &version)
 
 	if err != nil {
@@ -90,9 +98,16 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// check if the current Version diffs to the online version. If yes, then start the update.
-	if version.BootstrapBuild != MinVersion {
+	newVersion, _ := chkVersion.NewVersion(version.BootstrapVersion.GitVersion)
+	currentVersion, _ := chkVersion.NewVersion(GitVersion)
+
+	logrus.Info("APIUpdate newVersion: ", newVersion)
+	logrus.Info("APIUpdate currentVersion: ", currentVersion)
+
+	if currentVersion.LessThan(newVersion) {
 		w.Write([]byte("Start bootstrap server update"))
 		logrus.Info("Start update")
+		// #nosec: G204
 		stdout, err := exec.Command("/mnt/mesos/sandbox/update", strconv.Itoa(os.Getpid())).Output()
 		if err != nil {
 			logrus.Error("Do update", err, stdout)
@@ -222,12 +237,21 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// Prints out current version
+	var version bool
+	flag.BoolVar(&version, "v", false, "Prints current version")
+	flag.Parse()
+	if version {
+		fmt.Print(GitVersion)
+		return
+	}
+
 	util.SetLogging("INFO", false, "GO-K3S-API")
 
 	bind := flag.String("bind", "0.0.0.0", "The IP address to bind")
 	port := flag.String("port", "10422", "The port to listen")
 
-	logrus.Println("GO-K3S-API build "+MinVersion, *bind, *port)
+	logrus.Println("GO-K3S-API build "+BuildVersion+" git "+GitVersion+" ", *bind, *port)
 
 	DashboardInstalled = false
 

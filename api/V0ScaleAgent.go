@@ -31,14 +31,12 @@ func V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 		d = []byte(strconv.Itoa(newCount - oldCount))
 
-		err := SaveConfig()
-		if err != nil {
-			d = ErrorMessage(1, "V0ScaleK3SAgent", "Could not save config data")
-		}
+		// Save current config
+		SaveConfig()
 
 		// if scale down, kill not needes agents
 		if newCount < oldCount {
-			keys := GetAllRedisKeys(config.PrefixHostname + "agent:*")
+			keys := GetAllRedisKeys(framework.FrameworkName + ":agent:*")
 
 			for keys.Next(config.RedisCTX) {
 				if newCount < oldCount {

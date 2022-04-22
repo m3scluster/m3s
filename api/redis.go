@@ -69,12 +69,10 @@ func CountRedisKey(pattern string) int {
 }
 
 // SaveConfig store the current framework config
-func SaveConfig() error {
+func SaveConfig() {
 	data, _ := json.Marshal(config)
-	err := config.RedisClient.Set(config.RedisCTX, "framework_config", data, 0).Err()
+	err := config.RedisClient.Set(config.RedisCTX, framework.FrameworkName+":framework_config", data, 0).Err()
 	if err != nil {
-		logrus.Error("getRedisKey: ", err)
-		return err
+		logrus.Error("Framework save config and state into redis Error: ", err)
 	}
-	return nil
 }

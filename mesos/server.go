@@ -27,7 +27,6 @@ func StartK3SServer(taskID string) {
 
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
-	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
 		Name: &framework.MesosCNI,
 	}}
@@ -35,16 +34,21 @@ func StartK3SServer(taskID string) {
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.ContainerImage = config.ImageK3S
-	cmd.Memory = config.K3SMEM
-	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixHostname + "server"
-	cmd.Hostname = config.PrefixHostname + "server" + "." + config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + "--tls-san=" + config.Domain + "'"
-	cmd.DockerParameter = []mesosproto.Parameter{
-		{
-			Key:   "cap-add",
-			Value: "NET_ADMIN",
-		},
+	cmd.Memory = config.K3SServerMEM
+	cmd.CPU = config.K3SServerCPU
+	cmd.TaskName = framework.FrameworkName + ":server"
+	cmd.Hostname = framework.FrameworkName + "server" + config.Domain
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SServerString + config.K3SDocker + " --kube-controller-manager-arg='leader-elect=false' --kube-scheduler-arg='leader-elect=false' -tls-san=" + framework.FrameworkName + "server'"
+	cmd.DockerParameter = addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
+	cmd.DockerParameter = addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
+	cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: config.DockerSHMSize})
+	// if mesos cni is unset, then use docker cni
+	if framework.MesosCNI == "" {
+		// net-alias is only supported onuser-defined networks
+		if config.DockerCNI != "bridge" {
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net", Value: config.DockerCNI})
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net-alias", Value: framework.FrameworkName + "server"})
+		}
 	}
 
 	cmd.Uris = []mesosproto.CommandInfo_URI{
@@ -68,19 +72,14 @@ func StartK3SServer(taskID string) {
 				},
 			},
 		},
-		{
-			ContainerPath: "/opt/cni/net.d",
-			Mode:          mesosproto.RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Name: "/etc/mesos/cni/net.d",
-				},
-			},
-		},
 	}
 
-	hostport := uint32(getRandomHostPort())
+	// get free hostport. If there is no one, do not start
+	hostport := getRandomHostPort(3)
+	if hostport == 0 {
+		logrus.WithField("func", "StartK3SServer").Error("Could not find free ports")
+		return
+	}
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
@@ -89,12 +88,12 @@ func StartK3SServer(taskID string) {
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(hostport + 1),
+			HostPort:      hostport + 1,
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(hostport + 2),
+			HostPort:      hostport + 2,
 			ContainerPort: 8080,
 			Protocol:      &protocol,
 		},
@@ -114,6 +113,11 @@ func StartK3SServer(taskID string) {
 					Number:   cmd.DockerPortMappings[1].HostPort,
 					Name:     func() *string { x := "kubernetes"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
+				},
+				{
+					Number:   cmd.DockerPortMappings[2].HostPort,
+					Name:     func() *string { x := "http"; return &x }(),
+					Protocol: cmd.DockerPortMappings[2].Protocol,
 				},
 			},
 		},
@@ -149,7 +153,7 @@ func StartK3SServer(taskID string) {
 		{
 			Name: "K3S_DATASTORE_ENDPOINT",
 			Value: func() *string {
-				x := "http://" + config.PrefixHostname + "etcd" + "." + config.Domain + ":2379"
+				x := "http://" + framework.FrameworkName + "etcd" + config.Domain + ":2379"
 				return &x
 			}(),
 		},
@@ -171,7 +175,7 @@ func StartK3SServer(taskID string) {
 
 // CreateK3SServerString create the K3S_URL string
 func CreateK3SServerString() {
-	server := "https://" + config.PrefixHostname + "server" + "." + config.Domain + ":6443"
+	server := "https://" + framework.FrameworkName + "server" + config.Domain + ":6443"
 
 	config.K3SServerURL = server
 }
@@ -179,7 +183,7 @@ func CreateK3SServerString() {
 // IsK3SServerRunning check if the kubernetes server is already running
 func IsK3SServerRunning() bool {
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/status", nil)
+	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/status", nil)
 	req.Close = true
 	res, err := client.Do(req)
 

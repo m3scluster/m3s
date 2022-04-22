@@ -12,9 +12,9 @@ import (
 func defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
 	CPU := "cpus"
 	MEM := "mem"
+	PORT := "ports"
 	cpu := cmd.CPU
 	mem := cmd.Memory
-	PORT := "ports"
 
 	res := []mesosproto.Resource{
 		{
@@ -64,7 +64,7 @@ func defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
 	return res
 }
 
-func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Command) ([]mesosproto.TaskInfo, error) {
+func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Command) []mesosproto.TaskInfo {
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("HandleOffers cmd: ", util.PrettyJSON(d))
 
@@ -115,11 +115,12 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Com
 		Volumes:  cmd.Volumes,
 		Hostname: &cmd.Hostname,
 		Docker: &mesosproto.ContainerInfo_DockerInfo{
-			Image:        cmd.ContainerImage,
-			Network:      networkMode,
-			PortMappings: cmd.DockerPortMappings,
-			Privileged:   &cmd.Privileged,
-			Parameters:   cmd.DockerParameter,
+			Image:          cmd.ContainerImage,
+			Network:        networkMode,
+			PortMappings:   cmd.DockerPortMappings,
+			Privileged:     &cmd.Privileged,
+			Parameters:     cmd.DockerParameter,
+			ForcePullImage: func() *bool { x := true; return &x }(),
 		},
 		NetworkInfos: cmd.NetworkInfo,
 	}
@@ -137,5 +138,5 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Com
 	d, _ = json.Marshal(&msg)
 	logrus.Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
-	return []mesosproto.TaskInfo{msg}, nil
+	return []mesosproto.TaskInfo{msg}
 }

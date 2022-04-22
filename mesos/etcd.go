@@ -12,7 +12,7 @@ import (
 )
 
 func getEtcdStatus() string {
-	keys := api.GetAllRedisKeys(config.PrefixHostname + "etcd:*")
+	keys := api.GetAllRedisKeys(framework.FrameworkName + ":etcd:*")
 
 	for keys.Next(config.RedisCTX) {
 		key := api.GetRedisKey(keys.Val())
@@ -45,14 +45,23 @@ func StartEtcd(taskID string) {
 	cmd.Privileged = false
 	cmd.Memory = config.ETCDMEM
 	cmd.CPU = config.ETCDCPU
-	cmd.TaskName = config.PrefixHostname + "etcd"
-	cmd.Hostname = config.PrefixHostname + "etcd" + "." + config.Domain
-	cmd.DockerParameter = []mesosproto.Parameter{}
+	cmd.Disk = config.ETCDDISK
+	cmd.TaskName = framework.FrameworkName + ":etcd"
+	cmd.Hostname = framework.FrameworkName + "etcd" + config.Domain
+	cmd.DockerParameter = addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
+	// if mesos cni is unset, then use docker cni
+	if framework.MesosCNI == "" {
+		// net-alias is only supported onuser-defined networks
+		if config.DockerCNI != "bridge" {
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net", Value: config.DockerCNI})
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net-alias", Value: framework.FrameworkName + "etcd"})
+		}
+	}
 
 	AllowNoneAuthentication := "yes"
 	AdvertiseURL := "http://" + cmd.Hostname + ":2379"
 
-	cmd.Command = "/opt/bitnami/etcd/bin/etcd --listen-client-urls http://0.0.0.0:2379"
+	cmd.Command = "/opt/bitnami/etcd/bin/etcd --listen-client-urls http://0.0.0.0:2379 --election-timeout '50000' --heartbeat-interval '5000'"
 
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
 		{
@@ -89,4 +98,8 @@ func StartEtcd(taskID string) {
 	if err != nil {
 		logrus.Error("Cloud not store Mesos Task in Redis: ", err)
 	}
+}
+
+func addDockerParameter(current []mesosproto.Parameter, newValues mesosproto.Parameter) []mesosproto.Parameter {
+	return append(current, newValues)
 }

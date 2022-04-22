@@ -21,14 +21,17 @@ func StartK3SAgent(taskID string) {
 		newTaskID, _ = util.GenUUID()
 	}
 
-	hostport := uint32(getRandomHostPort())
+	hostport := getRandomHostPort(2)
+	if hostport == 0 {
+		logrus.WithField("func", "StartK3SAgent").Error("Could not find free ports")
+		return
+	}
 	protocol := "tcp"
 
 	cmd.TaskID = newTaskID
 
 	cmd.ContainerType = "DOCKER"
 	cmd.ContainerImage = config.ImageK3S
-	cmd.NetworkMode = "bridge"
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
 		Name: &framework.MesosCNI,
 	}}
@@ -40,7 +43,7 @@ func StartK3SAgent(taskID string) {
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      uint32(hostport + 1),
+			HostPort:      hostport + 1,
 			ContainerPort: 443,
 			Protocol:      &protocol,
 		},
@@ -48,17 +51,23 @@ func StartK3SAgent(taskID string) {
 
 	cmd.Shell = true
 	cmd.Privileged = true
-	cmd.Memory = config.K3SMEM
-	cmd.CPU = config.K3SCPU
-	cmd.TaskName = config.PrefixHostname + "agent"
-	cmd.Hostname = config.PrefixHostname + "agent" + "." + config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + " --with-node-id " + newTaskID + "'"
-	cmd.DockerParameter = []mesosproto.Parameter{
-		{
-			Key:   "cap-add",
-			Value: "NET_ADMIN",
-		},
+	cmd.Memory = config.K3SAgentMEM
+	cmd.CPU = config.K3SAgentCPU
+	cmd.TaskName = framework.FrameworkName + ":agent"
+	cmd.Hostname = framework.FrameworkName + "agent" + config.Domain
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + config.K3SAgentString + config.K3SDocker + " --with-node-id " + newTaskID + "'"
+	cmd.DockerParameter = addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
+	cmd.DockerParameter = addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
+	cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: config.DockerSHMSize})
+	// if mesos cni is unset, then use docker cni
+	if framework.MesosCNI == "" {
+		// net-alias is only supported onuser-defined networks
+		if config.DockerCNI != "bridge" {
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net", Value: config.DockerCNI})
+			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net-alias", Value: framework.FrameworkName + "agent"})
+		}
 	}
+
 	cmd.Uris = []mesosproto.CommandInfo_URI{
 		{
 			Value:      config.BootstrapURL,
@@ -67,42 +76,6 @@ func StartK3SAgent(taskID string) {
 			Cache:      func() *bool { x := false; return &x }(),
 			OutputFile: func() *string { x := "bootstrap"; return &x }(),
 		},
-	}
-	cmd.Volumes = []mesosproto.Volume{
-		{
-			ContainerPath: "/opt/cni/net.d",
-			Mode:          mesosproto.RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Name: "/etc/mesos/cni/net.d",
-				},
-			},
-		},
-	}
-	if config.DockerSock != "" {
-		cmd.Volumes = []mesosproto.Volume{
-			{
-				ContainerPath: "/var/run/docker.sock",
-				Mode:          mesosproto.RW.Enum(),
-				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-						Name: config.DockerSock,
-					},
-				},
-			},
-			{
-				ContainerPath: "/opt/cni/net.d",
-				Mode:          mesosproto.RW.Enum(),
-				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
-					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-						Name: "/etc/mesos/cni/net.d",
-					},
-				},
-			},
-		}
 	}
 
 	cmd.Discovery = mesosproto.DiscoveryInfo{

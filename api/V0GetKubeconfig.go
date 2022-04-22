@@ -22,7 +22,7 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/k3s/v0/config", nil)
+	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/config", nil)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -52,5 +52,4 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write([]byte(kubconf))
-
 }

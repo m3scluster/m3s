@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -19,6 +20,7 @@ func V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	getStatus()
 	status := config.M3SStatus
 
 	d, _ := json.Marshal(&status)
@@ -29,4 +31,29 @@ func V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Api-Service", "v0")
 
 	w.Write(d)
+}
+
+func getStatus() {
+	config.M3SStatus.Etcd = map[string]string{}
+	config.M3SStatus.Agent = map[string]string{}
+	config.M3SStatus.Server = map[string]string{}
+	services := []string{"etcd", "server", "agent"}
+
+	for _, service := range services {
+		keys := GetAllRedisKeys(framework.FrameworkName + ":" + service + ":*")
+
+		for keys.Next(config.RedisCTX) {
+			key := GetRedisKey(keys.Val())
+			var task mesosutil.Command
+			json.Unmarshal([]byte(key), &task)
+
+			if service == "etcd" {
+				config.M3SStatus.Etcd[task.TaskID] = task.State
+			} else if service == "agent" {
+				config.M3SStatus.Agent[task.TaskID] = task.State
+			} else if service == "server" {
+				config.M3SStatus.Server[task.TaskID] = task.State
+			}
+		}
+	}
 }

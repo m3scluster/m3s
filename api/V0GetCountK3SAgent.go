@@ -21,7 +21,7 @@ func V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 	var count cfg.Count
 
 	count.Scale = config.K3SAgentMax
-	count.Running = CountRedisKey(config.PrefixHostname + "agent:*")
+	count.Running = CountRedisKey(framework.FrameworkName + ":agent:*")
 
 	d, err := json.Marshal(count)
 

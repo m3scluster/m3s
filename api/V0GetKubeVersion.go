@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -21,7 +22,7 @@ func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/k3s/v0/version", nil)
+	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/version", nil)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -44,7 +45,19 @@ func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = json.Unmarshal(content, &config.Version)
+	if err != nil {
+		logrus.Error("V0GetKubeVersion: Error 3 ", err)
+		return
+	}
+
+	d, err := json.Marshal(&config.Version)
+	if err != nil {
+		logrus.Error("V0GetKubeVersion: Error 4 ", err)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
-	w.Write([]byte(content))
+	w.Write(d)
 }

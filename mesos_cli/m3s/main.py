@@ -110,7 +110,9 @@ class M3s(PluginBase):
                 self.get_framework_id(argv), master, config
             )
             data = http.read_endpoint(
-                framework_address, "/v0/" + service + "/scale/" + argv["<count>"], self
+                framework_address,
+                "/api/m3s/v0/" + service + "/scale/" + argv["<count>"],
+                self,
             )
             print(data)
         else:
@@ -134,7 +136,7 @@ class M3s(PluginBase):
         framework_address = get_framework_address(
             self.get_framework_id(argv), master, config
         )
-        data = http.read_endpoint(framework_address, "/v0/server/config", self)
+        data = http.read_endpoint(framework_address, "/api/m3s/v0/server/config", self)
 
         print(data)
 
@@ -156,7 +158,7 @@ class M3s(PluginBase):
         framework_address = get_framework_address(
             self.get_framework_id(argv), master, config
         )
-        data = http.read_endpoint(framework_address, "/v0/server/version", self)
+        data = http.read_endpoint(framework_address, "/api/m3s/v0/server/version", self)
 
         print(data)
 
@@ -180,11 +182,11 @@ class M3s(PluginBase):
         )
 
         if argv["--m3s"]:
-            data = http.read_endpoint(framework_address, "/v0/status/m3s", self)
+            data = http.read_endpoint(framework_address, "/api/m3s/v0/status/m3s", self)
             print(data)
 
         if argv["--kubernetes"]:
-            data = http.read_endpoint(framework_address, "/v0/status/k8", self)
+            data = http.read_endpoint(framework_address, "/api/m3s/v0/status/k8s", self)
             print(data)
 
     def list(self, argv):

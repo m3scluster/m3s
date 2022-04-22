@@ -1,5 +1,1 @@
-[{
-  "bootstrap_build":"20211104%.H2611",
-  "m3s_build":"20211016",
-  "m3s_version":"v0.2.0"
-}]
+{"m3sVersion": {	"gitVersion": "v0.2.0-87-gd859f76",	"buildDate": "2022-03-05T15:41:02Z"}}

@@ -3,12 +3,13 @@ module github.com/AVENTER-UG/mesos-m3s
 go 1.17
 
 require (
-	github.com/AVENTER-UG/mesos-util v0.0.18
+	github.com/AVENTER-UG/mesos-util v0.0.21
 	github.com/AVENTER-UG/util v0.2.0
 	github.com/Showmax/go-fqdn v1.0.0
 	github.com/go-redis/redis/v8 v8.11.4
 	github.com/gogo/protobuf v1.3.2
 	github.com/gorilla/mux v1.8.0
+	github.com/hashicorp/go-version v1.4.0
 	github.com/sirupsen/logrus v1.8.1
 )
 

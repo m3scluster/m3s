@@ -5,12 +5,11 @@ import (
 	"bytes"
 	"crypto/tls"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 
+	api "github.com/AVENTER-UG/mesos-m3s/api"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
@@ -38,7 +37,6 @@ func SetConfig(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) {
 
 // Subscribe to the mesos backend
 func Subscribe() error {
-
 	subscribeCall := &mesosproto.Call{
 		FrameworkID: framework.FrameworkInfo.ID,
 		Type:        mesosproto.Call_SUBSCRIBE,
@@ -50,8 +48,9 @@ func Subscribe() error {
 	body, _ := marshaller.MarshalToString(subscribeCall)
 	logrus.Debug(body)
 	client := &http.Client{}
+	// #nosec G402
 	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: config.SkipSSL},
 	}
 
 	protocol := "https"
@@ -67,6 +66,7 @@ func Subscribe() error {
 	if err != nil {
 		logrus.Fatal(err)
 	}
+	defer res.Body.Close()
 
 	reader := bufio.NewReader(res.Body)
 
@@ -101,20 +101,16 @@ func Subscribe() error {
 			framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
 			framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
 			d, _ := json.Marshal(&framework)
-			err := config.RedisClient.Set(config.RedisCTX, "framework", d, 0).Err()
+			err = config.RedisClient.Set(config.RedisCTX, framework.FrameworkName+":framework", d, 0).Err()
 			if err != nil {
 				logrus.Error("Framework save config and state into redis Error: ", err)
 			}
 		case mesosproto.Event_UPDATE:
 			logrus.Debug("Update", HandleUpdate(&event))
-			// save configuration
-			d, _ := json.Marshal(&config)
-			err := config.RedisClient.Set(config.RedisCTX, "framework_config", d, 0).Err()
-			if err != nil {
-				logrus.Error("Framework save config and state into redis Error: ", err)
-			}
 		case mesosproto.Event_HEARTBEAT:
 			Heartbeat()
+			// save configuration
+			api.SaveConfig()
 		case mesosproto.Event_OFFERS:
 			// Search Failed containers and restart them
 			logrus.Debug("Offer Got")
@@ -128,21 +124,50 @@ func Subscribe() error {
 	}
 }
 
-// if all Tasks are running, suppress framework offers
-func suppressFramework() {
-	logrus.Info("Framework Suppress")
-	suppress := &mesosproto.Call{
-		Type: mesosproto.Call_SUPPRESS,
+// Generate random host portnumber
+func getRandomHostPort(num int) uint32 {
+	// search two free ports
+	for i := framework.PortRangeFrom; i < framework.PortRangeTo; i++ {
+		port := uint32(i)
+		use := false
+		for x := 0; x < num; x++ {
+			if portInUse(port+uint32(x), "server") || portInUse(port+uint32(x), "agent") {
+				tmp := use || true
+				use = tmp
+				x = num
+			}
+
+			tmp := use || false
+			use = tmp
+		}
+		if !use {
+			return port
+		}
 	}
-	err := mesosutil.Call(suppress)
-	if err != nil {
-		logrus.Error("Supress Framework Call: ")
-	}
+	return 0
 }
 
-// Generate random host portnumber
-func getRandomHostPort() int {
-	rand.Seed(time.Now().UnixNano())
-	v := rand.Intn(framework.PortRangeTo-framework.PortRangeFrom) + framework.PortRangeFrom
-	return v
+// Check if the port is already in use
+func portInUse(port uint32, service string) bool {
+	// get all running services
+	logrus.Debug("Check if port is in use: ", port, service)
+	keys := api.GetAllRedisKeys(framework.FrameworkName + ":" + service + ":*")
+	for keys.Next(config.RedisCTX) {
+		// get the details of the current running service
+		key := api.GetRedisKey(keys.Val())
+		var task mesosutil.Command
+		json.Unmarshal([]byte(key), &task)
+
+		// check if the given port is already in use
+		ports := task.Discovery.GetPorts()
+		if ports != nil {
+			for _, hostport := range ports.GetPorts() {
+				if hostport.Number == port {
+					logrus.Debug("Port in use: ", port, service)
+					return true
+				}
+			}
+		}
+	}
+	return false
 }

@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## v0.3.0
 
 - Add Redis Authentication Support
 - Bootstrap: Add update call to update the bootstrap server.
@@ -9,7 +9,19 @@
   on a other worker as defined in the contrains variable.
 - Fix mesos-cli to determine framework uuid by name.
 - Move statefile to Redis DB
-
+- Add TLS Server Support (env variable SSL_CRT_BASE64, SSL_KEY_BASE64)
+- Change DB items framework and framework_config to be saved with the
+  frameworkName as prefix.
+- Fix M3SStatus and scalet
+- Optimize framework suppress
+- Check if port is already in use
+- Add version as flag to bootstrap server and m3s
+- IMPORTANT!!! Change all API Calls URL's.
+- Add Docker Network (`docker network create`) support. The configuration variable ist "DOCKER_CNI".
+- Seperate K3S Server and Agent Memory and CPU resource definition.
+- Change K3S to use docker engine
+- Add DOCKER_SHM_SIZE variable to configure shm-size.
+- Increase etcd election timeout
 
 ## v0.2.0
 

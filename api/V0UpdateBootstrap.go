@@ -21,12 +21,12 @@ func V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("PUT", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/update", nil)
+	req, _ := http.NewRequest("PUT", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/update", nil)
 	req.Close = true
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("V0UpdateBootstrap: Error 1: ", err, res)
+		logrus.Error("V0UpdateBootstrap: Error 1: ", err.Error(), res)
 		return
 	}
 
@@ -38,6 +38,10 @@ func V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
 	}
 
 	content, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		logrus.Error("V0UpdateBootstrap: ", err.Error())
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")

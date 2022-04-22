@@ -27,17 +27,25 @@ func SetConfig(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) {
 // Commands is the main function of this package
 func Commands() *mux.Router {
 	rtr := mux.NewRouter()
-	rtr.HandleFunc("/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
-	rtr.HandleFunc("/v0/agent/scale", V0GetCountK3SAgent).Methods("GET")
-	rtr.HandleFunc("/v0/server/config", V0GetKubeconfig).Methods("GET")
-	rtr.HandleFunc("/v0/server/version", V0GetKubeVersion).Methods("GET")
-	rtr.HandleFunc("/v0/bootstrap/update", V0UpdateBootstrap).Methods("PUT")
-	//	rtr.HandleFunc("/v0/bootstrap/version", V0UpdateBootstrap).Methods("PUT")
-	rtr.HandleFunc("/v0/etcd/scale/{count}", V0ScaleEtcd).Methods("GET")
-	rtr.HandleFunc("/v0/status/m3s", V0StatusM3s).Methods("GET")
-	rtr.HandleFunc("/v0/status/k8s", V0StatusK8s).Methods("GET")
+	rtr.HandleFunc("/api/m3s/versions", Versions).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/agent/scale", V0GetCountK3SAgent).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/server/config", V0GetKubeconfig).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/server/version", V0GetKubeVersion).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/bootstrap/update", V0UpdateBootstrap).Methods("PUT")
+	//rtr.HandleFunc("/api/m3s/v0/bootstrap/version", V0UpdateBootstrap).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/etcd/scale/{count}", V0ScaleEtcd).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/status/m3s", V0StatusM3s).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/status/k8s", V0StatusK8s).Methods("GET")
 
 	return rtr
+}
+
+// Versions give out a list of Versions
+func Versions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Api-Service", "-")
+	w.Write([]byte("/api/m3s/v0"))
 }
 
 // CheckAuth will check if the token is valid
@@ -70,6 +78,5 @@ func ErrorMessage(number int, function string, msg string) []byte {
 	err.Message = msg
 
 	data, _ := json.Marshal(err)
-	return []byte(data)
-
+	return data
 }

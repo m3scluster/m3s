@@ -24,6 +24,9 @@ services:
     - REDIS_SERVER=
     - BOOTSTRAP_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh
     - K3S_AGENT_LABELS=[{"key":"traefik.enable","value":"true"},{"key":"traefik.http.routers.m3s.entrypoints","value":"web"},{"key":"traefik.http.routers.m3s.service","value":"m3s-http"},{"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}]
+    - SKIP_SSL=true
+    - SSL_CRT_BASE64=<cat server.crt | base64 -w 0>
+    - SSL_KEY_BASE64=<cat server.key | base64 -w 0>
     volumes:
       - ./data/:/data
     ports:
