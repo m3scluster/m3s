@@ -30,6 +30,8 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/versions", Versions).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale/{count}", V0ScaleK3SAgent).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale", V0GetCountK3SAgent).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/server/scale/{count}", V0ScaleK3SServer).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/server/scale", V0GetCountK3SServer).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/config", V0GetKubeconfig).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/version", V0GetKubeVersion).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/bootstrap/update", V0UpdateBootstrap).Methods("PUT")

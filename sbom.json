@@ -1,7 +1,7 @@
 {
  "artifacts": [
   {
-   "id": "349725ec5309b582",
+   "id": "502eba97f08782cd",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.0.0-20181204170756-e4bb1d931585",
    "type": "go-module",
@@ -26,7 +26,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:sVEvCjo1XwxvV3R0gkOdXEIQBRkeKmHZGAB44vbVyY4="
+    "h1Digest": "h1:sVEvCjo1XwxvV3R0gkOdXEIQBRkeKmHZGAB44vbVyY4=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -53,7 +54,7 @@
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.0.0-20181204170756-e4bb1d931585"
   },
   {
-   "id": "d13e03af31f6d0e2",
+   "id": "376e7c7f791e6a5",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.0.0-20181204170756-e4bb1d931585",
    "type": "go-module",
@@ -78,11 +79,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:sVEvCjo1XwxvV3R0gkOdXEIQBRkeKmHZGAB44vbVyY4="
+    "h1Digest": "h1:sVEvCjo1XwxvV3R0gkOdXEIQBRkeKmHZGAB44vbVyY4=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "526dcebed65ba99d",
+   "id": "715d43b0f0b24de8",
    "name": "github.com/AVENTER-UG/mesos-m3s",
    "version": "(devel)",
    "type": "go-module",
@@ -106,11 +108,12 @@
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.17.7",
-    "architecture": "x86_64"
+    "architecture": "x86_64",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "3f6127ed66a6419b",
+   "id": "d8c769dd13bfe3ad",
    "name": "github.com/AVENTER-UG/mesos-m3s",
    "version": "f8bf7cc8acbc933e796639c6cbd653f7678baa81",
    "type": "go-module",
@@ -146,11 +149,12 @@
      "vcs.time": "2022-04-22T11:09:41Z"
     },
     "goCompiledVersion": "go1.18.1",
-    "architecture": "amd64"
+    "architecture": "amd64",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "272b09e05e9d7236",
+   "id": "ad07ba6f58894b77",
    "name": "github.com/AVENTER-UG/mesos-util",
    "version": "v0.0.21",
    "type": "go-module",
@@ -175,7 +179,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:7lG/lw8ohW7AKOHsaWoJcSOxVU93J6wLf2UNlae8+ec="
+    "h1Digest": "h1:7lG/lw8ohW7AKOHsaWoJcSOxVU93J6wLf2UNlae8+ec=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -202,7 +207,7 @@
    "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.21"
   },
   {
-   "id": "1bfef0dbc50078b",
+   "id": "c776c801702b209c",
    "name": "github.com/AVENTER-UG/mesos-util",
    "version": "v0.0.21",
    "type": "go-module",
@@ -227,11 +232,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:7lG/lw8ohW7AKOHsaWoJcSOxVU93J6wLf2UNlae8+ec="
+    "h1Digest": "h1:7lG/lw8ohW7AKOHsaWoJcSOxVU93J6wLf2UNlae8+ec=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "7378df2178a621fe",
+   "id": "25db3be75518ee6e",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.2.0",
    "type": "go-module",
@@ -253,7 +259,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:qWCE7GOZ77OAk72TtigqcEVus1Xyh9GxDp7n6NjFsAM="
+    "h1Digest": "h1:qWCE7GOZ77OAk72TtigqcEVus1Xyh9GxDp7n6NjFsAM=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -277,7 +284,7 @@
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.2.0"
   },
   {
-   "id": "90c63f0ca000de76",
+   "id": "df8de1424d7e8953",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.2.0",
    "type": "go-module",
@@ -299,7 +306,8 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:qWCE7GOZ77OAk72TtigqcEVus1Xyh9GxDp7n6NjFsAM="
+    "h1Digest": "h1:qWCE7GOZ77OAk72TtigqcEVus1Xyh9GxDp7n6NjFsAM=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -322,7 +330,7 @@
    "purl": "pkg:golang/github.com/Showmax/go-fqdn@v1.0.0"
   },
   {
-   "id": "b6dae425c78b4e7f",
+   "id": "7ab99b5b003a3c32",
    "name": "github.com/Showmax/go-fqdn",
    "version": "v1.0.0",
    "type": "go-module",
@@ -343,11 +351,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:0rG5IbmVliNT5O19Mfuvna9LL7zlHyRfsSvBPZmF9tM="
+    "h1Digest": "h1:0rG5IbmVliNT5O19Mfuvna9LL7zlHyRfsSvBPZmF9tM=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "69128d0a52f1f9ba",
+   "id": "1289b8b8705f250f",
    "name": "github.com/cespare/xxhash/v2",
    "version": "v2.1.2",
    "type": "go-module",
@@ -360,14 +369,15 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:cespare:xxhash:v2.1.2:*:*:*:*:*:*:*"
+    "cpe:2.3:a:cespare:xxhash\\/v2:v2.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.1.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE="
+    "h1Digest": "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -384,12 +394,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:cespare:xxhash:v2.1.2:*:*:*:*:*:*:*"
+    "cpe:2.3:a:cespare:xxhash\\/v2:v2.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.1.2"
   },
   {
-   "id": "9b8633d5f5d331e4",
+   "id": "a181e47379baeae",
    "name": "github.com/cespare/xxhash/v2",
    "version": "v2.1.2",
    "type": "go-module",
@@ -402,18 +412,19 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:cespare:xxhash:v2.1.2:*:*:*:*:*:*:*"
+    "cpe:2.3:a:cespare:xxhash\\/v2:v2.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.1.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE="
+    "h1Digest": "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "f733935742b9dc93",
+   "id": "44e1a859113f08f0",
    "name": "github.com/dgryski/go-rendezvous",
    "version": "v0.0.0-20200823014737-9f7001d12a5f",
    "type": "go-module",
@@ -434,7 +445,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78="
+    "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -457,7 +469,7 @@
    "purl": "pkg:golang/github.com/dgryski/go-rendezvous@v0.0.0-20200823014737-9f7001d12a5f"
   },
   {
-   "id": "37a3a27ce8e1b65e",
+   "id": "902afbb06c383b04",
    "name": "github.com/dgryski/go-rendezvous",
    "version": "v0.0.0-20200823014737-9f7001d12a5f",
    "type": "go-module",
@@ -478,11 +490,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78="
+    "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "361804f96fc463e7",
+   "id": "1ade1778097608a7",
    "name": "github.com/go-redis/redis/v8",
    "version": "v8.11.4",
    "type": "go-module",
@@ -495,16 +508,17 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:go-redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:redis:v8.11.4:*:*:*:*:*:*:*"
+    "cpe:2.3:a:go-redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go_redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go:redis\\/v8:v8.11.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/go-redis/redis/v8@v8.11.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:kHoYkfZP6+pe04aFTnhDH6GDROa5yJdHJVNxV3F46Tg="
+    "h1Digest": "h1:kHoYkfZP6+pe04aFTnhDH6GDROa5yJdHJVNxV3F46Tg=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -521,14 +535,14 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:go-redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:redis:v8.11.4:*:*:*:*:*:*:*"
+    "cpe:2.3:a:go-redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go_redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go:redis\\/v8:v8.11.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/go-redis/redis/v8@v8.11.4"
   },
   {
-   "id": "51c43eb95cae4",
+   "id": "7254c8bdd6fa8583",
    "name": "github.com/go-redis/redis/v8",
    "version": "v8.11.4",
    "type": "go-module",
@@ -541,20 +555,21 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:go-redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_redis:redis:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:redis:v8.11.4:*:*:*:*:*:*:*"
+    "cpe:2.3:a:go-redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go_redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go:redis\\/v8:v8.11.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/go-redis/redis/v8@v8.11.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:kHoYkfZP6+pe04aFTnhDH6GDROa5yJdHJVNxV3F46Tg="
+    "h1Digest": "h1:kHoYkfZP6+pe04aFTnhDH6GDROa5yJdHJVNxV3F46Tg=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "f74c1f1663191d86",
+   "id": "514cad75f723976e",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -574,7 +589,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
+    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -596,7 +612,7 @@
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2"
   },
   {
-   "id": "4705f1af377970aa",
+   "id": "16e84fabc704e953",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -616,11 +632,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
+    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "e51943c96641f464",
+   "id": "9cdef1de0c48fbed",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -640,7 +657,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
+    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -662,7 +680,7 @@
    "purl": "pkg:golang/github.com/gorilla/mux@v1.8.0"
   },
   {
-   "id": "699dd03ffb2e7b10",
+   "id": "43e0e2c2c855ab65",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -682,11 +700,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
+    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "cb6c302d93866a7",
+   "id": "e9edc83b3f3bdec1",
    "name": "github.com/hashicorp/go-version",
    "version": "v1.4.0",
    "type": "go-module",
@@ -707,7 +726,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:aAQzgqIrRKRa7w75CKpbBxYsmUoPjzVm1W59ca1L0J4="
+    "h1Digest": "h1:aAQzgqIrRKRa7w75CKpbBxYsmUoPjzVm1W59ca1L0J4=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -730,7 +750,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-version@v1.4.0"
   },
   {
-   "id": "5aaaf95ba781d46d",
+   "id": "88666544c92667e0",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.11",
    "type": "go-module",
@@ -751,7 +771,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:nQ+aFkoE2TMGc0b68U2OKSexC+eq46+XwZzWXHRmPYs="
+    "h1Digest": "h1:nQ+aFkoE2TMGc0b68U2OKSexC+eq46+XwZzWXHRmPYs=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -774,7 +795,7 @@
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.11"
   },
   {
-   "id": "94b993faedac41dd",
+   "id": "e5ec412e5709b4c9",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.11",
    "type": "go-module",
@@ -795,11 +816,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:nQ+aFkoE2TMGc0b68U2OKSexC+eq46+XwZzWXHRmPYs="
+    "h1Digest": "h1:nQ+aFkoE2TMGc0b68U2OKSexC+eq46+XwZzWXHRmPYs=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "f944c29d3cf1302d",
+   "id": "75efd02fa3160c55",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.14",
    "type": "go-module",
@@ -820,7 +842,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y="
+    "h1Digest": "h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -843,7 +866,7 @@
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.14"
   },
   {
-   "id": "bcbe066b37191de3",
+   "id": "3d5d2d712270222d",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.14",
    "type": "go-module",
@@ -864,11 +887,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y="
+    "h1Digest": "h1:yVuAays6BHfxijgZPzw+3Zlu5yQgKGP2/hcQbHb7S9Y=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "43730d7642e9642a",
+   "id": "928b1386b270f680",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -888,7 +912,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
+    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -910,7 +935,7 @@
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d"
   },
   {
-   "id": "5f6359b8465eadc0",
+   "id": "a5b06d171a133172",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -930,11 +955,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
+    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "b09e202673ac87ee",
+   "id": "ee5776025156b019",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -954,7 +980,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
+    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -976,7 +1003,7 @@
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0"
   },
   {
-   "id": "b71fa1ef38bc24f6",
+   "id": "61753d087dc3e61e",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -996,11 +1023,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
+    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "e0e22120588da80e",
+   "id": "4cc11f92af165242",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.8.1",
    "type": "go-module",
@@ -1020,7 +1048,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:dJKuHgqk1NNQlqoA6BTlM1Wf9DOH3NBjQyu0h9+AZZE="
+    "h1Digest": "h1:dJKuHgqk1NNQlqoA6BTlM1Wf9DOH3NBjQyu0h9+AZZE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -1042,7 +1071,7 @@
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.8.1"
   },
   {
-   "id": "dab9a9d9d18276d9",
+   "id": "efd0997aaef32df5",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.8.1",
    "type": "go-module",
@@ -1062,11 +1091,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:dJKuHgqk1NNQlqoA6BTlM1Wf9DOH3NBjQyu0h9+AZZE="
+    "h1Digest": "h1:dJKuHgqk1NNQlqoA6BTlM1Wf9DOH3NBjQyu0h9+AZZE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "a7c52b6803be1ee6",
+   "id": "ff61d29d88d4c8ec",
    "name": "golang.org/x/crypto",
    "version": "v0.0.0-20210711020723-a769d52b0f97",
    "type": "go-module",
@@ -1086,7 +1116,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:/UOmuWzQfxxo9UtlXMwuQU8CMgg1eZXqTRwkSQJWKOI="
+    "h1Digest": "h1:/UOmuWzQfxxo9UtlXMwuQU8CMgg1eZXqTRwkSQJWKOI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -1108,7 +1139,7 @@
    "purl": "pkg:golang/golang.org/x/crypto@v0.0.0-20210711020723-a769d52b0f97"
   },
   {
-   "id": "376ab7d87bffb438",
+   "id": "c71a14b630b193c4",
    "name": "golang.org/x/crypto",
    "version": "v0.0.0-20210711020723-a769d52b0f97",
    "type": "go-module",
@@ -1128,11 +1159,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:/UOmuWzQfxxo9UtlXMwuQU8CMgg1eZXqTRwkSQJWKOI="
+    "h1Digest": "h1:/UOmuWzQfxxo9UtlXMwuQU8CMgg1eZXqTRwkSQJWKOI=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "66900b069fe58708",
+   "id": "e1b9b226ef88c1c0",
    "name": "golang.org/x/sys",
    "version": "v0.0.0-20210927094055-39ccf1dd6fa6",
    "type": "go-module",
@@ -1152,7 +1184,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:foEbQz/B0Oz6YIqu/69kfXPYeFQAuuMYFkjaqXzl5Wo="
+    "h1Digest": "h1:foEbQz/B0Oz6YIqu/69kfXPYeFQAuuMYFkjaqXzl5Wo=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -1174,7 +1207,7 @@
    "purl": "pkg:golang/golang.org/x/sys@v0.0.0-20210927094055-39ccf1dd6fa6"
   },
   {
-   "id": "779290e741854861",
+   "id": "c36ed1aa30f56e0d",
    "name": "golang.org/x/sys",
    "version": "v0.0.0-20210927094055-39ccf1dd6fa6",
    "type": "go-module",
@@ -1194,11 +1227,12 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:foEbQz/B0Oz6YIqu/69kfXPYeFQAuuMYFkjaqXzl5Wo="
+    "h1Digest": "h1:foEbQz/B0Oz6YIqu/69kfXPYeFQAuuMYFkjaqXzl5Wo=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
-   "id": "641b13c93a4dcd2e",
+   "id": "3f329e83b34cb4f8",
    "name": "golang.org/x/term",
    "version": "v0.0.0-20210615171337-6886f2dfbf5b",
    "type": "go-module",
@@ -1218,7 +1252,8 @@
    "metadata": {
     "goCompiledVersion": "go1.17.7",
     "architecture": "x86_64",
-    "h1Digest": "h1:9zKuko04nR4gjZ4+DNjHqRlAJqbJETHwiNKDqTfOjfE="
+    "h1Digest": "h1:9zKuko04nR4gjZ4+DNjHqRlAJqbJETHwiNKDqTfOjfE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   },
   {
@@ -1240,7 +1275,7 @@
    "purl": "pkg:golang/golang.org/x/term@v0.0.0-20210615171337-6886f2dfbf5b"
   },
   {
-   "id": "bec557f6321e9c9c",
+   "id": "b0b842a71fb0387e",
    "name": "golang.org/x/term",
    "version": "v0.0.0-20210615171337-6886f2dfbf5b",
    "type": "go-module",
@@ -1260,7 +1295,8 @@
    "metadata": {
     "goCompiledVersion": "go1.18.1",
     "architecture": "amd64",
-    "h1Digest": "h1:9zKuko04nR4gjZ4+DNjHqRlAJqbJETHwiNKDqTfOjfE="
+    "h1Digest": "h1:9zKuko04nR4gjZ4+DNjHqRlAJqbJETHwiNKDqTfOjfE=",
+    "mainModule": "github.com/AVENTER-UG/mesos-m3s"
    }
   }
  ],
@@ -1280,6 +1316,7 @@
    "output": [
     "json"
    ],
+   "output-template-path": "",
    "file": "",
    "check-for-app-update": true,
    "anchore": {
@@ -1298,6 +1335,7 @@
     "level": "warning",
     "file-location": ""
    },
+   "catalogers": null,
    "package": {
     "cataloger": {
      "enabled": true,
@@ -1364,7 +1402,7 @@
   }
  },
  "schema": {
-  "version": "3.2.3",
-  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-3.2.3.json"
+  "version": "3.3.0",
+  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-3.3.0.json"
  }
 }
