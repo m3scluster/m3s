@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
@@ -13,7 +12,6 @@ import (
 	"github.com/AVENTER-UG/mesos-m3s/mesos"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	mesosutil "github.com/AVENTER-UG/mesos-util"
-	goredis "github.com/go-redis/redis/v8"
 
 	util "github.com/AVENTER-UG/util"
 	"github.com/sirupsen/logrus"
@@ -24,21 +22,6 @@ var BuildVersion string
 
 // GitVersion is the revision and commit number
 var GitVersion string
-
-// init the redis cache
-func initCache() {
-	var redisOptions goredis.Options
-	redisOptions.Addr = config.RedisServer
-	redisOptions.DB = config.RedisDB
-	if config.RedisPassword != "" {
-		redisOptions.Password = config.RedisPassword
-	}
-	client := goredis.NewClient(&redisOptions)
-	config.RedisCTX = context.Background()
-	pong, err := client.Ping(config.RedisCTX).Result()
-	logrus.Debug("Redis Health: ", pong, err)
-	config.RedisClient = client
-}
 
 // convert Base64 Encodes PEM Certificate to tls object
 func decodeBase64Cert(pemCert string) []byte {
@@ -90,11 +73,11 @@ func main() {
 	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
 	//	}
 
-	initCache()
-
 	mesosutil.SetConfig(&framework)
 	mesos.SetConfig(&config, &framework)
 	api.SetConfig(&config, &framework)
+
+	api.ConnectRedis()
 
 	// load framework state from DB
 	key := api.GetRedisKey(framework.FrameworkName + ":framework")

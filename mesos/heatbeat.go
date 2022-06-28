@@ -11,8 +11,14 @@ import (
 
 // Heartbeat function for mesos
 func Heartbeat() {
+	// Check Connection state of Redis
+	err := api.PingRedis()
+	if err != nil {
+		api.ConnectRedis()
+	}
+
 	K3SHeartbeat()
-	keys := api.GetAllRedisKeys("*")
+	keys := api.GetAllRedisKeys(framework.FrameworkName + ":*")
 	suppress := true
 
 	for keys.Next(config.RedisCTX) {
