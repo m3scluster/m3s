@@ -32,7 +32,7 @@ repos:
   rev: master
   hooks:
     - id: go-sec-mod
-      args: ["-exclude G104"]
+      args: ["-exclude", "G104"]
       exclude: ^vendor/
 
 - repo: local

@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/AVENTER-UG/mesos-m3s/api"
 	"github.com/AVENTER-UG/mesos-m3s/mesos"
@@ -108,8 +109,12 @@ func main() {
 	framework.FrameworkInfo.Hostname = &framework.FrameworkHostname
 
 	server := &http.Server{
-		Addr:    listen,
-		Handler: api.Commands(),
+		Addr:              listen,
+		Handler:           api.Commands(),
+		ReadTimeout:       1 * time.Second,
+		WriteTimeout:      1 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
 		TLSConfig: &tls.Config{
 			ClientAuth: tls.RequestClientCert,
 			MinVersion: tls.VersionTLS12,
