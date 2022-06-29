@@ -102,6 +102,7 @@ func ConnectRedis() {
 
 	err := PingRedis()
 	if err != nil {
+		config.RedisClient.Close()
 		ConnectRedis()
 	}
 }

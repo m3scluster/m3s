@@ -38,8 +38,12 @@ func StartEtcd(taskID string) {
 	cmd.ContainerImage = config.ImageETCD
 	cmd.NetworkMode = "bridge"
 
+	cni := config.DockerCNI
+	if framework.MesosCNI != "" {
+		cni = framework.MesosCNI
+	}
 	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
-		Name: &framework.MesosCNI,
+		Name: &cni,
 	}}
 	cmd.Shell = true
 	cmd.Privileged = false
@@ -53,7 +57,7 @@ func StartEtcd(taskID string) {
 	if framework.MesosCNI == "" {
 		// net-alias is only supported onuser-defined networks
 		if config.DockerCNI != "bridge" {
-			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net", Value: config.DockerCNI})
+			cmd.NetworkMode = "user"
 			cmd.DockerParameter = addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net-alias", Value: framework.FrameworkName + "etcd"})
 		}
 	}

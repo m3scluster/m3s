@@ -140,4 +140,5 @@ func main() {
 		}
 	}()
 	logrus.Fatal(mesos.Subscribe())
+	config.RedisClient.Close()
 }
