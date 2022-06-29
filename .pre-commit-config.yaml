@@ -1,5 +1,5 @@
 repos:
-- repo: git://github.com/pre-commit/pre-commit-hooks
+- repo: http://github.com/pre-commit/pre-commit-hooks
   rev: v4.0.1
   hooks:
   - id: check-merge-conflict
@@ -15,7 +15,7 @@ repos:
     exclude: ^vendor/
     language_version: python3.10
 
-- repo: git://github.com/dnephin/pre-commit-golang
+- repo: http://github.com/dnephin/pre-commit-golang
   rev: v0.4.0
   hooks:
     - id: go-fmt
@@ -26,6 +26,13 @@ repos:
       exclude: ^vendor/
     - id: golangci-lint
       args: [--verbose]
+      exclude: ^vendor/
+
+- repo: https://github.com/tekwizely/pre-commit-golang      
+  rev: master
+  hooks:
+    - id: go-sec-mod
+      args: ["-exclude G104"]
       exclude: ^vendor/
 
 - repo: local
