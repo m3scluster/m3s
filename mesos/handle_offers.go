@@ -24,7 +24,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Comm
 			mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 			continue
 		}
-		// Check Constraints of server, agent and etcd
+		// Check Constraints of server, agent and datastore
 		if cmd.TaskName == e.Framework.FrameworkName+":server" {
 			if e.Config.K3SServerConstraintHostname == "" {
 				offerret = offers.Offers[n]
@@ -41,11 +41,11 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Comm
 				offerret = offers.Offers[n]
 			}
 		}
-		if cmd.TaskName == e.Framework.FrameworkName+":etcd" {
-			if e.Config.ETCDConstraintHostname == "" {
+		if cmd.TaskName == e.Framework.FrameworkName+":datastore" {
+			if e.Config.DSConstraintHostname == "" {
 				offerret = offers.Offers[n]
-			} else if e.Config.ETCDConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set ETCD Constraint to:", offer.GetHostname())
+			} else if e.Config.DSConstraintHostname == offer.GetHostname() {
+				logrus.Debug("Set Datastore Constraint to:", offer.GetHostname())
 				offerret = offers.Offers[n]
 			}
 		}

@@ -30,10 +30,10 @@ type Config struct {
 	Credentials                 UserCredentials
 	ImageK3S                    string
 	ImageETCD                   string
+	ImageMySQL                  string
 	VolumeDriver                string
 	VolumeK3SServer             string
 	K3SToken                    string
-	ETCDMax                     int
 	DockerSock                  string
 	DockerSHMSize               string
 	BootstrapURL                string
@@ -46,11 +46,17 @@ type Config struct {
 	K3SAgentMEM                 float64
 	K3SAgentDISK                float64
 	K3SDocker                   string
-	ETCDCPU                     float64
-	ETCDMEM                     float64
-	ETCDDISK                    float64
-	ETCDConstraint              string
-	ETCDConstraintHostname      string
+	DSMax                       int
+	DSCPU                       float64
+	DSMEM                       float64
+	DSDISK                      float64
+	DSConstraint                string
+	DSConstraintHostname        string
+	DSPort                      string
+	DSEtcd                      bool
+	DSMySQL                     bool
+	DSMySQLUsername             string
+	DSMySQLPassword             string
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
 	RedisServer                 string

@@ -34,6 +34,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		},
 	}
 
+	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.Memory = e.Config.K3SAgentMEM
 	cmd.CPU = e.Config.K3SAgentCPU

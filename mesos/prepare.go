@@ -83,7 +83,6 @@ func (e *Scheduler) defaultCommand(taskID string) mesosutil.Command {
 	}}
 
 	cmd.ContainerType = "DOCKER"
-	cmd.Shell = true
 
 	return cmd
 }

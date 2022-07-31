@@ -14,6 +14,7 @@ import (
 func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd := e.defaultCommand(taskID)
 
+	cmd.Shell = true
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Privileged = true
 	cmd.ContainerImage = e.Config.ImageK3S
@@ -136,13 +137,28 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Name:  "MESOS_SANDBOX_VAR",
 			Value: &e.Config.MesosSandboxVar,
 		},
-		{
+	}
+
+	if e.Config.DSEtcd {
+		ds := mesosproto.Environment_Variable{
 			Name: "K3S_DATASTORE_ENDPOINT",
 			Value: func() *string {
-				x := "http://" + e.Framework.FrameworkName + "etcd" + e.Config.Domain + ":2379"
+				x := "http://" + e.Framework.FrameworkName + "datastore" + e.Config.Domain + ":" + e.Config.DSPort
 				return &x
 			}(),
-		},
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, ds)
+	}
+
+	if e.Config.DSMySQL {
+		ds := mesosproto.Environment_Variable{
+			Name: "K3S_DATASTORE_ENDPOINT",
+			Value: func() *string {
+				x := "mysql://" + e.Config.DSMySQLUsername + ":" + e.Config.DSMySQLPassword + "@tcp(" + e.Framework.FrameworkName + "datastore" + e.Config.Domain + ":" + e.Config.DSPort + ")/k3s"
+				return &x
+			}(),
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, ds)
 	}
 
 	// store mesos task in DB

@@ -15,16 +15,16 @@ func (e *Scheduler) Heartbeat() {
 		e.API.ConnectRedis()
 	}
 
-	etcdState := e.healthCheckETCD()
+	dsState := e.healthCheckDatastore()
 	k3sState := e.healthCheckK3s()
 
-	// if ETCD is not running or unhealthy, fix it.
-	if !etcdState && e.API.CountRedisKey(e.Framework.FrameworkName+":etcd:*") < e.Config.ETCDMax {
-		e.StartEtcd("")
+	// if DataStorage container is not running or unhealthy, fix it.
+	if !dsState && e.API.CountRedisKey(e.Framework.FrameworkName+":datastore:*") < e.Config.DSMax {
+		e.StartDatastore("")
 	}
 
-	// if ETCD is running and K3s not, deploy K3s
-	if etcdState && !k3sState {
+	// if Datastorage is running and K3s not, deploy K3s
+	if dsState && !k3sState {
 		if e.API.CountRedisKey(e.Framework.FrameworkName+":server:*") < e.Config.K3SServerMax {
 			e.StartK3SServer("")
 		}

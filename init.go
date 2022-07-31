@@ -46,10 +46,11 @@ func init() {
 	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s agent --snapshotter=native --flannel-backend=vxlan ")
 	config.ImageK3S = util.Getenv("IMAGE_K3S", "avhost/ubuntu-m3s:focal")
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:3.5.1")
+	config.ImageMySQL = util.Getenv("IMAGE_MYSQL", "docker.io/mariadb:10.8.3")
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s")
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
-	config.ETCDMax, _ = strconv.Atoi(util.Getenv("ETCD_COUNT", "1"))
+	config.DSMax, _ = strconv.Atoi(util.Getenv("DS_COUNT", "1"))
 	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/dev/bootstrap/bootstrap.sh")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.DockerSHMSize = util.Getenv("DOCKER_SHM_SIZE", "30gb")
@@ -58,9 +59,12 @@ func init() {
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "1200"), 64)
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "0.1"), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "1200"), 64)
-	config.ETCDCPU, _ = strconv.ParseFloat(util.Getenv("ETCD_CPU", "0.1"), 64)
-	config.ETCDMEM, _ = strconv.ParseFloat(util.Getenv("ETCD_MEM", "100"), 64)
-	config.ETCDDISK, _ = strconv.ParseFloat(util.Getenv("ETCD_DISK", "10000"), 64)
+	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
+	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "100"), 64)
+	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
+	config.DSPort = util.Getenv("DS_PORT", "3306")
+	config.DSMySQLUsername = util.Getenv("DS_MYSQL_USERNAME", "root")
+	config.DSMySQLPassword = util.Getenv("DS_MYSQL_PASSWORD", "password")
 	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
 	config.RedisPassword = os.Getenv("REDIS_PASSWORD")
 	config.RedisDB, _ = strconv.Atoi(util.Getenv("REDIS_DB", "1"))
@@ -101,21 +105,14 @@ func init() {
 	}
 
 	// if the constraint is set, determine which kind of
-	config.ETCDConstraint = util.Getenv("K3S_ETCD_CONSTRAINT", "")
-	if strings.Contains(config.ETCDConstraint, ":") {
-		constraint := strings.Split(config.ETCDConstraint, ":")
+	config.DSConstraint = util.Getenv("K3S_DS_CONSTRAINT", "")
+	if strings.Contains(config.DSConstraint, ":") {
+		constraint := strings.Split(config.DSConstraint, ":")
 
 		switch strings.ToLower(constraint[0]) {
 		case "hostname":
-			config.ETCDConstraintHostname = strings.ToLower(constraint[1])
+			config.DSConstraintHostname = strings.ToLower(constraint[1])
 		}
-	}
-
-	// The comunication to the mesos server should be via ssl or not
-	if strings.Compare(os.Getenv("MESOS_SSL"), "true") == 0 {
-		framework.MesosSSL = true
-	} else {
-		framework.MesosSSL = false
 	}
 
 	// Enable Docker Engine vor K3S instead critc
@@ -125,16 +122,26 @@ func init() {
 		config.K3SDocker = ""
 	}
 
+	// The comunication to the mesos server should be via ssl or not
+	framework.MesosSSL = stringToBool(os.Getenv("MESOS_SSL"))
+
 	// Skip SSL Verification
-	if strings.Compare(os.Getenv("SKIP_SSL"), "true") == 0 {
-		config.SkipSSL = true
-	} else {
-		config.SkipSSL = false
-	}
+	config.SkipSSL = stringToBool(os.Getenv("SKIP_SSL"))
+
+	// Set the kind of datastore endpoint
+	config.DSEtcd = stringToBool(os.Getenv("DS_ETCD"))
+	config.DSMySQL = stringToBool(util.Getenv("DS_MYSQL", "true"))
 
 	// check if the domain starts with dot. if not, add one.
 	if !strings.HasPrefix(config.Domain, ".") {
 		tmp := config.Domain
 		config.Domain = "." + tmp
 	}
+}
+
+func stringToBool(par string) bool {
+	if strings.Compare(par, "true") == 0 {
+		return true
+	}
+	return false
 }

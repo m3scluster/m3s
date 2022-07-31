@@ -236,3 +236,7 @@ func (e *Scheduler) getTaskID(taskID string) string {
 
 	return taskID
 }
+
+func (e *Scheduler) addDockerParameter(current []mesosproto.Parameter, newValues mesosproto.Parameter) []mesosproto.Parameter {
+	return append(current, newValues)
+}
