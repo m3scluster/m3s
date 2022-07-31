@@ -9,7 +9,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-func defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
+// default resources of the mesos task
+func (e *Scheduler) defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
 	CPU := "cpus"
 	MEM := "mem"
 	PORT := "ports"
@@ -64,7 +65,30 @@ func defaultResources(cmd mesosutil.Command) []mesosproto.Resource {
 	return res
 }
 
-func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Command) []mesosproto.TaskInfo {
+// default values of the mesos tasks
+func (e *Scheduler) defaultCommand(taskID string) mesosutil.Command {
+	var cmd mesosutil.Command
+
+	cmd.TaskID = e.getTaskID(taskID)
+
+	cni := e.Framework.MesosCNI
+	if e.Framework.MesosCNI == "" {
+		if e.Config.DockerCNI != "bridge" {
+			cmd.NetworkMode = "user"
+			cni = e.Config.DockerCNI
+		}
+	}
+	cmd.NetworkInfo = []mesosproto.NetworkInfo{{
+		Name: &cni,
+	}}
+
+	cmd.ContainerType = "DOCKER"
+	cmd.Shell = true
+
+	return cmd
+}
+
+func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Command) []mesosproto.TaskInfo {
 	d, _ := json.Marshal(&cmd)
 	logrus.Debug("HandleOffers cmd: ", util.PrettyJSON(d))
 
@@ -93,7 +117,7 @@ func prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd mesosutil.Com
 		Value: cmd.TaskID,
 	}
 	msg.AgentID = agent
-	msg.Resources = defaultResources(cmd)
+	msg.Resources = e.defaultResources(cmd)
 
 	if cmd.Command == "" {
 		msg.Command = &mesosproto.CommandInfo{

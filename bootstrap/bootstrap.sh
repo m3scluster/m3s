@@ -9,8 +9,8 @@ export KUBERNETES_VERSION=v1.21.1
 export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
-export KUBECONFIG=$MESOS_SANDBOX/kubeconfig.yaml
-export BRANCH=master
+export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
+export BRANCH=objects
 
 ## Export json as environment variables
 ## example: MESOS_SANDBOX_VAR='{ "CUSTOMER":"test-ltd" }'

@@ -11,8 +11,8 @@ import (
 // V0GetCountK3SAgent will write out the current count of Kubernetes Agents and the expected one.
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/agent/scale'
-func V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
-	auth := CheckAuth(r, w)
+func (e *API) V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
+	auth := e.CheckAuth(r, w)
 
 	if !auth {
 		return
@@ -20,8 +20,8 @@ func V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 	var count cfg.Count
 
-	count.Scale = config.K3SAgentMax
-	count.Running = CountRedisKey(framework.FrameworkName + ":agent:*")
+	count.Scale = e.Config.K3SAgentMax
+	count.Running = e.CountRedisKey(e.Framework.FrameworkName + ":agent:*")
 
 	d, err := json.Marshal(count)
 

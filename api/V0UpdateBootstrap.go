@@ -11,17 +11,17 @@ import (
 // V0UpdateBootstrap will update the bootstrap server in the k8 manger container
 // example:
 // curl -X GET 127.0.0.1:10000/v0/bootstrap/update'
-func V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP PUT V0UpdateBootstrap")
 
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if !auth {
 		return
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("PUT", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/update", nil)
+	req, _ := http.NewRequest("PUT", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/update", nil)
 	req.Close = true
 	res, err := client.Do(req)
 

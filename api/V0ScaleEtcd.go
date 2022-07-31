@@ -13,33 +13,33 @@ import (
 // V0ScaleEtcd will scale the k3s agent service
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/etcd/scale/{count of instances} -d 'JSON'
-func V0ScaleEtcd(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0ScaleEtcd(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if vars == nil || !auth {
 		return
 	}
-	d := ErrorMessage(0, "V0ScaleEtcd", "ok")
+	d := e.ErrorMessage(0, "V0ScaleEtcd", "ok")
 
 	if vars["count"] != "" {
 		newCount, _ := strconv.Atoi(vars["count"])
-		oldCount := config.ETCDMax
+		oldCount := e.Config.ETCDMax
 		logrus.Debug("V0ScaleEtcd: oldCount: ", oldCount)
-		config.ETCDMax = newCount
+		e.Config.ETCDMax = newCount
 
 		d = []byte(strconv.Itoa(newCount - oldCount))
 
 		// Save current config
-		SaveConfig()
+		e.SaveConfig()
 
 		// if scale down, kill not needes agents
 		if newCount < oldCount {
-			keys := GetAllRedisKeys(framework.FrameworkName + ":etcd:*")
+			keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":etcd:*")
 
-			for keys.Next(config.RedisCTX) {
+			for keys.Next(e.Redis.RedisCTX) {
 				if newCount < oldCount {
-					key := GetRedisKey(keys.Val())
+					key := e.GetRedisKey(keys.Val())
 
 					var task mesosutil.Command
 					json.Unmarshal([]byte(key), &task)

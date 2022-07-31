@@ -12,17 +12,17 @@ import (
 // V0GetKubeVersion will return the kubernetes Version
 // example:
 // curl -X GET 127.0.0.1:10000/v0/server/version'
-func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeVersion")
 
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if !auth {
 		return
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/version", nil)
+	req, _ := http.NewRequest("GET", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/version", nil)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -45,13 +45,13 @@ func V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = json.Unmarshal(content, &config.Version)
+	err = json.Unmarshal(content, &e.Config.Version)
 	if err != nil {
 		logrus.Error("V0GetKubeVersion: Error 3 ", err)
 		return
 	}
 
-	d, err := json.Marshal(&config.Version)
+	d, err := json.Marshal(&e.Config.Version)
 	if err != nil {
 		logrus.Error("V0GetKubeVersion: Error 4 ", err)
 		return

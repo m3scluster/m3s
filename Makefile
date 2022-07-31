@@ -52,6 +52,17 @@ docs:
 	@echo ">>>> Build docs"
 	$(MAKE) -C $@
 
+update-gomod:
+	go get -u
+	go mod tidy
+
+seccheck:
+	gosec --exclude G104 --exclude-dir ./vendor ./... 
+
+sboom:
+	syft dir:. > sbom.txt
+	syft dir:. -o json > sbom.json
+
 version:
 	@echo ">>>> Generate version file"
 	@echo "{\"m3sVersion\": {	\"gitVersion\": \"${TAG}\",	\"buildDate\": \"${BUILDDATE}\"}}" > .version.json

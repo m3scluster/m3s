@@ -81,9 +81,9 @@
    }
   },
   {
-   "id": "e62893c6507e0972",
+   "id": "9f83e124918752fe",
    "name": "github.com/AVENTER-UG/mesos-util",
-   "version": "v0.0.21",
+   "version": "v0.0.28",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -94,24 +94,25 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_util:v0.0.21:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_util:v0.0.28:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.21",
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.28",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.18.3",
-    "architecture": "amd64"
+    "architecture": "amd64",
+    "h1Digest": "h1:SAsBE3LJ667oeJt7nzd4DjV6aCurbiH8Baqrqje9al0="
    }
   },
   {
-   "id": "62b3a492c8354bb9",
+   "id": "e90c1daaf59ba029",
    "name": "github.com/AVENTER-UG/mesos-util",
-   "version": "v0.0.21",
+   "version": "v0.0.28",
    "type": "go-module",
    "foundBy": "go-mod-file-cataloger",
    "locations": [
@@ -122,14 +123,14 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-util:v0.0.21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_util:v0.0.21:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-util:v0.0.28:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_util:v0.0.28:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.21"
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.28"
   },
   {
    "id": "826ddbdc0a75b3ed",
@@ -197,30 +198,6 @@
    "purl": "pkg:golang/github.com/Showmax/go-fqdn@v1.0.0"
   },
   {
-   "id": "a86ca23bcb3cb513",
-   "name": "github.com/cespare/xxhash/v2",
-   "version": "v2.1.2",
-   "type": "go-module",
-   "foundBy": "go-module-binary-cataloger",
-   "locations": [
-    {
-     "path": "bootstrap/server"
-    }
-   ],
-   "licenses": [],
-   "language": "go",
-   "cpes": [
-    "cpe:2.3:a:cespare:xxhash\\/v2:v2.1.2:*:*:*:*:*:*:*"
-   ],
-   "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.1.2",
-   "metadataType": "GolangBinMetadata",
-   "metadata": {
-    "goCompiledVersion": "go1.18.3",
-    "architecture": "amd64",
-    "h1Digest": "h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE="
-   }
-  },
-  {
    "id": "536c37e2dd530858",
    "name": "github.com/cespare/xxhash/v2",
    "version": "v2.1.2",
@@ -237,31 +214,6 @@
     "cpe:2.3:a:cespare:xxhash\\/v2:v2.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.1.2"
-  },
-  {
-   "id": "61a02447f2eb9ba0",
-   "name": "github.com/dgryski/go-rendezvous",
-   "version": "v0.0.0-20200823014737-9f7001d12a5f",
-   "type": "go-module",
-   "foundBy": "go-module-binary-cataloger",
-   "locations": [
-    {
-     "path": "bootstrap/server"
-    }
-   ],
-   "licenses": [],
-   "language": "go",
-   "cpes": [
-    "cpe:2.3:a:dgryski:go-rendezvous:v0.0.0-20200823014737-9f7001d12a5f:*:*:*:*:*:*:*",
-    "cpe:2.3:a:dgryski:go_rendezvous:v0.0.0-20200823014737-9f7001d12a5f:*:*:*:*:*:*:*"
-   ],
-   "purl": "pkg:golang/github.com/dgryski/go-rendezvous@v0.0.0-20200823014737-9f7001d12a5f",
-   "metadataType": "GolangBinMetadata",
-   "metadata": {
-    "goCompiledVersion": "go1.18.3",
-    "architecture": "amd64",
-    "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78="
-   }
   },
   {
    "id": "36f42be53be65d59",
@@ -281,32 +233,6 @@
     "cpe:2.3:a:dgryski:go_rendezvous:v0.0.0-20200823014737-9f7001d12a5f:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/dgryski/go-rendezvous@v0.0.0-20200823014737-9f7001d12a5f"
-  },
-  {
-   "id": "48d37f23b13640a7",
-   "name": "github.com/go-redis/redis/v8",
-   "version": "v8.11.4",
-   "type": "go-module",
-   "foundBy": "go-module-binary-cataloger",
-   "locations": [
-    {
-     "path": "bootstrap/server"
-    }
-   ],
-   "licenses": [],
-   "language": "go",
-   "cpes": [
-    "cpe:2.3:a:go-redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_redis:redis\\/v8:v8.11.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:redis\\/v8:v8.11.4:*:*:*:*:*:*:*"
-   ],
-   "purl": "pkg:golang/github.com/go-redis/redis/v8@v8.11.4",
-   "metadataType": "GolangBinMetadata",
-   "metadata": {
-    "goCompiledVersion": "go1.18.3",
-    "architecture": "amd64",
-    "h1Digest": "h1:kHoYkfZP6+pe04aFTnhDH6GDROa5yJdHJVNxV3F46Tg="
-   }
   },
   {
    "id": "e71351eab9e2ce5",

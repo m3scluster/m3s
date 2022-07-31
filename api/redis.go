@@ -10,59 +10,79 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// GetAllRedisKeys get out all keys in redis depends to the pattern
-func GetAllRedisKeys(pattern string) *goredis.ScanIterator {
-	val := config.RedisClient.Scan(config.RedisCTX, 0, pattern, 0).Iterator()
+// Redis struct about the redis connection
+type Redis struct {
+	RedisClient *goredis.Client
+	RedisCTX    context.Context
+}
+
+// GetAllRedisKeys get out all redis keys to a patter
+func (e *API) GetAllRedisKeys(pattern string) *goredis.ScanIterator {
+	val := e.Redis.RedisClient.Scan(e.Redis.RedisCTX, 0, pattern, 0).Iterator()
 	if err := val.Err(); err != nil {
 		logrus.Error("getAllRedisKeys: ", err)
 	}
+
 	return val
 }
 
-// GetRedisKey get out all values to a key
-func GetRedisKey(key string) string {
-	val, err := config.RedisClient.Get(config.RedisCTX, key).Result()
+// GetRedisKey get out the data of a key
+func (e *API) GetRedisKey(key string) string {
+	val, err := e.Redis.RedisClient.Get(e.Redis.RedisCTX, key).Result()
 	if err != nil {
-		logrus.Error("getRedisKey: ", err)
+		logrus.Error("ge.Redis.RedisKey: ", err)
 	}
+
 	return val
+}
+
+// SetRedisKey store data in redis
+func (e *API) SetRedisKey(data []byte, key string) {
+	err := e.Redis.RedisClient.Set(e.Redis.RedisCTX, key, data, 0).Err()
+	if err != nil {
+		logrus.WithField("func", "SetRedisKey").Error("Could not save data in Redis: ", err.Error())
+	}
 }
 
 // DelRedisKey will delete a redis key
-func DelRedisKey(key string) int64 {
-	val, err := config.RedisClient.Del(config.RedisCTX, key).Result()
+func (e *API) DelRedisKey(key string) int64 {
+	val, err := e.Redis.RedisClient.Del(e.Redis.RedisCTX, key).Result()
 	if err != nil {
-		logrus.Error("delRedisKey: ", err)
+		logrus.Error("de.Redis.RedisKey: ", err)
+		e.PingRedis()
 	}
 
 	return val
 }
 
-// GetTaskFromEvent get out the task to an event
-func GetTaskFromEvent(update *mesosproto.Event_Update) mesosutil.Command {
+// GetTaskFromEvent get out the key by a mesos event
+func (e *API) GetTaskFromEvent(update *mesosproto.Event_Update) mesosutil.Command {
 	// search matched taskid in redis and update the status
-	keys := GetAllRedisKeys("*")
-	for keys.Next(config.RedisCTX) {
+	keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
+	for keys.Next(e.Redis.RedisCTX) {
+		// ignore redis keys if they are not mesos tasks
+		if keys.Val() == e.Framework.FrameworkName+":framework" || keys.Val() == e.Framework.FrameworkName+":framework_config" {
+			continue
+		}
 		// get the values of the current key
-		key := GetRedisKey(keys.Val())
+		key := e.GetRedisKey(keys.Val())
 
-		// update the status of the matches task
-		var task mesosutil.Command
-		json.Unmarshal([]byte(key), &task)
+		task := mesosutil.DecodeTask(key)
+
 		if task.TaskID == update.Status.TaskID.Value {
 			task.State = update.Status.State.String()
-
 			return task
 		}
 	}
+
 	return mesosutil.Command{}
 }
 
 // CountRedisKey will get back the count of the redis key
-func CountRedisKey(pattern string) int {
-	keys := GetAllRedisKeys(pattern)
+func (e *API) CountRedisKey(pattern string) int {
+	keys := e.GetAllRedisKeys(pattern)
 	count := 0
-	for keys.Next(config.RedisCTX) {
+	for keys.Next(e.Redis.RedisCTX) {
 		count++
 	}
 	logrus.Debug("CountRedisKey: ", pattern, count)
@@ -70,18 +90,20 @@ func CountRedisKey(pattern string) int {
 }
 
 // SaveConfig store the current framework config
-func SaveConfig() {
-	data, _ := json.Marshal(config)
-	err := config.RedisClient.Set(config.RedisCTX, framework.FrameworkName+":framework_config", data, 0).Err()
+func (e *API) SaveConfig() {
+	data, _ := json.Marshal(e.Config)
+	err := e.Redis.RedisClient.Set(e.Redis.RedisCTX, e.Framework.FrameworkName+":framework_config", data, 0).Err()
 	if err != nil {
-		logrus.Error("Framework save config and state into redis Error: ", err)
+		logrus.Error("Framework save config state into redis error:", err)
 	}
 }
 
 // PingRedis to check the health of redis
-func PingRedis() error {
-	pong, err := config.RedisClient.Ping(config.RedisCTX).Result()
-	logrus.Debug("Redis Health: ", pong, err)
+func (e *API) PingRedis() error {
+	pong, err := e.Redis.RedisClient.Ping(e.Redis.RedisCTX).Result()
+	if err != nil {
+		logrus.WithField("func", "PingRedis").Error("Did not pon Redis: ", pong, err.Error())
+	}
 	if err != nil {
 		return err
 	}
@@ -89,20 +111,32 @@ func PingRedis() error {
 }
 
 // ConnectRedis will connect the redis DB and save the client pointer
-func ConnectRedis() {
+func (e *API) ConnectRedis() {
 	var redisOptions goredis.Options
-	redisOptions.Addr = config.RedisServer
-	redisOptions.DB = config.RedisDB
-	if config.RedisPassword != "" {
-		redisOptions.Password = config.RedisPassword
+	redisOptions.Addr = e.Config.RedisServer
+	redisOptions.DB = e.Config.RedisDB
+	if e.Config.RedisPassword != "" {
+		redisOptions.Password = e.Config.RedisPassword
 	}
 
-	config.RedisClient = goredis.NewClient(&redisOptions)
-	config.RedisCTX = context.Background()
+	e.Redis.RedisClient = goredis.NewClient(&redisOptions)
+	e.Redis.RedisCTX = context.Background()
 
-	err := PingRedis()
+	err := e.PingRedis()
 	if err != nil {
-		config.RedisClient.Close()
-		ConnectRedis()
+		e.Redis.RedisClient.Close()
+		e.ConnectRedis()
 	}
+}
+
+// SaveTaskRedis store mesos task in DB
+func (e *API) SaveTaskRedis(cmd mesosutil.Command) {
+	d, _ := json.Marshal(&cmd)
+	e.SetRedisKey(d, cmd.TaskName+":"+cmd.TaskID)
+}
+
+// SaveFrameworkRedis store mesos framework in DB
+func (e *API) SaveFrameworkRedis() {
+	d, _ := json.Marshal(&e.Framework)
+	e.SetRedisKey(d, e.Framework.FrameworkName+":framework")
 }

@@ -1,32 +1,53 @@
 package mesos
 
 import (
-	"encoding/json"
 	"time"
 
-	api "github.com/AVENTER-UG/mesos-m3s/api"
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/sirupsen/logrus"
 )
 
 // Heartbeat function for mesos
-func Heartbeat() {
+func (e *Scheduler) Heartbeat() {
 	// Check Connection state of Redis
-	err := api.PingRedis()
+	err := e.API.PingRedis()
 	if err != nil {
-		api.ConnectRedis()
+		e.API.ConnectRedis()
 	}
 
-	K3SHeartbeat()
-	keys := api.GetAllRedisKeys(framework.FrameworkName + ":*")
+	etcdState := e.healthCheckETCD()
+	k3sState := e.healthCheckK3s()
+
+	// if ETCD is not running or unhealthy, fix it.
+	if !etcdState && e.API.CountRedisKey(e.Framework.FrameworkName+":etcd:*") < e.Config.ETCDMax {
+		e.StartEtcd("")
+	}
+
+	// if ETCD is running and K3s not, deploy K3s
+	if etcdState && !k3sState {
+		if e.API.CountRedisKey(e.Framework.FrameworkName+":server:*") < e.Config.K3SServerMax {
+			e.StartK3SServer("")
+		}
+	}
+
+	// if k3s is running, deploy the agent
+	if k3sState {
+		if e.API.CountRedisKey(e.Framework.FrameworkName+":agent:*") < e.Config.K3SAgentMax {
+			e.StartK3SAgent("")
+		}
+	}
+}
+
+// CheckState check the current state of every task
+func (e *Scheduler) CheckState() {
+	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	suppress := true
 
-	for keys.Next(config.RedisCTX) {
+	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the values of the current key
-		key := api.GetRedisKey(keys.Val())
+		key := e.API.GetRedisKey(keys.Val())
 
-		var task mesosutil.Command
-		json.Unmarshal([]byte(key), &task)
+		task := mesosutil.DecodeTask(key)
 
 		if task.TaskID == "" || task.TaskName == "" {
 			continue
@@ -41,42 +62,31 @@ func Heartbeat() {
 			task.StateTime = time.Now()
 
 			// add task to communication channel
-			framework.CommandChan <- task
+			e.Framework.CommandChan <- task
 
-			data, _ := json.Marshal(task)
-			err := config.RedisClient.Set(config.RedisCTX, task.TaskName+":"+task.TaskID, data, 0).Err()
-			if err != nil {
-				logrus.Error("HandleUpdate Redis set Error: ", err)
-			}
+			e.API.SaveTaskRedis(task)
 
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
 		}
 
 		if task.State == "__NEW" {
 			suppress = false
-			config.Suppress = false
+			e.Config.Suppress = false
 		}
 	}
 
-	if suppress && !config.Suppress {
+	if suppress && !e.Config.Suppress {
 		mesosutil.SuppressFramework()
-		config.Suppress = true
+		e.Config.Suppress = true
 	}
 }
 
-// K3SHeartbeat to execute K3S Bootstrap API Server commands
-func K3SHeartbeat() {
-	if api.CountRedisKey(framework.FrameworkName+":etcd:*") < config.ETCDMax {
-		StartEtcd("")
-	}
-	if getEtcdStatus() == "TASK_RUNNING" && !IsK3SServerRunning() {
-		if api.CountRedisKey(framework.FrameworkName+":server:*") < config.K3SServerMax {
-			StartK3SServer("")
-		}
-	}
-	if IsK3SServerRunning() {
-		if api.CountRedisKey(framework.FrameworkName+":agent:*") < config.K3SAgentMax {
-			StartK3SAgent("")
-		}
+// HeartbeatLoop - The main loop for the hearbeat
+func (e *Scheduler) HeartbeatLoop() {
+	ticker := time.NewTicker(time.Second * 1)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		e.Heartbeat()
+		e.CheckState()
 	}
 }

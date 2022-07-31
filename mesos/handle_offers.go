@@ -9,7 +9,7 @@ import (
 )
 
 // getOffer get out the offer for the mesos task
-func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID) {
+func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID) {
 	var offerIds []mesosproto.OfferID
 	var offerret mesosproto.Offer
 	// if the constraints does not match, return an empty offer
@@ -19,29 +19,32 @@ func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosprot
 		offerIds = append(offerIds, offer.ID)
 
 		// if the ressources of this offer does not matched what the command need, the skip
-		if !isRessourceMatched(offer.Resources, cmd) {
+		if !e.isRessourceMatched(offer.Resources, cmd) {
 			logrus.Debug("Could not found any matched ressources, get next offer")
 			mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 			continue
 		}
-		if cmd.TaskName == framework.FrameworkName+":server" {
-			if config.K3SServerConstraintHostname == "" {
+		// Check Constraints of server, agent and etcd
+		if cmd.TaskName == e.Framework.FrameworkName+":server" {
+			if e.Config.K3SServerConstraintHostname == "" {
 				offerret = offers.Offers[n]
-			} else if config.K3SServerConstraintHostname == offer.GetHostname() {
+			} else if e.Config.K3SServerConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
 				offerret = offers.Offers[n]
 			}
-		} else if cmd.TaskName == framework.FrameworkName+":agent" {
-			if config.K3SAgentConstraintHostname == "" {
+		}
+		if cmd.TaskName == e.Framework.FrameworkName+":agent" {
+			if e.Config.K3SAgentConstraintHostname == "" {
 				offerret = offers.Offers[n]
-			} else if config.K3SAgentConstraintHostname == offer.GetHostname() {
+			} else if e.Config.K3SAgentConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
 				offerret = offers.Offers[n]
 			}
-		} else if cmd.TaskName == framework.FrameworkName+":etcd" {
-			if config.ETCDConstraintHostname == "" {
+		}
+		if cmd.TaskName == e.Framework.FrameworkName+":etcd" {
+			if e.Config.ETCDConstraintHostname == "" {
 				offerret = offers.Offers[n]
-			} else if config.ETCDConstraintHostname == offer.GetHostname() {
+			} else if e.Config.ETCDConstraintHostname == offer.GetHostname() {
 				logrus.Debug("Set ETCD Constraint to:", offer.GetHostname())
 				offerret = offers.Offers[n]
 			}
@@ -50,39 +53,43 @@ func getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosprot
 	return offerret, offerIds
 }
 
-// HandleOffers will handle the offers event of mesos
-func HandleOffers(offers *mesosproto.Event_Offers) error {
+// HandleOffers will handle the offers events of mesos
+func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 	var offerIds []mesosproto.OfferID
 	select {
-	case cmd := <-framework.CommandChan:
+	case cmd := <-e.Framework.CommandChan:
 		// if no taskid or taskname is given, it's a wrong task.
 		if cmd.TaskID == "" || cmd.TaskName == "" {
 			return nil
 		}
 		var takeOffer mesosproto.Offer
-		takeOffer, offerIds = getOffer(offers, cmd)
+		// if the offer the take does not have a hostname, we skip it and restore the chan.
+		takeOffer, offerIds = e.getOffer(offers, cmd)
 		if takeOffer.GetHostname() == "" {
-			framework.CommandChan <- cmd
+			e.Framework.CommandChan <- cmd
 			return nil
 		}
 		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
-
+		// if the offer does not have id's, we skip it and restore the chan.
 		if offerIds == nil {
-			framework.CommandChan <- cmd
+			e.Framework.CommandChan <- cmd
 			return nil
 		}
 
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0
 
-		taskInfo = prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
+		// build the mesos task info object with the current offer
+		taskInfo = e.prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
 
-		if cmd.TaskName == framework.FrameworkName+":server" {
-			config.M3SBootstrapServerHostname = takeOffer.GetHostname()
-			config.M3SBootstrapServerPort = int(cmd.DockerPortMappings[0].HostPort)
-			config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
+		// remember information for the boostrap server to reach it later
+		if cmd.TaskName == e.Framework.FrameworkName+":server" {
+			e.Config.M3SBootstrapServerHostname = takeOffer.GetHostname()
+			e.Config.M3SBootstrapServerPort = int(cmd.DockerPortMappings[0].HostPort)
+			e.Config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
 		}
 
+		// build mesos call object
 		accept := &mesosproto.Call{
 			Type: mesosproto.Call_ACCEPT,
 			Accept: &mesosproto.Call_Accept{
@@ -111,14 +118,14 @@ func HandleOffers(offers *mesosproto.Event_Offers) error {
 	default:
 		// decline unneeded offer
 		var empty mesosutil.Command
-		_, offerIds = getOffer(offers, empty)
+		_, offerIds = e.getOffer(offers, empty)
 		logrus.Info("Decline unneeded offer: ", offerIds)
 		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	}
 }
 
 // check if the ressources of the offer are matching the needs of the cmd
-func isRessourceMatched(ressource []mesosproto.Resource, cmd mesosutil.Command) bool {
+func (e *Scheduler) isRessourceMatched(ressource []mesosproto.Resource, cmd mesosutil.Command) bool {
 	mem := false
 	cpu := false
 

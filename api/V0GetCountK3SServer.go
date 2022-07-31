@@ -11,8 +11,8 @@ import (
 // V0GetCountK3SServer will write out the current count of Kubernetes server and the expected one.
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/server/scale'
-func V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
-	auth := CheckAuth(r, w)
+func (e *API) V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
+	auth := e.CheckAuth(r, w)
 
 	if !auth {
 		return
@@ -20,8 +20,8 @@ func V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
 
 	var count cfg.Count
 
-	count.Scale = config.K3SServerMax
-	count.Running = CountRedisKey(framework.FrameworkName + ":server:*")
+	count.Scale = e.Config.K3SServerMax
+	count.Running = e.CountRedisKey(e.Framework.FrameworkName + ":server:*")
 
 	d, err := json.Marshal(count)
 

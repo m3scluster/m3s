@@ -1,11 +1,8 @@
 package types
 
 import (
-	"context"
-
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
-	goredis "github.com/go-redis/redis/v8"
 )
 
 // Config is a struct of the framework configuration
@@ -57,8 +54,6 @@ type Config struct {
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
 	RedisServer                 string
-	RedisClient                 *goredis.Client
-	RedisCTX                    context.Context
 	RedisPassword               string
 	RedisDB                     int
 	SkipSSL                     bool
@@ -120,4 +115,42 @@ type versionInfo struct {
 	GoVersion    string `json:"goVersion"`
 	Compiler     string `json:"compiler"`
 	Platform     string `json:"platform"`
+}
+
+// ETCDHealth hold the health state of the etcd service
+type ETCDHealth struct {
+	Health string `json:"health"`
+	Reason string `json:"reason"`
+}
+
+// MesosTasks hold the information of the task
+type MesosTasks struct {
+	Tasks []struct {
+		ID          string `json:"id"`
+		Name        string `json:"name"`
+		FrameworkID string `json:"framework_id"`
+		ExecutorID  string `json:"executor_id"`
+		SlaveID     string `json:"slave_id"`
+		AgentID     string `json:"agent_id"`
+		State       string `json:"state"`
+		Resources   struct {
+			Disk float64 `json:"disk"`
+			Mem  float64 `json:"mem"`
+			Gpus float64 `json:"gpus"`
+			Cpus float64 `json:"cpus"`
+		} `json:"resources"`
+		Role     string `json:"role"`
+		Statuses []struct {
+			State           string  `json:"state"`
+			Timestamp       float64 `json:"timestamp"`
+			ContainerStatus struct {
+				ContainerID struct {
+					Value string `json:"value"`
+				} `json:"container_id"`
+				NetworkInfos []mesosproto.NetworkInfo `json:"network_infos"`
+			} `json:"container_status,omitempty"`
+		} `json:"statuses"`
+		Discovery mesosproto.DiscoveryInfo `json:"discovery"`
+		Container mesosproto.ContainerInfo `json:"container"`
+	} `json:"tasks"`
 }

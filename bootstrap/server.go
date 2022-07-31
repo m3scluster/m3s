@@ -52,7 +52,7 @@ func Commands() *mux.Router {
 func APIVersions(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "-")
-	w.Write([]byte("/api/m3s/v0"))
+	w.Write([]byte("/api/m3s/bootstrap/v0"))
 }
 
 // APIUpdate do a update of the bootstrap server

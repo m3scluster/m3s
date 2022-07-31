@@ -12,17 +12,17 @@ import (
 // V0GetKubeconfig will return the kubernetes config file
 // example:
 // curl -X GET 127.0.0.1:10000/v0/server/config'
-func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeconfig")
 
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if !auth {
 		return
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/config", nil)
+	req, _ := http.NewRequest("GET", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/config", nil)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -46,7 +46,7 @@ func V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// replace the localhost server string with the mesos agent hostname and dynamic port
-	destURL := config.M3SBootstrapServerHostname + ":" + strconv.Itoa(config.K3SServerPort)
+	destURL := e.Config.M3SBootstrapServerHostname + ":" + strconv.Itoa(e.Config.K3SServerPort)
 	kubconf := strings.Replace(string(content), "127.0.0.1:6443", destURL, -1)
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")

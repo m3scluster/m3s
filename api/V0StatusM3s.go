@@ -12,16 +12,16 @@ import (
 // V0StatusM3s gives out the current status of the M3s services
 // example:
 // curl -X GET 127.0.0.1:10000/v0/status/m3s -d 'JSON'
-func V0StatusM3s(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if vars == nil || !auth {
 		return
 	}
 
-	getStatus()
-	status := config.M3SStatus
+	e.getStatus()
+	status := e.Config.M3SStatus
 
 	d, _ := json.Marshal(&status)
 
@@ -33,26 +33,25 @@ func V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	w.Write(d)
 }
 
-func getStatus() {
-	config.M3SStatus.Etcd = map[string]string{}
-	config.M3SStatus.Agent = map[string]string{}
-	config.M3SStatus.Server = map[string]string{}
+func (e *API) getStatus() {
+	e.Config.M3SStatus.Etcd = map[string]string{}
+	e.Config.M3SStatus.Agent = map[string]string{}
+	e.Config.M3SStatus.Server = map[string]string{}
 	services := []string{"etcd", "server", "agent"}
 
 	for _, service := range services {
-		keys := GetAllRedisKeys(framework.FrameworkName + ":" + service + ":*")
+		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":" + service + ":*")
 
-		for keys.Next(config.RedisCTX) {
-			key := GetRedisKey(keys.Val())
-			var task mesosutil.Command
-			json.Unmarshal([]byte(key), &task)
+		for keys.Next(e.Redis.RedisCTX) {
+			key := e.GetRedisKey(keys.Val())
+			task := mesosutil.DecodeTask(key)
 
 			if service == "etcd" {
-				config.M3SStatus.Etcd[task.TaskID] = task.State
+				e.Config.M3SStatus.Etcd[task.TaskID] = task.State
 			} else if service == "agent" {
-				config.M3SStatus.Agent[task.TaskID] = task.State
+				e.Config.M3SStatus.Agent[task.TaskID] = task.State
 			} else if service == "server" {
-				config.M3SStatus.Server[task.TaskID] = task.State
+				e.Config.M3SStatus.Server[task.TaskID] = task.State
 			}
 		}
 	}

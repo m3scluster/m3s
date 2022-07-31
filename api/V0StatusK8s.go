@@ -12,17 +12,17 @@ import (
 // V0StatusK8s gives out the current status of the K8s services
 // example:
 // curl -X GET 127.0.0.1:10000/v0/status/k8s
-func V0StatusK8s(w http.ResponseWriter, r *http.Request) {
+func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0StatusK8s ")
 	vars := mux.Vars(r)
-	auth := CheckAuth(r, w)
+	auth := e.CheckAuth(r, w)
 
 	if vars == nil || !auth {
 		return
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+config.M3SBootstrapServerHostname+":"+strconv.Itoa(config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/status?verbose", nil)
+	req, _ := http.NewRequest("GET", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/status?verbose", nil)
 	req.Close = true
 	res, err := client.Do(req)
 

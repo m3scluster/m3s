@@ -24,9 +24,6 @@ repos:
       exclude: ^vendor/
     - id: go-imports
       exclude: ^vendor/
-    - id: golangci-lint
-      args: [--verbose]
-      exclude: ^vendor/
 
 - repo: https://github.com/tekwizely/pre-commit-golang      
   rev: master
@@ -34,10 +31,3 @@ repos:
     - id: go-sec-mod
       args: ["-exclude", "G104"]
       exclude: ^vendor/
-
-- repo: local
-  hooks:
-    - id: sbom
-      name: syft
-      entry: .git/hooks/sbom.sh
-      language: system
