@@ -2,7 +2,7 @@
 
 ## Introduction
 
-M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.
+M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes through K3s from Rancher.
 
 ## Requirements
 
@@ -10,6 +10,28 @@ M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.
 - Apache Mesos min 1.6.0
 - Mesos with SSL and Authentication is optional
 - Persistent Storage to store Kubernetes data
+
+## How To use
+
+```yaml
+version: '3'
+services:
+  redis:
+    image: redis
+  m3s:
+    image: avhost/mesos-m3s:master
+    depends: redis
+    environment:
+    - DOMAIN=.mini
+    - DOCKER_CNI=mini
+    - K3S_AGENT_COUNT=1
+    - REDIS_SERVER=redis.mini:6379
+    - K3S_TOKEN=l9WpVPQQw2sfNQRbxJDXjZx61wMpXDaB
+    - AUTH_USERNAME=user
+    - AUTH_PASSWORD=password
+    ports:
+      - 10000
+```
 
 ## Screenshots
 

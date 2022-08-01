@@ -35,19 +35,21 @@
 
 | REDIS_PASSWORD        | | |
 | REDIS_SERVER          | 127.0.0.1:6379 | |
-| BOOTSTRAP_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh
-| SKIP_SSL=true
-| SSL_CRT_BASE64=<cat server.crt | base64 -w 0>
-| SSL_KEY_BASE64=<cat server.key | base64 -w 0>
+| BOOTSTRAP_URL | https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh | Bootstrap Script |
+| SKIP_SSL | true | Skip SSL Verification |
+| SSL_CRT_BASE64 | <cat server.crt | base64 -w 0> | SSL CRT Content as base64 |
+| SSL_KEY_BASE64=<cat server.key | base64 -w 0> | SSL Key Content as base64 |
 | ETCD_CONSTRAINT=
 | K3S_ETCD_CONSTRAINT=
 | K3S_AGENT_COUNT=1
 | K3S_AGENT_CONSTRAINT=
 | K3S_DOCKER=
-|	ETCD_CPU=
-|	ETCD_MEM=
-|	ETCD_DISK=
-| IMAGE_K3S=
-| IMAGE_ETCD=
+|	DS_CPU=
+|	DS_MEM=
+|	DS_DISK=
+| DS_PORT= | 3306 | Datastore Portnumber |
+| IMAGE_K3S= | avhost/ubuntu-m3s | Ubuntu M3s Docker Image |
+| IMAGE_ETCD= | bitnami/etcd | Docker Image for Etcd al Datastore |
+| IMAGE_MYSQL= | mariadb | Docker Image for MaraiDB as Datastore |
 | VOLUME_DRIVER=
 | VOLUME_K3S_SERVER=

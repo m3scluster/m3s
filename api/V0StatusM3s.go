@@ -34,10 +34,10 @@ func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 }
 
 func (e *API) getStatus() {
-	e.Config.M3SStatus.Etcd = map[string]string{}
+	e.Config.M3SStatus.Datastore = map[string]string{}
 	e.Config.M3SStatus.Agent = map[string]string{}
 	e.Config.M3SStatus.Server = map[string]string{}
-	services := []string{"etcd", "server", "agent"}
+	services := []string{"datastore", "server", "agent"}
 
 	for _, service := range services {
 		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":" + service + ":*")
@@ -46,8 +46,8 @@ func (e *API) getStatus() {
 			key := e.GetRedisKey(keys.Val())
 			task := mesosutil.DecodeTask(key)
 
-			if service == "etcd" {
-				e.Config.M3SStatus.Etcd[task.TaskID] = task.State
+			if service == "datastore" {
+				e.Config.M3SStatus.Datastore[task.TaskID] = task.State
 			} else if service == "agent" {
 				e.Config.M3SStatus.Agent[task.TaskID] = task.State
 			} else if service == "server" {
