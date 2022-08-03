@@ -1,6 +1,10 @@
 package mesos
 
 import (
+	"net"
+	"strconv"
+	"time"
+
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 
@@ -9,6 +13,10 @@ import (
 
 // StartDatastore is starting the datastore container
 func (e *Scheduler) StartDatastore(taskID string) {
+	if e.API.CountRedisKey(e.Framework.FrameworkName+":datastore:*") >= e.Config.DSMax {
+		return
+	}
+
 	cmd := e.defaultCommand(taskID)
 
 	cmd.ContainerType = "DOCKER"
@@ -40,9 +48,34 @@ func (e *Scheduler) StartDatastore(taskID string) {
 		cmd = e.setMySQL(cmd)
 	}
 
+	// get free hostport. If there is no one, do not start
+	hostport := e.getRandomHostPort(1)
+	if hostport == 0 {
+		logrus.WithField("func", "StartDatastore").Error("Could not find free ports")
+		return
+	}
+	protocol := "tcp"
+	containerPort, _ := strconv.ParseUint(e.Config.DSPort, 10, 32)
+	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+		{
+			HostPort:      hostport,
+			ContainerPort: uint32(containerPort),
+			Protocol:      &protocol,
+		},
+	}
+
 	cmd.Discovery = mesosproto.DiscoveryInfo{
-		Visibility: 1,
+		Visibility: 2,
 		Name:       &cmd.TaskName,
+		Ports: &mesosproto.Ports{
+			Ports: []mesosproto.Port{
+				{
+					Number:   cmd.DockerPortMappings[0].HostPort,
+					Name:     func() *string { x := "datastore"; return &x }(),
+					Protocol: cmd.DockerPortMappings[0].Protocol,
+				},
+			},
+		},
 	}
 
 	// store mesos task in DB
@@ -61,12 +94,32 @@ func (e *Scheduler) healthCheckDatastore() bool {
 		task := mesosutil.DecodeTask(key)
 
 		if task.State == "TASK_RUNNING" && len(task.NetworkInfo) > 0 {
-			dsState = true
+			if e.connectPort(task.MesosAgent.Slaves[0].Hostname, task.DockerPortMappings[0].GetHostPort()) {
+				dsState = true
+			}
 		}
 	}
 
 	logrus.WithField("func", "healthCheckDatastore").Debug("Datastore Health: ", dsState)
 	return dsState
+}
+
+// check if the remote port is listening
+func (e *Scheduler) connectPort(host string, port uint32) bool {
+	timeout := 5 * time.Second
+	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, strconv.FormatUint(uint64(port), 10)), timeout)
+	if err != nil {
+		logrus.WithField("func", "connectPort").Debug("Hostname: ", host)
+		logrus.WithField("func", "connectPort").Debug("Port: ", strconv.FormatUint(uint64(port), 10))
+		logrus.WithField("func", "connectPort").Debug("Error: ", err.Error())
+		return false
+	}
+	if conn != nil {
+		defer conn.Close()
+		return true
+	}
+
+	return false
 }
 
 // set mysql parameter of the mesos task
