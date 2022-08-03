@@ -1,7 +1,7 @@
-github.com/AVENTER-UG/go-logrus-formatter v0.5.2 h1:nj5coJ9iN/wMNikB8fBx9ihzC0d1fP4suU9BYRTC8K4=
-github.com/AVENTER-UG/go-logrus-formatter v0.5.2/go.mod h1:EXN8FPKx567UIA2L4jewW7pg48hc3i4fPZ+uBmHXxZI=
-github.com/AVENTER-UG/mesos-util v0.0.30 h1:ub/wmfHd3OOvmDaFRcw8TxnENOmA4CYV+PdKHTG+qUo=
-github.com/AVENTER-UG/mesos-util v0.0.30/go.mod h1:70fymV+AZKb3VQtUtprpJVXtp+mEAsYk7/NEg3s5JQ8=
+github.com/AVENTER-UG/go-logrus-formatter v0.5.4 h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=
+github.com/AVENTER-UG/go-logrus-formatter v0.5.4/go.mod h1:EXN8FPKx567UIA2L4jewW7pg48hc3i4fPZ+uBmHXxZI=
+github.com/AVENTER-UG/mesos-util v0.0.32 h1:sBaW2nZRth3+RLU8MTckoXP9wZPd8M7ikpQRwHF3yR8=
+github.com/AVENTER-UG/mesos-util v0.0.32/go.mod h1:70fymV+AZKb3VQtUtprpJVXtp+mEAsYk7/NEg3s5JQ8=
 github.com/AVENTER-UG/util v0.3.0 h1:wtUC7e6LMx37BRGBKKBZ4BUM8q4lkLjgBinS09luv6A=
 github.com/AVENTER-UG/util v0.3.0/go.mod h1:8mh50Bes+U3D6ZP3psP4K8LSPNwpeuM5vRNb/vU/sS0=
 github.com/Showmax/go-fqdn v1.0.0 h1:0rG5IbmVliNT5O19Mfuvna9LL7zlHyRfsSvBPZmF9tM=
@@ -78,8 +78,6 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.5.1/go.mod h1:5W2xD1RspED5o8YsWQXVCued0rvSQ+mT+I5cxcmMvtA=
 github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5CcY=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/x-cray/logrus-prefixed-formatter v0.5.2 h1:00txxvfBM9muc0jiLIEAkAcIMJzfthRT6usrui8uGmg=
-github.com/x-cray/logrus-prefixed-formatter v0.5.2/go.mod h1:2duySbKsL6M18s5GU7VPsoEPHyzalCE06qoARUCeBBE=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
@@ -120,8 +118,8 @@ golang.org/x/sys v0.0.0-20210630005230-0f9fa26af87c/go.mod h1:oPkhp1MJrh7nUepCBc
 golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20211216021012-1d35b9e2eb4e/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/sys v0.0.0-20220715151400-c0bba94af5f8/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10 h1:WIoqL4EROvwiPdUtaip4VcDdpZ4kha7wBWZrbVKCIZg=
-golang.org/x/sys v0.0.0-20220728004956-3c1f35247d10/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+golang.org/x/sys v0.0.0-20220803195053-6e608f9ce704 h1:Y7NOhdqIOU8kYI7BxsgL38d0ot0raxvcW+EMQU2QrT4=
+golang.org/x/sys v0.0.0-20220803195053-6e608f9ce704/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
 golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1/go.mod h1:bj7SfCRtBDWHUb9snDiAeCFNEtKQo2Wmx5Cou7ajbmo=
 golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 h1:Q5284mrmYTpACcm+eAKjKJH48BBwSyfJqmmGDTtT8Vc=
 golang.org/x/term v0.0.0-20220722155259-a9ba230a4035/go.mod h1:jbD1KX2456YbFQfuXm/mYQcufACuNUgVhRMnK/tPxf8=

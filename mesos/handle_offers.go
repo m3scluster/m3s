@@ -12,41 +12,43 @@ import (
 func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Command) (mesosproto.Offer, []mesosproto.OfferID) {
 	var offerIds []mesosproto.OfferID
 	var offerret mesosproto.Offer
-	// if the constraints does not match, return an empty offer
-	logrus.Debug("Get Offer for: ", cmd.TaskName)
-	for n, offer := range offers.Offers {
-		logrus.Debug("Got Offer From:", offer.GetHostname())
-		offerIds = append(offerIds, offer.ID)
+	if cmd.TaskName != "" {
+		// if the constraints does not match, return an empty offer
+		logrus.Debug("Get Offer for: ", cmd.TaskName)
+		for n, offer := range offers.Offers {
+			logrus.Debug("Got Offer From:", offer.GetHostname())
+			offerIds = append(offerIds, offer.ID)
 
-		// if the ressources of this offer does not matched what the command need, the skip
-		if !e.isRessourceMatched(offer.Resources, cmd) {
-			logrus.Debug("Could not found any matched ressources, get next offer")
-			mesosutil.Call(mesosutil.DeclineOffer(offerIds))
-			continue
-		}
-		// Check Constraints of server, agent and datastore
-		if cmd.TaskName == e.Framework.FrameworkName+":server" {
-			if e.Config.K3SServerConstraintHostname == "" {
-				offerret = offers.Offers[n]
-			} else if e.Config.K3SServerConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set Server Constraint to:", offer.GetHostname())
-				offerret = offers.Offers[n]
+			// if the ressources of this offer does not matched what the command need, the skip
+			if !mesosutil.IsRessourceMatched(offer.Resources, cmd) {
+				logrus.Debug("Could not found any matched ressources, get next offer")
+				mesosutil.Call(mesosutil.DeclineOffer(offerIds))
+				continue
 			}
-		}
-		if cmd.TaskName == e.Framework.FrameworkName+":agent" {
-			if e.Config.K3SAgentConstraintHostname == "" {
-				offerret = offers.Offers[n]
-			} else if e.Config.K3SAgentConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
-				offerret = offers.Offers[n]
+			// Check Constraints of server, agent and datastore
+			if cmd.TaskName == e.Framework.FrameworkName+":server" {
+				if e.Config.K3SServerConstraintHostname == "" {
+					offerret = offers.Offers[n]
+				} else if e.Config.K3SServerConstraintHostname == offer.GetHostname() {
+					logrus.Debug("Set Server Constraint to:", offer.GetHostname())
+					offerret = offers.Offers[n]
+				}
 			}
-		}
-		if cmd.TaskName == e.Framework.FrameworkName+":datastore" {
-			if e.Config.DSConstraintHostname == "" {
-				offerret = offers.Offers[n]
-			} else if e.Config.DSConstraintHostname == offer.GetHostname() {
-				logrus.Debug("Set Datastore Constraint to:", offer.GetHostname())
-				offerret = offers.Offers[n]
+			if cmd.TaskName == e.Framework.FrameworkName+":agent" {
+				if e.Config.K3SAgentConstraintHostname == "" {
+					offerret = offers.Offers[n]
+				} else if e.Config.K3SAgentConstraintHostname == offer.GetHostname() {
+					logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
+					offerret = offers.Offers[n]
+				}
+			}
+			if cmd.TaskName == e.Framework.FrameworkName+":datastore" {
+				if e.Config.DSConstraintHostname == "" {
+					offerret = offers.Offers[n]
+				} else if e.Config.DSConstraintHostname == offer.GetHostname() {
+					logrus.Debug("Set Datastore Constraint to:", offer.GetHostname())
+					offerret = offers.Offers[n]
+				}
 			}
 		}
 	}
@@ -122,23 +124,4 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 		logrus.Info("Decline unneeded offer: ", offerIds)
 		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	}
-}
-
-// check if the ressources of the offer are matching the needs of the cmd
-func (e *Scheduler) isRessourceMatched(ressource []mesosproto.Resource, cmd mesosutil.Command) bool {
-	mem := false
-	cpu := false
-
-	for _, v := range ressource {
-		if v.GetName() == "cpus" && v.Scalar.GetValue() >= cmd.CPU {
-			logrus.Debug("Matched Offer CPU")
-			cpu = true
-		}
-		if v.GetName() == "mem" && v.Scalar.GetValue() >= cmd.Memory {
-			logrus.Debug("Matched Offer Memory")
-			mem = true
-		}
-	}
-
-	return mem && cpu
 }

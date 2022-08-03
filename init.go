@@ -18,9 +18,6 @@ var config cfg.Config
 var framework mesosutil.FrameworkConfig
 
 func init() {
-	config.K3SAgentMax = 0
-	config.K3SServerMax = 0
-
 	framework.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")
 	framework.FrameworkName = "m3s" + util.Getenv("FRAMEWORK_NAME", "")
 	framework.FrameworkRole = util.Getenv("FRAMEWORK_ROLE", "m3s")

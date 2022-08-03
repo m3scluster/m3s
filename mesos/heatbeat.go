@@ -19,22 +19,18 @@ func (e *Scheduler) Heartbeat() {
 	k3sState := e.healthCheckK3s()
 
 	// if DataStorage container is not running or unhealthy, fix it.
-	if !dsState && e.API.CountRedisKey(e.Framework.FrameworkName+":datastore:*") < e.Config.DSMax {
+	if !dsState {
 		e.StartDatastore("")
 	}
 
 	// if Datastorage is running and K3s not, deploy K3s
 	if dsState && !k3sState {
-		if e.API.CountRedisKey(e.Framework.FrameworkName+":server:*") < e.Config.K3SServerMax {
-			e.StartK3SServer("")
-		}
+		e.StartK3SServer("")
 	}
 
 	// if k3s is running, deploy the agent
 	if k3sState {
-		if e.API.CountRedisKey(e.Framework.FrameworkName+":agent:*") < e.Config.K3SAgentMax {
-			e.StartK3SAgent("")
-		}
+		e.StartK3SAgent("")
 	}
 }
 
@@ -53,9 +49,10 @@ func (e *Scheduler) CheckState() {
 			continue
 		}
 
-		if task.State == "" {
+		if task.State == "" && e.API.CountRedisKey(task.TaskName+":*") <= task.Instances {
 			mesosutil.Revive()
 			task.State = "__NEW"
+
 			// these will save the current time at the task. we need it to check
 			// if the state will change in the next 'n min. if not, we have to
 			// give these task a recall.
@@ -83,7 +80,7 @@ func (e *Scheduler) CheckState() {
 
 // HeartbeatLoop - The main loop for the hearbeat
 func (e *Scheduler) HeartbeatLoop() {
-	ticker := time.NewTicker(time.Second * 1)
+	ticker := time.NewTicker(time.Second * e.TimePeriod)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		e.Heartbeat()

@@ -26,8 +26,6 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	// get the task of the current event, change the state and get some info's we need for later use
 	task := e.API.GetTaskFromEvent(update)
 	task.State = update.Status.State.String()
-	task.Agent = update.Status.GetAgentID().Value
-	task.NetworkInfo = e.getNetworkInfo(task.TaskID)
 
 	// if these object have not TaskID it, invalid
 	if task.TaskID == "" {
@@ -50,6 +48,10 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	case mesosproto.TASK_ERROR:
 		// restart task
 		task.State = ""
+	case mesosproto.TASK_RUNNING:
+		task.MesosAgent = mesosutil.GetAgentInfo(task.Agent)
+		task.NetworkInfo = mesosutil.GetNetworkInfo(task.TaskID)
+		task.Agent = update.Status.GetAgentID().Value
 	}
 
 	// save the new state

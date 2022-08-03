@@ -12,6 +12,9 @@ import (
 
 // StartK3SServer Start K3S with the given id
 func (e *Scheduler) StartK3SServer(taskID string) {
+	if e.API.CountRedisKey(e.Framework.FrameworkName+":server:*") >= e.Config.K3SServerMax {
+		return
+	}
 	cmd := e.defaultCommand(taskID)
 
 	cmd.Shell = true
@@ -26,6 +29,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: e.Config.DockerSHMSize})
+	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
 	if e.Framework.MesosCNI == "" {
 		// net-alias is only supported onuser-defined networks

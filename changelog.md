@@ -4,6 +4,8 @@
 
 - Fix docker user defined network.
 - Add redis reconnect after unhealthy ping. 
+- Add mysql support as datastore endpoint
+- Add healthcheck for datastore
 
 ## v0.3.0
 

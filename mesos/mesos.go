@@ -4,10 +4,9 @@ import (
 	"bufio"
 	"bytes"
 	"crypto/tls"
-	"encoding/json"
-	"net"
 	"net/http"
 	"strings"
+	"time"
 
 	api "github.com/AVENTER-UG/mesos-m3s/api"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -21,11 +20,12 @@ import (
 
 // Scheduler include all the current vars and global config
 type Scheduler struct {
-	Config    *cfg.Config
-	Framework *mesosutil.FrameworkConfig
-	Client    *http.Client
-	Req       *http.Request
-	API       *api.API
+	Config     *cfg.Config
+	Framework  *mesosutil.FrameworkConfig
+	Client     *http.Client
+	Req        *http.Request
+	API        *api.API
+	TimePeriod time.Duration
 }
 
 // Marshaler to serialize Protobuf Message to JSON
@@ -38,8 +38,9 @@ var marshaller = jsonpb.Marshaler{
 // Subscribe to the mesos backend
 func Subscribe(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *Scheduler {
 	e := &Scheduler{
-		Config:    cfg,
-		Framework: frm,
+		Config:     cfg,
+		Framework:  frm,
+		TimePeriod: 2,
 	}
 
 	subscribeCall := &mesosproto.Call{
@@ -124,14 +125,14 @@ func (e *Scheduler) EventLoop() {
 	}
 }
 
-// Generate random host portnumber
+// Generate "num" numbers of random host portnumbers
 func (e *Scheduler) getRandomHostPort(num int) uint32 {
 	// search two free ports
 	for i := e.Framework.PortRangeFrom; i < e.Framework.PortRangeTo; i++ {
 		port := uint32(i)
 		use := false
 		for x := 0; x < num; x++ {
-			if e.portInUse(port+uint32(x), "server") || e.portInUse(port+uint32(x), "agent") {
+			if e.portInUse(port + uint32(x)) {
 				tmp := use || true
 				use = tmp
 				x = num
@@ -148,10 +149,10 @@ func (e *Scheduler) getRandomHostPort(num int) uint32 {
 }
 
 // Check if the port is already in use
-func (e *Scheduler) portInUse(port uint32, service string) bool {
+func (e *Scheduler) portInUse(port uint32) bool {
 	// get all running services
-	logrus.Debug("Check if port is in use: ", port, service)
-	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":" + service + ":*")
+	logrus.Debug("Check if port is in use: ", port)
+	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the details of the current running service
 		key := e.API.GetRedisKey(keys.Val())
@@ -162,69 +163,13 @@ func (e *Scheduler) portInUse(port uint32, service string) bool {
 		if ports != nil {
 			for _, hostport := range ports.GetPorts() {
 				if hostport.Number == port {
-					logrus.Debug("Port in use: ", port, service)
+					logrus.Debug("Port in use: ", port)
 					return true
 				}
 			}
 		}
 	}
 	return false
-}
-
-// get network info of task
-func (e *Scheduler) getNetworkInfo(taskID string) []mesosproto.NetworkInfo {
-	client := &http.Client{}
-	// #nosec G402
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
-	}
-
-	protocol := "https"
-	if !e.Framework.MesosSSL {
-		protocol = "http"
-	}
-	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/tasks/?task_id="+taskID+"&framework_id="+e.Framework.FrameworkInfo.ID.GetValue(), nil)
-	req.Close = true
-	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := client.Do(req)
-
-	if err != nil {
-		logrus.WithField("func", "getNetworkInfo").Error("Could not connect to agent: ", err.Error())
-		return []mesosproto.NetworkInfo{}
-	}
-
-	defer res.Body.Close()
-
-	var task cfg.MesosTasks
-	err = json.NewDecoder(res.Body).Decode(&task)
-	if err != nil {
-		logrus.WithField("func", "getAgentInfo").Error("Could not encode json result: ", err.Error())
-		return []mesosproto.NetworkInfo{}
-	}
-
-	if len(task.Tasks) > 0 {
-		for _, status := range task.Tasks[0].Statuses {
-			if status.State == "TASK_RUNNING" {
-				var netw []mesosproto.NetworkInfo
-				netw = append(netw, status.ContainerStatus.NetworkInfos[0])
-				// try to resolv the tasks hostname
-				if task.Tasks[0].Container.Hostname != nil {
-					addr, err := net.LookupIP(*task.Tasks[0].Container.Hostname)
-					if err == nil {
-						hostNet := []mesosproto.NetworkInfo{{
-							IPAddresses: []mesosproto.NetworkInfo_IPAddress{{
-								IPAddress: func() *string { x := string(addr[0]); return &x }(),
-							}}},
-						}
-						netw = append(netw, hostNet[0])
-					}
-				}
-				return netw
-			}
-		}
-	}
-	return []mesosproto.NetworkInfo{}
 }
 
 // generate a new task id if there is no
