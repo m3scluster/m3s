@@ -94,7 +94,7 @@ func (e *Scheduler) healthCheckDatastore() bool {
 		task := mesosutil.DecodeTask(key)
 
 		if task.State == "TASK_RUNNING" && len(task.NetworkInfo) > 0 {
-			if e.connectPort(task.MesosAgent.Slaves[0].Hostname, task.DockerPortMappings[0].GetHostPort()) {
+			if e.connectPort(task.MesosAgent.Hostname, task.DockerPortMappings[0].GetHostPort()) {
 				dsState = true
 			}
 		}

@@ -43,7 +43,7 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 					task := mesosutil.DecodeTask(key)
 
-					mesosutil.Kill(task.TaskID, task.MesosAgent.Slaves[0].ID)
+					mesosutil.Kill(task.TaskID, task.MesosAgent.ID)
 					logrus.Debug("V0ScaleK3SAgent: ", task.TaskID)
 				}
 				oldCount = oldCount - 1
