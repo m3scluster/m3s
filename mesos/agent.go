@@ -3,6 +3,7 @@ package mesos
 import (
 	"strings"
 
+	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 
 	"github.com/sirupsen/logrus"
@@ -121,4 +122,25 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	// store mesos task in DB
 	logrus.WithField("func", "StartK3SAgent").Info("Schedule K3S Agent")
 	e.API.SaveTaskRedis(cmd)
+}
+
+// healthCheckAgent check the health of all agents. Return true if all are fine.
+func (e *Scheduler) healthCheckAgent() bool {
+	// Hold the at all state of the agent service.
+	aState := false
+
+	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
+	for keys.Next(e.API.Redis.RedisCTX) {
+		key := e.API.GetRedisKey(keys.Val())
+		task := mesosutil.DecodeTask(key)
+
+		if task.State == "TASK_RUNNING" {
+			aState = aState || true
+		} else {
+			aState = aState || false
+		}
+	}
+
+	logrus.WithField("func", "healthCheckAgent").Debug("K3s Agent Health: ", aState)
+	return aState
 }

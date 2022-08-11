@@ -3,7 +3,7 @@ module github.com/AVENTER-UG/mesos-m3s
 go 1.17
 
 require (
-	github.com/AVENTER-UG/mesos-util v0.0.35
+	github.com/AVENTER-UG/mesos-util v0.0.38
 	github.com/AVENTER-UG/util v0.3.0
 	github.com/Showmax/go-fqdn v1.0.0
 	github.com/go-redis/redis/v8 v8.11.5
@@ -22,6 +22,6 @@ require (
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/russross/blackfriday v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/sys v0.0.0-20220803195053-6e608f9ce704 // indirect
+	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035 // indirect
 )

@@ -52,7 +52,21 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd mesosutil.Comm
 			}
 		}
 	}
+
+	// remove the offer we took
+	offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 	return offerret, offerIds
+}
+
+// remove the offer we took from the list
+func (e *Scheduler) removeOffer(offers []mesosproto.OfferID, clean string) []mesosproto.OfferID {
+	var offerIds []mesosproto.OfferID
+	for _, offer := range offers {
+		if offer.Value != clean {
+			offerIds = append(offerIds, offer)
+		}
+	}
+	return offerIds
 }
 
 // HandleOffers will handle the offers events of mesos
@@ -73,7 +87,8 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 		}
 		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
 		// if the offer does not have id's, we skip it and restore the chan.
-		if offerIds == nil {
+		if takeOffer.ID.Value == "" {
+			logrus.WithField("func", "HandleOffers").Error("OfferIds are empty.")
 			e.Framework.CommandChan <- cmd
 			return nil
 		}
@@ -119,8 +134,7 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 
 	default:
 		// decline unneeded offer
-		var empty mesosutil.Command
-		_, offerIds = e.getOffer(offers, empty)
+		_, offerIds := mesosutil.GetOffer(offers, mesosutil.Command{})
 		logrus.Info("Decline unneeded offer: ", offerIds)
 		return mesosutil.Call(mesosutil.DeclineOffer(offerIds))
 	}

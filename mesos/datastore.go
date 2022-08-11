@@ -83,7 +83,7 @@ func (e *Scheduler) StartDatastore(taskID string) {
 	e.API.SaveTaskRedis(cmd)
 }
 
-// healthCheckETCD check the health of all etcdservers. Return true if all are fine.
+// healthCheckDatastore check the health of all datastore ervers. Return true if all are fine.
 func (e *Scheduler) healthCheckDatastore() bool {
 	// Hold the at all state of the datastore service.
 	dsState := false

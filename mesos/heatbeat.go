@@ -17,6 +17,7 @@ func (e *Scheduler) Heartbeat() {
 
 	dsState := e.healthCheckDatastore()
 	k3sState := e.healthCheckK3s()
+	e.healthCheckAgent()
 
 	// if DataStorage container is not running or unhealthy, fix it.
 	if !dsState {
@@ -32,6 +33,7 @@ func (e *Scheduler) Heartbeat() {
 	if k3sState {
 		e.StartK3SAgent("")
 	}
+
 }
 
 // CheckState check the current state of every task
@@ -42,6 +44,10 @@ func (e *Scheduler) CheckState() {
 	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the values of the current key
 		key := e.API.GetRedisKey(keys.Val())
+
+		if e.API.CheckIfNotTask(keys) {
+			continue
+		}
 
 		task := mesosutil.DecodeTask(key)
 

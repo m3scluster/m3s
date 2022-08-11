@@ -108,6 +108,8 @@ func (e *Scheduler) EventLoop() {
 			logrus.Debug("FrameworkId: ", event.Subscribed.GetFrameworkID())
 			e.Framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
 			e.Framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
+
+			e.Reconcile()
 			e.API.SaveFrameworkRedis()
 			e.API.SaveConfig()
 		case mesosproto.Event_UPDATE:
@@ -156,6 +158,11 @@ func (e *Scheduler) portInUse(port uint32) bool {
 	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the details of the current running service
 		key := e.API.GetRedisKey(keys.Val())
+
+		if e.API.CheckIfNotTask(keys) {
+			continue
+		}
+
 		task := mesosutil.DecodeTask(key)
 
 		// check if the given port is already in use
@@ -184,4 +191,44 @@ func (e *Scheduler) getTaskID(taskID string) string {
 
 func (e *Scheduler) addDockerParameter(current []mesosproto.Parameter, newValues mesosproto.Parameter) []mesosproto.Parameter {
 	return append(current, newValues)
+}
+
+// Reconcile will reconcile the task states after the framework was restarted
+func (e *Scheduler) Reconcile() {
+	logrus.Info("Reconcile Tasks")
+	var oldTasks []mesosproto.Call_Reconcile_Task
+	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
+	for keys.Next(e.API.Redis.RedisCTX) {
+		// continue if the key is not a mesos task
+		if e.API.CheckIfNotTask(keys) {
+			continue
+		}
+
+		key := e.API.GetRedisKey(keys.Val())
+
+		task := mesosutil.DecodeTask(key)
+
+		if task.TaskID == "" || task.Agent == "" {
+			continue
+		}
+
+		oldTasks = append(oldTasks, mesosproto.Call_Reconcile_Task{
+			TaskID: mesosproto.TaskID{
+				Value: task.TaskID,
+			},
+			AgentID: &mesosproto.AgentID{
+				Value: task.Agent,
+			},
+		})
+		logrus.Debug("Reconcile Task: ", task.TaskID)
+	}
+	err := mesosutil.Call(&mesosproto.Call{
+		Type:      mesosproto.Call_RECONCILE,
+		Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
+	})
+
+	if err != nil {
+		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
+		logrus.Debug("Reconcile Error: ", err)
+	}
 }
