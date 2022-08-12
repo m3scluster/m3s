@@ -6,7 +6,6 @@ import (
 	"crypto/tls"
 	"net/http"
 	"strings"
-	"time"
 
 	api "github.com/AVENTER-UG/mesos-m3s/api"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -20,12 +19,11 @@ import (
 
 // Scheduler include all the current vars and global config
 type Scheduler struct {
-	Config     *cfg.Config
-	Framework  *mesosutil.FrameworkConfig
-	Client     *http.Client
-	Req        *http.Request
-	API        *api.API
-	TimePeriod time.Duration
+	Config    *cfg.Config
+	Framework *mesosutil.FrameworkConfig
+	Client    *http.Client
+	Req       *http.Request
+	API       *api.API
 }
 
 // Marshaler to serialize Protobuf Message to JSON
@@ -38,9 +36,8 @@ var marshaller = jsonpb.Marshaler{
 // Subscribe to the mesos backend
 func Subscribe(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *Scheduler {
 	e := &Scheduler{
-		Config:     cfg,
-		Framework:  frm,
-		TimePeriod: 2,
+		Config:    cfg,
+		Framework: frm,
 	}
 
 	subscribeCall := &mesosproto.Call{
@@ -118,6 +115,9 @@ func (e *Scheduler) EventLoop() {
 			e.Reconcile()
 			e.API.SaveFrameworkRedis()
 			e.API.SaveConfig()
+		case mesosproto.Event_HEARTBEAT:
+			e.Heartbeat()
+			e.CheckState()
 		case mesosproto.Event_UPDATE:
 			e.HandleUpdate(&event)
 			// save configuration

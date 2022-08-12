@@ -17,7 +17,7 @@ func (e *Scheduler) Heartbeat() {
 
 	dsState := e.healthCheckDatastore()
 	k3sState := e.healthCheckK3s()
-	e.healthCheckAgent()
+	k3sAgenteState := e.healthCheckAgent()
 
 	// if DataStorage container is not running or unhealthy, fix it.
 	if !dsState {
@@ -30,7 +30,7 @@ func (e *Scheduler) Heartbeat() {
 	}
 
 	// if k3s is running, deploy the agent
-	if k3sState {
+	if k3sState && !k3sAgenteState {
 		e.StartK3SAgent("")
 	}
 
@@ -86,7 +86,7 @@ func (e *Scheduler) CheckState() {
 
 // HeartbeatLoop - The main loop for the hearbeat
 func (e *Scheduler) HeartbeatLoop() {
-	ticker := time.NewTicker(time.Second * e.TimePeriod)
+	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		e.Heartbeat()

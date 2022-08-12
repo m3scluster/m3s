@@ -15,6 +15,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	if e.API.CountRedisKey(e.Framework.FrameworkName+":server:*") >= e.Config.K3SServerMax {
 		return
 	}
+
 	cmd := e.defaultCommand(taskID)
 
 	cmd.Shell = true

@@ -47,6 +47,7 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 		task.State = ""
 	case mesosproto.TASK_ERROR:
 		// restart task
+		task.TaskID = e.getTaskID("")
 		task.State = ""
 	case mesosproto.TASK_RUNNING:
 		task.MesosAgent = mesosutil.GetAgentInfo(task.Agent)

@@ -1,6 +1,8 @@
 package types
 
 import (
+	"time"
+
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 )
@@ -68,6 +70,7 @@ type Config struct {
 	Version                     M3SVersion
 	Suppress                    bool
 	DockerCNI                   string
+	EventLoopTime               time.Duration
 }
 
 // M3SStatus store the current TaskState of the M3s services
