@@ -139,8 +139,18 @@ func main() {
 			server.ListenAndServe()
 		}
 	}()
-	e := mesos.Subscribe(&config, &framework)
-	e.API = a
-	e.EventLoop()
+
+	//	this loop is for resubscribtion purpose
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			e := mesos.Subscribe(&config, &framework)
+			e.API = a
+			e.EventLoop()
+		}
+	}
+
 	a.Redis.RedisClient.Close()
 }

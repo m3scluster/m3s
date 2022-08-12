@@ -6,6 +6,7 @@
 - Add redis reconnect after unhealthy ping. 
 - Add mysql support as datastore endpoint
 - Add healthcheck for datastore
+- Add resubscription after the connection to mesos master is lost.
 
 ## v0.3.0
 
