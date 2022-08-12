@@ -115,9 +115,6 @@ func (e *Scheduler) EventLoop() {
 			e.Reconcile()
 			e.API.SaveFrameworkRedis()
 			e.API.SaveConfig()
-		case mesosproto.Event_HEARTBEAT:
-			e.Heartbeat()
-			e.CheckState()
 		case mesosproto.Event_UPDATE:
 			e.HandleUpdate(&event)
 			// save configuration

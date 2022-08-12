@@ -69,7 +69,7 @@ func init() {
 	config.SSLKey = os.Getenv("SSL_KEY_BASE64")
 	config.SSLCrt = os.Getenv("SSL_CRT_BASE64")
 	config.DockerCNI = util.Getenv("DOCKER_CNI", "bridge")
-	config.EventLoopTime, _ = time.ParseDuration(util.Getenv("HEARTBEET_INTERVALL", "15s"))
+	config.EventLoopTime, _ = time.ParseDuration(util.Getenv("HEARTBEAT_INTERVAL", "15s"))
 
 	// if labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
