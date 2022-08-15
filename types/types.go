@@ -35,6 +35,7 @@ type Config struct {
 	ImageMySQL                  string
 	VolumeDriver                string
 	VolumeK3SServer             string
+	VolumeDS                    string
 	K3SToken                    string
 	DockerSock                  string
 	DockerSHMSize               string
