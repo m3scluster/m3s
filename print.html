@@ -137,13 +137,32 @@
                     <main>
                         <h1 id="m3s---apache-mesos-kubernetes-framework"><a class="header" href="#m3s---apache-mesos-kubernetes-framework">M3s - Apache Mesos Kubernetes Framework</a></h1>
 <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
-<p>M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes.</p>
+<p>M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes through K3s from Rancher.</p>
 <h2 id="requirements"><a class="header" href="#requirements">Requirements</a></h2>
 <ul>
 <li>Apache Mesos min 1.6.0</li>
 <li>Mesos with SSL and Authentication is optional</li>
 <li>Persistent Storage to store Kubernetes data</li>
 </ul>
+<h2 id="how-to-use"><a class="header" href="#how-to-use">How To use</a></h2>
+<pre><code class="language-yaml">version: '3'
+services:
+  redis:
+    image: redis
+  m3s:
+    image: avhost/mesos-m3s:master
+    depends: redis
+    environment:
+    - DOMAIN=.mini
+    - DOCKER_CNI=mini
+    - K3S_AGENT_COUNT=1
+    - REDIS_SERVER=redis.mini:6379
+    - K3S_TOKEN=l9WpVPQQw2sfNQRbxJDXjZx61wMpXDaB
+    - AUTH_USERNAME=user
+    - AUTH_PASSWORD=password
+    ports:
+      - 10000
+</code></pre>
 <h2 id="screenshots"><a class="header" href="#screenshots">Screenshots</a></h2>
 <h3 id="mesos"><a class="header" href="#mesos">Mesos</a></h3>
 <p><img src="vx_images/Mesos.png" alt="Mesos" /></p>
