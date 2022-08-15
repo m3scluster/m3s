@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">2.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">3.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="cli/kubectl.html"><strong aria-hidden="true">4.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">5.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/count_k3s.html"><strong aria-hidden="true">6.</strong> Count of running Kubernetes Server/Agents</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">7.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="api/get_kubeversion.html"><strong aria-hidden="true">8.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded "><a href="api/get_status.html"><strong aria-hidden="true">9.</strong> Get M3s status information</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">10.</strong> Create NGINX ingress with traefik</a></li><li class="chapter-item expanded "><a href="containerd.html"><strong aria-hidden="true">11.</strong> Containerd sideload configuration</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded "><a href="vars.html"><strong aria-hidden="true">2.</strong> Configuration</a></li><li class="chapter-item expanded affix "><li class="part-title">CLI</li><li class="chapter-item expanded "><a href="cli/install.html"><strong aria-hidden="true">3.</strong> M3s CLI Installation for Mesos-CLI</a></li><li class="chapter-item expanded "><a href="cli/usage.html"><strong aria-hidden="true">4.</strong> M3s CLI Usage</a></li><li class="chapter-item expanded "><a href="cli/kubectl.html"><strong aria-hidden="true">5.</strong> Kubectl Usage with M3s</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/scale_k3s.html"><strong aria-hidden="true">6.</strong> Scale up/down Kubernetes Service</a></li><li class="chapter-item expanded "><a href="api/count_k3s.html"><strong aria-hidden="true">7.</strong> Count of running Kubernetes Server/Agents</a></li><li class="chapter-item expanded "><a href="api/get_kubeconfig.html"><strong aria-hidden="true">8.</strong> Get Kubeconfig</a></li><li class="chapter-item expanded "><a href="api/get_kubeversion.html"><strong aria-hidden="true">9.</strong> Get Kubernetes Version</a></li><li class="chapter-item expanded "><a href="api/get_status.html"><strong aria-hidden="true">10.</strong> Get M3s status information</a></li><li class="chapter-item expanded affix "><li class="part-title">Examples</li><li class="chapter-item expanded "><a href="create_nginx_ingress.html"><strong aria-hidden="true">11.</strong> Create NGINX ingress with traefik</a></li><li class="chapter-item expanded "><a href="containerd.html"><strong aria-hidden="true">12.</strong> Containerd sideload configuration</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -182,7 +182,62 @@ kubectl port-forward $(kubectl get pods --selector &quot;app.kubernetes.io/name=
 
 </code></pre>
 <p><img src="vx_images/Traefik.png" alt="Traefik" /></p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<p>The following environment variables are available:</p>
+<div class="table-wrapper"><table><thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead><tbody>
+<tr><td>FRAMEWORK_USER</td><td>root</td><td>Framework user used in Apache Mesos</td></tr>
+<tr><td>FRAMEWORK_NAME</td><td>m3s</td><td>Name of the framework in Apache Mesos but also used as Redis prefix</td></tr>
+<tr><td>FRAMEWORK_ROLE</td><td>m3s</td><td>Framework role used in Apache Mesos</td></tr>
+<tr><td>FRAMEWORK_PORT</td><td>10000</td><td>Port these framework is listening</td></tr>
+<tr><td>FRAMEWORK_HOSTNAME</td><td>${HOSTNAME}</td><td>The frameworks hostname</td></tr>
+<tr><td>MESOS_USERNAME</td><td></td><td>Username to authenticate against Mesos</td></tr>
+<tr><td>MESOS_PASSWORD</td><td></td><td>Password to authenticate against Mesos</td></tr>
+<tr><td>MESOS_MASTER</td><td>127.0.0.1:5050</td><td>Adress of the Mesos Master. If you use mesos-dns, use leader.mesos</td></tr>
+<tr><td>MESOS_CNI</td><td></td><td>Mesos CNI M3s should use</td></tr>
+<tr><td>MESOS_SSL</td><td>false</td><td>Enable SSL for the communication to the Mesos Master</td></tr>
+<tr><td>MESOS_PRINCIPAL</td><td></td><td>Mesos Principal</td></tr>
+<tr><td>PORTRANGE_FROM</td><td>31000</td><td>Set the portrange, M3s is suposed to use for the container outside of K8</td></tr>
+<tr><td>PORTRANGE_TO</td><td>32000</td><td></td></tr>
+<tr><td>LOGLEVEL</td><td>info</td><td>Information Level (info, warn, error, debug)</td></tr>
+<tr><td>DOCKER_CNI</td><td>bride</td><td>If we do not use Mesos CNI, we can also use docker network</td></tr>
+<tr><td>DOCKER_SOCK</td><td></td><td>The docker sock file</td></tr>
+<tr><td>DOCKER_SHM_SIZE</td><td>30gb</td><td>Size of dockers shared memory</td></tr>
+<tr><td>DOMAIN</td><td>.local</td><td>The domain of the hostnames. As example, if you use weave cni, it would be weave.local</td></tr>
+<tr><td>AUTH_USERNAME</td><td></td><td>Username to authenticate against these framework</td></tr>
+<tr><td>AUTH_PASSWORD</td><td></td><td>Password to authenticate against these framework</td></tr>
+<tr><td>K3S_TOKEN</td><td>123456789</td><td>K8 token for the bootstrap</td></tr>
+<tr><td>K3S_CUSTOM_DOMAIN</td><td>cloud.local</td><td>The network Domain we will use for the K3s cni</td></tr>
+<tr><td>K3S_SERVER_STRING</td><td>/usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan</td><td>These is the string we will use to start the K3s server. M3s will add several other parameters.</td></tr>
+<tr><td>K3S_SERVER_CPU</td><td>0.1</td><td>Resources for the K3s Server container</td></tr>
+<tr><td>K3S_SERVER_MEM</td><td>1200</td><td></td></tr>
+<tr><td>K3S_SERVER_CONSTRAINT</td><td><hostname></td><td>Tell Mesos to start the K3s server on this hostname</td></tr>
+<tr><td>K3S_AGENT_STRING</td><td>/usr/local/bin/k3s agent --snapshotter=native --flannel-backend=vxlan</td><td>These is the string we will use to start the K3s agent. M3s will add several other parameters.</td></tr>
+<tr><td>K3S_AGENT_CPU</td><td>0.1</td><td>Resources for the K3s Agent container</td></tr>
+<tr><td>K3S_AGENT_MEM</td><td>1200</td><td></td></tr>
+<tr><td>K3S_AGENT_LABELS</td><td>[{&quot;key&quot;:&quot;traefik.enable&quot;,&quot;value&quot;:&quot;true&quot;},{&quot;key&quot;:&quot;traefik.http.routers.m3s.entrypoints&quot;,&quot;value&quot;:&quot;web&quot;},{&quot;key&quot;:&quot;traefik.http.routers.m3s.service&quot;,&quot;value&quot;:&quot;m3s-http&quot;},{&quot;key&quot;:&quot;traefik.http.routers.m3s.rule&quot;,&quot;value&quot;:&quot;HostRegexp(<code>example.com</code>, <code>{subdomain:[a-z]+}.example.com</code>)&quot;}]</td><td>Configure custom labels for the container. In these example, we will use lables for traefik.</td></tr>
+<tr><td>REDIS_PASSWORD</td><td></td><td>Redis Passwort for authentication</td></tr>
+<tr><td>REDIS_SERVER</td><td>127.0.0.1:6379</td><td>Redis Server IP and port</td></tr>
+<tr><td>BOOTSTRAP_URL</td><td>https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh</td><td>Bootstrap Script to pre configure the server/agent container</td></tr>
+<tr><td>SKIP_SSL</td><td>true</td><td>Skip SSL Verification</td></tr>
+<tr><td>SSL_CRT_BASE64</td><td>&lt;cat server.crt</td><td>base64 -w 0&gt;</td></tr>
+<tr><td>SSL_KEY_BASE64=&lt;cat server.key</td><td>base64 -w 0&gt;</td><td>SSL Key Content as base64</td></tr>
+<tr><td>K3S_DS_CONSTRAINT</td><td><hostname></td><td>Tell Mesos to start the datastore on this hostname</td></tr>
+<tr><td>K3S_AGENT_COUNT</td><td>1</td><td>Amount of running K3s agents</td></tr>
+<tr><td>K3S_AGENT_CONSTRAINT</td><td></td><td>Tell Mesos to start the K3s agent on that hostname</td></tr>
+<tr><td>K3S_DOCKER</td><td>true</td><td>Use docker container as K8 runtime</td></tr>
+<tr><td>DS_CPU</td><td>Resources for the datastore container</td><td></td></tr>
+<tr><td>DS_MEM</td><td></td><td></td></tr>
+<tr><td>DS_DISK</td><td></td><td></td></tr>
+<tr><td>DS_PORT</td><td>3306</td><td>Datastore Portnumber</td></tr>
+<tr><td>IMAGE_K3S</td><td>avhost/ubuntu-m3s</td><td>Ubuntu M3s Docker Image</td></tr>
+<tr><td>IMAGE_ETCD</td><td>bitnami/etcd</td><td>Docker Image for Etcd al Datastore</td></tr>
+<tr><td>IMAGE_MYSQL</td><td>mariadb</td><td>Docker Image for MaraiDB as Datastore</td></tr>
+<tr><td>VOLUME_DRIVER</td><td>local</td><td>Volume driver docker should use to handle the volume</td></tr>
+<tr><td>VOLUME_K3S_SERVER</td><td>/data/k3s/server/</td><td>Volume name to persist the k3s server data</td></tr>
+<tr><td>VOLUME_DS</td><td>/data/k3s/datastore/</td><td>Volume name to persists the datastore data</td></tr>
+<tr><td>HEARTBEAT_INTERVAL</td><td>15s</td><td>Check the state every 'n seconds</td></tr>
+</tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-installation-for-mesos-cli"><a class="header" href="#m3s-cli-installation-for-mesos-cli">M3s CLI Installation for Mesos-CLI</a></h1>
 <p>If you do not already have installe the mesos cli, please follow the steps under &quot;Install Mesos-CLI&quot; first.</p>
 <p>The installation of the M3s plugin for mesos-cli is done in few steps.</p>
 <p>First, edit the mesos-cli config file.</p>
