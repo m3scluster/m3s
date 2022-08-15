@@ -7,6 +7,7 @@
 - Add mysql support as datastore endpoint
 - Add healthcheck for datastore
 - Add resubscription after the connection to mesos master is lost.
+- Add container volume for the datastore to persist data
 
 ## v0.3.0
 

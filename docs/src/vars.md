@@ -53,5 +53,6 @@ The following environment variables are available:
 | IMAGE_ETCD | bitnami/etcd | Docker Image for Etcd al Datastore |
 | IMAGE_MYSQL | mariadb | Docker Image for MaraiDB as Datastore |
 | VOLUME_DRIVER | local | Volume driver docker should use to handle the volume |
-| VOLUME_K3S_SERVER | Volume name of the K3s server container |
+| VOLUME_K3S_SERVER | /data/k3s/server/ | Volume name to persist the k3s server data |
+| VOLUME_DS | /data/k3s/datastore/ | Volume name to persists the datastore data |
 | HEARTBEAT_INTERVAL | 15s | Check the state every 'n seconds | 

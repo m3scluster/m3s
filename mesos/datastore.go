@@ -40,12 +40,12 @@ func (e *Scheduler) StartDatastore(taskID string) {
 
 	// if we use etcd as datastore
 	if e.Config.DSEtcd {
-		cmd = e.setETCD(cmd)
+		e.setETCD(&cmd)
 	}
 
 	// if we use mysql/maraidb as datastore
 	if e.Config.DSMySQL {
-		cmd = e.setMySQL(cmd)
+		e.setMySQL(&cmd)
 	}
 
 	// get free hostport. If there is no one, do not start
@@ -123,7 +123,7 @@ func (e *Scheduler) connectPort(host string, port uint32) bool {
 }
 
 // set mysql parameter of the mesos task
-func (e *Scheduler) setMySQL(cmd mesosutil.Command) mesosutil.Command {
+func (e *Scheduler) setMySQL(cmd *mesosutil.Command) {
 	cmd.ContainerImage = e.Config.ImageMySQL
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
 		{
@@ -145,11 +145,23 @@ func (e *Scheduler) setMySQL(cmd mesosutil.Command) mesosutil.Command {
 			}(),
 		},
 	}
-	return cmd
+	cmd.Volumes = []mesosproto.Volume{
+		{
+			ContainerPath: "/var/lib/mysql",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &e.Config.VolumeDriver,
+					Name:   e.Config.VolumeDS,
+				},
+			},
+		},
+	}
 }
 
 // set etcd parameter of the mesos task
-func (e *Scheduler) setETCD(cmd mesosutil.Command) mesosutil.Command {
+func (e *Scheduler) setETCD(cmd *mesosutil.Command) {
 	cmd.ContainerImage = e.Config.ImageETCD
 	cmd.Command = "/opt/bitnami/etcd/bin/etcd --listen-client-urls http://0.0.0.0:" + e.Config.DSPort + " --election-timeout '50000' --heartbeat-interval '5000'"
 	AdvertiseURL := "http://" + cmd.Hostname + ":" + e.Config.DSPort
@@ -172,10 +184,22 @@ func (e *Scheduler) setETCD(cmd mesosutil.Command) mesosutil.Command {
 		{
 			Name: "ETCD_DATA_DIR",
 			Value: func() *string {
-				x := "/tmp"
+				x := "/tmp/data"
 				return &x
 			}(),
 		},
 	}
-	return cmd
+	cmd.Volumes = []mesosproto.Volume{
+		{
+			ContainerPath: "/tmp/data",
+			Mode:          mesosproto.RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &e.Config.VolumeDriver,
+					Name:   e.Config.VolumeDS,
+				},
+			},
+		},
+	}
 }
