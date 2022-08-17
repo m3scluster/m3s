@@ -54,12 +54,5 @@ Commands:
 
 ## Install Mesos-CLI
 
-```bash
-yum install python3 python3-venv
-git clone http://github.com/apache/mesos
-cd mesos/src/python/cli_new
-export VIRTUALENV_DIRECTORY=~/.virtualenvs/mesos-cli
-export PYTHON=python3
-./bootstrap
-
-```
+Download the mesos-cli binary for linux from [here](https://www.aventer.biz/files/sw/Linux/mesos-cli.zip). Extract
+the mesos-cli and copy the file into your PATH directory.
