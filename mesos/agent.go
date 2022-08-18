@@ -129,6 +129,10 @@ func (e *Scheduler) healthCheckAgent() bool {
 	// Hold the at all state of the agent service.
 	aState := false
 
+	if e.API.CountRedisKey(e.Framework.FrameworkName+":agent:*") < e.Config.K3SAgentMax {
+		return false
+	}
+
 	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
 	for keys.Next(e.API.Redis.RedisCTX) {
 		key := e.API.GetRedisKey(keys.Val())

@@ -34,20 +34,19 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 		e.SaveConfig()
 
 		// if scale down, kill not needes agents
-		if newCount < oldCount {
-			keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
+		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
 
-			for keys.Next(e.Redis.RedisCTX) {
-				if newCount < oldCount {
-					key := e.GetRedisKey(keys.Val())
+		for keys.Next(e.Redis.RedisCTX) {
+			key := e.GetRedisKey(keys.Val())
+			task := mesosutil.DecodeTask(key)
+			task.Instances = newCount
+			e.SaveTaskRedis(task)
 
-					task := mesosutil.DecodeTask(key)
-
-					mesosutil.Kill(task.TaskID, task.MesosAgent.ID)
-					logrus.Debug("V0ScaleK3SAgent: ", task.TaskID)
-				}
-				oldCount = oldCount - 1
+			if newCount < oldCount {
+				mesosutil.Kill(task.TaskID, task.MesosAgent.ID)
+				logrus.Debug("V0ScaleK3SAgent: ", task.TaskID)
 			}
+			oldCount = oldCount - 1
 		}
 	}
 
