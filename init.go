@@ -59,7 +59,7 @@ func init() {
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "0.1"), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "1200"), 64)
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
-	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "100"), 64)
+	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "600"), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
 	config.DSPort = util.Getenv("DS_PORT", "3306")
 	config.DSMySQLUsername = util.Getenv("DS_MYSQL_USERNAME", "root")
