@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -43,6 +43,7 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/status", APIHealth).Methods("GET")
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/config", APIGetKubeConfig).Methods("GET")
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/version", APIGetKubeVersion).Methods("GET")
+	rtr.HandleFunc("/api/m3s/bootstrap/v0/clean", APICleanupNotRead).Methods("GET")
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/status?verbose", APIStatus).Methods("GET")
 
 	return rtr
@@ -80,7 +81,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := ioutil.ReadAll(res.Body)
+	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -121,7 +122,7 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 
 // APIGetKubeConfig get out the kubernetes config file
 func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
-	content, err := ioutil.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
+	content, err := os.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
 	if err != nil {
 		logrus.Error("Error reading file:", err)
 		w.Write([]byte("Error reading kubeconfig.yaml"))
@@ -234,6 +235,19 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Write(stdout)
+}
+
+// APICleanupNotRead -  cleanup notready nodes
+func APICleanupNotRead(w http.ResponseWriter, r *http.Request) {
+	err := exec.Command("/mnt/mesos/sandbox/kubectl", "delete", "node", "$(kubectl get nodes | grep NotReady | awk '{print $1;}')").Run()
+	logrus.Info("Cleanup notready nodes")
+
+	if err != nil {
+		logrus.Error("Cleanup notready nodes: ", err)
+		return
+	}
+
+	logrus.Info("Cleanup notready nodes: Done")
 }
 
 func main() {
