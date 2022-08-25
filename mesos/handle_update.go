@@ -52,6 +52,8 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 		task.MesosAgent = mesosutil.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = mesosutil.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
+
+		mesosutil.SuppressFramework()
 	}
 
 	// save the new state

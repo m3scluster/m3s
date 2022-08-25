@@ -39,7 +39,6 @@ func (e *Scheduler) Heartbeat() {
 // CheckState check the current state of every task
 func (e *Scheduler) CheckState() {
 	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
-	suppress := true
 
 	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the values of the current key
@@ -71,16 +70,6 @@ func (e *Scheduler) CheckState() {
 
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
 		}
-
-		if task.State == "__NEW" {
-			suppress = false
-			e.Config.Suppress = false
-		}
-	}
-
-	if suppress && !e.Config.Suppress {
-		mesosutil.SuppressFramework()
-		e.Config.Suppress = true
 	}
 }
 

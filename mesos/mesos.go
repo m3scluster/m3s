@@ -11,7 +11,7 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
-	"github.com/AVENTER-UG/util"
+	"github.com/AVENTER-UG/util/util"
 
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/sirupsen/logrus"

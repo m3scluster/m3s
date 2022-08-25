@@ -69,7 +69,6 @@ type Config struct {
 	SSLKey                      string
 	SSLCrt                      string
 	Version                     M3SVersion
-	Suppress                    bool
 	DockerCNI                   string
 	EventLoopTime               time.Duration
 }

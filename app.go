@@ -14,7 +14,7 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	mesosutil "github.com/AVENTER-UG/mesos-util"
 
-	util "github.com/AVENTER-UG/util"
+	util "github.com/AVENTER-UG/util/util"
 	"github.com/sirupsen/logrus"
 )
 
@@ -58,7 +58,6 @@ func main() {
 	framework.CommandChan = make(chan mesosutil.Command, 100)
 	config.Hostname = framework.FrameworkHostname
 	config.Listen = listen
-	config.Suppress = false
 
 	framework.State = map[string]mesosutil.State{}
 
@@ -81,15 +80,19 @@ func main() {
 	a.ConnectRedis()
 
 	// load framework state from DB
+	var oldFramework mesosutil.FrameworkConfig
 	key := a.GetRedisKey(framework.FrameworkName + ":framework")
 	if key != "" {
-		json.Unmarshal([]byte(key), &framework)
+		json.Unmarshal([]byte(key), &oldFramework)
+
+		framework.FrameworkInfo.ID = oldFramework.FrameworkInfo.ID
+		framework.MesosStreamID = oldFramework.MesosStreamID
 	}
 
 	// restore variable data from the old config
+	var oldconfig cfg.Config
 	key = a.GetRedisKey(framework.FrameworkName + ":framework_config")
 	if key != "" {
-		var oldconfig cfg.Config
 		json.Unmarshal([]byte(key), &oldconfig)
 		config.M3SBootstrapServerPort = oldconfig.M3SBootstrapServerPort
 		config.M3SBootstrapServerHostname = oldconfig.M3SBootstrapServerHostname
@@ -97,9 +100,10 @@ func main() {
 		config.K3SServerURL = oldconfig.K3SServerURL
 		config.K3SAgentMax = oldconfig.K3SAgentMax
 		config.DSMax = oldconfig.DSMax
-
-		a.SaveConfig()
 	}
+
+	a.SaveConfig()
+	a.SaveFrameworkRedis()
 
 	// set current m3s version
 	config.Version.M3SVersion.GitVersion = GitVersion
