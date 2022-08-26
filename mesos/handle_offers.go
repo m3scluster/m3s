@@ -101,8 +101,8 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 
 		// remember information for the boostrap server to reach it later
 		if cmd.TaskName == e.Framework.FrameworkName+":server" {
-			e.Config.M3SBootstrapServerHostname = takeOffer.GetHostname()
-			e.Config.M3SBootstrapServerPort = int(cmd.DockerPortMappings[0].HostPort)
+			e.Config.K3SServerHostname = takeOffer.GetHostname()
+			e.Config.K3SServerContainerPort = int(cmd.DockerPortMappings[0].HostPort)
 			e.Config.K3SServerPort = int(cmd.DockerPortMappings[1].HostPort)
 		}
 

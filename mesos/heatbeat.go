@@ -33,7 +33,6 @@ func (e *Scheduler) Heartbeat() {
 	if k3sState && !k3sAgenteState {
 		e.StartK3SAgent("")
 	}
-
 }
 
 // CheckState check the current state of every task

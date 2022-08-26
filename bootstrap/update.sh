@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export KUBECONFIG=$MESOS_SANDBOX/kubeconfig.yaml
-export BRANCH=master
+export BRANCH=add-auth-bootserver
 
 if [ -n $1 ]
 then

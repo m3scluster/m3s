@@ -94,8 +94,8 @@ func main() {
 	key = a.GetRedisKey(framework.FrameworkName + ":framework_config")
 	if key != "" {
 		json.Unmarshal([]byte(key), &oldconfig)
-		config.M3SBootstrapServerPort = oldconfig.M3SBootstrapServerPort
-		config.M3SBootstrapServerHostname = oldconfig.M3SBootstrapServerHostname
+		config.K3SServerContainerPort = oldconfig.K3SServerContainerPort
+		config.K3SServerHostname = oldconfig.K3SServerHostname
 		config.K3SServerPort = oldconfig.K3SServerPort
 		config.K3SServerURL = oldconfig.K3SServerURL
 		config.K3SAgentMax = oldconfig.K3SAgentMax

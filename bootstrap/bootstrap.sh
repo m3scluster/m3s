@@ -10,7 +10,8 @@ export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
-export BRANCH=master
+export BRANCH=add-auth-bootserver
+export ARCH=`dpkg --print-architecture`
 
 ## Export json as environment variables
 ## example: MESOS_SANDBOX_VAR='{ "CUSTOMER":"test-ltd" }'
@@ -28,7 +29,7 @@ curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/
 curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml > $MESOS_SANDBOX/dashboard.yaml
 if [[ "$K3SFRAMEWORK_TYPE" == "server" ]]
 then
-  curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/amd64/kubectl > $MESOS_SANDBOX/kubectl
+  curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/${ARCH}/kubectl > $MESOS_SANDBOX/kubectl
   curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/server > $MESOS_SANDBOX/server
   curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/update.sh > $MESOS_SANDBOX/update
   chmod +x $MESOS_SANDBOX/kubectl

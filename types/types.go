@@ -16,20 +16,32 @@ type Config struct {
 	Hostname                    string
 	Listen                      string
 	Domain                      string
+	K3SCustomDomain             string
 	K3SServerURL                string
-	K3SAgentMax                 int
 	K3SServerMax                int
 	K3SServerPort               int
-	K3SCustomDomain             string
 	K3SServerString             string
-	K3SAgentString              string
-	K3SAgent                    map[string]string
-	K3SAgentLabels              []mesosproto.Label
 	K3SServerConstraint         string
 	K3SServerConstraintHostname string
+	K3SServerHostname           string
+	K3SServerContainerPort      int
+	K3SServerCPU                float64
+	K3SServerMEM                float64
+	K3SServerDISK               float64
+	K3SAgent                    map[string]string
+	K3SAgentMax                 int
+	K3SAgentString              string
+	K3SAgentLabels              []mesosproto.Label
 	K3SAgentConstraint          string
 	K3SAgentConstraintHostname  string
+	K3SAgentCPU                 float64
+	K3SAgentMEM                 float64
+	K3SAgentDISK                float64
+	K3SDocker                   string
 	Credentials                 UserCredentials
+	BootstrapCredentials        UserCredentials
+	BootstrapSSLKey             string
+	BootstrapSSLCrt             string
 	ImageK3S                    string
 	ImageETCD                   string
 	ImageMySQL                  string
@@ -40,15 +52,6 @@ type Config struct {
 	DockerSock                  string
 	DockerSHMSize               string
 	BootstrapURL                string
-	M3SBootstrapServerHostname  string
-	M3SBootstrapServerPort      int
-	K3SServerCPU                float64
-	K3SServerMEM                float64
-	K3SServerDISK               float64
-	K3SAgentCPU                 float64
-	K3SAgentMEM                 float64
-	K3SAgentDISK                float64
-	K3SDocker                   string
 	DSMax                       int
 	DSCPU                       float64
 	DSMEM                       float64
