@@ -113,6 +113,7 @@ func (e *Scheduler) EventLoop() {
 			e.Framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
 
 			e.Reconcile()
+			e.CheckState()
 			e.API.SaveFrameworkRedis()
 			e.API.SaveConfig()
 		case mesosproto.Event_UPDATE:

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -34,26 +33,24 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 		e.SaveConfig()
 
 		// if scale down, kill not needes agents
-		if newCount < oldCount {
-			keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":datastore:*")
+		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":datastore:*")
 
-			for keys.Next(e.Redis.RedisCTX) {
-				if newCount < oldCount {
-					key := e.GetRedisKey(keys.Val())
+		for keys.Next(e.Redis.RedisCTX) {
+			key := e.GetRedisKey(keys.Val())
+			task := mesosutil.DecodeTask(key)
+			task.Instances = newCount
+			e.SaveTaskRedis(task)
 
-					var task mesosutil.Command
-					json.Unmarshal([]byte(key), &task)
-					mesosutil.Kill(task.TaskID, task.Agent)
-					logrus.Debug("V0ScaleDatastore: ", task.TaskID)
-				}
-				oldCount = oldCount - 1
+			if newCount < oldCount {
+				mesosutil.Kill(task.TaskID, task.Agent)
+				logrus.Debug("V0ScaleDatastore: ", task.TaskID)
 			}
+			oldCount = oldCount - 1
 		}
 	}
 
 	logrus.Debug("HTTP GET V0ScaleDatastore: ", string(d))
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
-
 	w.Write(d)
 }

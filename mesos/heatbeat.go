@@ -53,6 +53,10 @@ func (e *Scheduler) CheckState() {
 			continue
 		}
 
+		if task.State == "TASK_FINISHED" {
+			e.API.DelRedisKey(key)
+		}
+
 		if task.State == "" && e.API.CountRedisKey(task.TaskName+":*") <= task.Instances {
 			mesosutil.Revive()
 			task.State = "__NEW"
