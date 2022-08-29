@@ -14,9 +14,8 @@ import (
 // curl -X GET 127.0.0.1:10000/v0/status/m3s -d 'JSON'
 func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	auth := e.CheckAuth(r, w)
 
-	if vars == nil || !auth {
+	if vars == nil || !e.CheckAuth(r, w) {
 		return
 	}
 

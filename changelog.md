@@ -8,7 +8,8 @@
 - Add healthcheck for datastore
 - Add resubscription after the connection to mesos master is lost.
 - Add container volume for the datastore to persist data
-- Add hashicorp vault support for environment variables of the framework.
+- Add hashicorp vault support for environment variables of the framework
+- Add support for ssl and authentication of the bootstrap server
 
 ## v0.3.0
 

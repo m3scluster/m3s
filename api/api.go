@@ -16,16 +16,22 @@ import (
 
 // API Service include all the current vars and global config
 type API struct {
-	Config    *cfg.Config
-	Framework *mesosutil.FrameworkConfig
-	Redis     Redis
+	Config            *cfg.Config
+	Framework         *mesosutil.FrameworkConfig
+	Redis             Redis
+	BootstrapProtocol string
 }
 
 // New will create a new API object
 func New(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *API {
 	e := &API{
-		Config:    cfg,
-		Framework: frm,
+		Config:            cfg,
+		Framework:         frm,
+		BootstrapProtocol: "http",
+	}
+
+	if e.Config.BootstrapSSLCrt != "" {
+		e.BootstrapProtocol = "https"
 	}
 
 	return e

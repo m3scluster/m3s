@@ -12,9 +12,7 @@ import (
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/agent/scale'
 func (e *API) V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
-	auth := e.CheckAuth(r, w)
-
-	if !auth {
+	if !e.CheckAuth(r, w) {
 		return
 	}
 

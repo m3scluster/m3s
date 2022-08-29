@@ -1,7 +1,8 @@
 package mesos
 
 import (
-	"io/ioutil"
+	"crypto/tls"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -131,6 +132,26 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Value: &e.Config.K3SToken,
 		},
 		{
+			Name:  "BOOTSTRAP_AUTH_USERNAME",
+			Value: &e.Config.BootstrapCredentials.Username,
+		},
+		{
+			Name:  "BOOTSTRAP_AUTH_PASSWORD",
+			Value: &e.Config.BootstrapCredentials.Password,
+		},
+		{
+			Name:  "BOOTSTRAP_SSL_KEY_BASE64",
+			Value: &e.Config.BootstrapSSLKey,
+		},
+		{
+			Name:  "BOOTSTRAP_SSL_CRT_BASE64",
+			Value: &e.Config.BootstrapSSLCrt,
+		},
+		{
+			Name:  "K3S_TOKEN",
+			Value: &e.Config.K3SToken,
+		},
+		{
 			Name:  "K3S_KUBECONFIG_OUTPUT",
 			Value: func() *string { x := "/mnt/mesos/sandbox/kubeconfig.yaml"; return &x }(),
 		},
@@ -182,8 +203,18 @@ func (e *Scheduler) CreateK3SServerString() {
 func (e *Scheduler) healthCheckK3s() bool {
 	k3sState := false
 
+	BootstrapProtocol := "http"
+	if e.Config.BootstrapSSLCrt != "" {
+		BootstrapProtocol = "https"
+	}
+
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/status", nil)
+	// #nosec G402
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
+	}
+	req, _ := http.NewRequest("GET", BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/status", nil)
+	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
 	req.Close = true
 	res, err := client.Do(req)
 	var content []byte
@@ -195,7 +226,7 @@ func (e *Scheduler) healthCheckK3s() bool {
 
 	defer res.Body.Close()
 
-	content, _ = ioutil.ReadAll(res.Body)
+	content, _ = io.ReadAll(res.Body)
 
 	if string(content) == "ok" {
 		e.Config.M3SStatus.API = "ok"

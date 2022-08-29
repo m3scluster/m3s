@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/tls"
+	"encoding/base64"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -9,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"time"
 
 	"github.com/AVENTER-UG/util/util"
 	"github.com/gorilla/mux"
@@ -32,6 +35,17 @@ var DashboardInstalled bool
 
 // TraefikDashboardInstalled is true if the traefik dashboard is installed
 var TraefikDashboardInstalled bool
+
+var config cfg.Config
+
+// convert Base64 Encodes PEM Certificate to tls object
+func decodeBase64Cert(pemCert string) []byte {
+	sslPem, err := base64.URLEncoding.DecodeString(pemCert)
+	if err != nil {
+		logrus.Fatal("Error decoding SSL PEM from Base64: ", err.Error())
+	}
+	return sslPem
+}
 
 // Commands is the main function of this package
 func Commands() *mux.Router {
@@ -60,6 +74,10 @@ func APIVersions(w http.ResponseWriter, r *http.Request) {
 func APIUpdate(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
+
+	if !CheckAuth(r, w) {
+		return
+	}
 
 	// check first if there is a update
 	logrus.Info("Get version file: ", VersionURL)
@@ -122,6 +140,10 @@ func APIUpdate(w http.ResponseWriter, r *http.Request) {
 
 // APIGetKubeConfig get out the kubernetes config file
 func APIGetKubeConfig(w http.ResponseWriter, r *http.Request) {
+	if !CheckAuth(r, w) {
+		return
+	}
+
 	content, err := os.ReadFile("/mnt/mesos/sandbox/kubeconfig.yaml")
 	if err != nil {
 		logrus.Error("Error reading file:", err)
@@ -139,6 +161,10 @@ func APIGetKubeVersion(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 
+	if !CheckAuth(r, w) {
+		return
+	}
+
 	stdout, err := exec.Command("/mnt/mesos/sandbox/kubectl", "version", "-o=json").Output()
 	if err != nil {
 		logrus.Error("Get Kubernetes Version: ", err, stdout)
@@ -153,6 +179,10 @@ func APIGetKubeVersion(w http.ResponseWriter, r *http.Request) {
 func APIHealth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
+
+	if !CheckAuth(r, w) {
+		return
+	}
 
 	logrus.Debug("Health Check")
 
@@ -223,6 +253,10 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 
+	if !CheckAuth(r, w) {
+		return
+	}
+
 	logrus.Debug("Status Information")
 
 	// check if the kubernetes server is working
@@ -239,6 +273,10 @@ func APIStatus(w http.ResponseWriter, r *http.Request) {
 
 // APICleanupNotRead -  cleanup notready nodes
 func APICleanupNotRead(w http.ResponseWriter, r *http.Request) {
+	if !CheckAuth(r, w) {
+		return
+	}
+
 	err := exec.Command("/mnt/mesos/sandbox/kubectl", "delete", "node", "$(kubectl get nodes | grep NotReady | awk '{print $1;}')").Run()
 	logrus.Info("Cleanup notready nodes")
 
@@ -248,6 +286,28 @@ func APICleanupNotRead(w http.ResponseWriter, r *http.Request) {
 	}
 
 	logrus.Info("Cleanup notready nodes: Done")
+}
+
+// CheckAuth will check if the token is valid
+func CheckAuth(r *http.Request, w http.ResponseWriter) bool {
+	// if no credentials are configured, then we dont have to check
+	if config.BootstrapCredentials.Username == "" || config.BootstrapCredentials.Password == "" {
+		return true
+	}
+
+	username, password, ok := r.BasicAuth()
+
+	if !ok {
+		w.WriteHeader(http.StatusUnauthorized)
+		return false
+	}
+
+	if username == config.BootstrapCredentials.Username && password == config.BootstrapCredentials.Password {
+		return true
+	}
+
+	w.WriteHeader(http.StatusUnauthorized)
+	return false
 }
 
 func main() {
@@ -265,13 +325,44 @@ func main() {
 	bind := flag.String("bind", "0.0.0.0", "The IP address to bind")
 	port := flag.String("port", "10422", "The port to listen")
 
+	config.BootstrapCredentials.Username = util.Getenv("BOOTSTRAP_AUTH_USERNAME", "")
+	config.BootstrapCredentials.Password = util.Getenv("BOOTSTRAP_AUTH_PASSWORD", "")
+	config.BootstrapSSLKey = util.Getenv("BOOTSTRAP_SSL_KEY_BASE64", "")
+	config.BootstrapSSLCrt = util.Getenv("BOOTSTRAP_SSL_CRT_BASE64", "")
+
 	logrus.Println("GO-K3S-API build "+BuildVersion+" git "+GitVersion+" ", *bind, *port)
 
 	DashboardInstalled = false
 
-	http.Handle("/", Commands())
+	listen := fmt.Sprintf(":%s", *port)
 
-	if err := http.ListenAndServe(*bind+":"+*port, nil); err != nil {
-		logrus.Fatalln("ListenAndServe: ", err)
+	server := &http.Server{
+		Addr:              listen,
+		Handler:           Commands(),
+		ReadTimeout:       1 * time.Second,
+		WriteTimeout:      1 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+		TLSConfig: &tls.Config{
+			ClientAuth: tls.RequestClientCert,
+			MinVersion: tls.VersionTLS12,
+		},
+	}
+
+	if config.BootstrapSSLCrt != "" && config.BootstrapSSLKey != "" {
+		logrus.Debug("Enable TLS")
+		crt := decodeBase64Cert(config.BootstrapSSLCrt)
+		key := decodeBase64Cert(config.BootstrapSSLKey)
+		certs, err := tls.X509KeyPair(crt, key)
+		if err != nil {
+			logrus.Fatal("TLS Server Error: ", err.Error())
+		}
+		server.TLSConfig.Certificates = []tls.Certificate{certs}
+	}
+
+	if config.BootstrapSSLCrt != "" && config.BootstrapSSLKey != "" {
+		server.ListenAndServeTLS("", "")
+	} else {
+		server.ListenAndServe()
 	}
 }

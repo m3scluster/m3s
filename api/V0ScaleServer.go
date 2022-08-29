@@ -14,9 +14,8 @@ import (
 // curl -X GET http://user:password@127.0.0.1:10000/v0/server/scale/{count of instances} -d 'JSON'
 func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	auth := e.CheckAuth(r, w)
 
-	if vars == nil || !auth {
+	if vars == nil || !e.CheckAuth(r, w) {
 		return
 	}
 

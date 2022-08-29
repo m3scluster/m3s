@@ -1,7 +1,8 @@
 package api
 
 import (
-	"io/ioutil"
+	"crypto/tls"
+	"io"
 	"net/http"
 	"strconv"
 
@@ -15,14 +16,18 @@ import (
 func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0StatusK8s ")
 	vars := mux.Vars(r)
-	auth := e.CheckAuth(r, w)
 
-	if vars == nil || !auth {
+	if vars == nil || !e.CheckAuth(r, w) {
 		return
 	}
 
 	client := &http.Client{}
-	req, _ := http.NewRequest("GET", "http://"+e.Config.M3SBootstrapServerHostname+":"+strconv.Itoa(e.Config.M3SBootstrapServerPort)+"/api/m3s/bootstrap/v0/status?verbose", nil)
+	// #nosec G402
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
+	}
+	req, _ := http.NewRequest("GET", e.BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/status?verbose", nil)
+	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
 	req.Close = true
 	res, err := client.Do(req)
 
@@ -38,7 +43,7 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	content, err := ioutil.ReadAll(res.Body)
+	content, err := io.ReadAll(res.Body)
 
 	if err != nil {
 		logrus.Error("StatusK8s: Error 2: ", err, res)
