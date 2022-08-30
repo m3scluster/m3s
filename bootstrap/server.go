@@ -277,7 +277,8 @@ func APICleanupNotRead(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err := exec.Command("/mnt/mesos/sandbox/kubectl", "delete", "node", "$(kubectl get nodes | grep NotReady | awk '{print $1;}')").Run()
+	cmd := "/mnt/mesos/sandbox/kubectl delete node $(kubectl get nodes | grep NotReady | awk '{print $1;}')"
+	err := exec.Command("bash", "-c", cmd).Run()
 	logrus.Info("Cleanup notready nodes")
 
 	if err != nil {
