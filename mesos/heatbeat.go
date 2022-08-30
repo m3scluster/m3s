@@ -41,6 +41,7 @@ func (e *Scheduler) Heartbeat() {
 
 	if k3sState && k3sAgenteState && dsState {
 		mesosutil.SuppressFramework()
+		e.API.ScheduleCleanup()
 	}
 }
 

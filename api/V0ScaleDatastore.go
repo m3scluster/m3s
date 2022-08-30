@@ -45,6 +45,9 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 				mesosutil.Kill(task.TaskID, task.Agent)
 				logrus.Debug("V0ScaleDatastore: ", task.TaskID)
 			}
+			if newCount > oldCount {
+				mesosutil.Revive()
+			}
 			oldCount = oldCount - 1
 		}
 	}

@@ -45,6 +45,9 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 				mesosutil.Kill(task.TaskID, task.Agent)
 				logrus.Debug("V0ScaleK3SServer: ", task.TaskID)
 			}
+			if newCount > oldCount {
+				mesosutil.Revive()
+			}
 			oldCount = oldCount - 1
 		}
 	}

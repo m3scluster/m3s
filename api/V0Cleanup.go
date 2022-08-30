@@ -20,10 +20,11 @@ func (e *API) V0Cleanup(w http.ResponseWriter, r *http.Request) {
 	if !e.CheckAuth(r, w) {
 		return
 	}
-	e.cleanupNodes()
+	e.CleanupNodes()
 }
 
-func (e *API) cleanupNodes() {
+// CleanupNodes - To cleanup notready nodes
+func (e *API) CleanupNodes() {
 	client := &http.Client{}
 	// #nosec G402
 	client.Transport = &http.Transport{
@@ -57,7 +58,7 @@ func (e *API) ScheduleCleanup() {
 
 	select {
 	case <-time.After(e.Config.CleanupLoopTime):
-		e.cleanupNodes()
+		e.CleanupNodes()
 	}
 	cleanupLock = false
 }
