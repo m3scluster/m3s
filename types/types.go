@@ -9,13 +9,35 @@ import (
 
 // Config is a struct of the framework configuration
 type Config struct {
-	Principal                   string
-	LogLevel                    string
 	AppName                     string
+	BootstrapCredentials        UserCredentials
+	BootstrapSSLKey             string
+	BootstrapSSLCrt             string
+	BootstrapURL                string
+	Credentials                 UserCredentials
+	CleanupLoopTime             time.Duration
+	ReviveLoopTime              time.Duration
+	DSMax                       int
+	DSCPU                       float64
+	DSMEM                       float64
+	DSDISK                      float64
+	DSConstraint                string
+	DSConstraintHostname        string
+	DSPort                      string
+	DSEtcd                      bool
+	DSMySQL                     bool
+	DSMySQLUsername             string
+	DSMySQLPassword             string
+	DockerSock                  string
+	DockerSHMSize               string
+	Domain                      string
+	DockerCNI                   string
+	EventLoopTime               time.Duration
 	EnableSyslog                bool
 	Hostname                    string
-	Listen                      string
-	Domain                      string
+	ImageK3S                    string
+	ImageETCD                   string
+	ImageMySQL                  string
 	K3SCustomDomain             string
 	K3SServerURL                string
 	K3SServerMax                int
@@ -38,42 +60,22 @@ type Config struct {
 	K3SAgentMEM                 float64
 	K3SAgentDISK                float64
 	K3SDocker                   string
-	Credentials                 UserCredentials
-	BootstrapCredentials        UserCredentials
-	BootstrapSSLKey             string
-	BootstrapSSLCrt             string
-	ImageK3S                    string
-	ImageETCD                   string
-	ImageMySQL                  string
-	VolumeDriver                string
-	VolumeK3SServer             string
-	VolumeDS                    string
 	K3SToken                    string
-	DockerSock                  string
-	DockerSHMSize               string
-	BootstrapURL                string
-	DSMax                       int
-	DSCPU                       float64
-	DSMEM                       float64
-	DSDISK                      float64
-	DSConstraint                string
-	DSConstraintHostname        string
-	DSPort                      string
-	DSEtcd                      bool
-	DSMySQL                     bool
-	DSMySQLUsername             string
-	DSMySQLPassword             string
+	Listen                      string
+	LogLevel                    string
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
+	Principal                   string
 	RedisServer                 string
 	RedisPassword               string
 	RedisDB                     int
 	SkipSSL                     bool
 	SSLKey                      string
 	SSLCrt                      string
+	VolumeDriver                string
+	VolumeK3SServer             string
+	VolumeDS                    string
 	Version                     M3SVersion
-	DockerCNI                   string
-	EventLoopTime               time.Duration
 }
 
 // M3SStatus store the current TaskState of the M3s services

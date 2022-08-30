@@ -7,6 +7,8 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var reviveLock bool
+
 // Heartbeat function for mesos
 func (e *Scheduler) Heartbeat() {
 	// Check Connection state of Redis
@@ -21,16 +23,19 @@ func (e *Scheduler) Heartbeat() {
 
 	// if DataStorage container is not running or unhealthy, fix it.
 	if !dsState {
+		go e.scheduleRevive()
 		e.StartDatastore("")
 	}
 
 	// if Datastorage is running and K3s not, deploy K3s
 	if dsState && !k3sState {
+		go e.scheduleRevive()
 		e.StartK3SServer("")
 	}
 
 	// if k3s is running, deploy the agent
 	if k3sState && !k3sAgenteState {
+		go e.scheduleRevive()
 		e.StartK3SAgent("")
 	}
 }
@@ -58,7 +63,7 @@ func (e *Scheduler) CheckState() {
 		}
 
 		if task.State == "" && e.API.CountRedisKey(task.TaskName+":*") <= task.Instances {
-			mesosutil.Revive()
+			go e.scheduleRevive()
 			task.State = "__NEW"
 
 			// these will save the current time at the task. we need it to check
@@ -74,6 +79,21 @@ func (e *Scheduler) CheckState() {
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
 		}
 	}
+}
+
+// scheduleRevive - Schedule Revive Tasks
+func (e *Scheduler) scheduleRevive() {
+	if reviveLock {
+		return
+	}
+	logrus.WithField("func", "mesos.scheduleRevive").Debug("Schedule Revive")
+	reviveLock = true
+
+	select {
+	case <-time.After(e.Config.ReviveLoopTime):
+		mesosutil.Revive()
+	}
+	reviveLock = false
 }
 
 // HeartbeatLoop - The main loop for the hearbeat

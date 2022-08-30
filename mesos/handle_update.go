@@ -37,27 +37,27 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED:
 		// restart task
-		task.State = ""
+		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		go e.API.ScheduleCleanup()
 	case mesosproto.TASK_KILLED:
 		// remove task
 		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		return mesosutil.Call(msg)
+		go e.API.ScheduleCleanup()
 	case mesosproto.TASK_LOST:
 		// restart task
-		task.State = ""
+		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		go e.API.ScheduleCleanup()
 	case mesosproto.TASK_ERROR:
 		// restart task
-		task.State = ""
+		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		e.API.ScheduleCleanup()
 	case mesosproto.TASK_RUNNING:
 		task.MesosAgent = mesosutil.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = mesosutil.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
-
 		mesosutil.SuppressFramework()
+		e.API.SaveTaskRedis(task)
 	}
-
-	// save the new state
-	e.API.SaveTaskRedis(task)
 
 	return mesosutil.Call(msg)
 }
