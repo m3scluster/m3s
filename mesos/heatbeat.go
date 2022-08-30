@@ -38,6 +38,10 @@ func (e *Scheduler) Heartbeat() {
 		go e.scheduleRevive()
 		e.StartK3SAgent("")
 	}
+
+	if k3sState && k3sAgenteState && dsState {
+		mesosutil.SuppressFramework()
+	}
 }
 
 // CheckState check the current state of every task
