@@ -10,6 +10,8 @@
 - Add container volume for the datastore to persist data
 - Add hashicorp vault support for environment variables of the framework
 - Add support for ssl and authentication of the bootstrap server
+- Add example of how to add custome upstream dns for coredns
+- Update to k3s 1.24.x
 
 ## v0.3.0
 

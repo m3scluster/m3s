@@ -1,14 +1,16 @@
 #!/bin/bash
 
-cat /etc/resolv.conf
+## Example of how to set a custom upstream DNS
+echo "nameserver 8.8.8.8" > /etc/k3sresolv.conf
 
 apt-get update -y
 mkdir -p /etc/cni/net.d
 
-export KUBERNETES_VERSION=v1.21.1
+export KUBERNETES_VERSION=v1.24.4
 export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
+export K3S_RESOLV_CONF=/etc/k3sresolv.conf
 export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
 export BRANCH=master
 export ARCH=`dpkg --print-architecture`
