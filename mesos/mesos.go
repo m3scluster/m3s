@@ -157,7 +157,6 @@ func (e *Scheduler) getRandomHostPort(num int) uint32 {
 // Check if the port is already in use
 func (e *Scheduler) portInUse(port uint32) bool {
 	// get all running services
-	logrus.Debug("Check if port is in use: ", port)
 	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	for keys.Next(e.API.Redis.RedisCTX) {
 		// get the details of the current running service

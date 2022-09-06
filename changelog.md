@@ -12,6 +12,7 @@
 - Add support for ssl and authentication of the bootstrap server
 - Add example of how to add custome upstream dns for coredns
 - Update to k3s 1.24.x
+- Fix scale up performance
 
 ## v0.3.0
 

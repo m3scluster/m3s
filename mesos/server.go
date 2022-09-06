@@ -63,26 +63,20 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 		},
 	}
 
-	// get free hostport. If there is no one, do not start
-	hostport := e.getRandomHostPort(3)
-	if hostport == 0 {
-		logrus.WithField("func", "StartK3SServer").Error("Could not find free ports")
-		return
-	}
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      hostport,
+			HostPort:      0,
 			ContainerPort: 10422,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 1,
+			HostPort:      0,
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 2,
+			HostPort:      0,
 			ContainerPort: 8080,
 			Protocol:      &protocol,
 		},

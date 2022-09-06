@@ -25,39 +25,34 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 
 	// get the task of the current event, change the state and get some info's we need for later use
 	task := e.API.GetTaskFromEvent(update)
-	task.State = update.Status.State.String()
 
 	// if these object have not TaskID it, invalid
 	if task.TaskID == "" {
 		return nil
 	}
 
-	logrus.Debug(task.State)
+	task.State = update.Status.State.String()
+
+	logrus.WithField("func", "HandleUpdate").Debug("Task State: ", task.State)
 
 	switch *update.Status.State {
-	case mesosproto.TASK_FAILED:
-		// restart task
+	case mesosproto.TASK_FAILED, mesosproto.TASK_KILLED, mesosproto.TASK_LOST, mesosproto.TASK_ERROR, mesosproto.TASK_FINISHED:
 		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
 		e.API.CleanupNodes()
-	case mesosproto.TASK_KILLED:
-		// remove task
-		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		e.API.CleanupNodes()
-	case mesosproto.TASK_LOST:
-		// restart task
-		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		e.API.CleanupNodes()
-	case mesosproto.TASK_ERROR:
-		// restart task
-		e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		e.API.CleanupNodes()
+		return mesosutil.Call(msg)
 	case mesosproto.TASK_RUNNING:
+		// remember information for the boostrap server to reach it later
+		if task.TaskName == e.Framework.FrameworkName+":server" {
+			e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
+			e.Config.K3SServerPort = int(task.DockerPortMappings[1].HostPort)
+		}
+
 		task.MesosAgent = mesosutil.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = mesosutil.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
 		mesosutil.SuppressFramework()
-		e.API.SaveTaskRedis(task)
 	}
 
+	e.API.SaveTaskRedis(task)
 	return mesosutil.Call(msg)
 }

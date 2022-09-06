@@ -4,6 +4,7 @@ import (
 	"time"
 
 	mesosutil "github.com/AVENTER-UG/mesos-util"
+	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 	"github.com/sirupsen/logrus"
 )
 
@@ -63,10 +64,6 @@ func (e *Scheduler) CheckState() {
 			continue
 		}
 
-		if task.State == "TASK_FINISHED" {
-			e.API.DelRedisKey(key)
-		}
-
 		if task.State == "" && e.API.CountRedisKey(task.TaskName+":*") <= task.Instances {
 			go e.scheduleRevive()
 			task.State = "__NEW"
@@ -75,6 +72,10 @@ func (e *Scheduler) CheckState() {
 			// if the state will change in the next 'n min. if not, we have to
 			// give these task a recall.
 			task.StateTime = time.Now()
+
+			// Change the Dynamic Host Ports
+			task.DockerPortMappings = e.changeDockerPorts(task)
+			task.Discovery = e.changeDiscoveryInfo(task)
 
 			// add task to communication channel
 			e.Framework.CommandChan <- task
@@ -106,7 +107,24 @@ func (e *Scheduler) HeartbeatLoop() {
 	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
-		e.Heartbeat()
-		e.CheckState()
+		go e.Heartbeat()
+		go e.CheckState()
 	}
+}
+
+func (e *Scheduler) changeDockerPorts(cmd mesosutil.Command) []mesosproto.ContainerInfo_DockerInfo_PortMapping {
+	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
+	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
+	for n, port := range cmd.DockerPortMappings {
+		port.HostPort = hostPort + uint32(n)
+		ret = append(ret, port)
+	}
+	return ret
+}
+
+func (e *Scheduler) changeDiscoveryInfo(cmd mesosutil.Command) mesosproto.DiscoveryInfo {
+	for i, port := range cmd.DockerPortMappings {
+		cmd.Discovery.Ports.Ports[i].Number = port.HostPort
+	}
+	return cmd.Discovery
 }

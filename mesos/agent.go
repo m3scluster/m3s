@@ -17,23 +17,16 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 
 	cmd := e.defaultCommand(taskID)
 
-	hostport := e.getRandomHostPort(2)
-	if hostport == 0 {
-		logrus.WithField("func", "StartK3SAgent").Error("Could not find free ports")
-		return
-	}
 	protocol := "tcp"
-
 	cmd.ContainerImage = e.Config.ImageK3S
-
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      hostport,
+			HostPort:      0,
 			ContainerPort: 80,
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      hostport + 1,
+			HostPort:      0,
 			ContainerPort: 443,
 			Protocol:      &protocol,
 		},
@@ -127,7 +120,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 // healthCheckAgent check the health of all agents. Return true if all are fine.
 func (e *Scheduler) healthCheckAgent() bool {
 	// Hold the at all state of the agent service.
-	aState := false
+	aState := true
 
 	if e.API.CountRedisKey(e.Framework.FrameworkName+":agent:*") < e.Config.K3SAgentMax {
 		return false
@@ -139,10 +132,10 @@ func (e *Scheduler) healthCheckAgent() bool {
 		task := mesosutil.DecodeTask(key)
 
 		if task.State == "TASK_RUNNING" {
-			aState = aState || true
-		} else {
-			aState = aState || false
+			aState = aState && true
+			continue
 		}
+		aState = aState && false
 	}
 
 	logrus.WithField("func", "healthCheckAgent").Debug("K3s Agent Health: ", aState)

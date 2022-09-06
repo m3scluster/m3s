@@ -48,17 +48,11 @@ func (e *Scheduler) StartDatastore(taskID string) {
 		e.setMySQL(&cmd)
 	}
 
-	// get free hostport. If there is no one, do not start
-	hostport := e.getRandomHostPort(1)
-	if hostport == 0 {
-		logrus.WithField("func", "StartDatastore").Error("Could not find free ports")
-		return
-	}
 	protocol := "tcp"
 	containerPort, _ := strconv.ParseUint(e.Config.DSPort, 10, 32)
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      hostport,
+			HostPort:      0,
 			ContainerPort: uint32(containerPort),
 			Protocol:      &protocol,
 		},
