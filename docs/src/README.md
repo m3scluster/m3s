@@ -46,7 +46,7 @@ Get the token and start the proxy.
 
 ```bash
 
-kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
+kubectl -n kubernetes-dashboard create token admin-user
 kubectl proxy
 
 ```
