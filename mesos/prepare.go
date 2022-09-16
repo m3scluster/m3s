@@ -30,35 +30,21 @@ func (e *Scheduler) defaultResources(cmd mesosutil.Command) []mesosproto.Resourc
 		},
 	}
 
-	var portBegin, portEnd uint64
-
 	if cmd.DockerPortMappings != nil {
-		portBegin = uint64(cmd.DockerPortMappings[0].HostPort)
-		portEnd = portBegin + uint64(len(cmd.DockerPortMappings)) - 1
-
-		res = []mesosproto.Resource{
-			{
-				Name:   CPU,
-				Type:   mesosproto.SCALAR.Enum(),
-				Scalar: &mesosproto.Value_Scalar{Value: cpu},
-			},
-			{
-				Name:   MEM,
-				Type:   mesosproto.SCALAR.Enum(),
-				Scalar: &mesosproto.Value_Scalar{Value: mem},
-			},
-			{
+		for _, p := range cmd.DockerPortMappings {
+			port := mesosproto.Resource{
 				Name: PORT,
 				Type: mesosproto.RANGES.Enum(),
 				Ranges: &mesosproto.Value_Ranges{
 					Range: []mesosproto.Value_Range{
 						{
-							Begin: portBegin,
-							End:   portEnd,
+							Begin: uint64(p.HostPort),
+							End:   uint64(p.HostPort),
 						},
 					},
 				},
-			},
+			}
+			res = append(res, port)
 		}
 	}
 
