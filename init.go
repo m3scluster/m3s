@@ -123,7 +123,7 @@ func init() {
 
 	// Enable Docker Engine vor K3S instead critc
 	if strings.Compare(os.Getenv("K3S_DOCKER"), "true") == 0 {
-		config.K3SDocker = " --docker "
+		config.K3SDocker = " --container-runtime-endpoint unix:///var/run/cri-dockerd.sock "
 	} else {
 		config.K3SDocker = ""
 	}
