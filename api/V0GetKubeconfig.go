@@ -12,7 +12,7 @@ import (
 
 // V0GetKubeconfig will return the kubernetes config file
 // example:
-// curl -X GET 127.0.0.1:10000/v0/server/config'
+// curl -X GET 127.0.0.1:10000/api/m3s/v0/server/config"
 func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.Debug("HTTP GET V0GetKubeconfig")
 

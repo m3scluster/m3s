@@ -13,6 +13,14 @@ M3s is a Golang based Apache Mesos Framework to run and deploy Kubernetes throug
 
 ## How To use
 
+Before we can run the following M3s example, we have to creat a docker network.
+
+```bash
+docker network create --subnet 10.32.0.0/24 mini
+```
+
+Afte that, we can create a docker-compose file to run the services we need.
+
 ```yaml
 version: '3'
 services:
@@ -22,15 +30,39 @@ services:
     image: avhost/mesos-m3s:master
     depends: redis
     environment:
+    - LOGLEVEL="debug"
     - DOMAIN=.mini
     - DOCKER_CNI=mini
     - K3S_AGENT_COUNT=1
     - REDIS_SERVER=redis.mini:6379
     - K3S_TOKEN=l9WpVPQQw2sfNQRbxJDXjZx61wMpXDaB
+    - VOLUME_K3S_SERVER="local_k3sserver"
     - AUTH_USERNAME=user
     - AUTH_PASSWORD=password
     ports:
       - 10000
+```
+
+After that, we can execute docker-compose in the same directory where we have created our compose file.
+
+```bash
+docker compose up
+```
+
+If Kubernetes is running inside of M3s, we can export the kubeconfig file with our mesos-cli or with a simple
+API call.
+
+```bash
+curl -k -X GET http://127.0.0.1:10000/api/m3s/v0/server/config
+```
+
+No we can use kubectl and all other Kubernetes specified commands.
+
+```bash
+kubectl get nodes
+NAME                     STATUS   ROLES                  AGE   VERSION
+m3sserver.mini           Ready    control-plane,master   18h   v1.24.4+k3s1
+m3sagent.mini-8aee249f   Ready    <none>                 17h   v1.24.4+k3s1
 ```
 
 ## Screenshots
