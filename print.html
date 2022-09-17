@@ -145,6 +145,10 @@
 <li>Persistent Storage to store Kubernetes data</li>
 </ul>
 <h2 id="how-to-use"><a class="header" href="#how-to-use">How To use</a></h2>
+<p>Before we can run the following M3s example, we have to creat a docker network.</p>
+<pre><code class="language-bash">docker network create --subnet 10.32.0.0/24 mini
+</code></pre>
+<p>Afte that, we can create a docker-compose file to run the services we need.</p>
 <pre><code class="language-yaml">version: '3'
 services:
   redis:
@@ -153,15 +157,30 @@ services:
     image: avhost/mesos-m3s:master
     depends: redis
     environment:
+    - LOGLEVEL=&quot;debug&quot;
     - DOMAIN=.mini
     - DOCKER_CNI=mini
     - K3S_AGENT_COUNT=1
     - REDIS_SERVER=redis.mini:6379
     - K3S_TOKEN=l9WpVPQQw2sfNQRbxJDXjZx61wMpXDaB
+    - VOLUME_K3S_SERVER=&quot;local_k3sserver&quot;
     - AUTH_USERNAME=user
     - AUTH_PASSWORD=password
     ports:
       - 10000
+</code></pre>
+<p>After that, we can execute docker-compose in the same directory where we have created our compose file.</p>
+<pre><code class="language-bash">docker compose up
+</code></pre>
+<p>If Kubernetes is running inside of M3s, we can export the kubeconfig file with our mesos-cli or with a simple
+API call.</p>
+<pre><code class="language-bash">curl -k -X GET http://127.0.0.1:10000/api/m3s/v0/server/config
+</code></pre>
+<p>No we can use kubectl and all other Kubernetes specified commands.</p>
+<pre><code class="language-bash">kubectl get nodes
+NAME                     STATUS   ROLES                  AGE   VERSION
+m3sserver.mini           Ready    control-plane,master   18h   v1.24.4+k3s1
+m3sagent.mini-8aee249f   Ready    &lt;none&gt;                 17h   v1.24.4+k3s1
 </code></pre>
 <h2 id="screenshots"><a class="header" href="#screenshots">Screenshots</a></h2>
 <h3 id="mesos"><a class="header" href="#mesos">Mesos</a></h3>
@@ -169,7 +188,7 @@ services:
 <h3 id="kubernetes-dashboard"><a class="header" href="#kubernetes-dashboard">Kubernetes Dashboard</a></h3>
 <p>Get the token and start the proxy.</p>
 <pre><code class="language-bash">
-kubectl -n kubernetes-dashboard describe secret admin-user-token | grep '^token'
+kubectl -n kubernetes-dashboard create token admin-user
 kubectl proxy
 
 </code></pre>
@@ -280,14 +299,8 @@ Commands:
 
 </code></pre>
 <h2 id="install-mesos-cli"><a class="header" href="#install-mesos-cli">Install Mesos-CLI</a></h2>
-<pre><code class="language-bash">yum install python3 python3-venv
-git clone http://github.com/apache/mesos
-cd mesos/src/python/cli_new
-export VIRTUALENV_DIRECTORY=~/.virtualenvs/mesos-cli
-export PYTHON=python3
-./bootstrap
-
-</code></pre>
+<p>Download the mesos-cli binary for linux from <a href="https://www.aventer.biz/files/sw/Linux/mesos-cli.zip">here</a>. Extract
+the mesos-cli and copy the file into your PATH directory.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="m3s-cli-usage"><a class="header" href="#m3s-cli-usage">M3s CLI Usage</a></h1>
 <p>The M3s framework does support the new version of mesos-cli.</p>
 <p>The following parameters are currently supported:</p>
