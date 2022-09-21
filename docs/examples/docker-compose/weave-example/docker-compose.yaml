@@ -1,0 +1,42 @@
+## This example use weave as CNI inside of mesos
+
+version: '3'
+services:
+  redis:
+    image: redis
+    networks:
+      - m3s
+    ports:
+      - 6379:6379
+    hostname: redis.weave.local
+
+  m3s:
+    image: avhost/mesos-m3s:latest
+    environment:
+      - MESOS_MASTER=leader.mesos:5050
+      - MESOS_SSL=false
+      - DOMAIN=.weave.local
+      - MESOS_CNI=weave
+      - LOGLEVEL=DEBUG
+      - K3S_SERVER_COUNT=1
+      - K3S_AGENT_COUNT=1
+      - K3S_TOKEN=a9GpVPQQw4saNQRbxJDXjZx61wMpXDaC
+      - BOOTSTRAP_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh
+      - VOLUME_K3S_SERVER=/data/k3s/server
+      - SKIP_SSL=true
+      - REDIS_SERVER=redis.weave.local:6379
+      - K3S_SERVER_STRING=/usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false'
+      - K3S_AGENT_STRING=/usr/local/bin/k3s agent --snapshotter=native --flannel-backend=vxlan --flannel-iface=ethwe        
+    depends_on:
+      - redis
+    networks:
+      - m3s
+    volumes:
+      - /data/k3s:/data/k3s
+    ports:
+    - 10000:10000
+
+networks:
+  m3s:
+    external:
+      name: weave

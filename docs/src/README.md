@@ -85,7 +85,7 @@ kubectl proxy
 
 And then open the browser:
 
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+[Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 
 ![Kubernetes](vx_images/Kubernetes.png)
 
@@ -97,5 +97,9 @@ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kube
 kubectl port-forward $(kubectl get pods --selector "app.kubernetes.io/name=traefik" --output=name -n kube-system) -n kube-system 9000:9000
 
 ```
+
+And then open the browser:
+
+[http://localhost:9000/dashboard](http://localhost:9000/dashboard)
 
 ![Traefik](vx_images/Traefik.png)

@@ -84,6 +84,11 @@ func (e *Scheduler) CheckState() {
 
 			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
 		}
+
+		// Remove corrupt tasks
+		if task.State == "" && task.StateTime.Year() == 1 {
+			e.API.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		}
 	}
 }
 

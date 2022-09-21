@@ -107,6 +107,7 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cm
 	if cmd.Command == "" {
 		msg.Command = &mesosproto.CommandInfo{
 			Shell:       &cmd.Shell,
+			Arguments:   cmd.Arguments,
 			URIs:        cmd.Uris,
 			Environment: &cmd.Environment,
 		}
@@ -114,6 +115,7 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cm
 		msg.Command = &mesosproto.CommandInfo{
 			Shell:       &cmd.Shell,
 			Value:       &cmd.Command,
+			Arguments:   cmd.Arguments,
 			URIs:        cmd.Uris,
 			Environment: &cmd.Environment,
 		}

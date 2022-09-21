@@ -29,6 +29,7 @@ func init() {
 	framework.Password = util.Getenv("MESOS_PASSWORD", "")
 	framework.MesosMasterServer = util.Getenv("MESOS_MASTER", "127.0.0.1:5050")
 	framework.MesosCNI = os.Getenv("MESOS_CNI")
+	framework.MesosSSL = stringToBool(os.Getenv("MESOS_SSL"))
 	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "31000"))
 	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "32000"))
 	config.AppName = "Mesos K3S Framework"
@@ -37,6 +38,7 @@ func init() {
 	config.BootstrapCredentials.Password = util.Getenv("BOOTSTRAP_AUTH_PASSWORD", "")
 	config.BootstrapSSLKey = util.Getenv("BOOTSTRAP_SSL_KEY_BASE64", "")
 	config.BootstrapSSLCrt = util.Getenv("BOOTSTRAP_SSL_CRT_BASE64", "")
+	config.CGroupV2 = stringToBool(util.Getenv("CGROUP_V2", "false"))
 	config.DSMax, _ = strconv.Atoi(util.Getenv("DS_COUNT", "1"))
 	config.EventLoopTime, _ = time.ParseDuration(util.Getenv("HEARTBEAT_INTERVAL", "15s"))
 	config.CleanupLoopTime, _ = time.ParseDuration(util.Getenv("CLEANUP_WAIT", "5m"))
@@ -50,9 +52,12 @@ func init() {
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
+	config.DSEtcd = stringToBool(os.Getenv("DS_ETCD"))
 	config.DSPort = util.Getenv("DS_PORT", "3306")
+	config.DSMySQL = stringToBool(util.Getenv("DS_MYSQL", "true"))
 	config.DSMySQLUsername = util.Getenv("DS_MYSQL_USERNAME", "root")
 	config.DSMySQLPassword = util.Getenv("DS_MYSQL_PASSWORD", "password")
+	config.DSMySQLSSL = stringToBool(util.Getenv("DS_MYSQL_SSL", "false"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
 	config.K3SServerContainerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", "6443"))
 	config.K3SServerCPU, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU", "0.1"), 64)
@@ -74,6 +79,7 @@ func init() {
 	config.RedisDB, _ = strconv.Atoi(util.Getenv("REDIS_DB", "1"))
 	config.SSLKey = util.Getenv("SSL_KEY_BASE64", "")
 	config.SSLCrt = util.Getenv("SSL_CRT_BASE64", "")
+	config.SkipSSL = stringToBool(util.Getenv("SKIP_SSL", "true"))
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s/server")
 	config.VolumeDS = util.Getenv("VOLUME_DS", "/data/k3s/datastore")
@@ -127,16 +133,6 @@ func init() {
 	} else {
 		config.K3SDocker = ""
 	}
-
-	// The comunication to the mesos server should be via ssl or not
-	framework.MesosSSL = stringToBool(os.Getenv("MESOS_SSL"))
-
-	// Skip SSL Verification
-	config.SkipSSL = stringToBool(util.Getenv("SKIP_SSL", "true"))
-
-	// Set the kind of datastore endpoint
-	config.DSEtcd = stringToBool(os.Getenv("DS_ETCD"))
-	config.DSMySQL = stringToBool(util.Getenv("DS_MYSQL", "true"))
 
 	// check if the domain starts with dot. if not, add one.
 	if !strings.HasPrefix(config.Domain, ".") {

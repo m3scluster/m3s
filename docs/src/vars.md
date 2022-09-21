@@ -25,6 +25,7 @@ The following environment variables are available:
 | DOMAIN                | .local | The domain of the hostnames. As example, if you use weave cni, it would be weave.local |
 | AUTH_USERNAME         | | Username to authenticate against these framework |
 | AUTH_PASSWORD         | | Password to authenticate against these framework |
+| CGROUP_V2             | false | Enable support for CGroupV2 | 
 | K3S_TOKEN             | 123456789 | K8 token for the bootstrap |
 | K3S_CUSTOM_DOMAIN     | cloud.local | The network Domain we will use for the K3s cni |
 | K3S_SERVER_STRING     | /usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan | These is the string we will use to start the K3s server. M3s will add several other parameters. |

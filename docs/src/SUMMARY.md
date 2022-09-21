@@ -17,6 +17,9 @@
 - [Get Kubernetes Version](api/get_kubeversion.md)
 - [Get M3s status information](api/get_status.md)
 
+# Datastore
+- [Enable TLS for MariaDB](datastore/maraidb_tls.md)
+
 # Examples
 
 - [Create NGINX ingress with traefik](create_nginx_ingress.md)

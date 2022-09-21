@@ -119,6 +119,13 @@ func (e *Scheduler) connectPort(host string, port uint32) bool {
 // set mysql parameter of the mesos task
 func (e *Scheduler) setMySQL(cmd *mesosutil.Command) {
 	cmd.ContainerImage = e.Config.ImageMySQL
+	//cmd.Shell = true
+	// Enable TLS for Mariadb
+	if e.Config.DSMySQLSSL {
+		cmd.Arguments = e.appendString(make([]string, 0), "--ssl-ca=/var/lib/mysql/ca.pem")
+		cmd.Arguments = e.appendString(cmd.Arguments, "--ssl-cert=/var/lib/mysql/server-cert.pem")
+		cmd.Arguments = e.appendString(cmd.Arguments, "--ssl-key=/var/lib/mysql/server-key.pem")
+	}
 	cmd.Environment.Variables = []mesosproto.Environment_Variable{
 		{
 			Name:  "SERVICE_NAME",
