@@ -16,7 +16,7 @@ type Config struct {
 	BootstrapURL                string
 	Credentials                 UserCredentials
 	CleanupLoopTime             time.Duration
-	ReviveLoopTime              time.Duration
+	CGroupV2                    bool
 	DSMax                       int
 	DSCPU                       float64
 	DSMEM                       float64
@@ -28,6 +28,7 @@ type Config struct {
 	DSMySQL                     bool
 	DSMySQLUsername             string
 	DSMySQLPassword             string
+	DSMySQLSSL                  bool
 	DockerSock                  string
 	DockerSHMSize               string
 	Domain                      string
@@ -66,6 +67,7 @@ type Config struct {
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
 	Principal                   string
+	ReviveLoopTime              time.Duration
 	RedisServer                 string
 	RedisPassword               string
 	RedisDB                     int

@@ -62,6 +62,24 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		},
 	}
 
+	if e.Config.CGroupV2 {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "cgroupns", Value: "host"})
+
+		cmd.Volumes = []mesosproto.Volume{
+			{
+				ContainerPath: "/sys/fs/cgroup",
+				Mode:          mesosproto.RW.Enum(),
+				Source: &mesosproto.Volume_Source{
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+						Driver: &e.Config.VolumeDriver,
+						Name:   func() string { x := "/sys/fs/cgroup"; return x }(),
+					},
+				},
+			},
+		}
+	}
+
 	cmd.Discovery = mesosproto.DiscoveryInfo{
 		Visibility: 2,
 		Name:       &cmd.TaskName,

@@ -196,6 +196,10 @@ func (e *Scheduler) addDockerParameter(current []mesosproto.Parameter, newValues
 	return append(current, newValues)
 }
 
+func (e *Scheduler) appendString(current []string, newValues string) []string {
+	return append(current, newValues)
+}
+
 // Reconcile will reconcile the task states after the framework was restarted
 func (e *Scheduler) Reconcile() {
 	logrus.Info("Reconcile Tasks")

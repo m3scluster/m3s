@@ -25,6 +25,10 @@ func (e *API) V0Cleanup(w http.ResponseWriter, r *http.Request) {
 
 // CleanupNodes - To cleanup notready nodes
 func (e *API) CleanupNodes() {
+	if e.Config.K3SServerHostname == "" {
+		return
+	}
+
 	client := &http.Client{}
 	// #nosec G402
 	client.Transport = &http.Transport{
