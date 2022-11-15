@@ -60,6 +60,7 @@ func (e *API) ScheduleCleanup() {
 	logrus.WithField("func", "api.ScheduleCleanup").Debug("Schedule Cleanup")
 	cleanupLock = true
 
+	// nolint:gosimple
 	select {
 	case <-time.After(e.Config.CleanupLoopTime):
 		e.CleanupNodes()

@@ -128,6 +128,7 @@ class M3s(PluginBase):
             config = self.config
             # pylint: disable=attribute-defined-outside-init
             self.m3sconfig = self._get_config()
+            self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
                 "Unable to get leading master address: {error}".format(error=exception)

@@ -27,7 +27,7 @@ help:
 
 build:
 	@echo ">>>> Build docker image"
-	@docker buildx build --platform linux/amd64,linux/arm64 --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
+	@docker buildx build --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 
 build-bin:
 	@echo ">>>> Build binary"
@@ -39,11 +39,11 @@ bootstrap:
 
 publish:
 	@echo ">>>> Publish docker image"
-	@docker buildx build --push --platform linux/amd64,linux/arm64 --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:latest .
+	@docker buildx build --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:latest .
 
 publish-tag:
 	@echo ">>>> Publish docker image"
-	@docker buildx build --push --platform linux/amd64,linux/arm64 --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${TAG} .
+	@docker buildx build --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${TAG} .
 
 docs:
 	@echo ">>>> Build docs"
@@ -61,10 +61,15 @@ sboom:
 	syft dir:. > sbom.txt
 	syft dir:. -o json > sbom.json
 
+go-fmt:
+	@gofmt -w .
+	@golangci-lint run --fix
+
 version:
 	@echo ">>>> Generate version file"
 	@echo "{\"m3sVersion\": {	\"gitVersion\": \"${TAG}\",	\"buildDate\": \"${BUILDDATE}\"}}" > .version.json
 	@cat .version.json
 	@echo "Saved under .version.json"
 
-all: version bootstrap build publish
+check: go-fmt sboom seccheck
+all: check version bootstrap build publish

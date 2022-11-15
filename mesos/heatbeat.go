@@ -100,6 +100,7 @@ func (e *Scheduler) scheduleRevive() {
 	logrus.WithField("func", "mesos.scheduleRevive").Debug("Schedule Revive")
 	reviveLock = true
 
+	// nolint:gosimple
 	select {
 	case <-time.After(e.Config.ReviveLoopTime):
 		mesosutil.Revive()
