@@ -16,6 +16,7 @@
 - Add support for cri-docker (enable with K3S_DOCKER=true)
 - Add support for MySQL TLS datastore communication
 - Add support for CGroupV2 (bool env CGROUP_V2, default false)
+- Change cli to support multicluster    
 
 ## v0.3.0
 

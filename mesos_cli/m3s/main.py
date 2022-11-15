@@ -43,7 +43,7 @@ class M3s(PluginBase):
 
     COMMANDS = {
         "kubeconfig": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-name>"],
             "flags": {},
             "short_help": "Get kubernetes configuration file",
             "long_help": "Get kubernetes configuration file",
@@ -57,13 +57,13 @@ class M3s(PluginBase):
             "long_help": "Show list of running M3s frameworks",
         },
         "version": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-name>"],
             "flags": {},
             "short_help": "Get the version number of Kubernetes",
             "long_help": "Get the version number of Kubernetes",
         },
         "status": {
-            "arguments": ["<framework-id>"],
+            "arguments": ["<framework-name>"],
             "flags": {
                 "-m --m3s": "Give out the M3s status.",
                 "-k --kubernetes": "Give out the Kubernetes status.",
@@ -72,7 +72,7 @@ class M3s(PluginBase):
             "long_help": "Get out live status information",
         },
         "scale": {
-            "arguments": ["<framework-id>", "<count>"],
+            "arguments": ["<framework-name>", "<count>"],
             "flags": {
                 "-a --agent": "Scale up/down Kubernetes agents",
                 "-e --etcd": "Scale up/down etcd",
@@ -150,6 +150,7 @@ class M3s(PluginBase):
             config = self.config
             # pylint: disable=attribute-defined-outside-init
             self.m3sconfig = self._get_config()
+            self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
                 "Unable to get leading master address: {error}".format(error=exception)
@@ -172,6 +173,7 @@ class M3s(PluginBase):
             config = self.config
             # pylint: disable=attribute-defined-outside-init
             self.m3sconfig = self._get_config()
+            self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
                 "Unable to get leading master address: {error}".format(error=exception)
@@ -232,30 +234,29 @@ class M3s(PluginBase):
         Resolv the id of a framework by the name of a framework
         """
 
-        if argv["<framework-id>"].count("-") != 5:
+        if argv["<framework-name>"].count("-") != 5:
             data = get_frameworks(self.config.master(), self.config)
             for framework in data:
                 if (
                     framework["active"] is not True
-                    or framework["name"].lower() != argv["<framework-id>"].lower()
+                    or framework["name"].lower() != argv["<framework-name>"].lower()
                 ):
                     continue
                 return framework["id"]
-        return argv["<framework-id>"]
+        return argv["<framework-name>"]
 
     def principal(self):
         """
         Return the principal in the configuration file
         """
-
-        return self.m3sconfig["m3s"].get("principal")
+        return self.m3sconfig["m3s"].get(self.framework_name).get("principal")
 
     def secret(self):
         """
         Return the secret in the configuration file
         """
 
-        return self.m3sconfig["m3s"].get("secret")
+        return self.m3sconfig["m3s"].get(self.framework_name).get("secret")
 
     # pylint: disable=no-self-use
     def agent_timeout(self, default=5):
