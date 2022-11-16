@@ -17,6 +17,7 @@
 - Add support for MySQL TLS datastore communication
 - Add support for CGroupV2 (bool env CGROUP_V2, default false)
 - Change cli to support multicluster    
+- Add ulimit docker parameter (DOCKER_ULIMIT)
 
 ## v0.3.0
 
