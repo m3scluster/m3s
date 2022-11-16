@@ -42,6 +42,8 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: e.Config.DockerSHMSize})
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "ulimit", Value: "nofile=" + e.Config.DockerUlimit})
+
 	cmd.Instances = e.Config.K3SAgentMax
 
 	// if mesos cni is unset, then use docker cni
