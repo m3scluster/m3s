@@ -48,6 +48,7 @@ func init() {
 	config.Domain = util.Getenv("DOMAIN", ".local")
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.DockerSHMSize = util.Getenv("DOCKER_SHM_SIZE", "30gb")
+	config.DockerUlimit = util.Getenv("DOCKER_ULIMIT", "1048576")
 	config.DockerCNI = util.Getenv("DOCKER_CNI", "bridge")
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
@@ -129,7 +130,7 @@ func init() {
 
 	// Enable Docker Engine vor K3S instead critc
 	if strings.Compare(os.Getenv("K3S_DOCKER"), "true") == 0 {
-		config.K3SDocker = " --docker --container-runtime-endpoint unix:///var/run/cri-dockerd.sock "
+		config.K3SDocker = " --container-runtime-endpoint unix:///var/run/cri-dockerd.sock "
 	} else {
 		config.K3SDocker = ""
 	}

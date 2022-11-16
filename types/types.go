@@ -31,6 +31,7 @@ type Config struct {
 	DSMySQLSSL                  bool
 	DockerSock                  string
 	DockerSHMSize               string
+	DockerUlimit                string
 	Domain                      string
 	DockerCNI                   string
 	EventLoopTime               time.Duration

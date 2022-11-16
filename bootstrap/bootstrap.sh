@@ -12,7 +12,7 @@ export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export K3S_RESOLV_CONF=/etc/k3sresolv.conf
 export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
-export BRANCH=master
+export BRANCH=add-ulimit
 export ARCH=`dpkg --print-architecture`
 
 ## Export json as environment variables
@@ -26,7 +26,7 @@ done
 exec /usr/local/bin/dockerd &
 exec /usr/bin/cri-dockerd &
 
-curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${INSTALL_K3S_VERSION} INSTALL_K3S_SKIP_ENABLE=${INSTALL_K3S_SKIP_ENABLE=$} INSTALL_K3S_SKIP_START=${INSTALL_K3S_SKIP_START} sh -s - 
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${INSTALL_K3S_VERSION} INSTALL_K3S_SKIP_ENABLE=${INSTALL_K3S_SKIP_ENABLE=$} INSTALL_K3S_SKIP_START=${INSTALL_K3S_SKIP_START} sh -s - --docker
 curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/dashboard_auth.yaml > $MESOS_SANDBOX/dashboard_auth.yaml
 curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/dashboard_traefik.yaml > $MESOS_SANDBOX/dashboard_traefik.yaml
 curl https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml > $MESOS_SANDBOX/dashboard.yaml
