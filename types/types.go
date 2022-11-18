@@ -41,6 +41,7 @@ type Config struct {
 	ImageETCD                   string
 	ImageMySQL                  string
 	K3SCustomDomain             string
+	K3SContainerDisk            string
 	K3SServerURL                string
 	K3SServerMax                int
 	K3SServerPort               int

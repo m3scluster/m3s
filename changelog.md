@@ -18,6 +18,7 @@
 - Add support for CGroupV2 (bool env CGROUP_V2, default false)
 - Change cli to support multicluster    
 - Add ulimit docker parameter (DOCKER_ULIMIT)
+- Change DOCKER_SHM_SIZE to K3S_CONTAINER_DISK
 
 ## v0.3.0
 

@@ -21,7 +21,6 @@ The following environment variables are available:
 | LOGLEVEL              | info | Information Level (info, warn, error, debug)|
 | DOCKER_CNI            | bride | If we do not use Mesos CNI, we can also use docker network |
 | DOCKER_SOCK           | | The docker sock file |
-| DOCKER_SHM_SIZE       | 30gb | Size of dockers shared memory |
 | DOCKER_ULIMIT         | 1048576 | Number of max open files (soft and hardlimit)  |
 | DOMAIN                | .local | The domain of the hostnames. As example, if you use weave cni, it would be weave.local |
 | AUTH_USERNAME         | | Username to authenticate against these framework |
@@ -29,6 +28,7 @@ The following environment variables are available:
 | CGROUP_V2             | false | Enable support for CGroupV2 | 
 | K3S_TOKEN             | 123456789 | K8 token for the bootstrap |
 | K3S_CUSTOM_DOMAIN     | cloud.local | The network Domain we will use for the K3s cni |
+| K3S_CONTAINER_DISK    | 30gb | Disk size of the K3S container |
 | K3S_SERVER_STRING     | /usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan | These is the string we will use to start the K3s server. M3s will add several other parameters. |
 | K3S_SERVER_CPU        | 0.1 | Resources for the K3s Server container |
 | K3S_SERVER_MEM        | 1200 | |
