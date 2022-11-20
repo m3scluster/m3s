@@ -16,43 +16,39 @@ Mesos Framework to run Kubernetes (K3S)
 
 The following environment parameters are only a example. All parameters and der default values are documented in the `init.go` file (real documentation will be coming later)
 
+### Step 1
+
+M3s needs some parameters to connect to Mesos. The following serve only as an example.
 
 ```Bash
-export FRAMEWORK_USER="root"
-export FRAMEWORK_NAME="k3sframework"
-export FRAMEWORK_PORT="10000"
-export FRAMEWORK_ROLE="k3s"
-export FRAMEWORK_STATEFILE_PATH="/tmp"
-export MESOS_PRINCIPAL="<mesos_principal>"
-export MESOS_USERNAME="<mesos_user>"
-export MESOS_PASSWORD="<mesos_password>"
-export MESOS_MASTER="<mesos_master_server>:5050"
-export MESOS_CNI="weave"
-export LOGLEVEL="DEBUG"
-export DOMAIN="weave.local"
-export K3S_SERVER_COUNT=1
-export K3S_AGENT_COUNT=1
-export ETCD_COUNT=1
-export K3S_CPU=0.1
-export K3S_MEM=1200
-export ETCD_CPU=0.1
-export ETCD_MEM=100
-export AUTH_PASSWORD="password"
-export AUTH_USERNAME="user"
-export MESOS_SSL="true"
-export IMAGE_K3S="ubunut:groovy"
-export IMAGE_ETCD="bitnami/etcd:latest"
-export VOLUME_DRIVER="rbd"
-export VOLUME_K3S_SERVER="k3sserver"
-export BOOTSTRAP_URL="https://raw.githubusercontent.com/AVENTER-UG/go-mesos-framework-k3s/master/bootstrap/bootstrap.sh"
-export K3S_AGENT_LABELS='[
-    {"key":"traefik.enable","value":"true"},
-    {"key":"traefik.http.routers.m3s.entrypoints","value":"web"},
-    {"key":"traefik.http.routers.m3s.service","value":"m3s-http"},
-    {"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}
-]'
+export MESOS_SSL=false
+export DOCKER_CNI=mini
+export LOGLEVEL=DEBUG
+export AUTH_USERNAME=user
+export AUTH_PASSWORD=password
+export VOLUME_K3S_SERVER=local_k3sserver
+export K3S_TOKEN=df54383b5659b9280aa1e73e60ef78fc
+export DOMAIN=.mini
+export BOOTSTRAP_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh
+export K3S_AGENT_LABELS=[{"key":"traefik.enable","value":"true"},{"key":"traefik.http.routers.m3s.entrypoints","value":"web"},{"key":"traefik.http.routers.m3s.service","value":"m3s-http"},{"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}]
+```
 
-go run init.go app.go
+The variable K3S_AGENT_LABELS gives the possibility to create labels for Traefik or other load balancers connected to mesos. In the example given here are labels for our Traefik Provider.
+
+### Step 2
+
+Before we launch M3s, we create in Docker in dedicated network.
+
+```Bash
+docker network create --subnet 10.40.0.0/24 mini
+```
+
+### Step 3
+
+Now M3s can be started:
+
+```Bash
+./mesos-m3s
 ```
 
 # Screenshots
