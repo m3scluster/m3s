@@ -14,9 +14,18 @@ Mesos Framework to run Kubernetes (K3S)
 
 ## Run Framework
 
-The following environment parameters are only a example. All parameters and der default values are documented in the `init.go` file (real documentation will be coming later)
+The following environment parameters are only a example. All parameters and the default values are documented in
+the `init.go` file (real documentation will be coming later). These example assume, that we run mesos-mini.
 
 ### Step 1
+
+Run a redis server:
+
+```Bash
+docker run --rm --name redis -d -p 6379:6379 redis
+```
+
+### Step 2
 
 M3s needs some parameters to connect to Mesos. The following serve only as an example.
 
@@ -35,7 +44,7 @@ export K3S_AGENT_LABELS=[{"key":"traefik.enable","value":"true"},{"key":"traefik
 
 The variable K3S_AGENT_LABELS gives the possibility to create labels for Traefik or other load balancers connected to mesos. In the example given here are labels for our Traefik Provider.
 
-### Step 2
+### Step 3 
 
 Before we launch M3s, we create in Docker in dedicated network.
 
@@ -43,12 +52,31 @@ Before we launch M3s, we create in Docker in dedicated network.
 docker network create --subnet 10.40.0.0/24 mini
 ```
 
-### Step 3
+### Step 4
 
 Now M3s can be started:
 
 ```Bash
 ./mesos-m3s
+```
+
+### Mesos-M3s in real Apache Mesos environments
+
+In real mesos environments, we have to set at least the following environment variables:
+
+```Bash
+export MESOS_MASTER="leader.mesos:5050"
+export MESOS_USERNAME=""
+export MESOS_PASSWORD=""
+```
+
+Also the following could be usefull.
+
+```Bash
+export REDIS_SERVER="127.0.0.1:6379"
+export REDIS_PASSWORD=""
+export REDIS_DB="1"
+export MESOS_CNI="weave"
 ```
 
 # Screenshots
