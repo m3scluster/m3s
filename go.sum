@@ -6,6 +6,8 @@ github.com/AVENTER-UG/mesos-util v0.0.35 h1:QoEyhp/nbKdTtuxokQ/W/f4shd/IIkflwhL5
 github.com/AVENTER-UG/mesos-util v0.0.35/go.mod h1:70fymV+AZKb3VQtUtprpJVXtp+mEAsYk7/NEg3s5JQ8=
 github.com/AVENTER-UG/mesos-util v0.0.38 h1:O34N52eMBz5bcOeGVo2OdnjjD5Wuf7rvpCEMMF/8xB4=
 github.com/AVENTER-UG/mesos-util v0.0.38/go.mod h1:70fymV+AZKb3VQtUtprpJVXtp+mEAsYk7/NEg3s5JQ8=
+github.com/AVENTER-UG/mesos-util v0.0.43 h1:cOluIYkqQAuU+cHCOIJW2EiSI/mqfZbcYko/n9GQ9r4=
+github.com/AVENTER-UG/mesos-util v0.0.43/go.mod h1:70fymV+AZKb3VQtUtprpJVXtp+mEAsYk7/NEg3s5JQ8=
 github.com/AVENTER-UG/util v0.3.0 h1:wtUC7e6LMx37BRGBKKBZ4BUM8q4lkLjgBinS09luv6A=
 github.com/AVENTER-UG/util v0.3.0/go.mod h1:8mh50Bes+U3D6ZP3psP4K8LSPNwpeuM5vRNb/vU/sS0=
 github.com/AVENTER-UG/util v0.4.2 h1:jqSZ10mdHRrpFFT7Zsw7Z0DzatqV9PuxrM5b8xhTrC4=

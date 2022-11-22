@@ -69,6 +69,7 @@ type Config struct {
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
 	Principal                   string
+	ReconcileLoopTime           time.Duration
 	ReviveLoopTime              time.Duration
 	RedisServer                 string
 	RedisPassword               string

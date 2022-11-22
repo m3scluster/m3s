@@ -4,7 +4,6 @@ import (
 	"time"
 
 	mesosutil "github.com/AVENTER-UG/mesos-util"
-	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
 	"github.com/sirupsen/logrus"
 )
 
@@ -118,19 +117,11 @@ func (e *Scheduler) HeartbeatLoop() {
 	}
 }
 
-func (e *Scheduler) changeDockerPorts(cmd mesosutil.Command) []mesosproto.ContainerInfo_DockerInfo_PortMapping {
-	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
-	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
-	for n, port := range cmd.DockerPortMappings {
-		port.HostPort = hostPort + uint32(n)
-		ret = append(ret, port)
+// ReconcileLoop - The reconcile loop to check periodicly the task state
+func (e *Scheduler) ReconcileLoop() {
+	ticker := time.NewTicker(e.Config.ReconcileLoopTime)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		go e.Reconcile()
 	}
-	return ret
-}
-
-func (e *Scheduler) changeDiscoveryInfo(cmd mesosutil.Command) mesosproto.DiscoveryInfo {
-	for i, port := range cmd.DockerPortMappings {
-		cmd.Discovery.Ports.Ports[i].Number = port.HostPort
-	}
-	return cmd.Discovery
 }

@@ -37,6 +37,7 @@ The following environment variables are available:
 | K3S_AGENT_CPU         | 0.1 | Resources for the K3s Agent container |
 | K3S_AGENT_MEM         | 1200 | |
 | K3S_AGENT_LABELS | [{"key":"traefik.enable","value":"true"},{"key":"traefik.http.routers.m3s.entrypoints","value":"web"},{"key":"traefik.http.routers.m3s.service","value":"m3s-http"},{"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}] | Configure custom labels for the container. In these example, we will use lables for traefik. |
+| RECONCILE_WAIT        | 10m | Ask every 'n minutes to ask Mesos about the state of the currents tasks'
 | REDIS_PASSWORD        | | Redis Passwort for authentication |
 | REDIS_SERVER          | 127.0.0.1:6379 | Redis Server IP and port |
 | BOOTSTRAP_URL | https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh | Bootstrap Script to pre configure the server/agent container |
