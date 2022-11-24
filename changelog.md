@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## v0.4.0
 
 - Fix docker user defined network.
 - Add redis reconnect after unhealthy ping. 
