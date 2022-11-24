@@ -20,6 +20,7 @@
 - Add ulimit docker parameter (DOCKER_ULIMIT)
 - Change DOCKER_SHM_SIZE to K3S_CONTAINER_DISK
 - Add mesos reconcile loop to periodically sync state with mesos
+- Fix GetNetworkInfo resolv hostname
 
 
 ## v0.3.0

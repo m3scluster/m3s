@@ -1,29 +1,25 @@
 package mesos
 
 import (
-	"bufio"
 	"bytes"
 	"crypto/tls"
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strings"
 
-	api "github.com/AVENTER-UG/mesos-m3s/api"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	mesosutil "github.com/AVENTER-UG/mesos-util"
-	mesosproto "github.com/AVENTER-UG/mesos-util/proto"
-	"github.com/AVENTER-UG/util/util"
-
 	"github.com/gogo/protobuf/jsonpb"
 	"github.com/sirupsen/logrus"
 )
 
-// Scheduler include all the current vars and global config
-type Scheduler struct {
+// Mesos include all the current vars and global config
+type Mesos struct {
 	Config    *cfg.Config
-	Framework *mesosutil.FrameworkConfig
-	Client    *http.Client
-	Req       *http.Request
-	API       *api.API
+	Framework *cfg.FrameworkConfig
 }
 
 // Marshaler to serialize Protobuf Message to JSON
@@ -33,27 +29,67 @@ var marshaller = jsonpb.Marshaler{
 	OrigName:    true,
 }
 
-// Subscribe to the mesos backend
-func Subscribe(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *Scheduler {
-	e := &Scheduler{
+// New will create a new API object
+func New(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Mesos {
+	e := &Mesos{
 		Config:    cfg,
 		Framework: frm,
 	}
 
-	subscribeCall := &mesosproto.Call{
-		FrameworkID: e.Framework.FrameworkInfo.ID,
-		Type:        mesosproto.Call_SUBSCRIBE,
-		Subscribe: &mesosproto.Call_Subscribe{
-			FrameworkInfo: &e.Framework.FrameworkInfo,
-		},
+	return e
+}
+
+// Revive will revive the mesos tasks to clean up
+func (e *Mesos) Revive() {
+	logrus.WithField("func", "mesos.Revive").Debug("Revive Tasks")
+	revive := &mesosproto.Call{
+		Type: mesosproto.Call_REVIVE,
 	}
-	logrus.Debug(subscribeCall)
-	body, _ := marshaller.MarshalToString(subscribeCall)
-	logrus.Debug(body)
+	err := e.Call(revive)
+	if err != nil {
+		logrus.Error("Call Revive: ", err)
+	}
+}
+
+// SuppressFramework if all Tasks are running, suppress framework offers
+func (e *Mesos) SuppressFramework() {
+	logrus.WithField("func", "mesos.SupressFramework").Debug("Framework Suppress")
+	suppress := &mesosproto.Call{
+		Type: mesosproto.Call_SUPPRESS,
+	}
+	err := e.Call(suppress)
+	if err != nil {
+		logrus.Error("Supress Framework Call: ")
+	}
+}
+
+// Kill a Task with the given taskID
+func (e *Mesos) Kill(taskID string, agentID string) error {
+	logrus.WithField("func", "mesos.Kill").Debug("Kill task ", taskID)
+	// tell mesos to shutdonw the given task
+	err := e.Call(&mesosproto.Call{
+		Type: mesosproto.Call_KILL,
+		Kill: &mesosproto.Call_Kill{
+			TaskID: mesosproto.TaskID{
+				Value: taskID,
+			},
+			AgentID: &mesosproto.AgentID{
+				Value: agentID,
+			},
+		},
+	})
+
+	return err
+}
+
+// Call will send messages to mesos
+func (e *Mesos) Call(message *mesosproto.Call) error {
+	message.FrameworkID = e.Framework.FrameworkInfo.ID
+	body, _ := marshaller.MarshalToString(message)
+
 	client := &http.Client{}
-	// #nosec G402
 	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 
 	protocol := "https"
@@ -63,197 +99,197 @@ func Subscribe(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *Scheduler {
 	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/api/v1/scheduler", bytes.NewBuffer([]byte(body)))
 	req.Close = true
 	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
+	req.Header.Set("Mesos-Stream-Id", e.Framework.MesosStreamID)
 	req.Header.Set("Content-Type", "application/json")
-
-	e.Req = req
-	e.Client = client
-
-	return e
-}
-
-// EventLoop is the main loop for the mesos events.
-func (e *Scheduler) EventLoop() {
-	res, err := e.Client.Do(e.Req)
+	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("Mesos Master connection error: ", err.Error())
-		return
+		logrus.Error("Call Message: ", err)
+		return err
 	}
+
 	defer res.Body.Close()
 
-	reader := bufio.NewReader(res.Body)
-
-	line, _ := reader.ReadString('\n')
-	_ = strings.TrimSuffix(line, "\n")
-
-	go e.HeartbeatLoop()
-	go e.ReconcileLoop()
-
-	for {
-		// Read line from Mesos
-		line, err = reader.ReadString('\n')
+	if res.StatusCode != 202 {
+		_, err := io.Copy(os.Stderr, res.Body)
 		if err != nil {
-			logrus.Error("Error to read data from Mesos Master: ", err.Error())
-			return
+			logrus.Error("Call Handling: ", err)
 		}
-		line = strings.TrimSuffix(line, "\n")
-		// Read important data
-		var event mesosproto.Event // Event as ProtoBuf
-		err := jsonpb.UnmarshalString(line, &event)
-		if err != nil {
-			logrus.Error("Could not unmarshal Mesos Master data: ", err.Error())
-			continue
-		}
-		logrus.Debug("Subscribe Got: ", event.GetType())
-
-		switch event.Type {
-		case mesosproto.Event_SUBSCRIBED:
-			logrus.Info("Subscribed")
-			logrus.Debug("FrameworkId: ", event.Subscribed.GetFrameworkID())
-			e.Framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
-			e.Framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
-
-			e.Reconcile()
-			e.CheckState()
-			e.API.SaveFrameworkRedis()
-			e.API.SaveConfig()
-		case mesosproto.Event_UPDATE:
-			e.HandleUpdate(&event)
-			// save configuration
-			e.API.SaveConfig()
-		case mesosproto.Event_OFFERS:
-			// Search Failed containers and restart them
-			logrus.Debug("Offer Got")
-			err = e.HandleOffers(event.Offers)
-			if err != nil {
-				logrus.Error("Switch Event HandleOffers: ", err)
-			}
-		}
+		return fmt.Errorf("Error %d", res.StatusCode)
 	}
+
+	return nil
 }
 
-// Generate "num" numbers of random host portnumbers
-func (e *Scheduler) getRandomHostPort(num int) uint32 {
-	// search two free ports
-	for i := e.Framework.PortRangeFrom; i < e.Framework.PortRangeTo; i++ {
-		port := uint32(i)
-		use := false
-		for x := 0; x < num; x++ {
-			if e.portInUse(port + uint32(x)) {
-				tmp := use || true
-				use = tmp
-				x = num
-			}
-
-			tmp := use || false
-			use = tmp
-		}
-		if !use {
-			return port
-		}
+// DecodeTask will decode the key into an mesos command struct
+func (e *Mesos) DecodeTask(key string) cfg.Command {
+	var task cfg.Command
+	err := json.NewDecoder(strings.NewReader(key)).Decode(&task)
+	if err != nil {
+		logrus.WithField("func", "DecodeTask").Error("Could not decode task: ", err.Error())
+		return cfg.Command{}
 	}
-	return 0
+	return task
 }
 
-// Check if the port is already in use
-func (e *Scheduler) portInUse(port uint32) bool {
-	// get all running services
-	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
-	for keys.Next(e.API.Redis.RedisCTX) {
-		// get the details of the current running service
-		key := e.API.GetRedisKey(keys.Val())
+// GetOffer get out the offer for the mesos task
+func (e *Mesos) GetOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (mesosproto.Offer, []mesosproto.OfferID) {
+	var offerIds []mesosproto.OfferID
+	var offerret mesosproto.Offer
 
-		if e.API.CheckIfNotTask(keys) {
+	for n, offer := range offers.Offers {
+		logrus.Debug("Got Offer From:", offer.GetHostname())
+		offerIds = append(offerIds, offer.ID)
+
+		if cmd.TaskName == "" {
 			continue
 		}
 
-		task := mesosutil.DecodeTask(key)
+		// if the ressources of this offer does not matched what the command need, the skip
+		if !e.IsRessourceMatched(offer.Resources, cmd) {
+			logrus.Debug("Could not found any matched ressources, get next offer")
+			e.Call(e.DeclineOffer(offerIds))
+			continue
+		}
+		offerret = offers.Offers[n]
+	}
+	return offerret, offerIds
+}
 
-		// check if the given port is already in use
-		ports := task.Discovery.GetPorts()
-		if ports != nil {
-			for _, hostport := range ports.GetPorts() {
-				if hostport.Number == port {
-					logrus.Debug("Port in use: ", port)
-					return true
+// DeclineOffer will decline the given offers
+func (e *Mesos) DeclineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
+	decline := &mesosproto.Call{
+		Type:    mesosproto.Call_DECLINE,
+		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
+	}
+	return decline
+}
+
+// IsRessourceMatched - check if the ressources of the offer are matching the needs of the cmd
+func (e *Mesos) IsRessourceMatched(ressource []mesosproto.Resource, cmd cfg.Command) bool {
+	mem := false
+	cpu := false
+	ports := true
+
+	for _, v := range ressource {
+		if v.GetName() == "cpus" && v.Scalar.GetValue() >= cmd.CPU {
+			logrus.Debug("Matched Offer CPU")
+			cpu = true
+		}
+		if v.GetName() == "mem" && v.Scalar.GetValue() >= cmd.Memory {
+			logrus.Debug("Matched Offer Memory")
+			mem = true
+		}
+		if len(cmd.DockerPortMappings) > 0 {
+			if v.GetName() == "ports" {
+				for _, taskPort := range cmd.DockerPortMappings {
+					for _, portRange := range v.GetRanges().Range {
+						if taskPort.HostPort >= uint32(portRange.Begin) && taskPort.HostPort <= uint32(portRange.End) {
+							logrus.Debug("Matched Offer TaskPort: ", taskPort.HostPort)
+							logrus.Debug("Matched Offer RangePort: ", portRange)
+							ports = ports || true
+							break
+						}
+						ports = ports || false
+					}
 				}
 			}
 		}
 	}
-	return false
+
+	return mem && cpu && ports
 }
 
-// generate a new task id if there is no
-func (e *Scheduler) getTaskID(taskID string) string {
-	// if taskID is 0, then its a new task and we have to create a new ID
-	if taskID == "" {
-		taskID, _ = util.GenUUID()
+// GetNetworkInfo get network info of task
+func (e *Mesos) GetNetworkInfo(taskID string) []mesosproto.NetworkInfo {
+	client := &http.Client{}
+	// #nosec G402
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 
-	return taskID
-}
-
-func (e *Scheduler) addDockerParameter(current []mesosproto.Parameter, newValues mesosproto.Parameter) []mesosproto.Parameter {
-	return append(current, newValues)
-}
-
-func (e *Scheduler) appendString(current []string, newValues string) []string {
-	return append(current, newValues)
-}
-
-// Reconcile will reconcile the task states after the framework was restarted
-func (e *Scheduler) Reconcile() {
-	logrus.Info("Reconcile Tasks")
-	var oldTasks []mesosproto.Call_Reconcile_Task
-	keys := e.API.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
-	for keys.Next(e.API.Redis.RedisCTX) {
-		// continue if the key is not a mesos task
-		if e.API.CheckIfNotTask(keys) {
-			continue
-		}
-
-		key := e.API.GetRedisKey(keys.Val())
-
-		task := mesosutil.DecodeTask(key)
-
-		if task.TaskID == "" || task.Agent == "" {
-			continue
-		}
-
-		oldTasks = append(oldTasks, mesosproto.Call_Reconcile_Task{
-			TaskID: mesosproto.TaskID{
-				Value: task.TaskID,
-			},
-			AgentID: &mesosproto.AgentID{
-				Value: task.Agent,
-			},
-		})
-		logrus.Debug("Reconcile Task: ", task.TaskID)
+	protocol := "https"
+	if !e.Framework.MesosSSL {
+		protocol = "http"
 	}
-	err := mesosutil.Call(&mesosproto.Call{
-		Type:      mesosproto.Call_RECONCILE,
-		Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
-	})
+	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/tasks/?task_id="+taskID+"&framework_id="+e.Framework.FrameworkInfo.ID.GetValue(), nil)
+	req.Close = true
+	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
 
 	if err != nil {
-		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
-		logrus.Debug("Reconcile Error: ", err)
+		logrus.WithField("func", "getNetworkInfo").Error("Could not connect to mesos-master: ", err.Error())
+		return []mesosproto.NetworkInfo{}
 	}
+
+	defer res.Body.Close()
+
+	var task cfg.MesosTasks
+	err = json.NewDecoder(res.Body).Decode(&task)
+	if err != nil {
+		logrus.WithField("func", "getAgentInfo").Error("Could not encode json result: ", err.Error())
+		return []mesosproto.NetworkInfo{}
+	}
+
+	if len(task.Tasks) > 0 {
+		for _, status := range task.Tasks[0].Statuses {
+			if status.State == "TASK_RUNNING" {
+				var netw []mesosproto.NetworkInfo
+				netw = append(netw, status.ContainerStatus.NetworkInfos[0])
+				return netw
+			}
+		}
+	}
+	return []mesosproto.NetworkInfo{}
 }
 
-func (e *Scheduler) changeDockerPorts(cmd mesosutil.Command) []mesosproto.ContainerInfo_DockerInfo_PortMapping {
-	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
-	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
-	for n, port := range cmd.DockerPortMappings {
-		port.HostPort = hostPort + uint32(n)
-		ret = append(ret, port)
+// GetAgentInfo get information about the agent
+func (e *Mesos) GetAgentInfo(agentID string) cfg.MesosSlaves {
+	client := &http.Client{}
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
-	return ret
-}
 
-func (e *Scheduler) changeDiscoveryInfo(cmd mesosutil.Command) mesosproto.DiscoveryInfo {
-	for i, port := range cmd.DockerPortMappings {
-		cmd.Discovery.Ports.Ports[i].Number = port.HostPort
+	protocol := "https"
+	if !e.Framework.MesosSSL {
+		protocol = "http"
 	}
-	return cmd.Discovery
+	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/slaves/"+agentID, nil)
+	req.Close = true
+	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
+	req.Header.Set("Mesos-Stream-Id", e.Framework.MesosStreamID)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
+
+	if res.StatusCode == http.StatusOK {
+
+		if err != nil {
+			logrus.WithField("func", "getAgentInfo").Error("Could not connect to agent: ", err.Error())
+			return cfg.MesosSlaves{}
+		}
+
+		defer res.Body.Close()
+
+		var agent cfg.MesosAgent
+		err = json.NewDecoder(res.Body).Decode(&agent)
+		if err != nil {
+			logrus.WithField("func", "getAgentInfo").Error("Could not encode json result: ", err.Error())
+			// if there is an error, dump out the res.Body as debug
+			bodyBytes, err := io.ReadAll(res.Body)
+			if err == nil {
+				logrus.WithField("func", "getAgentInfo").Debug("response Body Dump: ", string(bodyBytes))
+			}
+			return cfg.MesosSlaves{}
+		}
+
+		// get the used agent info
+		for _, a := range agent.Slaves {
+			if a.ID == agentID {
+				return a
+			}
+		}
+	}
+
+	return cfg.MesosSlaves{}
 }

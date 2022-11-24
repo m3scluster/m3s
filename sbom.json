@@ -110,9 +110,9 @@
    }
   },
   {
-   "id": "ad1c8353ebf14847",
+   "id": "811442457b27dfae",
    "name": "github.com/AVENTER-UG/mesos-util",
-   "version": "v0.0.38",
+   "version": "v0.0.43",
    "type": "go-module",
    "foundBy": "go-mod-file-cataloger",
    "locations": [
@@ -123,14 +123,14 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_util:v0.0.38:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.43:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.43:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.43:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.43:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-util:v0.0.43:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_util:v0.0.43:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.38"
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.43"
   },
   {
    "id": "9b4b4a48b932a13",
@@ -2684,6 +2684,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "811442457b27dfae",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "83410854d167cf90",
    "type": "contains"
   },
@@ -2780,11 +2785,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "a8861466e5e96988",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ad1c8353ebf14847",
    "type": "contains"
   },
   {

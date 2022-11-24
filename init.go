@@ -7,7 +7,6 @@ import (
 	"strings"
 	"time"
 
-	mesosutil "github.com/AVENTER-UG/mesos-util"
 	util "github.com/AVENTER-UG/util/util"
 	"github.com/Showmax/go-fqdn"
 	"github.com/sirupsen/logrus"
@@ -16,7 +15,7 @@ import (
 )
 
 var config cfg.Config
-var framework mesosutil.FrameworkConfig
+var framework cfg.FrameworkConfig
 
 func init() {
 	framework.FrameworkUser = util.Getenv("FRAMEWORK_USER", "root")

@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/AVENTER-UG/mesos-m3s/api"
-	"github.com/AVENTER-UG/mesos-m3s/mesos"
+	"github.com/AVENTER-UG/mesos-m3s/redis"
+	"github.com/AVENTER-UG/mesos-m3s/scheduler"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	mesosutil "github.com/AVENTER-UG/mesos-util"
 
 	util "github.com/AVENTER-UG/util/util"
 	"github.com/sirupsen/logrus"
@@ -55,11 +55,11 @@ func main() {
 		webuiurl = fmt.Sprintf("https://%s%s", framework.FrameworkHostname, listen)
 	}
 
-	framework.CommandChan = make(chan mesosutil.Command, 100)
+	framework.CommandChan = make(chan cfg.Command, 100)
 	config.Hostname = framework.FrameworkHostname
 	config.Listen = listen
 
-	framework.State = map[string]mesosutil.State{}
+	framework.State = map[string]cfg.State{}
 
 	framework.FrameworkInfo.User = framework.FrameworkUser
 	framework.FrameworkInfo.Name = framework.FrameworkName
@@ -73,15 +73,15 @@ func main() {
 	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
 	//	}
 
-	mesosutil.SetConfig(&framework)
+	// connect to redis
+	r := redis.New(&config, &framework)
 
-	// connect to redis db
+	// get API
 	a := api.New(&config, &framework)
-	a.ConnectRedis()
 
 	// load framework state from DB
-	var oldFramework mesosutil.FrameworkConfig
-	key := a.GetRedisKey(framework.FrameworkName + ":framework")
+	var oldFramework cfg.FrameworkConfig
+	key := r.GetRedisKey(framework.FrameworkName + ":framework")
 	if key != "" {
 		json.Unmarshal([]byte(key), &oldFramework)
 
@@ -91,7 +91,7 @@ func main() {
 
 	// restore variable data from the old config
 	var oldconfig cfg.Config
-	key = a.GetRedisKey(framework.FrameworkName + ":framework_config")
+	key = r.GetRedisKey(framework.FrameworkName + ":framework_config")
 	if key != "" {
 		json.Unmarshal([]byte(key), &oldconfig)
 		config.K3SServerContainerPort = oldconfig.K3SServerContainerPort
@@ -102,8 +102,8 @@ func main() {
 		config.DSMax = oldconfig.DSMax
 	}
 
-	a.SaveConfig()
-	a.SaveFrameworkRedis()
+	r.SaveConfig(config)
+	r.SaveFrameworkRedis(framework)
 
 	// set current m3s version
 	config.Version.M3SVersion.GitVersion = GitVersion
@@ -151,7 +151,7 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			e := mesos.Subscribe(&config, &framework)
+			e := scheduler.Subscribe(&config, &framework)
 			e.API = a
 			e.EventLoop()
 		}

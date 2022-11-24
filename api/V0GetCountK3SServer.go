@@ -19,7 +19,7 @@ func (e *API) V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
 	var count cfg.Count
 
 	count.Scale = e.Config.K3SServerMax
-	count.Running = e.CountRedisKey(e.Framework.FrameworkName + ":server:*")
+	count.Running = e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "")
 
 	d, err := json.Marshal(count)
 

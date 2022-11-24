@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -39,11 +38,11 @@ func (e *API) getStatus() {
 	services := []string{"datastore", "server", "agent"}
 
 	for _, service := range services {
-		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":" + service + ":*")
+		keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":" + service + ":*")
 
-		for keys.Next(e.Redis.RedisCTX) {
-			key := e.GetRedisKey(keys.Val())
-			task := mesosutil.DecodeTask(key)
+		for keys.Next(e.Redis.CTX) {
+			key := e.Redis.GetRedisKey(keys.Val())
+			task := e.Mesos.DecodeTask(key)
 
 			if service == "datastore" {
 				e.Config.M3SStatus.Datastore[task.TaskID] = task.State

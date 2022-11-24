@@ -10,24 +10,28 @@ import (
 	//"io/ioutil"
 	"net/http"
 
+	"github.com/AVENTER-UG/mesos-m3s/mesos"
+	"github.com/AVENTER-UG/mesos-m3s/redis"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	mesosutil "github.com/AVENTER-UG/mesos-util"
 )
 
 // API Service include all the current vars and global config
 type API struct {
 	Config            *cfg.Config
-	Framework         *mesosutil.FrameworkConfig
-	Redis             Redis
+	Framework         *cfg.FrameworkConfig
+	Mesos             mesos.Mesos
+	Redis             *redis.Redis
 	BootstrapProtocol string
 }
 
 // New will create a new API object
-func New(cfg *cfg.Config, frm *mesosutil.FrameworkConfig) *API {
+func New(cfg *cfg.Config, frm *cfg.FrameworkConfig) *API {
 	e := &API{
 		Config:            cfg,
 		Framework:         frm,
+		Mesos:             *mesos.New(cfg, frm),
 		BootstrapProtocol: "http",
+		Redis:             redis.New(cfg, frm),
 	}
 
 	if e.Config.BootstrapSSLCrt != "" {
