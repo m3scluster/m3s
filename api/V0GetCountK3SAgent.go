@@ -19,7 +19,7 @@ func (e *API) V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 	var count cfg.Count
 
 	count.Scale = e.Config.K3SAgentMax
-	count.Running = e.CountRedisKey(e.Framework.FrameworkName + ":agent:*")
+	count.Running = e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "")
 
 	d, err := json.Marshal(count)
 

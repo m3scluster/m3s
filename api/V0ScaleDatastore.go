@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	mesosutil "github.com/AVENTER-UG/mesos-util"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
@@ -30,23 +29,23 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 		d = []byte(strconv.Itoa(newCount - oldCount))
 
 		// Save current config
-		e.SaveConfig()
+		e.Redis.SaveConfig(*e.Config)
 
 		// if scale down, kill not needes agents
-		keys := e.GetAllRedisKeys(e.Framework.FrameworkName + ":datastore:*")
+		keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":datastore:*")
 
-		for keys.Next(e.Redis.RedisCTX) {
-			key := e.GetRedisKey(keys.Val())
-			task := mesosutil.DecodeTask(key)
+		for keys.Next(e.Redis.CTX) {
+			key := e.Redis.GetRedisKey(keys.Val())
+			task := e.Mesos.DecodeTask(key)
 			task.Instances = newCount
-			e.SaveTaskRedis(task)
+			e.Redis.SaveTaskRedis(task)
 
 			if newCount < oldCount {
-				mesosutil.Kill(task.TaskID, task.Agent)
+				e.Mesos.Kill(task.TaskID, task.Agent)
 				logrus.Debug("V0ScaleDatastore: ", task.TaskID)
 			}
 			if newCount > oldCount {
-				mesosutil.Revive()
+				e.Mesos.Revive()
 			}
 			oldCount = oldCount - 1
 		}
