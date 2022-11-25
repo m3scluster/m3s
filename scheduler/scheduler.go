@@ -206,46 +206,6 @@ func (e *Scheduler) appendString(current []string, newValues string) []string {
 	return append(current, newValues)
 }
 
-// Reconcile will reconcile the task states after the framework was restarted
-func (e *Scheduler) Reconcile() {
-	logrus.Info("Reconcile Tasks")
-	var oldTasks []mesosproto.Call_Reconcile_Task
-	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
-	for keys.Next(e.Redis.CTX) {
-		// continue if the key is not a mesos task
-		if e.Redis.CheckIfNotTask(keys) {
-			continue
-		}
-
-		key := e.Redis.GetRedisKey(keys.Val())
-
-		task := e.Mesos.DecodeTask(key)
-
-		if task.TaskID == "" || task.Agent == "" {
-			continue
-		}
-
-		oldTasks = append(oldTasks, mesosproto.Call_Reconcile_Task{
-			TaskID: mesosproto.TaskID{
-				Value: task.TaskID,
-			},
-			AgentID: &mesosproto.AgentID{
-				Value: task.Agent,
-			},
-		})
-		logrus.Debug("Reconcile Task: ", task.TaskID)
-	}
-	err := e.Mesos.Call(&mesosproto.Call{
-		Type:      mesosproto.Call_RECONCILE,
-		Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
-	})
-
-	if err != nil {
-		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
-		logrus.Debug("Reconcile Error: ", err)
-	}
-}
-
 func (e *Scheduler) changeDockerPorts(cmd cfg.Command) []mesosproto.ContainerInfo_DockerInfo_PortMapping {
 	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
 	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
@@ -264,7 +224,7 @@ func (e *Scheduler) changeDiscoveryInfo(cmd cfg.Command) mesosproto.DiscoveryInf
 }
 
 // Reconcile will reconcile the task states after the framework was restarted
-func (e *Mesos) reconcile() {
+func (e *Scheduler) reconcile() {
 	var oldTasks []mesosproto.Call_Reconcile_Task
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	for keys.Next(e.Redis.CTX) {

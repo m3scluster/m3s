@@ -2910,8 +2910,8 @@ func (m *HealthCheck_TCPCheckInfo) GetPort() uint32 {
 // different policies (e.g. hitting HTTP endpoints), only controls
 // how long to wait between graceful and forcible task kill:
 //
-//     graceful kill --------------> forcible kill
-//                    grace_period
+//	graceful kill --------------> forcible kill
+//	               grace_period
 //
 // Kill policies are best-effort, because machine failures / forcible
 // terminations may occur.
@@ -4463,7 +4463,8 @@ func (*Resource_SharedInfo) Descriptor() ([]byte, []int) { return fileDescriptor
 // rate_bps   : throughput in bytes/sec
 // rate_pps   : throughput in packets/sec
 // requeues   : number of times a packet has been delayed due to
-//              locking or device contention issues
+//
+//	locking or device contention issues
 //
 // More information on the operation of Linux Traffic Control can be
 // found at http://www.lartc.org/lartc.html.
@@ -5744,11 +5745,11 @@ func (m *ResourceUsage_Executor_Task) GetLabels() *Labels {
 //
 // NOTE: Each optional field matches the name of a perf event (see
 // "perf list") with the following changes:
-// 1. Names are downcased.
-// 2. Hyphens ('-') are replaced with underscores ('_').
-// 3. Events with alternate names use the name "perf stat" returns,
-//    e.g., for the event "cycles OR cpu-cycles" perf always returns
-//    cycles.
+//  1. Names are downcased.
+//  2. Hyphens ('-') are replaced with underscores ('_').
+//  3. Events with alternate names use the name "perf stat" returns,
+//     e.g., for the event "cycles OR cpu-cycles" perf always returns
+//     cycles.
 type PerfStatistics struct {
 	Timestamp float64 `protobuf:"fixed64,1,req,name=timestamp" json:"timestamp"`
 	Duration  float64 `protobuf:"fixed64,2,req,name=duration" json:"duration"`
@@ -6692,9 +6693,10 @@ func (m *Offer_Operation_ShrinkVolume) GetSubtract() Value_Scalar {
 // (1) The CSI volume is preprovisioned out-of-band.
 //
 // (2) The CSI volume is provisioned by Mesos, but Mesos has lost the
-//     corresponding `MOUNT` or `BLOCK` resource metadata. This could
-//     happen if there has been a change in the agent ID or resource
-//     provider ID where the volume belongs.
+//
+//	corresponding `MOUNT` or `BLOCK` resource metadata. This could
+//	happen if there has been a change in the agent ID or resource
+//	provider ID where the volume belongs.
 //
 // In the above cases, Mesos won't provision a new CSI volume, but instead
 // will simply return a `MOUNT` or `BLOCK` disk resource backed by the same
@@ -6750,14 +6752,16 @@ func (m *Offer_Operation_CreateDisk) GetTargetProfile() string {
 // However, the following scenarios could lead to different outcomes:
 //
 // (1) If the CSI plugin supports volume deprovisioning but the profile of
-//     the disk resource is unknown to the disk profile adaptor, or the disk
-//     resource is a `RAW` disk with no profile but a source ID (see above
-//     for possible scenarios), the volume will be deprovisioned but no
-//     resource will be returned.
+//
+//	the disk resource is unknown to the disk profile adaptor, or the disk
+//	resource is a `RAW` disk with no profile but a source ID (see above
+//	for possible scenarios), the volume will be deprovisioned but no
+//	resource will be returned.
 //
 // (2) If the CSI plugin does not support volume deprovisioning, the volume
-//     won't be deprovisioned and a `RAW` disk resource with no profile but
-//     the same source ID will be returned.
+//
+//	won't be deprovisioned and a `RAW` disk resource with no profile but
+//	the same source ID will be returned.
 //
 // NOTE: For the time being, this API is subject to change and the related
 // feature is experimental.
@@ -7039,9 +7043,9 @@ func (m *TaskInfo) GetLimits() map[string]Value_Scalar {
 // allow the group to be launched "atomically".
 //
 // NOTES:
-// 1) `NetworkInfo` must not be set inside task's `ContainerInfo`.
-// 2) `TaskInfo.executor` doesn't need to set. If set, it should match
-//    `LaunchGroup.executor`.
+//  1. `NetworkInfo` must not be set inside task's `ContainerInfo`.
+//  2. `TaskInfo.executor` doesn't need to set. If set, it should match
+//     `LaunchGroup.executor`.
 type TaskGroupInfo struct {
 	Tasks []TaskInfo `protobuf:"bytes,1,rep,name=tasks" json:"tasks"`
 }
@@ -7062,11 +7066,11 @@ func (m *TaskGroupInfo) GetTasks() []TaskInfo {
 //
 // `Task` is used in some of the Mesos messages found below.
 // `Task` is used instead of `TaskInfo` if:
-//   1) we need additional IDs, such as a specific
-//      framework, executor, or agent; or
-//   2) we do not need the additional data, such as the command run by the
-//      task. These additional fields may be large and unnecessary for some
-//      Mesos messages.
+//  1. we need additional IDs, such as a specific
+//     framework, executor, or agent; or
+//  2. we do not need the additional data, such as the command run by the
+//     task. These additional fields may be large and unnecessary for some
+//     Mesos messages.
 //
 // `Task` is generally constructed from a `TaskInfo`.  See protobuf::createTask.
 type Task struct {
@@ -7906,10 +7910,10 @@ func (m *Secret) GetValue() *Secret_Value {
 // For example, given a back-end secret store with a secret named
 // "my-secret" containing the following key-value pairs:
 //
-//   {
-//     "username": "my-user",
-//     "password": "my-password
-//   }
+//	{
+//	  "username": "my-user",
+//	  "password": "my-password
+//	}
 //
 // the username could be referred to in a `Secret` by specifying
 // "my-secret" for the `name` and "username" for the `key`.

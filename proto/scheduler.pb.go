@@ -2,15 +2,17 @@
 // source: scheduler/scheduler.proto
 
 /*
-	Package scheduler is a generated protocol buffer package.
+Package scheduler is a generated protocol buffer package.
 
-	It is generated from these files:
-		scheduler/scheduler.proto
+It is generated from these files:
 
-	It has these top-level messages:
-		Event
-		Response
-		Call
+	scheduler/scheduler.proto
+
+It has these top-level messages:
+
+	Event
+	Response
+	Call
 */
 package mesosproto
 
@@ -879,17 +881,17 @@ func (m *Call_Subscribe) GetSuppressedRoles() []string {
 //
 // E.g. Launch a task with a newly reserved persistent volume:
 //
-//   Accept {
-//     offer_ids: [ ... ]
-//     operations: [
-//       { type: RESERVE,
-//         reserve: { resources: [ disk(role):2 ] } }
-//       { type: CREATE,
-//         create: { volumes: [ disk(role):1+persistence ] } }
-//       { type: LAUNCH,
-//         launch: { task_infos ... disk(role):1;disk(role):1+persistence } }
-//     ]
-//   }
+//	Accept {
+//	  offer_ids: [ ... ]
+//	  operations: [
+//	    { type: RESERVE,
+//	      reserve: { resources: [ disk(role):2 ] } }
+//	    { type: CREATE,
+//	      create: { volumes: [ disk(role):1+persistence ] } }
+//	    { type: LAUNCH,
+//	      launch: { task_infos ... disk(role):1;disk(role):1+persistence } }
+//	  ]
+//	}
 //
 // Note that any of the offer's resources not used in the 'Accept'
 // call (e.g., to launch a task) are considered unused and might be
@@ -1386,14 +1388,13 @@ func (m *Call_Suppress) GetRoles() []string {
 //
 // The HTTP response codes specific to this call are:
 //
-// * 200 OK: update operation was successfully completed.
-// * 400 Bad Request: the requested update is not valid.
-// * 403 Forbidden: framework is not authorized to use some entities
-//   requested by the update (e.g. not authorized to use some of the
-//   supplied roles).
-// * 409 Conflict: framework disappeared while this call was being processed
-//   (example: the framework was removed by a concurrent TEARDOWN call).
-//
+//   - 200 OK: update operation was successfully completed.
+//   - 400 Bad Request: the requested update is not valid.
+//   - 403 Forbidden: framework is not authorized to use some entities
+//     requested by the update (e.g. not authorized to use some of the
+//     supplied roles).
+//   - 409 Conflict: framework disappeared while this call was being processed
+//     (example: the framework was removed by a concurrent TEARDOWN call).
 type Call_UpdateFramework struct {
 	FrameworkInfo FrameworkInfo `protobuf:"bytes,1,req,name=framework_info,json=frameworkInfo" json:"framework_info"`
 	// List of suppressed roles for which the framework does not wish to be

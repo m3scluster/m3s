@@ -81,43 +81,14 @@
    }
   },
   {
-   "id": "b3adb5031c34ee96",
+   "id": "b197632188a39cdd",
    "name": "github.com/AVENTER-UG/mesos-util",
-   "version": "v0.0.38",
+   "version": "v0.0.43",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
      "path": "bootstrap/server"
-    }
-   ],
-   "licenses": [],
-   "language": "go",
-   "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-util:v0.0.38:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_util:v0.0.38:*:*:*:*:*:*:*"
-   ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.38",
-   "metadataType": "GolangBinMetadata",
-   "metadata": {
-    "goCompiledVersion": "go1.19.3",
-    "architecture": "amd64",
-    "h1Digest": "h1:O34N52eMBz5bcOeGVo2OdnjjD5Wuf7rvpCEMMF/8xB4="
-   }
-  },
-  {
-   "id": "811442457b27dfae",
-   "name": "github.com/AVENTER-UG/mesos-util",
-   "version": "v0.0.43",
-   "type": "go-module",
-   "foundBy": "go-mod-file-cataloger",
-   "locations": [
-    {
-     "path": "go.mod"
     }
    ],
    "licenses": [],
@@ -130,7 +101,13 @@
     "cpe:2.3:a:AVENTER:mesos-util:v0.0.43:*:*:*:*:*:*:*",
     "cpe:2.3:a:AVENTER:mesos_util:v0.0.43:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.43"
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-util@v0.0.43",
+   "metadataType": "GolangBinMetadata",
+   "metadata": {
+    "goCompiledVersion": "go1.19.3",
+    "architecture": "amd64",
+    "h1Digest": "h1:cOluIYkqQAuU+cHCOIJW2EiSI/mqfZbcYko/n9GQ9r4="
+   }
   },
   {
    "id": "9b4b4a48b932a13",
@@ -2684,11 +2661,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "811442457b27dfae",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "83410854d167cf90",
    "type": "contains"
   },
@@ -2799,6 +2771,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b197632188a39cdd",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b1e52aac25b4635c",
    "type": "contains"
   },
@@ -2820,11 +2797,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b39052dd164cd518",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b3adb5031c34ee96",
    "type": "contains"
   },
   {

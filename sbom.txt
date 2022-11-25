@@ -1,7 +1,6 @@
 NAME                                             VERSION                             TYPE      
 github.com/AVENTER-UG/go-logrus-formatter        v0.5.4                              go-module  
 github.com/AVENTER-UG/mesos-m3s                  (devel)                             go-module  
-github.com/AVENTER-UG/mesos-util                 v0.0.38                             go-module  
 github.com/AVENTER-UG/mesos-util                 v0.0.43                             go-module  
 github.com/AVENTER-UG/util                       v0.5.2                              go-module  
 github.com/Showmax/go-fqdn                       v1.0.0                              go-module  
