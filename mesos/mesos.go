@@ -88,6 +88,7 @@ func (e *Mesos) Call(message *mesosproto.Call) error {
 	body, _ := marshaller.MarshalToString(message)
 
 	client := &http.Client{}
+	// #nosec G402
 	client.Transport = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
@@ -166,6 +167,7 @@ func (e *Mesos) DeclineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
 }
 
 // IsRessourceMatched - check if the ressources of the offer are matching the needs of the cmd
+// nolint:gocycle
 func (e *Mesos) IsRessourceMatched(ressource []mesosproto.Resource, cmd cfg.Command) bool {
 	mem := false
 	cpu := false
@@ -247,6 +249,7 @@ func (e *Mesos) GetNetworkInfo(taskID string) []mesosproto.NetworkInfo {
 // GetAgentInfo get information about the agent
 func (e *Mesos) GetAgentInfo(agentID string) cfg.MesosSlaves {
 	client := &http.Client{}
+	// #nosec G402
 	client.Transport = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
