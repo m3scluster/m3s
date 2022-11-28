@@ -122,5 +122,6 @@ func (e *Scheduler) ReconcileLoop() {
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		go e.reconcile()
+		go e.implicitReconcile()
 	}
 }

@@ -1,5 +1,9 @@
 # Changelog
 
+## master
+
+- Add implicit reconcile to remove unknown Mesos Tasks
+
 ## v0.4.0
 
 - Fix docker user defined network.

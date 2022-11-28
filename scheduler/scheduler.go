@@ -223,7 +223,7 @@ func (e *Scheduler) changeDiscoveryInfo(cmd cfg.Command) mesosproto.DiscoveryInf
 	return cmd.Discovery
 }
 
-// Reconcile will reconcile the task states after the framework was restarted
+// reconcile will ask Mesos about the current state of the given tasks
 func (e *Scheduler) reconcile() {
 	var oldTasks []mesosproto.Call_Reconcile_Task
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
@@ -258,6 +258,20 @@ func (e *Scheduler) reconcile() {
 
 	if err != nil {
 		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
-		logrus.WithField("func", "mesos.Reconcile").Debug("Reconcile Error: ", err)
+		logrus.WithField("func", "scheduler.reconcile").Debug("Reconcile Error: ", err)
+	}
+}
+
+// implicitReconcile will ask Mesos which tasks and there state are registert to this framework
+func (e *Scheduler) implicitReconcile() {
+	var noTasks []mesosproto.Call_Reconcile_Task
+	err := e.Mesos.Call(&mesosproto.Call{
+		Type:      mesosproto.Call_RECONCILE,
+		Reconcile: &mesosproto.Call_Reconcile{Tasks: noTasks},
+	})
+
+	if err != nil {
+		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
+		logrus.WithField("func", "scheduler.implicitReconcile").Debug("Reconcile Error: ", err)
 	}
 }
