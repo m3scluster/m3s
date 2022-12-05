@@ -22,6 +22,7 @@ The following environment variables are available:
 | DOCKER_CNI            | bride | If we do not use Mesos CNI, we can also use docker network |
 | DOCKER_SOCK           | | The docker sock file |
 | DOCKER_ULIMIT         | 1048576 | Number of max open files (soft and hardlimit)  |
+| DOCKER_MEMORY_SWAP    | 1000 | Limit how much memory swap the container could use (in MB)|
 | DOMAIN                | .local | The domain of the hostnames. As example, if you use weave cni, it would be weave.local |
 | AUTH_USERNAME         | | Username to authenticate against these framework |
 | AUTH_PASSWORD         | | Password to authenticate against these framework |
@@ -31,11 +32,11 @@ The following environment variables are available:
 | K3S_CONTAINER_DISK    | 30gb | Disk size of the K3S container |
 | K3S_SERVER_STRING     | /usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan | These is the string we will use to start the K3s server. M3s will add several other parameters. |
 | K3S_SERVER_CPU        | 0.1 | Resources for the K3s Server container |
-| K3S_SERVER_MEM        | 1200 | |
+| K3S_SERVER_MEM        | 2000 | Memory limit (in MB) |
 | K3S_SERVER_CONSTRAINT | <hostname> | Tell Mesos to start the K3s server on this hostname |
 | K3S_AGENT_STRING      | /usr/local/bin/k3s agent --snapshotter=native --flannel-backend=vxlan | These is the string we will use to start the K3s agent. M3s will add several other parameters. |
 | K3S_AGENT_CPU         | 0.1 | Resources for the K3s Agent container |
-| K3S_AGENT_MEM         | 1200 | |
+| K3S_AGENT_MEM         | 2000 | Memory limit (in MB) |
 | K3S_AGENT_LABELS | [{"key":"traefik.enable","value":"true"},{"key":"traefik.http.routers.m3s.entrypoints","value":"web"},{"key":"traefik.http.routers.m3s.service","value":"m3s-http"},{"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}] | Configure custom labels for the container. In these example, we will use lables for traefik. |
 | RECONCILE_WAIT        | 10m | Ask every 'n minutes to ask Mesos about the state of the currents tasks'
 | REDIS_PASSWORD        | | Redis Passwort for authentication |
