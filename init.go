@@ -47,6 +47,7 @@ func init() {
 	config.DockerSock = os.Getenv("DOCKER_SOCK")
 	config.DockerSHMSize = util.Getenv("DOCKER_SHM_SIZE", "30gb")
 	config.DockerUlimit = util.Getenv("DOCKER_ULIMIT", "1048576")
+	config.DockerMemorySwap, _ = strconv.ParseFloat(util.Getenv("DOCKER_MEMORY_SWAP", "1000"), 64)
 	config.DockerCNI = util.Getenv("DOCKER_CNI", "bridge")
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)

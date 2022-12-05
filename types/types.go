@@ -30,6 +30,7 @@ type Config struct {
 	DSMySQLSSL                  bool
 	DockerSock                  string
 	DockerSHMSize               string
+	DockerMemorySwap            float64
 	DockerUlimit                string
 	Domain                      string
 	DockerCNI                   string
