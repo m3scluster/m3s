@@ -202,50 +202,6 @@ func (e *Mesos) IsRessourceMatched(ressource []mesosproto.Resource, cmd cfg.Comm
 	return mem && cpu && ports
 }
 
-// GetNetworkInfo get network info of task
-func (e *Mesos) GetNetworkInfo(taskID string) []mesosproto.NetworkInfo {
-	client := &http.Client{}
-	// #nosec G402
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	protocol := "https"
-	if !e.Framework.MesosSSL {
-		protocol = "http"
-	}
-	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/tasks/?task_id="+taskID+"&framework_id="+e.Framework.FrameworkInfo.ID.GetValue(), nil)
-	req.Close = true
-	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
-	req.Header.Set("Content-Type", "application/json")
-	res, err := client.Do(req)
-
-	if err != nil {
-		logrus.WithField("func", "getNetworkInfo").Error("Could not connect to mesos-master: ", err.Error())
-		return []mesosproto.NetworkInfo{}
-	}
-
-	defer res.Body.Close()
-
-	var task cfg.MesosTasks
-	err = json.NewDecoder(res.Body).Decode(&task)
-	if err != nil {
-		logrus.WithField("func", "getAgentInfo").Error("Could not encode json result: ", err.Error())
-		return []mesosproto.NetworkInfo{}
-	}
-
-	if len(task.Tasks) > 0 {
-		for _, status := range task.Tasks[0].Statuses {
-			if status.State == "TASK_RUNNING" {
-				var netw []mesosproto.NetworkInfo
-				netw = append(netw, status.ContainerStatus.NetworkInfos[0])
-				return netw
-			}
-		}
-	}
-	return []mesosproto.NetworkInfo{}
-}
-
 // GetAgentInfo get information about the agent
 func (e *Mesos) GetAgentInfo(agentID string) cfg.MesosSlaves {
 	client := &http.Client{}
@@ -294,4 +250,55 @@ func (e *Mesos) GetAgentInfo(agentID string) cfg.MesosSlaves {
 	}
 
 	return cfg.MesosSlaves{}
+}
+
+// GetNetworkInfo get network info of task
+func (e *Mesos) GetNetworkInfo(taskID string) []mesosproto.NetworkInfo {
+	task := e.GetTaskInfo(taskID)
+
+	if len(task.Tasks) > 0 {
+		for _, status := range task.Tasks[0].Statuses {
+			if status.State == "TASK_RUNNING" {
+				var netw []mesosproto.NetworkInfo
+				netw = append(netw, status.ContainerStatus.NetworkInfos[0])
+				return netw
+			}
+		}
+	}
+	return []mesosproto.NetworkInfo{}
+}
+
+// GetTaskInfo get the task object to the given ID
+func (e *Mesos) GetTaskInfo(taskID string) cfg.MesosTasks {
+	client := &http.Client{}
+	// #nosec G402
+	client.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	protocol := "https"
+	if !e.Framework.MesosSSL {
+		protocol = "http"
+	}
+	req, _ := http.NewRequest("POST", protocol+"://"+e.Framework.MesosMasterServer+"/tasks/?task_id="+taskID+"&framework_id="+e.Framework.FrameworkInfo.ID.GetValue(), nil)
+	req.Close = true
+	req.SetBasicAuth(e.Framework.Username, e.Framework.Password)
+	req.Header.Set("Content-Type", "application/json")
+	res, err := client.Do(req)
+
+	if err != nil {
+		logrus.WithField("func", "mesos.GetTaskInfo").Error("Could not connect to mesos-master: ", err.Error())
+		return cfg.MesosTasks{}
+	}
+
+	defer res.Body.Close()
+
+	var task cfg.MesosTasks
+	err = json.NewDecoder(res.Body).Decode(&task)
+	if err != nil {
+		logrus.WithField("func", "mesos.GetTaskInfo").Error("Could not encode json result: ", err.Error())
+		return cfg.MesosTasks{}
+	}
+
+	return task
 }

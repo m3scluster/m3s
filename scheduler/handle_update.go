@@ -24,14 +24,18 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	// get the task of the current event, change the state and get some info's we need for later use
 	task := e.Redis.GetTaskFromEvent(update)
 
-	// if these object have not TaskID it, invalid
+	// if these object have not TaskID it's currently unknown by these framework.
 	if task.TaskID == "" {
-		return nil
+		logrus.WithField("func", "scheduler.HandleUpdate").Info("Could not found Task in Redis: ", update.Status.TaskID.Value)
+
+		if *update.Status.State != mesosproto.TASK_LOST {
+			e.Mesos.Kill(update.Status.TaskID.Value, update.Status.AgentID.Value)
+		}
 	}
 
 	task.State = update.Status.State.String()
 
-	logrus.WithField("func", "HandleUpdate").Debugf("Task State: %s %s", task.State, task.TaskID)
+	logrus.WithField("func", "scheduler.HandleUpdate").Debugf("Task State: %s %s", task.State, task.TaskID)
 
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED, mesosproto.TASK_KILLED, mesosproto.TASK_LOST, mesosproto.TASK_ERROR, mesosproto.TASK_FINISHED:
