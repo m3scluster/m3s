@@ -42,6 +42,7 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 			if newCount < oldCount {
 				e.Mesos.Kill(task.TaskID, task.MesosAgent.ID)
+				e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
 				logrus.Debug("V0ScaleK3SAgent: ", task.TaskID)
 			}
 			if newCount > oldCount {

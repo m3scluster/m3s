@@ -7,6 +7,7 @@ import (
 )
 
 var reviveLock bool
+var suppressLock bool
 
 // Heartbeat function for mesos
 func (e *Scheduler) Heartbeat() {
@@ -20,26 +21,35 @@ func (e *Scheduler) Heartbeat() {
 	k3sState := e.healthCheckK3s()
 	k3sAgenteState := e.healthCheckAgent()
 
+	if !k3sState || !k3sAgenteState || !dsState {
+		if !reviveLock {
+			e.Mesos.Revive()
+			reviveLock = true
+		}
+		suppressLock = false
+	}
+
 	// if DataStorage container is not running or unhealthy, fix it.
 	if !dsState {
-		go e.scheduleRevive()
 		e.StartDatastore("")
 	}
 
 	// if Datastorage is running and K3s not, deploy K3s
 	if dsState && !k3sState {
-		go e.scheduleRevive()
 		e.StartK3SServer("")
 	}
 
 	// if k3s is running, deploy the agent
 	if k3sState && !k3sAgenteState {
-		go e.scheduleRevive()
 		e.StartK3SAgent("")
 	}
 
 	if k3sState && k3sAgenteState && dsState {
-		e.Mesos.SuppressFramework()
+		if !suppressLock {
+			e.Mesos.SuppressFramework()
+			suppressLock = true
+			reviveLock = false
+		}
 		e.API.ScheduleCleanup()
 	}
 }
@@ -63,7 +73,6 @@ func (e *Scheduler) CheckState() {
 		}
 
 		if task.State == "" && e.Redis.CountRedisKey(task.TaskName+":*", "") <= task.Instances {
-			go e.scheduleRevive()
 			task.State = "__NEW"
 
 			// these will save the current time at the task. we need it to check
@@ -90,24 +99,10 @@ func (e *Scheduler) CheckState() {
 	}
 }
 
-// scheduleRevive - Schedule Revive Tasks
-func (e *Scheduler) scheduleRevive() {
-	if reviveLock {
-		return
-	}
-	logrus.WithField("func", "mesos.scheduleRevive").Debug("Schedule Revive")
-	reviveLock = true
-
-	// nolint:gosimple
-	select {
-	case <-time.After(e.Config.ReviveLoopTime):
-		e.Mesos.Revive()
-	}
-	reviveLock = false
-}
-
 // HeartbeatLoop - The main loop for the hearbeat
 func (e *Scheduler) HeartbeatLoop() {
+	suppressLock = false
+	reviveLock = true
 	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {

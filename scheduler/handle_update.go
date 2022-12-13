@@ -52,7 +52,6 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 		task.MesosAgent = e.Mesos.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = e.Mesos.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
-		e.Mesos.SuppressFramework()
 	}
 
 	e.Redis.SaveTaskRedis(task)
