@@ -73,6 +73,7 @@ func (e *Scheduler) CheckState() {
 		}
 
 		if task.State == "" && e.Redis.CountRedisKey(task.TaskName+":*", "") <= task.Instances {
+			e.Mesos.Revive()
 			task.State = "__NEW"
 
 			// these will save the current time at the task. we need it to check
