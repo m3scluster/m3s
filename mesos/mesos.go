@@ -226,11 +226,12 @@ func (e *Mesos) GetAgentInfo(agentID string) cfg.MesosSlaves {
 	req.Header.Set("Content-Type", "application/json")
 	res, err := client.Do(req)
 
+	if err != nil {
+		logrus.WithField("func", "getAgentInfo").Error("Could not connect to agent: ", err.Error())
+		return cfg.MesosSlaves{}
+	}
+
 	if res.StatusCode == http.StatusOK {
-		if err != nil {
-			logrus.WithField("func", "getAgentInfo").Error("Could not connect to agent: ", err.Error())
-			return cfg.MesosSlaves{}
-		}
 
 		defer res.Body.Close()
 
