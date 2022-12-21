@@ -14,7 +14,8 @@ import (
 // example:
 // curl -X GET 127.0.0.1:10000/v0/status/k8s
 func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
-	logrus.Debug("HTTP GET V0StatusK8s ")
+	logrus.WithField("func", "api.V0StatusK3s").Debug("Call")
+
 	vars := mux.Vars(r)
 
 	if vars == nil || !e.CheckAuth(r, w) {
@@ -32,21 +33,21 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("StatusK8s: Error 1: ", err, res)
+		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
 		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		logrus.Error("StatusK8s: Error Status is not 200")
+		logrus.WithField("func", "V0StatusK3s").Error("Response Code: ", res.StatusCode)
 		return
 	}
 
 	content, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		logrus.Error("StatusK8s: Error 2: ", err, res)
+		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
 		return
 	}
 

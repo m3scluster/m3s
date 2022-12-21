@@ -12,6 +12,8 @@ import (
 // example:
 // curl -X GET 127.0.0.1:10000/v0/status/m3s -d 'JSON'
 func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
+	logrus.WithField("func", "api.V0StatusM3s").Debug("Call")
+
 	vars := mux.Vars(r)
 
 	if vars == nil || !e.CheckAuth(r, w) {
@@ -22,8 +24,6 @@ func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	status := e.Config.M3SStatus
 
 	d, _ := json.Marshal(&status)
-
-	logrus.Debug("HTTP GET V0StatusM3s: ", string(d))
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")

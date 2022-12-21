@@ -12,6 +12,8 @@ import (
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/etcd/scale/{count of instances} -d 'JSON'
 func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
+	logrus.WithField("func", "api.V0ScaleDatastore").Debug("Call")
+
 	vars := mux.Vars(r)
 	auth := e.CheckAuth(r, w)
 
@@ -23,7 +25,8 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 	if vars["count"] != "" {
 		newCount, _ := strconv.Atoi(vars["count"])
 		oldCount := e.Config.DSMax
-		logrus.Debug("V0ScaleDatastore: oldCount: ", oldCount)
+		logrus.WithField("func", "api.V0ScaleDatastore").Debug("Scale current: ", oldCount)
+
 		e.Config.DSMax = newCount
 
 		d = []byte(strconv.Itoa(newCount - oldCount))
@@ -42,7 +45,7 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 
 			if newCount < oldCount {
 				e.Mesos.Kill(task.TaskID, task.Agent)
-				logrus.Debug("V0ScaleDatastore: ", task.TaskID)
+				logrus.WithField("func", "api.V0ScaleDatastore").Debug("TaskID: ", task.TaskID)
 			}
 			if newCount > oldCount {
 				e.Mesos.Revive()
@@ -51,7 +54,6 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	logrus.Debug("HTTP GET V0ScaleDatastore: ", string(d))
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write(d)

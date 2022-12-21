@@ -13,14 +13,14 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 	var offerret mesosproto.Offer
 	if cmd.TaskName != "" {
 		// if the constraints does not match, return an empty offer
-		logrus.Debug("Get Offer for: ", cmd.TaskName)
+		logrus.WithField("func", "scheduler.getOffer").Debug("Get Offer for: ", cmd.TaskName)
 		for n, offer := range offers.Offers {
-			logrus.Debug("Got Offer From:", offer.GetHostname())
+			logrus.WithField("func", "scheduler.getOffer").Debug("Got Offer From:", offer.GetHostname())
 			offerIds = append(offerIds, offer.ID)
 
 			// if the ressources of this offer does not matched what the command need, the skip
 			if !e.Mesos.IsRessourceMatched(offer.Resources, cmd) {
-				logrus.Debug("Could not found any matched ressources, get next offer")
+				logrus.WithField("func", "scheduler.getOffer").Debug("Could not found any matched ressources, get next offer")
 				e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 				continue
 			}
@@ -29,7 +29,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 				if e.Config.K3SServerConstraintHostname == "" {
 					offerret = offers.Offers[n]
 				} else if e.Config.K3SServerConstraintHostname == offer.GetHostname() {
-					logrus.Debug("Set Server Constraint to:", offer.GetHostname())
+					logrus.WithField("func", "scheduler.getOffer").Debug("Set Server Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
 			}
@@ -37,7 +37,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 				if e.Config.K3SAgentConstraintHostname == "" {
 					offerret = offers.Offers[n]
 				} else if e.Config.K3SAgentConstraintHostname == offer.GetHostname() {
-					logrus.Debug("Set Agent Constraint to:", offer.GetHostname())
+					logrus.WithField("func", "scheduler.getOffer").Debug("Set Agent Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
 			}
@@ -45,7 +45,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 				if e.Config.DSConstraintHostname == "" {
 					offerret = offers.Offers[n]
 				} else if e.Config.DSConstraintHostname == offer.GetHostname() {
-					logrus.Debug("Set Datastore Constraint to:", offer.GetHostname())
+					logrus.WithField("func", "scheduler.getOffer").Debug("Set Datastore Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
 			}
@@ -84,10 +84,10 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 			e.Framework.CommandChan <- cmd
 			return nil
 		}
-		logrus.Debug("Take Offer From:", takeOffer.GetHostname())
+		logrus.WithField("func", "scheduler.HandleOffers").Debug("Take Offer From:", takeOffer.GetHostname())
 		// if the offer does not have id's, we skip it and restore the chan.
 		if takeOffer.ID.Value == "" {
-			logrus.WithField("func", "HandleOffers").Error("OfferIds are empty.")
+			logrus.WithField("func", "schueduler.HandleOffers").Error("OfferIds are empty.")
 			e.Framework.CommandChan <- cmd
 			return nil
 		}
@@ -119,20 +119,20 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 						TaskInfos: taskInfo,
 					}}}}}
 
-		logrus.Info("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
+		logrus.WithField("func", "scheduler.HandleOffers").Debug("Offer Accept: ", takeOffer.GetID(), " On Node: ", takeOffer.GetHostname())
 		err := e.Mesos.Call(accept)
 		if err != nil {
-			logrus.Error("Handle Offers: ", err)
+			logrus.WithField("func", "scheduler.HandleOffers").Error(err.Error())
 			return err
 		}
 		// decline unneeded offer
-		logrus.Info("Offer Decline: ", offerIds)
+		logrus.WithField("func", "scheduler.HandleOffers").Debug("Offer Decline: ", offerIds)
 		return e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 
 	default:
 		// decline unneeded offer
 		_, offerIds := e.Mesos.GetOffer(offers, cfg.Command{})
-		logrus.Info("Decline unneeded offer: ", offerIds)
+		logrus.WithField("func", "scheduler.HandleOffers").Debug("Decline unneeded offer: ", offerIds)
 		return e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 	}
 }

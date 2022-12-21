@@ -13,7 +13,7 @@ import (
 // example:
 // curl -X GET 127.0.0.1:10000/v0/bootstrap/update'
 func (e *API) V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
-	logrus.Debug("HTTP PUT V0UpdateBootstrap")
+	logrus.WithField("func", "api.V0UpdateBootstrap").Debug("Call")
 
 	if !e.CheckAuth(r, w) {
 		return
@@ -30,20 +30,21 @@ func (e *API) V0UpdateBootstrap(w http.ResponseWriter, r *http.Request) {
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("V0UpdateBootstrap: Error 1: ", err.Error(), res)
+		logrus.WithField("func", "V0UpdateBootstrap").Error(err.Error())
 		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		logrus.Error("V0UpdateBootstrap: Error Status is not 200")
+		logrus.WithField("func", "V0UpdateBootstrap").Error("Response Code: ", res.StatusCode)
 		return
 	}
 
 	content, err := io.ReadAll(res.Body)
+
 	if err != nil {
-		logrus.Error("V0UpdateBootstrap: ", err.Error())
+		logrus.WithField("func", "V0UpdateBootstrap").Error(err.Error())
 		return
 	}
 

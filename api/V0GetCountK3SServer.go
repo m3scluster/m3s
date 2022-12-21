@@ -12,6 +12,8 @@ import (
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/server/scale'
 func (e *API) V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
+	logrus.WithField("func", "api.V0GetCountK3SServer").Debug("Count K3S Server")
+
 	if !e.CheckAuth(r, w) {
 		return
 	}
@@ -24,11 +26,9 @@ func (e *API) V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
 	d, err := json.Marshal(count)
 
 	if err != nil {
-		logrus.Error("V0GetCountK3SServer Error 1: ", err)
+		logrus.WithField("func", "api.V0GetCountK3SServer").Error(err.Error())
 		return
 	}
-
-	logrus.Debug("HTTP GET V0GetCountK3SServer")
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")

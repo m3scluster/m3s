@@ -14,7 +14,7 @@ import (
 // example:
 // curl -X GET 127.0.0.1:10000/api/m3s/v0/server/config"
 func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
-	logrus.Debug("HTTP GET V0GetKubeconfig")
+	logrus.WithField("func", "api.V0GetKubeconfig").Debug("Call")
 
 	if !e.CheckAuth(r, w) {
 		return
@@ -31,21 +31,21 @@ func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("V0GetKubeConfig: Error 1: ", err, res)
+		logrus.WithField("func", "V0GetKubeconfig").Error(err.Error())
 		return
 	}
 
 	defer res.Body.Close()
 
 	if res.StatusCode != 200 {
-		logrus.Error("V0GetKubeConfig: Error Status is not 200")
+		logrus.WithField("func", "V0GetKubeconfig").Error("Response Code: ", res.StatusCode)
 		return
 	}
 
 	content, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		logrus.Error("V0GetKubeConfig: Error 2: ", err, res)
+		logrus.WithField("func", "V0GetKubeconfig").Error(err.Error())
 		return
 	}
 

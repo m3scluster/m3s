@@ -12,6 +12,8 @@ import (
 // example:
 // curl -X GET http://user:password@127.0.0.1:10000/v0/server/scale/{count of instances} -d 'JSON'
 func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
+	logrus.WithField("func", "api.V0ScaleK3SServer").Debug("Call")
+
 	vars := mux.Vars(r)
 
 	if vars == nil || !e.CheckAuth(r, w) {
@@ -23,7 +25,7 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 	if vars["count"] != "" {
 		newCount, _ := strconv.Atoi(vars["count"])
 		oldCount := e.Config.K3SServerMax
-		logrus.Debug("V0ScaleK3SServer: oldCount: ", oldCount)
+		logrus.WithField("func", "api.V0ScaleK3SServer").Debug("Scale current: ", oldCount)
 		e.Config.K3SServerMax = newCount
 
 		d = []byte(strconv.Itoa(newCount - oldCount))
@@ -42,7 +44,7 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 
 			if newCount < oldCount {
 				e.Mesos.Kill(task.TaskID, task.Agent)
-				logrus.Debug("V0ScaleK3SServer: ", task.TaskID)
+				logrus.WithField("func", "api.V0ScaleK3SServer").Debug("TaskID: ", task.TaskID)
 			}
 			if newCount > oldCount {
 				e.Mesos.Revive()
@@ -51,7 +53,6 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	logrus.Debug("HTTP GET V0ScaleK3SServer: ", string(d))
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write(d)
