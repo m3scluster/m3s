@@ -4,6 +4,7 @@
 
 - Add implicit reconcile to remove unknown Mesos Tasks
 - Add limitation of memory swap (DOCKER_MEMORY_SWAP, default value "1000" MB) the container can use
+- Add API and cli to shutdown the K8 cluster (does not delete persistence volumes)
 
 ## v0.4.0
 

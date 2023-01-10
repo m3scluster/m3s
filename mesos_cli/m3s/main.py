@@ -19,6 +19,11 @@ The m3s plugin.
 """
 
 import toml
+import cli
+import json
+
+from urllib.parse import urlencode
+import urllib3
 
 from cli.exceptions import CLIException
 from cli.plugins import PluginBase
@@ -80,7 +85,45 @@ class M3s(PluginBase):
             "short_help": "Scale up/down the Manager or Agent of Kubernetes",
             "long_help": "Scale up/down the Manager or Agent of Kubernetes",
         },
+        "cluster": {
+            "arguments": ["<framework-name>", "<operations>"],
+            "flags": {},
+            "short_help": "Control the Kubernetes cluster",
+            "long_help": "Control the Kubernetes cluster\noperations:\n\tstop - stop the Kubernetes cluster\n",
+        },
     }
+    def cluster(self, argv):
+        """
+        Control the Kubernetes cluster
+        """
+
+        try:
+            master = self.config.master()
+            config = self.config
+            # pylint: disable=attribute-defined-outside-init
+            self.m3sconfig = self._get_config()
+            self.framework_name = argv["<framework-name>"]
+        except Exception as exception:
+            raise CLIException(
+                "Unable to get leading master address: {error}".format(error=exception)
+            ) from exception
+
+        if argv["<operations>"] == "stop":
+            print("Shutdown Kubernetes Cluster")
+
+            framework_address = get_framework_address(
+                self.get_framework_id(argv), master, config
+            )
+            data = self.write_endpoint(
+                framework_address,
+                "/api/m3s/v0/cluster/shutdown",
+                self,
+                "PUT"
+            )
+            print(data)
+        else:
+            print("Nothing to scale")
+
 
     def scale(self, argv):
         """
@@ -281,3 +324,47 @@ class M3s(PluginBase):
             ) from exception
 
         return data
+
+    def write_endpoint(self, addr, endpoint, config, method, filename=None):
+        """
+        Read the specified endpoint and return the results.
+        """
+
+        try:
+            addr = cli.util.sanitize_address(addr)
+        except Exception as exception:
+            raise CLIException(
+                "Unable to sanitize address '{addr}': {error}".format(
+                    addr=addr, error=str(exception)
+                )
+            )
+        try:
+            url = "{addr}{endpoint}".format(addr=addr, endpoint=endpoint)
+            if config.principal() is not None and config.secret() is not None:
+                headers = urllib3.make_headers(
+                    basic_auth=config.principal() + ":" + config.secret(),
+                )
+            else:
+                headers = None
+            http = urllib3.PoolManager()
+            content = ""
+            if filename is not None:
+                data = open(filename, "rb")
+                content = data.read()
+            http_response = http.request(
+                method,
+                url,
+                headers=headers,
+                body=content,
+                timeout=config.agent_timeout(),
+            )
+            return http_response.data.decode("utf-8")
+
+        except Exception as exception:
+            raise CLIException(
+                "Unable to open url '{url}': {error}".format(
+                    url=url, error=str(exception)
+                )
+            )
+        
+    

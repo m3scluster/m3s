@@ -8,9 +8,12 @@ import (
 
 // HandleUpdate will handle the offers event of mesos
 func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
-	logrus.Debug("HandleUpdate")
-
 	update := event.Update
+
+	if update.Status.UUID == nil {
+		logrus.WithField("func", "scheduler.HandleUpdate").Debug("UUID is not set")
+		return nil
+	}
 
 	msg := &mesosproto.Call{
 		Type: mesosproto.Call_ACKNOWLEDGE,

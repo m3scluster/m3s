@@ -23,38 +23,22 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 	d := e.ErrorMessage(0, "V0ScaleK3SAgent", "ok")
 
 	if vars["count"] != "" {
-		newCount, _ := strconv.Atoi(vars["count"])
-		oldCount := e.Config.K3SAgentMax
-		logrus.WithField("func", "api.V0ScaleK3SAgent").Debug("Scale current: ", oldCount)
-		e.Config.K3SAgentMax = newCount
-
-		d = []byte(strconv.Itoa(newCount - oldCount))
-
-		// Save current config
-		e.Redis.SaveConfig(*e.Config)
-
-		// if scale down, kill not needes agents
-		keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
-
-		for keys.Next(e.Redis.CTX) {
-			key := e.Redis.GetRedisKey(keys.Val())
-			task := e.Mesos.DecodeTask(key)
-			task.Instances = newCount
-			e.Redis.SaveTaskRedis(task)
-
-			if newCount < oldCount {
-				e.Mesos.Kill(task.TaskID, task.MesosAgent.ID)
-				e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
-				logrus.WithField("func", "api.V0ScaleK3SAgent").Debug("TaskID: ", task.TaskID)
-			}
-			if newCount > oldCount {
-				e.Mesos.Revive()
-			}
-			oldCount = oldCount - 1
+		count, err := strconv.Atoi(vars["count"])
+		if err != nil {
+			logrus.WithField("func", "api.V0ScaleK3SAgent").Error("Error: ", err.Error())
+			return
 		}
+		d = e.scaleAgent(count)
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write(d)
+}
+
+// scaleAgent - can scale up and down the K8 worker nodes
+func (e *API) scaleAgent(count int) []byte {
+	r := e.scale(count, e.Config.K3SAgentMax, ":agent:*")
+	e.Config.K3SAgentMax = count
+	return r
 }
