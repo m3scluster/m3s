@@ -19,6 +19,7 @@ authorityKeyIdentifier=keyid:always,issuer
 basicConstraints = CA:true
 
 [req_distinguished_name]
+commonName = ${NAME}.${DOMAIN}
 countryName = DE
 stateOrProvinceName = SH
 localityName = EN
