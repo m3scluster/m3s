@@ -140,7 +140,7 @@ func (e *Scheduler) EventLoop() {
 // Generate "num" numbers of random host portnumbers
 func (e *Scheduler) getRandomHostPort(num int) uint32 {
 	// search two free ports
-	for i := e.Framework.PortRangeFrom; i < e.Framework.PortRangeTo; i++ {
+	for i := (e.Framework.PortRangeFrom + 1); i < e.Framework.PortRangeTo; i++ {
 		port := uint32(i)
 		use := false
 		for x := 0; x < num; x++ {
@@ -210,7 +210,9 @@ func (e *Scheduler) changeDockerPorts(cmd cfg.Command) []mesosproto.ContainerInf
 	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
 	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
 	for n, port := range cmd.DockerPortMappings {
-		port.HostPort = hostPort + uint32(n)
+		if port.HostPort == 0 {
+			port.HostPort = hostPort + uint32(n)
+		}
 		ret = append(ret, port)
 	}
 	return ret

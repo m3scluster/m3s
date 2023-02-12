@@ -93,7 +93,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Protocol:      &protocol,
 		},
 		{
-			HostPort:      0,
+			HostPort:      uint32(e.Framework.PortRangeFrom),
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
