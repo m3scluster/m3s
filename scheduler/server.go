@@ -21,7 +21,6 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd := e.defaultCommand(taskID)
 
 	cmd.Shell = true
-	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Privileged = true
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Memory = e.Config.K3SServerMEM

@@ -17,8 +17,11 @@ help:
 
 .DEFAULT_GOAL := all
 
-build:
-	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags "-X main.BuildVersion=${BUILDDATE} -X main.GitVersion=${TAG} -X main.VersionURL=${VERSION_URL} -extldflags \"-static\"" -o server server.go
+build-arm:
+	@CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -a -installsuffix cgo -ldflags "-X main.BuildVersion=${BUILDDATE}/ARM -X main.GitVersion=${TAG} -X main.VersionURL=${VERSION_URL} -extldflags \"-static\"" -o server.arm64 server.go
+
+build: build-arm
+	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags "-X main.BuildVersion=${BUILDDATE} -X main.GitVersion=${TAG} -X main.VersionURL=${VERSION_URL} -extldflags \"-static\"" -o server.amd64 server.go
 
 version:
 	@echo ">>>> Generate version file"
