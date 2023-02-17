@@ -87,8 +87,16 @@ func (e *Scheduler) healthCheckDatastore() bool {
 		key := e.Redis.GetRedisKey(keys.Val())
 		task := e.Mesos.DecodeTask(key)
 		if task.State == "TASK_RUNNING" && len(task.NetworkInfo) > 0 {
-			if e.connectPort(task.MesosAgent.Hostname, task.DockerPortMappings[0].GetHostPort()) {
-				dsState = true
+			// if the framework is running as container, and the task hostname is the same like the frameworks one,
+			// then use the containerport instead of the random hostport
+			if e.Config.DockerRunning && (task.MesosAgent.Hostname == e.Config.Hostname) {
+				if e.connectPort(task.Hostname, task.DockerPortMappings[0].GetContainerPort()) {
+					dsState = true
+				}
+			} else {
+				if e.connectPort(task.MesosAgent.Hostname, task.DockerPortMappings[0].GetHostPort()) {
+					dsState = true
+				}
 			}
 		}
 	}

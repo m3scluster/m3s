@@ -49,6 +49,7 @@ func init() {
 	config.DockerUlimit = util.Getenv("DOCKER_ULIMIT", "1048576")
 	config.DockerMemorySwap, _ = strconv.ParseFloat(util.Getenv("DOCKER_MEMORY_SWAP", "1000"), 64)
 	config.DockerCNI = util.Getenv("DOCKER_CNI", "bridge")
+	config.DockerRunning = strings.Compare(os.Getenv("DOCKER_RUNNING"), "true") == 0
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
@@ -59,7 +60,7 @@ func init() {
 	config.DSMySQLPassword = util.Getenv("DS_MYSQL_PASSWORD", "password")
 	config.DSMySQLSSL = stringToBool(util.Getenv("DS_MYSQL_SSL", "false"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
-	config.K3SServerContainerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", "6443"))
+	config.K3SServerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", "6443"))
 	config.K3SServerCPU, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU", "0.1"), 64)
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "2000"), 64)
 	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan ")

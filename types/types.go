@@ -32,6 +32,7 @@ type Config struct {
 	DockerSHMSize               string
 	DockerMemorySwap            float64
 	DockerUlimit                string
+	DockerRunning               bool
 	Domain                      string
 	DockerCNI                   string
 	EventLoopTime               time.Duration

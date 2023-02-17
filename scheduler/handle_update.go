@@ -46,15 +46,21 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 		e.API.CleanupNodes()
 		return e.Mesos.Call(msg)
 	case mesosproto.TASK_RUNNING:
-		// remember information for the boostrap server to reach it later
-		if task.TaskName == e.Framework.FrameworkName+":server" {
-			e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
-			e.Config.K3SServerPort = int(task.DockerPortMappings[1].HostPort)
-		}
-
 		task.MesosAgent = e.Mesos.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = e.Mesos.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
+		// remember information for the boostrap server to reach it later
+		if task.TaskName == e.Framework.FrameworkName+":server" {
+			// if the framework is running as container, and the task hostname is the same like the frameworks one,
+			// then use the containerport instead of the random hostport
+			if e.Config.DockerRunning && (task.MesosAgent.Hostname == e.Config.Hostname) {
+				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].ContainerPort)
+				e.Config.K3SServerHostname = task.Hostname
+			} else {
+				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
+			}
+			e.Config.K3SServerPort = int(task.DockerPortMappings[1].HostPort)
+		}
 	}
 
 	e.Redis.SaveTaskRedis(task)

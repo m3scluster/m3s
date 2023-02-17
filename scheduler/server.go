@@ -262,6 +262,7 @@ func (e *Scheduler) healthCheckK3s() bool {
 	client.Transport = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
 	}
+
 	req, _ := http.NewRequest("GET", BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/status", nil)
 	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
 	req.Close = true

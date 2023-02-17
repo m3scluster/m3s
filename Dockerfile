@@ -16,6 +16,8 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags "-X main.Bu
 FROM alpine
 LABEL maintainer="Andreas Peters <support@aventer.biz>"
 
+ENV DOCKER_RUNNING=true
+
 RUN apk add --no-cache ca-certificates
 RUN adduser -S -D -H -h /app appuser
 USER appuser
