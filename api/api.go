@@ -17,11 +17,14 @@ import (
 
 // API Service include all the current vars and global config
 type API struct {
-	Config            *cfg.Config
-	Framework         *cfg.FrameworkConfig
-	Mesos             mesos.Mesos
-	Redis             *redis.Redis
-	BootstrapProtocol string
+	Config              *cfg.Config
+	Framework           *cfg.FrameworkConfig
+	Mesos               mesos.Mesos
+	Redis               *redis.Redis
+	BootstrapProtocol   string
+	DSMaxRestore        int
+	K3SServerMaxRestore int
+	K3SAgentMaxRestore  int
 }
 
 // New will create a new API object
@@ -58,6 +61,7 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/status/m3s", e.V0StatusM3s).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/status/k8s", e.V0StatusK8s).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/cluster/shutdown", e.V0ClusterShutdown).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/cluster/start", e.V0ClusterStart).Methods("PUT")
 
 	return rtr
 }

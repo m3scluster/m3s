@@ -15,6 +15,7 @@ func (e *API) V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0GetCountK3SAgent").Debug("Count K3S Agents")
 
 	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -27,6 +28,7 @@ func (e *API) V0GetCountK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "api.V0GetCountK3SAgent").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 

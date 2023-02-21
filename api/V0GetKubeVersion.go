@@ -17,6 +17,7 @@ func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0GetKubeVersion").Debug("Call")
 
 	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -32,6 +33,7 @@ func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -39,6 +41,7 @@ func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 
 	if res.StatusCode != 200 {
 		logrus.WithField("func", "V0GetKubeVersion").Error("Response Code: ", res.StatusCode)
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -46,18 +49,21 @@ func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
 	err = json.Unmarshal(content, &e.Config.Version)
 	if err != nil {
 		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
 	d, err := json.Marshal(&e.Config.Version)
 	if err != nil {
 		logrus.Error("V0GetKubeVersion: Error 4 ", err)
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 

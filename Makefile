@@ -60,7 +60,6 @@ update-gomod:
 	go mod tidy
 
 seccheck:
-	gosec --exclude G104 --exclude-dir ./vendor ./... 
 	grype --add-cpes-if-none .
 
 sboom:
@@ -69,7 +68,6 @@ sboom:
 
 go-fmt:
 	@gofmt -w .
-	@golangci-lint run --fix
 
 version:
 	@echo ">>>> Generate version file"

@@ -16,7 +16,13 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
 
-	if vars == nil || !e.CheckAuth(r, w) {
+	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if vars == nil {
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -26,6 +32,7 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 		count, err := strconv.Atoi(vars["count"])
 		if err != nil {
 			logrus.WithField("func", "api.V0ScaleK3SAgent").Error("Error: ", err.Error())
+			w.WriteHeader(http.StatusNotAcceptable)
 			return
 		}
 		d = e.scaleAgent(count)

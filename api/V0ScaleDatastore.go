@@ -15,17 +15,24 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0ScaleDatastore").Debug("Call")
 
 	vars := mux.Vars(r)
-	auth := e.CheckAuth(r, w)
 
-	if vars == nil || !auth {
+	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
+
+	if vars == nil {
+		w.WriteHeader(http.StatusNotAcceptable)
+		return
+	}
+
 	d := e.ErrorMessage(0, "V0ScaleDatastore", "ok")
 
 	if vars["count"] != "" {
 		count, err := strconv.Atoi(vars["count"])
 		if err != nil {
 			logrus.WithField("func", "api.V0ScaleDatastore").Error("Error: ", err.Error())
+			w.WriteHeader(http.StatusNotAcceptable)
 			return
 		}
 		d = e.scaleDatastore(count)

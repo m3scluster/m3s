@@ -17,6 +17,7 @@ func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0GetKubeconfig").Debug("Call")
 
 	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -32,6 +33,7 @@ func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0GetKubeconfig").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -39,6 +41,7 @@ func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 
 	if res.StatusCode != 200 {
 		logrus.WithField("func", "V0GetKubeconfig").Error("Response Code: ", res.StatusCode)
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -46,6 +49,7 @@ func (e *API) V0GetKubeconfig(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0GetKubeconfig").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 

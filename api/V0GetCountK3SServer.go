@@ -15,6 +15,7 @@ func (e *API) V0GetCountK3SServer(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0GetCountK3SServer").Debug("Count K3S Server")
 
 	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 

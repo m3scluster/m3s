@@ -4,19 +4,17 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
 // V0StatusM3s gives out the current status of the M3s services
 // example:
-// curl -X GET 127.0.0.1:10000/v0/status/m3s -d 'JSON'
+// curl -X GET 127.0.0.1:10000/v0/status/m3s
 func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0StatusM3s").Debug("Call")
 
-	vars := mux.Vars(r)
-
-	if vars == nil || !e.CheckAuth(r, w) {
+	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
