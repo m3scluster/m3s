@@ -89,7 +89,7 @@ class M3s(PluginBase):
             "arguments": ["<framework-name>", "<operations>"],
             "flags": {},
             "short_help": "Control the Kubernetes cluster",
-            "long_help": "Control the Kubernetes cluster\noperations:\n\tstop - stop the Kubernetes cluster\n",
+            "long_help": "Control the Kubernetes cluster\noperations:\n\tstop - stop the Kubernetes cluster\n\tstart - start the Kubernetes cluster\n",
         },
     }
     def cluster(self, argv):
@@ -121,8 +121,19 @@ class M3s(PluginBase):
                 "PUT"
             )
             print(data)
-        else:
-            print("Nothing to scale")
+        if argv["<operations>"] == "start":
+            print("Start Kubernetes Cluster")
+
+            framework_address = get_framework_address(
+                self.get_framework_id(argv), master, config
+            )
+            data = self.write_endpoint(
+                framework_address,
+                "/api/m3s/v0/cluster/start",
+                self,
+                "PUT"
+            )
+            print(data)
 
 
     def scale(self, argv):

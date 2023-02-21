@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
@@ -16,9 +15,8 @@ import (
 func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0StatusK3s").Debug("Call")
 
-	vars := mux.Vars(r)
-
-	if vars == nil || !e.CheckAuth(r, w) {
+	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 
@@ -34,6 +32,7 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -41,6 +40,7 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 
 	if res.StatusCode != 200 {
 		logrus.WithField("func", "V0StatusK3s").Error("Response Code: ", res.StatusCode)
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 
@@ -48,6 +48,7 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
+		w.WriteHeader(http.StatusNotAcceptable)
 		return
 	}
 

@@ -18,6 +18,7 @@ func (e *API) V0Cleanup(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0Cleanup").Debug("Cleanup notready nodes")
 
 	if !e.CheckAuth(r, w) {
+		w.WriteHeader(http.StatusUnauthorized)
 		return
 	}
 	e.CleanupNodes()
