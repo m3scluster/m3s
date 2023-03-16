@@ -88,13 +88,23 @@ func init() {
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s/server")
 	config.VolumeDS = util.Getenv("VOLUME_DS", "/data/k3s/datastore")
 
-	// if labels are set, unmarshel it into the Mesos Label format.
+	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
 
 		if err != nil {
-			logrus.Fatal("The env variable K3S_AGENT_LABELS have a syntax failure: ", err)
+			logrus.WithField("func", "init").Fatal("The env variable K3S_AGENT_LABELS have a syntax failure: ", err)
+		}
+	}
+
+	// if server labels are set, unmarshel it into the Mesos Label format.
+	labels = os.Getenv("K3S_SERVER_LABELS")
+	if labels != "" {
+		err := json.Unmarshal([]byte(labels), &config.K3SServerLabels)
+
+		if err != nil {
+			logrus.WithField("func", "init").Fatal("The env variable K3S_SERVER_LABELS have a syntax failure: ", err)
 		}
 	}
 

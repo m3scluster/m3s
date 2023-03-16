@@ -180,6 +180,14 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 		},
 	}
 
+	if e.Config.K3SServerLabels != nil {
+		cmd.Labels = e.Config.K3SServerLabels
+	}
+
+	if e.Config.K3SServerLabels != nil {
+		cmd.Labels = e.Config.K3SServerLabels
+	}
+
 	if e.Config.DSEtcd {
 		ds := mesosproto.Environment_Variable{
 			Name: "K3S_DATASTORE_ENDPOINT",
@@ -271,6 +279,7 @@ func (e *Scheduler) healthCheckK3s() bool {
 
 	if err != nil {
 		k3sState = false
+		logrus.WithField("func", "healthCheckK3s").Error("Connection error: ", err.Error())
 		goto end
 	}
 
