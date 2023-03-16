@@ -8,6 +8,7 @@
 - Add API and cli to (re)start the K8 cluster after a shutdown
 - Change kubeapi to a fix hostport. It would ever be the first port of the framework portrange
 - Fix port detection if the framework is running as container at the same servers like the datastore and K8 manager
+- Add support for Server labels
 
 ## v0.4.0
 

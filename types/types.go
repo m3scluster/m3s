@@ -54,6 +54,7 @@ type Config struct {
 	K3SServerCPU                float64
 	K3SServerMEM                float64
 	K3SServerDISK               float64
+	K3SServerLabels             []mesosproto.Label
 	K3SAgent                    map[string]string
 	K3SAgentMax                 int
 	K3SAgentString              string

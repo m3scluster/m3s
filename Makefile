@@ -76,4 +76,4 @@ version:
 	@echo "Saved under .version.json"
 
 check: go-fmt sboom seccheck
-all: check version bootstrap build publish
+all: check version bootstrap build push
