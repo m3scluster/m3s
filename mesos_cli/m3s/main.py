@@ -89,9 +89,10 @@ class M3s(PluginBase):
             "arguments": ["<framework-name>", "<operations>"],
             "flags": {},
             "short_help": "Control the Kubernetes cluster",
-            "long_help": "Control the Kubernetes cluster\noperations:\n\tstop - stop the Kubernetes cluster\n\tstart - start the Kubernetes cluster\n",
+            "long_help": "Control the Kubernetes cluster\noperations:\n\tstop - stop the Kubernetes cluster\n\tstart - start the Kubernetes cluster\n\trestart - restart the Kubernetes cluster\n",
         },
     }
+
     def cluster(self, argv):
         """
         Control the Kubernetes cluster
@@ -105,7 +106,8 @@ class M3s(PluginBase):
             self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         if argv["<operations>"] == "stop":
@@ -134,7 +136,19 @@ class M3s(PluginBase):
                 "PUT"
             )
             print(data)
+        if argv["<operations>"] == "restart":
+            print("Restart Kubernetes Cluster")
 
+            framework_address = get_framework_address(
+                self.get_framework_id(argv), master, config
+            )
+            data = self.write_endpoint(
+                framework_address,
+                "/api/m3s/v0/cluster/restart",
+                self,
+                "PUT"
+            )
+            print(data)
 
     def scale(self, argv):
         """
@@ -149,7 +163,8 @@ class M3s(PluginBase):
             self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         service = None
@@ -186,13 +201,15 @@ class M3s(PluginBase):
             self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         framework_address = get_framework_address(
             self.get_framework_id(argv), master, config
         )
-        data = http.read_endpoint(framework_address, "/api/m3s/v0/server/config", self)
+        data = http.read_endpoint(
+            framework_address, "/api/m3s/v0/server/config", self)
 
         print(data)
 
@@ -209,13 +226,15 @@ class M3s(PluginBase):
             self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         framework_address = get_framework_address(
             self.get_framework_id(argv), master, config
         )
-        data = http.read_endpoint(framework_address, "/api/m3s/v0/server/version", self)
+        data = http.read_endpoint(
+            framework_address, "/api/m3s/v0/server/version", self)
 
         print(data)
 
@@ -232,7 +251,8 @@ class M3s(PluginBase):
             self.framework_name = argv["<framework-name>"]
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         framework_address = get_framework_address(
@@ -240,11 +260,13 @@ class M3s(PluginBase):
         )
 
         if argv["--m3s"]:
-            data = http.read_endpoint(framework_address, "/api/m3s/v0/status/m3s", self)
+            data = http.read_endpoint(
+                framework_address, "/api/m3s/v0/status/m3s", self)
             print(data)
 
         if argv["--kubernetes"]:
-            data = http.read_endpoint(framework_address, "/api/m3s/v0/status/k8s", self)
+            data = http.read_endpoint(
+                framework_address, "/api/m3s/v0/status/k8s", self)
             print(data)
 
     def list(self, argv):
@@ -257,7 +279,8 @@ class M3s(PluginBase):
             config = self.config
         except Exception as exception:
             raise CLIException(
-                "Unable to get leading master address: {error}".format(error=exception)
+                "Unable to get leading master address: {error}".format(
+                    error=exception)
             ) from exception
 
         data = get_frameworks(master, config)
@@ -331,7 +354,8 @@ class M3s(PluginBase):
             data = toml.load(self.config.path)
         except Exception as exception:
             raise CLIException(
-                "Error loading config file as TOML: {error}".format(error=exception)
+                "Error loading config file as TOML: {error}".format(
+                    error=exception)
             ) from exception
 
         return data
@@ -377,5 +401,3 @@ class M3s(PluginBase):
                     url=url, error=str(exception)
                 )
             )
-        
-    

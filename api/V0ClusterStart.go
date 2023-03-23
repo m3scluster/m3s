@@ -6,7 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-// V0ClusterStart - Restart the cluster after shutdown
+// V0ClusterStart - Start the cluster after shutdown
 // example:
 // curl -X PUT 127.0.0.1:10000/v0/cluster/start
 func (e *API) V0ClusterStart(w http.ResponseWriter, r *http.Request) {
@@ -22,10 +22,15 @@ func (e *API) V0ClusterStart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	e.scaleDatastore(e.DSMaxRestore)
-	e.scaleServer(e.K3SServerMaxRestore)
-	e.scaleAgent(e.K3SAgentMaxRestore)
+	e.clusterStart()
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
+}
+
+func (e *API) clusterStart() {
+	logrus.WithField("func", "api.clusterStart").Debug("Start Cluster")
+	e.scaleDatastore(e.DSMaxRestore)
+	e.scaleServer(e.K3SServerMaxRestore)
+	e.scaleAgent(e.K3SAgentMaxRestore)
 }

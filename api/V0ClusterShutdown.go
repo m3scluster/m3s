@@ -17,6 +17,15 @@ func (e *API) V0ClusterShutdown(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	e.clusterStop()
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+}
+
+func (e *API) clusterStop() {
+	logrus.WithField("func", "api.clusterStop").Debug("Shutdown Cluster")
+
 	// Save current amount of services for the case of restart but only
 	// if the amount is not 0
 	if e.Config.DSMax != 0 && e.Config.K3SServerMax != 0 && e.Config.K3SAgentMax != 0 {
@@ -30,7 +39,4 @@ func (e *API) V0ClusterShutdown(w http.ResponseWriter, r *http.Request) {
 	e.scaleDatastore(0)
 
 	e.Mesos.SuppressFramework()
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Api-Service", "v0")
 }
