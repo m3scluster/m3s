@@ -62,6 +62,7 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/status/k8s", e.V0StatusK8s).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/cluster/shutdown", e.V0ClusterShutdown).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/start", e.V0ClusterStart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/cluster/restart", e.V0ClusterRestart).Methods("PUT")
 
 	return rtr
 }

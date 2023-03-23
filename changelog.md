@@ -5,7 +5,8 @@
 - Add implicit reconcile to remove unknown Mesos Tasks
 - Add limitation of memory swap (DOCKER_MEMORY_SWAP, default value "1000" MB) the container can use
 - Add API and cli to shutdown the K8 cluster (does not delete persistence volumes)
-- Add API and cli to (re)start the K8 cluster after a shutdown
+- Add API and cli to start the K8 cluster after a shutdown
+- Add API and cli to restart the K8 cluster 
 - Change kubeapi to a fix hostport. It would ever be the first port of the framework portrange
 - Fix port detection if the framework is running as container at the same servers like the datastore and K8 manager
 - Add support for Server labels
