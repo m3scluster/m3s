@@ -7,6 +7,8 @@ import (
 	"encoding/json"
 
 	"github.com/gorilla/mux"
+	"github.com/sirupsen/logrus"
+
 	//"io/ioutil"
 	"net/http"
 
@@ -63,8 +65,15 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/cluster/shutdown", e.V0ClusterShutdown).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/start", e.V0ClusterStart).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/restart", e.V0ClusterRestart).Methods("PUT")
+	rtr.NotFoundHandler = http.HandlerFunc(e.NotFound)
 
 	return rtr
+}
+
+// NotFound logs filenotfound messages
+func (e *API) NotFound(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	logrus.WithField("func", "api.NotFound").Error("404: " + r.RequestURI)
 }
 
 // Versions give out a list of Versions
