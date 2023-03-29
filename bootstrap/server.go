@@ -59,8 +59,15 @@ func Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/version", APIGetKubeVersion).Methods("GET")
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/clean", APICleanupNotRead).Methods("GET")
 	rtr.HandleFunc("/api/m3s/bootstrap/v0/status?verbose", APIStatus).Methods("GET")
+	rtr.NotFoundHandler = http.HandlerFunc(NotFound)
 
 	return rtr
+}
+
+// NotFound logs filenotfound messages
+func NotFound(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	logrus.WithField("func", "bootstrap.NotFound").Error("404: " + r.RequestURI)
 }
 
 // APIVersions give out a list of Versions
