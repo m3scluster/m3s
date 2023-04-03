@@ -172,6 +172,7 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 func (e *Scheduler) setETCD(cmd *cfg.Command) {
 	cmd.ContainerImage = e.Config.ImageETCD
 	cmd.Command = "/opt/bitnami/etcd/bin/etcd --listen-client-urls http://0.0.0.0:" + e.Config.DSPort + " --election-timeout '50000' --heartbeat-interval '5000'"
+	cmd.Shell = true
 	AdvertiseURL := "http://" + cmd.Hostname + ":" + e.Config.DSPort
 
 	AllowNoneAuthentication := "yes"

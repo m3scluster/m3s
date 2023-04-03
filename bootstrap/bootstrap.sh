@@ -12,7 +12,7 @@ export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export K3S_RESOLV_CONF=/etc/k3sresolv.conf
 export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
-export BRANCH=add-404
+export BRANCH=master
 export ARCH=`dpkg --print-architecture`
 
 ## Export json as environment variables

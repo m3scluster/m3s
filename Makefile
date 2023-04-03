@@ -49,7 +49,9 @@ bootstrap:
 
 push:
 	@echo ">>>> Publish docker image"
-	@docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
+	@docker run -d --rm --name buildkitd --privileged moby/buildkit:latest
+	@BUILDKIT_HOST=docker-container://buildkitd docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
+	@docker stop buildkitd	
 
 docs:
 	@echo ">>>> Build docs"

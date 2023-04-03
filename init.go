@@ -53,7 +53,7 @@ func init() {
 	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
-	config.DSEtcd = stringToBool(os.Getenv("DS_ETCD"))
+	config.DSEtcd = stringToBool(util.Getenv("DS_ETCD", "false"))
 	config.DSPort = util.Getenv("DS_PORT", "3306")
 	config.DSMySQL = stringToBool(util.Getenv("DS_MYSQL", "true"))
 	config.DSMySQLUsername = util.Getenv("DS_MYSQL_USERNAME", "root")
