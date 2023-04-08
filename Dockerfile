@@ -15,6 +15,10 @@ RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags "-X main.Bu
 
 FROM alpine
 LABEL maintainer="Andreas Peters <support@aventer.biz>"
+LABEL org.opencontainers.image.title="mesos-m3s" 
+LABEL org.opencontainers.image.description="ClusterD/Apache Mesos framework to run Kubernetes"
+LABEL org.opencontainers.image.vendor="AVENTER UG (haftungsbeschränkt)"
+LABEL org.opencontainers.image.source="https://github.com/AVENTER-UG/"
 
 ENV DOCKER_RUNNING=true
 

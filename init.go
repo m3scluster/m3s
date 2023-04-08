@@ -73,7 +73,7 @@ func init() {
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
 	config.LogLevel = util.Getenv("LOGLEVEL", "info")
 	config.Principal = util.Getenv("MESOS_PRINCIPAL", "")
-	config.ImageK3S = util.Getenv("IMAGE_K3S", "avhost/ubuntu-m3s:focal")
+	config.ImageK3S = util.Getenv("IMAGE_K3S", "avhost/ubuntu-m3s:22.04")
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:3.5.1")
 	config.ImageMySQL = util.Getenv("IMAGE_MYSQL", "docker.io/mariadb:10.8.3")
 	config.ReconcileLoopTime, _ = time.ParseDuration(util.Getenv("RECONCILE_WAIT", "10m"))
