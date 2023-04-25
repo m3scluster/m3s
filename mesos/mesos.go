@@ -164,9 +164,14 @@ func (e *Mesos) GetOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (meso
 
 // DeclineOffer will decline the given offers
 func (e *Mesos) DeclineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
+	refuseSeconds := 120.0
+
 	decline := &mesosproto.Call{
-		Type:    mesosproto.Call_DECLINE,
-		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds},
+		Type: mesosproto.Call_DECLINE,
+		Decline: &mesosproto.Call_Decline{OfferIDs: offerIds, Filters: &mesosproto.Filters{
+			RefuseSeconds: &refuseSeconds,
+		},
+		},
 	}
 	return decline
 }
