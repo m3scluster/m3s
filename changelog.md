@@ -10,6 +10,8 @@
 - Change kubeapi to a fix hostport. It would ever be the first port of the framework portrange
 - Fix port detection if the framework is running as container at the same servers like the datastore and K8 manager
 - Add support for Server labels
+- Add REFUSE_OFFERS to tell mesos it does not have to send new offers during the next seconds (default: 120.0). That will give other 
+  frameworks the chance to get faster offers.
 
 ## v0.4.0
 

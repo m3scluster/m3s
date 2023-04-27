@@ -72,6 +72,7 @@ type Config struct {
 	MesosSandboxVar             string
 	Principal                   string
 	ReconcileLoopTime           time.Duration
+	RefuseOffers                float64
 	ReviveLoopTime              time.Duration
 	RedisServer                 string
 	RedisPassword               string

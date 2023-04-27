@@ -77,6 +77,7 @@ func init() {
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:3.5.1")
 	config.ImageMySQL = util.Getenv("IMAGE_MYSQL", "docker.io/mariadb:10.8.3")
 	config.ReconcileLoopTime, _ = time.ParseDuration(util.Getenv("RECONCILE_WAIT", "10m"))
+	config.RefuseOffers, _ = strconv.ParseFloat(util.Getenv("REFUSE_OFFERS", "120.0"), 64)
 	config.ReviveLoopTime, _ = time.ParseDuration(util.Getenv("REVIVE_WAIT", "1m"))
 	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
 	config.RedisPassword = util.Getenv("REDIS_PASSWORD", "")
