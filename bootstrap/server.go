@@ -30,11 +30,8 @@ var GitVersion string
 // VersionURL is the URL of the .version.json file
 var VersionURL string
 
-// DashboardInstalled is true if the dashboard is already installed
-var DashboardInstalled bool
-
-// TraefikDashboardInstalled is true if the traefik dashboard is installed
-var TraefikDashboardInstalled bool
+// DefaultsInstalled is true if the default config is already installed
+var DefaultsInstalled bool
 
 var config cfg.Config
 
@@ -205,54 +202,28 @@ func APIHealth(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("ok"))
 
-		// if kubernetes server is running and the dashboard is not installed, then do it
-		if !DashboardInstalled {
-			deployDashboard()
-		}
-		// if kubernetes server is running and the traefik dashboard is not installed, then do it
-		if !TraefikDashboardInstalled {
-			deployTraefikDashboard()
+		// if kubernetes server is running apply default config
+		if !DefaultsInstalled {
+			applyDefaults()
 		}
 	} else {
 		w.WriteHeader(http.StatusInternalServerError)
 	}
 }
 
-// deployDashboard will deploy the kubernetes dashboard
+// applyDefaults will deploy default kubernetes configs
 // if the server is in the running state
-func deployDashboard() {
-	err := exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard.yaml").Run()
-	logrus.Info("Install Kubernetes Dashboard")
+func applyDefaults() {
+	err := exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/default.yaml").Run()
+	logrus.Info("Install Kubernetes Default config")
 
 	if err != nil {
-		logrus.Error("Install Kubernetes Dashboard: ", err)
+		logrus.Error("Install Kubernetes Default config: ", err)
 		return
 	}
 
-	err = exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard_auth.yaml").Run()
-
-	if err != nil {
-		logrus.Error("Install Kubernetes Dashboard Auth: ", err)
-		return
-	}
-
-	logrus.Info("Install Kubernetes Dashboard: Done")
-	DashboardInstalled = true
-}
-
-// deployTraefikDashboard will deploy the traefik dashboard
-// if the server is in the running state
-func deployTraefikDashboard() {
-	err := exec.Command("/mnt/mesos/sandbox/kubectl", "apply", "-f", "/mnt/mesos/sandbox/dashboard_traefik.yaml").Run()
-	logrus.Info("Install Traefik Dashboard")
-
-	if err != nil {
-		logrus.Error("Install Traefik Dashboard: ", err)
-		return
-	}
-
-	logrus.Info("Install Traefik Dashboard: Done")
-	TraefikDashboardInstalled = true
+	logrus.Info("Install Kubernetes Default config: Done")
+	DefaultsInstalled = true
 }
 
 // APIStatus give out the status of the kubernetes server
@@ -340,7 +311,7 @@ func main() {
 
 	logrus.Println("GO-K3S-API build "+BuildVersion+" git "+GitVersion+" ", *bind, *port)
 
-	DashboardInstalled = false
+	DefaultsInstalled = false
 
 	listen := fmt.Sprintf(":%s", *port)
 

@@ -80,8 +80,8 @@ type: Opaque
 
 ---
 
-kind: ConfigMap
 apiVersion: v1
+kind: ConfigMap
 metadata:
   labels:
     k8s-app: kubernetes-dashboard
@@ -90,8 +90,8 @@ metadata:
 
 ---
 
-kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
   labels:
     k8s-app: kubernetes-dashboard
@@ -120,8 +120,8 @@ rules:
 
 ---
 
-kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
 metadata:
   labels:
     k8s-app: kubernetes-dashboard
@@ -167,8 +167,8 @@ subjects:
 
 ---
 
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
     k8s-app: kubernetes-dashboard
@@ -233,8 +233,8 @@ spec:
 
 ---
 
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
@@ -249,8 +249,8 @@ spec:
 
 ---
 
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
   labels:
     k8s-app: dashboard-metrics-scraper
@@ -300,3 +300,42 @@ spec:
       volumes:
         - name: tmp-volume
           emptyDir: {}
+
+---
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+
+---   
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: dashboard
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`traefik.localhost`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
+      kind: Rule
+      services:
+        - name: api@internal
+          kind: TraefikService
