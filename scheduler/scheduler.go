@@ -52,9 +52,8 @@ func Subscribe(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Scheduler {
 			FrameworkInfo: &e.Framework.FrameworkInfo,
 		},
 	}
-	logrus.Debug(subscribeCall)
+	logrus.WithField("func", "scheduler.Subscribe").Debug(subscribeCall)
 	body, _ := marshaller.MarshalToString(subscribeCall)
-	logrus.Debug(body)
 	client := &http.Client{}
 	// #nosec G402
 	client.Transport = &http.Transport{
@@ -81,7 +80,7 @@ func (e *Scheduler) EventLoop() {
 	res, err := e.Client.Do(e.Req)
 
 	if err != nil {
-		logrus.Error("Mesos Master connection error: ", err.Error())
+		logrus.WithField("func", "scheduler.EventLoop").Error("Mesos Master connection error: ", err.Error())
 		return
 	}
 	defer res.Body.Close()
@@ -98,7 +97,7 @@ func (e *Scheduler) EventLoop() {
 		// Read line from Mesos
 		line, err = reader.ReadString('\n')
 		if err != nil {
-			logrus.Error("Error to read data from Mesos Master: ", err.Error())
+			logrus.WithField("func", "scheduler.EventLoop").Error("Error to read data from Mesos Master: ", err.Error())
 			return
 		}
 		line = strings.TrimSuffix(line, "\n")
@@ -106,15 +105,14 @@ func (e *Scheduler) EventLoop() {
 		var event mesosproto.Event // Event as ProtoBuf
 		err := jsonpb.UnmarshalString(line, &event)
 		if err != nil {
-			logrus.Error("Could not unmarshal Mesos Master data: ", err.Error())
+			logrus.WithField("func", "scheduler.EventLoop").Error("Could not unmarshal Mesos Master data: ", err.Error())
 			continue
 		}
-		logrus.Debug("Subscribe Got: ", event.GetType())
 
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:
-			logrus.Info("Subscribed")
-			logrus.Debug("FrameworkId: ", event.Subscribed.GetFrameworkID())
+			logrus.WithField("func", "scheduler.EventLoop").Info("Subscribed")
+			logrus.WithField("func", "scheduler.EventLoop").Debug("FrameworkId: ", event.Subscribed.GetFrameworkID())
 			e.Framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
 			e.Framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
 
@@ -128,10 +126,9 @@ func (e *Scheduler) EventLoop() {
 			e.Redis.SaveConfig(*e.Config)
 		case mesosproto.Event_OFFERS:
 			// Search Failed containers and restart them
-			logrus.Debug("Offer Got")
 			err = e.HandleOffers(event.Offers)
 			if err != nil {
-				logrus.Error("Switch Event HandleOffers: ", err)
+				logrus.WithField("func", "scheduler.EventLoop").Error("Switch Event HandleOffers: ", err)
 			}
 		}
 	}

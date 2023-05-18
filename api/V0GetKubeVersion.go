@@ -1,13 +1,13 @@
 package api
 
 import (
-	"crypto/tls"
 	"encoding/json"
-	"io"
 	"net/http"
-	"strconv"
+	"strings"
 
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/sirupsen/logrus"
+	corev1 "k8s.io/api/core/v1"
 )
 
 // V0GetKubeVersion will return the kubernetes Version
@@ -21,51 +21,29 @@ func (e *API) V0GetKubeVersion(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	client := &http.Client{}
-	// #nosec G402
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
-	}
-	req, _ := http.NewRequest("GET", e.BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/version", nil)
-	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
-	req.Close = true
-	res, err := client.Do(req)
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*")
 
-	if err != nil {
-		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
+	var k3sVersion []cfg.K3SVersion
 
-	defer res.Body.Close()
+	for keys.Next(e.Redis.CTX) {
+		key := e.Redis.GetRedisKey(keys.Val())
+		var node corev1.Node
+		err := json.NewDecoder(strings.NewReader(key)).Decode(&node)
+		if err != nil {
+			logrus.WithField("func", "scheduler.V0GetKubeVersion").Error("Could not decode kubernetes node: ", err.Error())
+			continue
+		}
 
-	if res.StatusCode != 200 {
-		logrus.WithField("func", "V0GetKubeVersion").Error("Response Code: ", res.StatusCode)
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
+		tmpVersion := cfg.K3SVersion{}
+		tmpVersion.NodeName = node.Name
+		tmpVersion.NodeInfo = node.Status.NodeInfo
+
+		k3sVersion = append(k3sVersion, tmpVersion)
 	}
 
-	content, err := io.ReadAll(res.Body)
+	e.Config.Version.K3SVersion = k3sVersion
 
-	if err != nil {
-		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
-
-	err = json.Unmarshal(content, &e.Config.Version)
-	if err != nil {
-		logrus.WithField("func", "V0GetKubeVersion").Error(err.Error())
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
-
-	d, err := json.Marshal(&e.Config.Version)
-	if err != nil {
-		logrus.Error("V0GetKubeVersion: Error 4 ", err)
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
+	d, _ := json.Marshal(&e.Config.Version)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")

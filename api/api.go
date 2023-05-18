@@ -27,6 +27,7 @@ type API struct {
 	DSMaxRestore        int
 	K3SServerMaxRestore int
 	K3SAgentMaxRestore  int
+	K3SAgentStatus      bool
 }
 
 // New will create a new API object
@@ -52,12 +53,10 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/versions", e.Versions).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale/{count}", e.V0ScaleK3SAgent).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale", e.V0GetCountK3SAgent).Methods("GET")
-	rtr.HandleFunc("/api/m3s/v0/agent/clean", e.V0Cleanup).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/scale/{count}", e.V0ScaleK3SServer).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/scale", e.V0GetCountK3SServer).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/config", e.V0GetKubeconfig).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/server/version", e.V0GetKubeVersion).Methods("GET")
-	rtr.HandleFunc("/api/m3s/v0/bootstrap/update", e.V0UpdateBootstrap).Methods("PUT")
 	//rtr.HandleFunc("/api/m3s/v0/bootstrap/version", V0UpdateBootstrap).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/datastore/scale/{count}", e.V0ScaleDatastore).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/status/m3s", e.V0StatusM3s).Methods("GET")

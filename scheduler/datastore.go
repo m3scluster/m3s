@@ -101,7 +101,6 @@ func (e *Scheduler) healthCheckDatastore() bool {
 		}
 	}
 
-	logrus.WithField("func", "healthCheckDatastore").Debug("Datastore Health: ", dsState)
 	return dsState
 }
 

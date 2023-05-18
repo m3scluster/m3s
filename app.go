@@ -131,7 +131,7 @@ func main() {
 		key := decodeBase64Cert(config.SSLKey)
 		certs, err := tls.X509KeyPair(crt, key)
 		if err != nil {
-			logrus.Fatal("TLS Server Error: ", err.Error())
+			logrus.WithField("func", "main.main").Fatal("TLS Server Error: ", err.Error())
 		}
 		server.TLSConfig.Certificates = []tls.Certificate{certs}
 	}

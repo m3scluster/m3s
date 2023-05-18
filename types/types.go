@@ -4,6 +4,7 @@ import (
 	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	corev1 "k8s.io/api/core/v1"
 )
 
 // Config is a struct of the framework configuration
@@ -41,6 +42,7 @@ type Config struct {
 	ImageK3S                    string
 	ImageETCD                   string
 	ImageMySQL                  string
+	KubeConfig                  string
 	K3SCustomDomain             string
 	K3SContainerDisk            string
 	K3SServerURL                string
@@ -121,22 +123,18 @@ type ErrorMsg struct {
 
 // M3SVersion hold the version numbers off the whole m3s stack
 type M3SVersion struct {
-	ClientVersion    versionInfo `json:"clientVersion"`
-	ServerVersion    versionInfo `json:"serverVersion"`
-	M3SVersion       versionInfo `json:"m3sVersion"`
-	BootstrapVersion versionInfo `json:"bootstrapVersion"`
+	M3SVersion versionInfo
+	K3SVersion []K3SVersion
+}
+
+type K3SVersion struct {
+	NodeName string
+	NodeInfo corev1.NodeSystemInfo
 }
 
 type versionInfo struct {
-	Major        string `json:"major"`
-	Minor        string `json:"minor"`
-	GitVersion   string `json:"gitVersion"`
-	GitCommit    string `json:"gitCommit"`
-	GitTreeState string `json:"gitTreeState"`
-	BuildDate    string `json:"buildDate"`
-	GoVersion    string `json:"goVersion"`
-	Compiler     string `json:"compiler"`
-	Platform     string `json:"platform"`
+	GitVersion string `json:"gitVersion"`
+	BuildDate  string `json:"buildDate"`
 }
 
 // ETCDHealth hold the health state of the etcd service
@@ -191,7 +189,6 @@ type Command struct {
 	Discovery          mesosproto.DiscoveryInfo                          `protobuf:"bytes,9,opt,name=discovery" json:"discovery,omitempty"`
 	Executor           mesosproto.ExecutorInfo                           `protobuf:"bytes,10,opt,name=executor" json:"executor,omitempty"`
 	Restart            string
-	InternalID         int
 	TaskID             string
 	Memory             float64
 	CPU                float64

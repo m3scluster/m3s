@@ -51,11 +51,7 @@ func (e *Redis) GetAllRedisKeys(pattern string) *goredis.ScanIterator {
 
 // GetRedisKey get out the data of a key
 func (e *Redis) GetRedisKey(key string) string {
-	val, err := e.Client.Get(e.CTX, key).Result()
-	if err != nil {
-		logrus.Error("ge.Key: ", err)
-	}
-
+	val, _ := e.Client.Get(e.CTX, key).Result()
 	return val
 }
 
@@ -122,7 +118,6 @@ func (e *Redis) CountRedisKey(pattern string, ignoreState string) int {
 		}
 		count++
 	}
-	logrus.Debug("CountRedisKey: ", pattern, count)
 	return count
 }
 
@@ -181,7 +176,7 @@ func (e *Redis) SaveFrameworkRedis(framework cfg.FrameworkConfig) {
 
 // CheckIfNotTask check if the redis key is a mesos task
 func (e *Redis) CheckIfNotTask(keys *goredis.ScanIterator) bool {
-	if keys.Val() == e.Prefix+":framework" || keys.Val() == e.Prefix+":framework_config" {
+	if keys.Val() == e.Prefix+":framework" || keys.Val() == e.Prefix+":framework_config" || keys.Val() == e.Prefix+":kubernetes_config" {
 		return true
 	}
 	return false

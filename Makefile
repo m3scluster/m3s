@@ -44,9 +44,10 @@ build-bin:
 	@echo ">>>> Build binary"
 	@CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -ldflags "-X main.BuildVersion=${BUILDDATE} -X main.GitVersion=${TAG} -X main.VersionURL=${VERSION_URL} -extldflags \"-static\"" .
 
-bootstrap:
-	@echo ">>>> Build bootstrap"
-	$(MAKE) -C $@
+cont:
+	@echo ">>>> Build controller"
+	$(MAKE) -C controller/
+	@cp controller/controller.amd64 bootstrap/
 
 push:
 	@echo ">>>> Publish docker image"
@@ -79,4 +80,4 @@ version:
 	@echo "Saved under .version.json"
 
 check: go-fmt sboom seccheck
-all: check version bootstrap build push
+all: check version cont build push

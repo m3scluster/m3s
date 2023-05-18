@@ -11,7 +11,6 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	update := event.Update
 
 	if update.Status.UUID == nil {
-		logrus.WithField("func", "scheduler.HandleUpdate").Debug("UUID is not set")
 		return nil
 	}
 
@@ -38,14 +37,19 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 
 	task.State = update.Status.State.String()
 
-	logrus.WithField("func", "scheduler.HandleUpdate").Debugf("Task State: %s %s", task.State, task.TaskID)
-
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED, mesosproto.TASK_KILLED, mesosproto.TASK_LOST, mesosproto.TASK_ERROR, mesosproto.TASK_FINISHED:
+		logrus.WithField("func", "scheduler.HandleUpdate").Warn("Task State: " + task.State + " " + task.TaskID)
 		e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		e.API.CleanupNodes()
+		// remove unready K8 node from redis
+		if task.TaskName == e.Framework.FrameworkName+":agent" {
+			node := e.getK8NodeFromTask(task)
+			e.Redis.DelRedisKey(e.Framework.FrameworkName + ":kubernetes:" + node.Name)
+		}
+
 		return e.Mesos.Call(msg)
 	case mesosproto.TASK_RUNNING:
+		logrus.WithField("func", "scheduler.HandleUpdate").Info("Task State: " + task.State + " " + task.TaskID)
 		task.MesosAgent = e.Mesos.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = e.Mesos.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
@@ -59,9 +63,9 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 			} else {
 				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
 			}
-			e.Config.K3SServerPort = int(task.DockerPortMappings[1].HostPort)
+			e.Config.K3SServerPort = int(task.DockerPortMappings[0].HostPort)
 
-			e.API.AgentRestart()
+			//e.API.AgentRestart()
 		}
 	}
 
