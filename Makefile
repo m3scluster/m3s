@@ -15,14 +15,14 @@ help:
 	    @echo "Makefile arguments:"
 	    @echo ""
 	    @echo "Makefile commands:"
-			@echo "push"
+		@echo "push"
 	    @echo "build"
-			@echo "build-bin"
+		@echo "build-bin"
 	    @echo "all"
-			@echo "docs"
-			@echo "publish"
-			@echo "version"
-			@echo ${TAG}
+		@echo "docs"
+		@echo "publish"
+		@echo "version"
+		@echo ${TAG}
 
 .DEFAULT_GOAL := all
 
@@ -37,7 +37,7 @@ else
 endif
 
 build:
-	@echo ">>>> Build docker image"
+	@echo ">>>> Build docker image branch:" ${BRANCH}
 	@docker buildx build --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 
 build-bin:

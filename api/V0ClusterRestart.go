@@ -23,14 +23,19 @@ func (e *API) V0ClusterRestart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	e.clusterStop()
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Api-Service", "v0")
+}
+
+// ClusterRestart will scale down all K8 instances and scale up again.
+func (e *API) ClusterRestart() {
+	e.clusterStop(false)
 
 	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") == 0 &&
-			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 &&
-			e.Redis.CountRedisKey(e.Framework.FrameworkName+":datastore:*", "") == 0 {
+			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 {
 			logrus.WithField("func", "api.V0ClusterRestart").Debug("All services down")
 			goto start
 		}
@@ -39,7 +44,4 @@ func (e *API) V0ClusterRestart(w http.ResponseWriter, r *http.Request) {
 start:
 	ticker.Stop()
 	e.clusterStart()
-
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Api-Service", "v0")
 }

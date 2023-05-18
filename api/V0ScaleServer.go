@@ -68,6 +68,7 @@ func (e *API) scale(newCount int, oldCount int, key string) []byte {
 
 		if newCount < oldCount {
 			e.Mesos.Kill(task.TaskID, task.Agent)
+			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
 			logrus.WithField("func", "api.scale").Debug("TaskID: ", task.TaskID)
 		}
 		if newCount > oldCount {

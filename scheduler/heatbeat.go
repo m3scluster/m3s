@@ -59,12 +59,12 @@ func (e *Scheduler) CheckState() {
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 
 	for keys.Next(e.Redis.CTX) {
-		// get the values of the current key
-		key := e.Redis.GetRedisKey(keys.Val())
-
 		if e.Redis.CheckIfNotTask(keys) {
 			continue
 		}
+
+		// get the values of the current key
+		key := e.Redis.GetRedisKey(keys.Val())
 
 		task := e.Mesos.DecodeTask(key)
 

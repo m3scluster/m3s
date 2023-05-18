@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -41,6 +42,44 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 	w.Write(d)
+}
+
+// agentStop will scale down the agent
+func (e *API) agentStop() {
+	logrus.WithField("func", "api.Sgenttop").Debug("Shutdown Agent")
+
+	// Save current amount of services for the case of restart but only
+	// if the amount is not 0
+	if e.Config.K3SAgentMax != 0 {
+		e.K3SAgentMaxRestore = e.Config.K3SAgentMax
+	}
+
+	e.scaleAgent(0)
+	e.Mesos.SuppressFramework()
+}
+
+// agentStart will scale up the agents
+func (e *API) agentStart() {
+	logrus.WithField("func", "api.agentStart").Debug("Start Agent")
+	e.scaleAgent(e.K3SAgentMaxRestore)
+}
+
+// AgentRestart will scale down all K8 agents and scale up again.
+func (e *API) AgentRestart() {
+	e.agentStop()
+
+	ticker := time.NewTicker(e.Config.EventLoopTime)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 {
+			logrus.WithField("func", "api.AgentRestart").Debug("All agents down")
+			goto start
+		}
+	}
+
+start:
+	ticker.Stop()
+	e.agentStart()
 }
 
 // scaleAgent - can scale up and down the K8 worker nodes

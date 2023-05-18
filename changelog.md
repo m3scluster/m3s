@@ -13,7 +13,8 @@
 - Add REFUSE_OFFERS to tell mesos it does not have to send new offers during the next seconds (default: 120.0). That will give other 
   frameworks the chance to get faster offers.
 - Bootstrap: Combine dashboard.yaml, dasboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
-  k3s during the bootstrap process.  
+  k3s during the bootstrap process.
+- Restart all K8 agents after the K8 server crashed to be sure the cluster state is clean.
 
 ## v0.4.0
 

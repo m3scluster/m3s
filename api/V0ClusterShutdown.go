@@ -17,13 +17,16 @@ func (e *API) V0ClusterShutdown(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	e.clusterStop()
+	e.clusterStop(true)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 }
 
-func (e *API) clusterStop() {
+// clusterStop will scale down the cluster
+//
+//	bool ds = scale down the datastore too
+func (e *API) clusterStop(ds bool) {
 	logrus.WithField("func", "api.clusterStop").Debug("Shutdown Cluster")
 
 	// Save current amount of services for the case of restart but only
@@ -36,7 +39,9 @@ func (e *API) clusterStop() {
 
 	e.scaleAgent(0)
 	e.scaleServer(0)
-	e.scaleDatastore(0)
+	if ds {
+		e.scaleDatastore(0)
+	}
 
 	e.Mesos.SuppressFramework()
 }

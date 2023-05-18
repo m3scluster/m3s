@@ -60,6 +60,8 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
 			}
 			e.Config.K3SServerPort = int(task.DockerPortMappings[1].HostPort)
+
+			e.API.AgentRestart()
 		}
 	}
 
