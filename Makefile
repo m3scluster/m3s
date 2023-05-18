@@ -7,6 +7,7 @@ BUILDDATE=`date -u +%Y-%m-%dT%H:%M:%SZ`
 IMAGEFULLNAME=avhost/${IMAGENAME}
 BRANCH=`git symbolic-ref --short HEAD`
 VERSION_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/.version.json
+LASTCOMMIT=$(shell git log -1 --pretty=short | tail -n 1 | tr -d " " | tr -d "UPDATE:")
 
 .PHONY: help build bootstrap all docs publish push version
 
@@ -49,9 +50,9 @@ bootstrap:
 
 push:
 	@echo ">>>> Publish docker image"
-	@docker run -d --rm --name buildkitd --privileged moby/buildkit:latest
-	@BUILDKIT_HOST=docker-container://buildkitd docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
-	@docker stop buildkitd	
+	@docker buildx create --use --name buildkit
+	@docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
+	@docker buildx rm buildkit
 
 docs:
 	@echo ">>>> Build docs"

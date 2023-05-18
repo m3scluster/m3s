@@ -1,7 +1,98 @@
 {
  "artifacts": [
   {
-   "id": "2627ea263065c5fe",
+   "id": "a107a9daa0abefe0",
+   "name": "command-line-arguments",
+   "version": "(devel)",
+   "type": "go-module",
+   "foundBy": "go-module-binary-cataloger",
+   "locations": [
+    {
+     "path": "bootstrap/server"
+    }
+   ],
+   "licenses": [],
+   "language": "go",
+   "cpes": [],
+   "purl": "pkg:golang/command-line-arguments@(devel)",
+   "metadataType": "GolangBinMetadata",
+   "metadata": {
+    "goBuildSettings": {
+     "-compiler": "gc",
+     "-ldflags": "-X main.BuildVersion=2023-02-14T16:54:38Z -X main.GitVersion=v0.4.0-16-g64dbc57 -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/.version.json -extldflags \"-static\"",
+     "CGO_ENABLED": "0",
+     "GOAMD64": "v1",
+     "GOARCH": "amd64",
+     "GOOS": "linux"
+    },
+    "goCompiledVersion": "go1.19.5",
+    "architecture": "amd64",
+    "mainModule": "command-line-arguments"
+   }
+  },
+  {
+   "id": "5379bf03b4cfbe89",
+   "name": "command-line-arguments",
+   "version": "(devel)",
+   "type": "go-module",
+   "foundBy": "go-module-binary-cataloger",
+   "locations": [
+    {
+     "path": "bootstrap/server.amd64"
+    }
+   ],
+   "licenses": [],
+   "language": "go",
+   "cpes": [],
+   "purl": "pkg:golang/command-line-arguments@(devel)",
+   "metadataType": "GolangBinMetadata",
+   "metadata": {
+    "goBuildSettings": {
+     "-buildmode": "exe",
+     "-compiler": "gc",
+     "-ldflags": "-X main.BuildVersion=2023-05-03T20:56:00Z -X main.GitVersion=v0.4.0-36-ge5242cc -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/.version.json -extldflags \"-static\"",
+     "CGO_ENABLED": "0",
+     "GOAMD64": "v1",
+     "GOARCH": "amd64",
+     "GOOS": "linux"
+    },
+    "goCompiledVersion": "go1.20.3",
+    "architecture": "amd64",
+    "mainModule": "command-line-arguments"
+   }
+  },
+  {
+   "id": "173d29525fdbb11c",
+   "name": "command-line-arguments",
+   "version": "(devel)",
+   "type": "go-module",
+   "foundBy": "go-module-binary-cataloger",
+   "locations": [
+    {
+     "path": "bootstrap/server.arm64"
+    }
+   ],
+   "licenses": [],
+   "language": "go",
+   "cpes": [],
+   "purl": "pkg:golang/command-line-arguments@(devel)",
+   "metadataType": "GolangBinMetadata",
+   "metadata": {
+    "goBuildSettings": {
+     "-buildmode": "exe",
+     "-compiler": "gc",
+     "-ldflags": "-X main.BuildVersion=2023-05-03T20:55:53Z/ARM -X main.GitVersion=v0.4.0-36-ge5242cc -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/.version.json -extldflags \"-static\"",
+     "CGO_ENABLED": "0",
+     "GOARCH": "arm64",
+     "GOOS": "linux"
+    },
+    "goCompiledVersion": "go1.20.3",
+    "architecture": "arm64",
+    "mainModule": "command-line-arguments"
+   }
+  },
+  {
+   "id": "96b14d7a5110edee",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.5.4",
    "type": "go-module",
@@ -22,15 +113,16 @@
     "cpe:2.3:a:AVENTER:go_logrus_formatter:v0.5.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.5.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM="
+    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "b969d2019d7cbca6",
+   "id": "2152d56229869c31",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.5.4",
    "type": "go-module",
@@ -51,15 +143,16 @@
     "cpe:2.3:a:AVENTER:go_logrus_formatter:v0.5.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.5.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM="
+    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "89601bace4d3c48b",
+   "id": "a99d05db525736a3",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.5.4",
    "type": "go-module",
@@ -80,15 +173,16 @@
     "cpe:2.3:a:AVENTER:go_logrus_formatter:v0.5.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.5.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM="
+    "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "d568c7fb88f1c69f",
+   "id": "b8c6784754ba4491",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.5.4",
    "type": "go-module",
@@ -109,15 +203,13 @@
     "cpe:2.3:a:AVENTER:go_logrus_formatter:v0.5.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.5.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM="
    }
   },
   {
-   "id": "ca815e1fe85ae6b7",
+   "id": "be2e8756cd60a781",
    "name": "github.com/AVENTER-UG/mesos-m3s",
    "version": "(devel)",
    "type": "go-module",
@@ -138,14 +230,15 @@
     "cpe:2.3:a:AVENTER:mesos_m3s:\\(devel\\):*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s@(devel)",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
-    "architecture": "amd64"
+    "architecture": "amd64",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ed69a587cd548c31",
+   "id": "48ce0f7fb4b33ea7",
    "name": "github.com/AVENTER-UG/mesos-m3s",
    "version": "(devel)",
    "type": "go-module",
@@ -166,14 +259,15 @@
     "cpe:2.3:a:AVENTER:mesos_m3s:\\(devel\\):*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s@(devel)",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
-    "architecture": "amd64"
+    "goCompiledVersion": "go1.20.3",
+    "architecture": "amd64",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "b5f27f736f2d92cd",
+   "id": "87a1209bc551e65c",
    "name": "github.com/AVENTER-UG/mesos-m3s",
    "version": "(devel)",
    "type": "go-module",
@@ -194,14 +288,15 @@
     "cpe:2.3:a:AVENTER:mesos_m3s:\\(devel\\):*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s@(devel)",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
-    "architecture": "arm64"
+    "goCompiledVersion": "go1.20.3",
+    "architecture": "arm64",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "9df9e436daf3aa35",
+   "id": "f7b0d6b7be381958",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.5.2",
    "type": "go-module",
@@ -219,15 +314,16 @@
     "cpe:2.3:a:AVENTER:util:v0.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:zWIEa0T1Gp+bGs69OLOpIvNfQx1Dz1tCIxF+zxPmbj4="
+    "h1Digest": "h1:zWIEa0T1Gp+bGs69OLOpIvNfQx1Dz1tCIxF+zxPmbj4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "871b11a5d2b66c08",
+   "id": "205e145b8de3f330",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.5.3",
    "type": "go-module",
@@ -245,15 +341,16 @@
     "cpe:2.3:a:AVENTER:util:v0.5.3:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg="
+    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "34c6c463d39da2fc",
+   "id": "1faf5d54bcae2a09",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.5.3",
    "type": "go-module",
@@ -271,15 +368,16 @@
     "cpe:2.3:a:AVENTER:util:v0.5.3:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg="
+    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "aab48e1051b32721",
+   "id": "19a80167436156a9",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.5.3",
    "type": "go-module",
@@ -297,15 +395,13 @@
     "cpe:2.3:a:AVENTER:util:v0.5.3:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg="
    }
   },
   {
-   "id": "525c5b44b3912034",
+   "id": "f622902c81babf8e",
    "name": "github.com/Showmax/go-fqdn",
    "version": "v1.0.0",
    "type": "go-module",
@@ -322,15 +418,13 @@
     "cpe:2.3:a:Showmax:go_fqdn:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/Showmax/go-fqdn@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:0rG5IbmVliNT5O19Mfuvna9LL7zlHyRfsSvBPZmF9tM="
    }
   },
   {
-   "id": "a35e34c39a4504f8",
+   "id": "f76a48c5b53231c4",
    "name": "github.com/armon/go-metrics",
    "version": "v0.4.0",
    "type": "go-module",
@@ -347,15 +441,16 @@
     "cpe:2.3:a:armon:go_metrics:v0.4.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/armon/go-metrics@v0.4.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:yCQqn7dwca4ITXb+CbubHmedzaQYHhNhrEXLYUeEe8Q="
+    "h1Digest": "h1:yCQqn7dwca4ITXb+CbubHmedzaQYHhNhrEXLYUeEe8Q=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "f9ae478a40accf5a",
+   "id": "1e1575b30d8c6e92",
    "name": "github.com/armon/go-radix",
    "version": "v1.0.0",
    "type": "go-module",
@@ -372,15 +467,16 @@
     "cpe:2.3:a:armon:go_radix:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/armon/go-radix@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:F4z6KzEeeQIMeLFa97iZU6vupzoecKdU5TX24SNppXI="
+    "h1Digest": "h1:F4z6KzEeeQIMeLFa97iZU6vupzoecKdU5TX24SNppXI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "34ada18361aeeac3",
+   "id": "231f4025f75944a5",
    "name": "github.com/cenkalti/backoff/v3",
    "version": "v3.2.2",
    "type": "go-module",
@@ -396,15 +492,16 @@
     "cpe:2.3:a:cenkalti:backoff\\/v3:v3.2.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cenkalti/backoff/v3@v3.2.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M="
+    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "280a6580d1f74dc0",
+   "id": "288b5f7106fb1994",
    "name": "github.com/cenkalti/backoff/v3",
    "version": "v3.2.2",
    "type": "go-module",
@@ -420,15 +517,16 @@
     "cpe:2.3:a:cenkalti:backoff\\/v3:v3.2.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cenkalti/backoff/v3@v3.2.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M="
+    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "20193b2dcab2b8a",
+   "id": "94485673ccc114b0",
    "name": "github.com/cenkalti/backoff/v3",
    "version": "v3.2.2",
    "type": "go-module",
@@ -444,15 +542,16 @@
     "cpe:2.3:a:cenkalti:backoff\\/v3:v3.2.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cenkalti/backoff/v3@v3.2.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M="
+    "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "c9ceb9532a3d2612",
+   "id": "c668d768dd2d1da1",
    "name": "github.com/cenkalti/backoff/v3",
    "version": "v3.2.2",
    "type": "go-module",
@@ -468,15 +567,13 @@
     "cpe:2.3:a:cenkalti:backoff\\/v3:v3.2.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cenkalti/backoff/v3@v3.2.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M="
    }
   },
   {
-   "id": "9dab1bcf84042d31",
+   "id": "1228868a78c4aa49",
    "name": "github.com/cespare/xxhash/v2",
    "version": "v2.2.0",
    "type": "go-module",
@@ -492,15 +589,13 @@
     "cpe:2.3:a:cespare:xxhash\\/v2:v2.2.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.2.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44="
    }
   },
   {
-   "id": "2c7dec13df91e73b",
+   "id": "b6078d1fca94622c",
    "name": "github.com/dgryski/go-rendezvous",
    "version": "v0.0.0-20200823014737-9f7001d12a5f",
    "type": "go-module",
@@ -517,15 +612,13 @@
     "cpe:2.3:a:dgryski:go_rendezvous:v0.0.0-20200823014737-9f7001d12a5f:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/dgryski/go-rendezvous@v0.0.0-20200823014737-9f7001d12a5f",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78="
    }
   },
   {
-   "id": "d6d21ee97e5e6df1",
+   "id": "280b469b99b51dba",
    "name": "github.com/fatih/color",
    "version": "v1.13.0",
    "type": "go-module",
@@ -541,15 +634,16 @@
     "cpe:2.3:a:fatih:color:v1.13.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/fatih/color@v1.13.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:8LOYc1KYPPmyKMuN8QV2DNRWNbLo6LZ0iLs8+mlH53w="
+    "h1Digest": "h1:8LOYc1KYPPmyKMuN8QV2DNRWNbLo6LZ0iLs8+mlH53w=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ce5555d0576c28c5",
+   "id": "373bfbcd93fa3db3",
    "name": "github.com/go-redis/redis/v9",
    "version": "v9.0.0-rc.2",
    "type": "go-module",
@@ -567,15 +661,13 @@
     "cpe:2.3:a:go:redis\\/v9:v9.0.0-rc.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/go-redis/redis/v9@v9.0.0-rc.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:IN1eI8AvJJeWHjMW/hlFAv2sAfvTun2DVksDDJ3a6a0="
    }
   },
   {
-   "id": "973b4985e71091e0",
+   "id": "336a88e9d1a1d2f1",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -591,15 +683,16 @@
     "cpe:2.3:a:gogo:protobuf:v1.3.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
+    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "df1e89b674431678",
+   "id": "ee6b298810d748df",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -615,15 +708,16 @@
     "cpe:2.3:a:gogo:protobuf:v1.3.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
+    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "37187b638788007c",
+   "id": "19777ae7edc4e9e2",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -639,15 +733,16 @@
     "cpe:2.3:a:gogo:protobuf:v1.3.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
+    "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "2307eb7524d07e66",
+   "id": "86a2523b9bcd2d5d",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
@@ -663,15 +758,13 @@
     "cpe:2.3:a:gogo:protobuf:v1.3.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q="
    }
   },
   {
-   "id": "f9b811ad98e80478",
+   "id": "312d8c80cafd8236",
    "name": "github.com/golang/protobuf",
    "version": "v1.5.2",
    "type": "go-module",
@@ -687,15 +780,16 @@
     "cpe:2.3:a:golang:protobuf:v1.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/golang/protobuf@v1.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+aK7DXlji0Tw="
+    "h1Digest": "h1:ROPKBNFfQgOUMifHyP+KYbvpjbdoFNs+aK7DXlji0Tw=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "22da552187fea095",
+   "id": "b0a66511a44b7931",
    "name": "github.com/golang/snappy",
    "version": "v0.0.4",
    "type": "go-module",
@@ -711,15 +805,16 @@
     "cpe:2.3:a:golang:snappy:v0.0.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/golang/snappy@v0.0.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM="
+    "h1Digest": "h1:yAGX7huGHXlcLOEtBnF4w7FQwA26wojNCwOYAEhLjQM=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "185e1a9a6671626e",
+   "id": "df7fa4a48793300d",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -735,15 +830,16 @@
     "cpe:2.3:a:gorilla:mux:v1.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gorilla/mux@v1.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
+    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "87267ff655007cf7",
+   "id": "f58f1a598487df5f",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -759,15 +855,16 @@
     "cpe:2.3:a:gorilla:mux:v1.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gorilla/mux@v1.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
+    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "d1ca0ea431d31b60",
+   "id": "2c17aa748d3c30a5",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -783,15 +880,16 @@
     "cpe:2.3:a:gorilla:mux:v1.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gorilla/mux@v1.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
+    "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "7a30007c8e3784b8",
+   "id": "2ba2ade917d4f2a9",
    "name": "github.com/gorilla/mux",
    "version": "v1.8.0",
    "type": "go-module",
@@ -807,15 +905,13 @@
     "cpe:2.3:a:gorilla:mux:v1.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/gorilla/mux@v1.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI="
    }
   },
   {
-   "id": "9d8eb25a9ed9d9a3",
+   "id": "629610c62e15ce75",
    "name": "github.com/hashicorp/errwrap",
    "version": "v1.1.0",
    "type": "go-module",
@@ -831,15 +927,16 @@
     "cpe:2.3:a:hashicorp:errwrap:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I="
+    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "b853d19b612d0e7b",
+   "id": "b3b4a3cfb62fe9f3",
    "name": "github.com/hashicorp/errwrap",
    "version": "v1.1.0",
    "type": "go-module",
@@ -855,15 +952,16 @@
     "cpe:2.3:a:hashicorp:errwrap:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I="
+    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "527d544f2514121b",
+   "id": "cce7a9f21924fd27",
    "name": "github.com/hashicorp/errwrap",
    "version": "v1.1.0",
    "type": "go-module",
@@ -879,15 +977,16 @@
     "cpe:2.3:a:hashicorp:errwrap:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I="
+    "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "a12ce0454e72dfbb",
+   "id": "2e4d18cfac096b45",
    "name": "github.com/hashicorp/errwrap",
    "version": "v1.1.0",
    "type": "go-module",
@@ -903,15 +1002,13 @@
     "cpe:2.3:a:hashicorp:errwrap:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I="
    }
   },
   {
-   "id": "b2fdc050912d2b69",
+   "id": "39048c29dbb3c4f8",
    "name": "github.com/hashicorp/go-cleanhttp",
    "version": "v0.5.2",
    "type": "go-module",
@@ -928,15 +1025,16 @@
     "cpe:2.3:a:hashicorp:go_cleanhttp:v0.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-cleanhttp@v0.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ="
+    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "25ace461fc33291b",
+   "id": "533e8c48ef19bb3b",
    "name": "github.com/hashicorp/go-cleanhttp",
    "version": "v0.5.2",
    "type": "go-module",
@@ -953,15 +1051,16 @@
     "cpe:2.3:a:hashicorp:go_cleanhttp:v0.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-cleanhttp@v0.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ="
+    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "5d8034f8b4478102",
+   "id": "a8f53a0fb7015f22",
    "name": "github.com/hashicorp/go-cleanhttp",
    "version": "v0.5.2",
    "type": "go-module",
@@ -978,15 +1077,16 @@
     "cpe:2.3:a:hashicorp:go_cleanhttp:v0.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-cleanhttp@v0.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ="
+    "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "6dba0a5e4716e03",
+   "id": "c28273b530577c36",
    "name": "github.com/hashicorp/go-cleanhttp",
    "version": "v0.5.2",
    "type": "go-module",
@@ -1003,15 +1103,13 @@
     "cpe:2.3:a:hashicorp:go_cleanhttp:v0.5.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-cleanhttp@v0.5.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ="
    }
   },
   {
-   "id": "5a5f5250bf3877cf",
+   "id": "ac7240e9e94f63be",
    "name": "github.com/hashicorp/go-hclog",
    "version": "v1.2.2",
    "type": "go-module",
@@ -1028,15 +1126,16 @@
     "cpe:2.3:a:hashicorp:go_hclog:v1.2.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-hclog@v1.2.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:ihRI7YFwcZdiSD7SIenIhHfQH3OuDvWerAUBZbeQS3M="
+    "h1Digest": "h1:ihRI7YFwcZdiSD7SIenIhHfQH3OuDvWerAUBZbeQS3M=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "9751733b4c61e7b0",
+   "id": "8e63236636531384",
    "name": "github.com/hashicorp/go-immutable-radix",
    "version": "v1.3.1",
    "type": "go-module",
@@ -1053,15 +1152,16 @@
     "cpe:2.3:a:hashicorp:go_immutable_radix:v1.3.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-immutable-radix@v1.3.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:DKHmCUm2hRBK510BaiZlwvpD40f8bJFeZnpfm2KLowc="
+    "h1Digest": "h1:DKHmCUm2hRBK510BaiZlwvpD40f8bJFeZnpfm2KLowc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "aead81f15b9e22e3",
+   "id": "d58dd2a48efdc75f",
    "name": "github.com/hashicorp/go-multierror",
    "version": "v1.1.1",
    "type": "go-module",
@@ -1078,15 +1178,16 @@
     "cpe:2.3:a:hashicorp:go_multierror:v1.1.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo="
+    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ed498e1d6e0cd897",
+   "id": "c36cccafda882062",
    "name": "github.com/hashicorp/go-multierror",
    "version": "v1.1.1",
    "type": "go-module",
@@ -1103,15 +1204,16 @@
     "cpe:2.3:a:hashicorp:go_multierror:v1.1.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo="
+    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ae1eeaa5b17c4365",
+   "id": "177e90ba101e1c8d",
    "name": "github.com/hashicorp/go-multierror",
    "version": "v1.1.1",
    "type": "go-module",
@@ -1128,15 +1230,16 @@
     "cpe:2.3:a:hashicorp:go_multierror:v1.1.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo="
+    "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "d4c175777a4f5df1",
+   "id": "c31eae7303116a2a",
    "name": "github.com/hashicorp/go-multierror",
    "version": "v1.1.1",
    "type": "go-module",
@@ -1153,15 +1256,13 @@
     "cpe:2.3:a:hashicorp:go_multierror:v1.1.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo="
    }
   },
   {
-   "id": "a4b0096d23d0fbb0",
+   "id": "895dd219c1190de2",
    "name": "github.com/hashicorp/go-plugin",
    "version": "v1.4.5",
    "type": "go-module",
@@ -1178,15 +1279,16 @@
     "cpe:2.3:a:hashicorp:go_plugin:v1.4.5:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-plugin@v1.4.5",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:oTE/oQR4eghggRg8VY7PAz3dr++VwDNBGCcOfIvHpBo="
+    "h1Digest": "h1:oTE/oQR4eghggRg8VY7PAz3dr++VwDNBGCcOfIvHpBo=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "f1e826adb7210a4a",
+   "id": "5ff736fd05b61039",
    "name": "github.com/hashicorp/go-retryablehttp",
    "version": "v0.7.1",
    "type": "go-module",
@@ -1203,15 +1305,16 @@
     "cpe:2.3:a:hashicorp:go_retryablehttp:v0.7.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-retryablehttp@v0.7.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:sUiuQAnLlbvmExtFQs72iFW/HXeUn8Z1aJLQ4LJJbTQ="
+    "h1Digest": "h1:sUiuQAnLlbvmExtFQs72iFW/HXeUn8Z1aJLQ4LJJbTQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "da19c5e18325f0",
+   "id": "b935284ddca082b8",
    "name": "github.com/hashicorp/go-retryablehttp",
    "version": "v0.7.2",
    "type": "go-module",
@@ -1228,15 +1331,16 @@
     "cpe:2.3:a:hashicorp:go_retryablehttp:v0.7.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-retryablehttp@v0.7.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0="
+    "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "97a3b11476062c76",
+   "id": "335b11602f598515",
    "name": "github.com/hashicorp/go-retryablehttp",
    "version": "v0.7.2",
    "type": "go-module",
@@ -1253,15 +1357,16 @@
     "cpe:2.3:a:hashicorp:go_retryablehttp:v0.7.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-retryablehttp@v0.7.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0="
+    "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "a0cfa130b2de66a2",
+   "id": "50304e75059df989",
    "name": "github.com/hashicorp/go-retryablehttp",
    "version": "v0.7.2",
    "type": "go-module",
@@ -1278,15 +1383,13 @@
     "cpe:2.3:a:hashicorp:go_retryablehttp:v0.7.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-retryablehttp@v0.7.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0="
    }
   },
   {
-   "id": "4347c12e71813f2d",
+   "id": "972dc4f5f2202e5d",
    "name": "github.com/hashicorp/go-rootcerts",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1303,15 +1406,16 @@
     "cpe:2.3:a:hashicorp:go_rootcerts:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-rootcerts@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc="
+    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "c5d65690cb717c34",
+   "id": "fa80b8979af0a564",
    "name": "github.com/hashicorp/go-rootcerts",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1328,15 +1432,16 @@
     "cpe:2.3:a:hashicorp:go_rootcerts:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-rootcerts@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc="
+    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ff9168f34fb329ad",
+   "id": "dc17a7875dde235b",
    "name": "github.com/hashicorp/go-rootcerts",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1353,15 +1458,16 @@
     "cpe:2.3:a:hashicorp:go_rootcerts:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-rootcerts@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc="
+    "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "53e9a8526cf4ae73",
+   "id": "17f420aa97e56339",
    "name": "github.com/hashicorp/go-rootcerts",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1378,15 +1484,13 @@
     "cpe:2.3:a:hashicorp:go_rootcerts:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-rootcerts@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc="
    }
   },
   {
-   "id": "988899ad264e7064",
+   "id": "6f2626679bc0face",
    "name": "github.com/hashicorp/go-secure-stdlib/mlock",
    "version": "v0.1.2",
    "type": "go-module",
@@ -1403,15 +1507,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/mlock:v0.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/mlock@v0.1.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:p4AKXPPS24tO8Wc8i1gLvSKdmkiSY5xuju57czJ/IJQ="
+    "h1Digest": "h1:p4AKXPPS24tO8Wc8i1gLvSKdmkiSY5xuju57czJ/IJQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "69119fef3a6efed5",
+   "id": "1cffbaba680230a2",
    "name": "github.com/hashicorp/go-secure-stdlib/parseutil",
    "version": "v0.1.7",
    "type": "go-module",
@@ -1428,15 +1533,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/parseutil:v0.1.7:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/parseutil@v0.1.7",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs="
+    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "fe727e440e71d78b",
+   "id": "6649fe9997f9d12",
    "name": "github.com/hashicorp/go-secure-stdlib/parseutil",
    "version": "v0.1.7",
    "type": "go-module",
@@ -1453,15 +1559,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/parseutil:v0.1.7:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/parseutil@v0.1.7",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs="
+    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "b017fb9f45f0eb46",
+   "id": "bfe4c1b3da4f782",
    "name": "github.com/hashicorp/go-secure-stdlib/parseutil",
    "version": "v0.1.7",
    "type": "go-module",
@@ -1478,15 +1585,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/parseutil:v0.1.7:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/parseutil@v0.1.7",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs="
+    "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "cd5f770e15a302e3",
+   "id": "bb5ce721255da8c1",
    "name": "github.com/hashicorp/go-secure-stdlib/parseutil",
    "version": "v0.1.7",
    "type": "go-module",
@@ -1503,15 +1611,13 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/parseutil:v0.1.7:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/parseutil@v0.1.7",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs="
    }
   },
   {
-   "id": "1cd8c4ccdd642417",
+   "id": "e2cce37b28e8ea1c",
    "name": "github.com/hashicorp/go-secure-stdlib/strutil",
    "version": "v0.1.2",
    "type": "go-module",
@@ -1528,15 +1634,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/strutil:v0.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/strutil@v0.1.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts="
+    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "e2afee0e5f24ca02",
+   "id": "be631f2eb1a8209f",
    "name": "github.com/hashicorp/go-secure-stdlib/strutil",
    "version": "v0.1.2",
    "type": "go-module",
@@ -1553,15 +1660,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/strutil:v0.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/strutil@v0.1.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts="
+    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "59f3632cd66cac24",
+   "id": "28c184e999ef0aa9",
    "name": "github.com/hashicorp/go-secure-stdlib/strutil",
    "version": "v0.1.2",
    "type": "go-module",
@@ -1578,15 +1686,16 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/strutil:v0.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/strutil@v0.1.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts="
+    "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "3d5fcc8e1daf3744",
+   "id": "971b363f1318d408",
    "name": "github.com/hashicorp/go-secure-stdlib/strutil",
    "version": "v0.1.2",
    "type": "go-module",
@@ -1603,15 +1712,13 @@
     "cpe:2.3:a:hashicorp:go_secure_stdlib\\/strutil:v0.1.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/strutil@v0.1.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts="
    }
   },
   {
-   "id": "e340aa9179d888d8",
+   "id": "dfa8540d44df57b9",
    "name": "github.com/hashicorp/go-sockaddr",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1628,15 +1735,16 @@
     "cpe:2.3:a:hashicorp:go_sockaddr:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-sockaddr@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc="
+    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "6b5c0e4434cc1501",
+   "id": "e8e157af3b893fad",
    "name": "github.com/hashicorp/go-sockaddr",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1653,15 +1761,16 @@
     "cpe:2.3:a:hashicorp:go_sockaddr:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-sockaddr@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc="
+    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "897db775dec31273",
+   "id": "a4061aa9476379eb",
    "name": "github.com/hashicorp/go-sockaddr",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1678,15 +1787,16 @@
     "cpe:2.3:a:hashicorp:go_sockaddr:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-sockaddr@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc="
+    "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1b62ed74694ab527",
+   "id": "fac887c3e4c9e044",
    "name": "github.com/hashicorp/go-sockaddr",
    "version": "v1.0.2",
    "type": "go-module",
@@ -1703,15 +1813,13 @@
     "cpe:2.3:a:hashicorp:go_sockaddr:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-sockaddr@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc="
    }
   },
   {
-   "id": "baa895af5828cfd8",
+   "id": "dc0a5ff7a573622",
    "name": "github.com/hashicorp/go-uuid",
    "version": "v1.0.3",
    "type": "go-module",
@@ -1728,15 +1836,16 @@
     "cpe:2.3:a:hashicorp:go_uuid:v1.0.3:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-uuid@v1.0.3",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:2gKiV6YVmrJ1i2CKKa9obLvRieoRGviZFL26PcT/Co8="
+    "h1Digest": "h1:2gKiV6YVmrJ1i2CKKa9obLvRieoRGviZFL26PcT/Co8=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "5f8bcebfc911346f",
+   "id": "e6b052bdc52b0df1",
    "name": "github.com/hashicorp/go-version",
    "version": "v1.6.0",
    "type": "go-module",
@@ -1753,15 +1862,16 @@
     "cpe:2.3:a:hashicorp:go_version:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-version@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek="
+    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "75ab58358a5c2ca5",
+   "id": "8efee23a23fa6375",
    "name": "github.com/hashicorp/go-version",
    "version": "v1.6.0",
    "type": "go-module",
@@ -1778,15 +1888,16 @@
     "cpe:2.3:a:hashicorp:go_version:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-version@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek="
+    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "c2dfea2aee2c1cbd",
+   "id": "f37968ee79c1c375",
    "name": "github.com/hashicorp/go-version",
    "version": "v1.6.0",
    "type": "go-module",
@@ -1803,15 +1914,16 @@
     "cpe:2.3:a:hashicorp:go_version:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-version@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek="
+    "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "23d99ec41e57fab4",
+   "id": "df45fef91329ecdd",
    "name": "github.com/hashicorp/go-version",
    "version": "v1.6.0",
    "type": "go-module",
@@ -1828,15 +1940,13 @@
     "cpe:2.3:a:hashicorp:go_version:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/go-version@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:feTTfFNnjP967rlCxM/I9g701jU+RN74YKx2mOkIeek="
    }
   },
   {
-   "id": "9b36b13203ada18b",
+   "id": "73114ccc5802f74f",
    "name": "github.com/hashicorp/golang-lru",
    "version": "v0.5.4",
    "type": "go-module",
@@ -1853,15 +1963,16 @@
     "cpe:2.3:a:hashicorp:golang_lru:v0.5.4:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/golang-lru@v0.5.4",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:YDjusn29QI/Das2iO9M0BHnIbxPeyuCHsjMW+lJfyTc="
+    "h1Digest": "h1:YDjusn29QI/Das2iO9M0BHnIbxPeyuCHsjMW+lJfyTc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "8993258930811525",
+   "id": "67baced4a94883f2",
    "name": "github.com/hashicorp/hcl",
    "version": "v1.0.0",
    "type": "go-module",
@@ -1877,15 +1988,16 @@
     "cpe:2.3:a:hashicorp:hcl:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/hcl@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4="
+    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "3ad0a60dce941635",
+   "id": "e0ab69c3c2c28495",
    "name": "github.com/hashicorp/hcl",
    "version": "v1.0.0",
    "type": "go-module",
@@ -1901,15 +2013,16 @@
     "cpe:2.3:a:hashicorp:hcl:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/hcl@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4="
+    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1cdb2e86c0ccb9d8",
+   "id": "acf22992064c8e83",
    "name": "github.com/hashicorp/hcl",
    "version": "v1.0.0",
    "type": "go-module",
@@ -1925,15 +2038,16 @@
     "cpe:2.3:a:hashicorp:hcl:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/hcl@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4="
+    "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1e6b227a06fabddf",
+   "id": "aefae87d5755a9df",
    "name": "github.com/hashicorp/hcl",
    "version": "v1.0.0",
    "type": "go-module",
@@ -1949,15 +2063,13 @@
     "cpe:2.3:a:hashicorp:hcl:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/hcl@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4="
    }
   },
   {
-   "id": "28965585cd3e47a9",
+   "id": "f3085bc9433a2dad",
    "name": "github.com/hashicorp/vault/api",
    "version": "v1.7.2",
    "type": "go-module",
@@ -1973,15 +2085,16 @@
     "cpe:2.3:a:hashicorp:vault\\/api:v1.7.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/vault/api@v1.7.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:kawHE7s/4xwrdKbkmwQi0wYaIeUhk5ueek7ljuezCVQ="
+    "h1Digest": "h1:kawHE7s/4xwrdKbkmwQi0wYaIeUhk5ueek7ljuezCVQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "373ecd7f3d7a63fb",
+   "id": "5ddd667051d9c571",
    "name": "github.com/hashicorp/vault/api",
    "version": "v1.9.0",
    "type": "go-module",
@@ -1997,15 +2110,16 @@
     "cpe:2.3:a:hashicorp:vault\\/api:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/vault/api@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8="
+    "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "f88cbf9768032b99",
+   "id": "2637e97e84317f3",
    "name": "github.com/hashicorp/vault/api",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2021,15 +2135,16 @@
     "cpe:2.3:a:hashicorp:vault\\/api:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/vault/api@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8="
+    "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "aa1f996ebd9f43d6",
+   "id": "81ae9ec60bc149cf",
    "name": "github.com/hashicorp/vault/api",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2045,15 +2160,13 @@
     "cpe:2.3:a:hashicorp:vault\\/api:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/vault/api@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8="
    }
   },
   {
-   "id": "fe652e3b7dc91d62",
+   "id": "839680c9f7c8f3e2",
    "name": "github.com/hashicorp/vault/sdk",
    "version": "v0.5.3",
    "type": "go-module",
@@ -2069,15 +2182,16 @@
     "cpe:2.3:a:hashicorp:vault\\/sdk:v0.5.3:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/vault/sdk@v0.5.3",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:PWY8sq/9pRrK9vUIy75qCH2Jd8oeENAgkaa/qbhzFrs="
+    "h1Digest": "h1:PWY8sq/9pRrK9vUIy75qCH2Jd8oeENAgkaa/qbhzFrs=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "4c7dc247b192d7e3",
+   "id": "e6815e7d918a2392",
    "name": "github.com/hashicorp/yamux",
    "version": "v0.1.1",
    "type": "go-module",
@@ -2093,15 +2207,16 @@
     "cpe:2.3:a:hashicorp:yamux:v0.1.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/hashicorp/yamux@v0.1.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:yrQxtgseBDrq9Y652vSRDvsKCJKOUD+GzTS4Y0Y8pvE="
+    "h1Digest": "h1:yrQxtgseBDrq9Y652vSRDvsKCJKOUD+GzTS4Y0Y8pvE=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "3ce5c719fea2d489",
+   "id": "1075c318bb96f5af",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.13",
    "type": "go-module",
@@ -2118,15 +2233,16 @@
     "cpe:2.3:a:mattn:go_colorable:v0.1.13:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.13",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA="
+    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1f07cb93250661df",
+   "id": "45d613f4917d4911",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.13",
    "type": "go-module",
@@ -2143,15 +2259,16 @@
     "cpe:2.3:a:mattn:go_colorable:v0.1.13:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.13",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA="
+    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "c4fd460c425734d5",
+   "id": "ecff4c977f343ffe",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.13",
    "type": "go-module",
@@ -2168,15 +2285,16 @@
     "cpe:2.3:a:mattn:go_colorable:v0.1.13:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.13",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA="
+    "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "b406e7288df4132a",
+   "id": "ceddf32254e255a9",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.13",
    "type": "go-module",
@@ -2193,15 +2311,13 @@
     "cpe:2.3:a:mattn:go_colorable:v0.1.13:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.13",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA="
    }
   },
   {
-   "id": "db7a7220a1fc79b6",
+   "id": "9aad06ccd55a4f31",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.16",
    "type": "go-module",
@@ -2218,15 +2334,16 @@
     "cpe:2.3:a:mattn:go_isatty:v0.0.16:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.16",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:bq3VjFmv/sOjHtdEhmkEV4x1AJtvUvOJ2PFAZ5+peKQ="
+    "h1Digest": "h1:bq3VjFmv/sOjHtdEhmkEV4x1AJtvUvOJ2PFAZ5+peKQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "972fa1558d058c15",
+   "id": "79420f4e6fb08e29",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.18",
    "type": "go-module",
@@ -2243,15 +2360,16 @@
     "cpe:2.3:a:mattn:go_isatty:v0.0.18:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.18",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98="
+    "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "4b883aad3f2cd905",
+   "id": "8d157d560ab54404",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.18",
    "type": "go-module",
@@ -2268,15 +2386,16 @@
     "cpe:2.3:a:mattn:go_isatty:v0.0.18:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.18",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98="
+    "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "a565fb64bbe030f0",
+   "id": "ee2fcbab9f74ed92",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.18",
    "type": "go-module",
@@ -2293,15 +2412,13 @@
     "cpe:2.3:a:mattn:go_isatty:v0.0.18:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.18",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98="
    }
   },
   {
-   "id": "63fa148ff94eeeb7",
+   "id": "1ff1a32554b59bd6",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -2317,15 +2434,16 @@
     "cpe:2.3:a:mgutz:ansi:v0.0.0-20200706080929-d51e80ef957d:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
+    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "bcfe97b457eaa653",
+   "id": "64c78f576f1f5265",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -2341,15 +2459,16 @@
     "cpe:2.3:a:mgutz:ansi:v0.0.0-20200706080929-d51e80ef957d:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
+    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "f80da181f7130aeb",
+   "id": "bbebaa674b259cf6",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -2365,15 +2484,16 @@
     "cpe:2.3:a:mgutz:ansi:v0.0.0-20200706080929-d51e80ef957d:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
+    "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1fa4c614b50457",
+   "id": "cd0469f33951c630",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
@@ -2389,15 +2509,13 @@
     "cpe:2.3:a:mgutz:ansi:v0.0.0-20200706080929-d51e80ef957d:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI="
    }
   },
   {
-   "id": "a00a3483201efe2f",
+   "id": "13b00b533a5608f0",
    "name": "github.com/mitchellh/copystructure",
    "version": "v1.2.0",
    "type": "go-module",
@@ -2413,15 +2531,16 @@
     "cpe:2.3:a:mitchellh:copystructure:v1.2.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/copystructure@v1.2.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:vpKXTN4ewci03Vljg/q9QvCGUDttBOGBIa15WveJJGw="
+    "h1Digest": "h1:vpKXTN4ewci03Vljg/q9QvCGUDttBOGBIa15WveJJGw=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "dae8148e4dbd9d13",
+   "id": "86dce0356a01d76e",
    "name": "github.com/mitchellh/go-homedir",
    "version": "v1.1.0",
    "type": "go-module",
@@ -2438,15 +2557,13 @@
     "cpe:2.3:a:mitchellh:go_homedir:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/go-homedir@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:lukF9ziXFxDFPkA1vsr5zpc1XuPDn/wFntq5mG+4E0Y="
    }
   },
   {
-   "id": "b527caccb63cad6b",
+   "id": "3c810f2afbcdc919",
    "name": "github.com/mitchellh/go-testing-interface",
    "version": "v1.14.1",
    "type": "go-module",
@@ -2463,15 +2580,16 @@
     "cpe:2.3:a:mitchellh:go_testing_interface:v1.14.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/go-testing-interface@v1.14.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:jrgshOhYAUVNMAJiKbEu7EqAwgJJ2JqpQmpLJOu07cU="
+    "h1Digest": "h1:jrgshOhYAUVNMAJiKbEu7EqAwgJJ2JqpQmpLJOu07cU=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "a8ca81c59a99d51b",
+   "id": "280355d2c5676dc",
    "name": "github.com/mitchellh/mapstructure",
    "version": "v1.5.0",
    "type": "go-module",
@@ -2487,15 +2605,16 @@
     "cpe:2.3:a:mitchellh:mapstructure:v1.5.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/mapstructure@v1.5.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY="
+    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "e7df72f26089a8bb",
+   "id": "bbeee21740bd93db",
    "name": "github.com/mitchellh/mapstructure",
    "version": "v1.5.0",
    "type": "go-module",
@@ -2511,15 +2630,16 @@
     "cpe:2.3:a:mitchellh:mapstructure:v1.5.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/mapstructure@v1.5.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY="
+    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "fd4c187566338f70",
+   "id": "bc5e39b35b334e61",
    "name": "github.com/mitchellh/mapstructure",
    "version": "v1.5.0",
    "type": "go-module",
@@ -2535,15 +2655,16 @@
     "cpe:2.3:a:mitchellh:mapstructure:v1.5.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/mapstructure@v1.5.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY="
+    "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "2124e36efe55e269",
+   "id": "db983303dc31596f",
    "name": "github.com/mitchellh/mapstructure",
    "version": "v1.5.0",
    "type": "go-module",
@@ -2559,15 +2680,13 @@
     "cpe:2.3:a:mitchellh:mapstructure:v1.5.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/mapstructure@v1.5.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY="
    }
   },
   {
-   "id": "1dddd8b18b6acaab",
+   "id": "34ccc30ee7190be7",
    "name": "github.com/mitchellh/reflectwalk",
    "version": "v1.0.2",
    "type": "go-module",
@@ -2583,15 +2702,16 @@
     "cpe:2.3:a:mitchellh:reflectwalk:v1.0.2:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/mitchellh/reflectwalk@v1.0.2",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ="
+    "h1Digest": "h1:G2LzWKi524PWgd3mLHV8Y5k7s6XUvT0Gef6zxSIeXaQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "dcd71d5935f45e2d",
+   "id": "f1a060c49a5f8907",
    "name": "github.com/oklog/run",
    "version": "v1.1.0",
    "type": "go-module",
@@ -2607,15 +2727,16 @@
     "cpe:2.3:a:oklog:run:v1.1.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/oklog/run@v1.1.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:GEenZ1cK0+q0+wsJew9qUg/DyD8k3JzYsZAi5gYi2mA="
+    "h1Digest": "h1:GEenZ1cK0+q0+wsJew9qUg/DyD8k3JzYsZAi5gYi2mA=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "a4f4508bfaee437a",
+   "id": "3fa848d4b9c90132",
    "name": "github.com/pierrec/lz4",
    "version": "v2.6.1+incompatible",
    "type": "go-module",
@@ -2631,15 +2752,16 @@
     "cpe:2.3:a:pierrec:lz4:v2.6.1\\+incompatible:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/pierrec/lz4@v2.6.1+incompatible",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:9UY3+iC23yxF0UfGaYrGplQ+79Rg+h/q9FV9ix19jjM="
+    "h1Digest": "h1:9UY3+iC23yxF0UfGaYrGplQ+79Rg+h/q9FV9ix19jjM=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "7f4aafd6e126a500",
+   "id": "b7bca8cd969dc0b3",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -2655,15 +2777,16 @@
     "cpe:2.3:a:russross:blackfriday:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
+    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "82136002302425c5",
+   "id": "3bb022a683d8eea7",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -2679,15 +2802,16 @@
     "cpe:2.3:a:russross:blackfriday:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
+    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "727c8b18205ca64f",
+   "id": "55a0594fdf8086e2",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -2703,15 +2827,16 @@
     "cpe:2.3:a:russross:blackfriday:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
+    "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "75d5c5233eb642e6",
+   "id": "aba2609b232a80db",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
@@ -2727,15 +2852,13 @@
     "cpe:2.3:a:russross:blackfriday:v1.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww="
    }
   },
   {
-   "id": "f93e1c4f8d84d924",
+   "id": "b89f5d786ba59072",
    "name": "github.com/ryanuber/go-glob",
    "version": "v1.0.0",
    "type": "go-module",
@@ -2752,15 +2875,16 @@
     "cpe:2.3:a:ryanuber:go_glob:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/ryanuber/go-glob@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk="
+    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "5a67c4ed53293e73",
+   "id": "ac277b9581e153c5",
    "name": "github.com/ryanuber/go-glob",
    "version": "v1.0.0",
    "type": "go-module",
@@ -2777,15 +2901,16 @@
     "cpe:2.3:a:ryanuber:go_glob:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/ryanuber/go-glob@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk="
+    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "cf36388a02e04789",
+   "id": "b114d76754f7e49",
    "name": "github.com/ryanuber/go-glob",
    "version": "v1.0.0",
    "type": "go-module",
@@ -2802,15 +2927,16 @@
     "cpe:2.3:a:ryanuber:go_glob:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/ryanuber/go-glob@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk="
+    "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "f65bb86cfa13c94e",
+   "id": "14732289fdecd2da",
    "name": "github.com/ryanuber/go-glob",
    "version": "v1.0.0",
    "type": "go-module",
@@ -2827,15 +2953,13 @@
     "cpe:2.3:a:ryanuber:go_glob:v1.0.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/ryanuber/go-glob@v1.0.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk="
    }
   },
   {
-   "id": "22e58afa7a25c4d9",
+   "id": "ed9a7e14bb8263e4",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2851,15 +2975,16 @@
     "cpe:2.3:a:sirupsen:logrus:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0="
+    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "dddfe69048f005b2",
+   "id": "566d99276630993e",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2875,15 +3000,16 @@
     "cpe:2.3:a:sirupsen:logrus:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0="
+    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "22856e73b4bd9684",
+   "id": "671e7a4767586b87",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2899,15 +3025,16 @@
     "cpe:2.3:a:sirupsen:logrus:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0="
+    "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "d5661b8c1339beb9",
+   "id": "965404179e0b694",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.9.0",
    "type": "go-module",
@@ -2923,15 +3050,13 @@
     "cpe:2.3:a:sirupsen:logrus:v1.9.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.9.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0="
    }
   },
   {
-   "id": "654ac4436b608875",
+   "id": "6713db84575350ea",
    "name": "go.uber.org/atomic",
    "version": "v1.10.0",
    "type": "go-module",
@@ -2945,15 +3070,16 @@
    "language": "go",
    "cpes": [],
    "purl": "pkg:golang/go.uber.org/atomic@v1.10.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:9qC72Qh0+3MqyJbAn8YU5xVq1frD8bn3JtD2oXtafVQ="
+    "h1Digest": "h1:9qC72Qh0+3MqyJbAn8YU5xVq1frD8bn3JtD2oXtafVQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "5c0e2d9f72737da1",
+   "id": "d8faf3a5bb2a327d",
    "name": "golang.org/x/crypto",
    "version": "v0.0.0-20220824171710-5757bc0c5503",
    "type": "go-module",
@@ -2969,15 +3095,16 @@
     "cpe:2.3:a:golang:x\\/crypto:v0.0.0-20220824171710-5757bc0c5503:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/crypto@v0.0.0-20220824171710-5757bc0c5503",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:vJ2V3lFLg+bBhgroYuRfyN583UzVveQmIXjc8T/y3to="
+    "h1Digest": "h1:vJ2V3lFLg+bBhgroYuRfyN583UzVveQmIXjc8T/y3to=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "74ffc8528acbcf5a",
+   "id": "2b2c309f2204c528",
    "name": "golang.org/x/crypto",
    "version": "v0.7.0",
    "type": "go-module",
@@ -2993,15 +3120,16 @@
     "cpe:2.3:a:golang:x\\/crypto:v0.7.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/crypto@v0.7.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A="
+    "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "d9be227324e1d1d4",
+   "id": "3f54fd41ab9481ae",
    "name": "golang.org/x/crypto",
    "version": "v0.7.0",
    "type": "go-module",
@@ -3017,15 +3145,16 @@
     "cpe:2.3:a:golang:x\\/crypto:v0.7.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/crypto@v0.7.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A="
+    "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "acd0778b779ea8db",
+   "id": "1a6cc998401b6130",
    "name": "golang.org/x/crypto",
    "version": "v0.7.0",
    "type": "go-module",
@@ -3041,15 +3170,13 @@
     "cpe:2.3:a:golang:x\\/crypto:v0.7.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/crypto@v0.7.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A="
    }
   },
   {
-   "id": "7946873b49e21327",
+   "id": "366f5c436b8faccd",
    "name": "golang.org/x/net",
    "version": "v0.0.0-20220822230855-b0a4917ee28c",
    "type": "go-module",
@@ -3065,15 +3192,16 @@
     "cpe:2.3:a:golang:x\\/net:v0.0.0-20220822230855-b0a4917ee28c:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/net@v0.0.0-20220822230855-b0a4917ee28c",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:JVAXQ10yGGVbSyoer5VILysz6YKjdNT2bsvlayjqhes="
+    "h1Digest": "h1:JVAXQ10yGGVbSyoer5VILysz6YKjdNT2bsvlayjqhes=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "9d89d4d7ffabed97",
+   "id": "d92d2f2a53fc44c",
    "name": "golang.org/x/net",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3089,15 +3217,16 @@
     "cpe:2.3:a:golang:x\\/net:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/net@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ="
+    "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "51d1b4b669002c6d",
+   "id": "cc3b3531ae4cf8ee",
    "name": "golang.org/x/net",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3113,15 +3242,16 @@
     "cpe:2.3:a:golang:x\\/net:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/net@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ="
+    "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "767f04331a7a0876",
+   "id": "c598f749a58010d0",
    "name": "golang.org/x/net",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3137,15 +3267,13 @@
     "cpe:2.3:a:golang:x\\/net:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/net@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ="
    }
   },
   {
-   "id": "9bdd2528875b6ea0",
+   "id": "479a1ba510d9e4cd",
    "name": "golang.org/x/sys",
    "version": "v0.0.0-20220823224334-20c2bfdbfe24",
    "type": "go-module",
@@ -3161,15 +3289,16 @@
     "cpe:2.3:a:golang:x\\/sys:v0.0.0-20220823224334-20c2bfdbfe24:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/sys@v0.0.0-20220823224334-20c2bfdbfe24",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:TyKJRhyo17yWxOMCTHKWrc5rddHORMlnZ/j57umaUd8="
+    "h1Digest": "h1:TyKJRhyo17yWxOMCTHKWrc5rddHORMlnZ/j57umaUd8=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "41943ca6535f95a4",
+   "id": "7d8202cd3b48eebc",
    "name": "golang.org/x/sys",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3185,15 +3314,16 @@
     "cpe:2.3:a:golang:x\\/sys:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/sys@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ="
+    "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "53c950bcd7338bbc",
+   "id": "db09e909477fd0bb",
    "name": "golang.org/x/sys",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3209,15 +3339,16 @@
     "cpe:2.3:a:golang:x\\/sys:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/sys@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ="
+    "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ef86e2d467c5580b",
+   "id": "ca3c49ab7bce06e6",
    "name": "golang.org/x/sys",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3233,15 +3364,13 @@
     "cpe:2.3:a:golang:x\\/sys:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/sys@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ="
    }
   },
   {
-   "id": "91d29e47993703ab",
+   "id": "f19ac3f41fd4fc7a",
    "name": "golang.org/x/term",
    "version": "v0.0.0-20220722155259-a9ba230a4035",
    "type": "go-module",
@@ -3257,15 +3386,16 @@
     "cpe:2.3:a:golang:x\\/term:v0.0.0-20220722155259-a9ba230a4035:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/term@v0.0.0-20220722155259-a9ba230a4035",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:Q5284mrmYTpACcm+eAKjKJH48BBwSyfJqmmGDTtT8Vc="
+    "h1Digest": "h1:Q5284mrmYTpACcm+eAKjKJH48BBwSyfJqmmGDTtT8Vc=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ffeccb7b6f2b1478",
+   "id": "a8ceee5f18c5362e",
    "name": "golang.org/x/term",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3281,15 +3411,16 @@
     "cpe:2.3:a:golang:x\\/term:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/term@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw="
+    "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "e95a3e23e2971654",
+   "id": "f8a807b6785598fc",
    "name": "golang.org/x/term",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3305,15 +3436,16 @@
     "cpe:2.3:a:golang:x\\/term:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/term@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw="
+    "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1e56163935f671c1",
+   "id": "ad8ef5550be39f43",
    "name": "golang.org/x/term",
    "version": "v0.6.0",
    "type": "go-module",
@@ -3329,15 +3461,13 @@
     "cpe:2.3:a:golang:x\\/term:v0.6.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/term@v0.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw="
    }
   },
   {
-   "id": "97fcefcfd627c260",
+   "id": "ffe37c3488ac1f68",
    "name": "golang.org/x/text",
    "version": "v0.3.7",
    "type": "go-module",
@@ -3353,15 +3483,16 @@
     "cpe:2.3:a:golang:x\\/text:v0.3.7:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/text@v0.3.7",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk="
+    "h1Digest": "h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "9394f8bd4af539e1",
+   "id": "64521a93c0b40cc5",
    "name": "golang.org/x/text",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3377,15 +3508,16 @@
     "cpe:2.3:a:golang:x\\/text:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/text@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68="
+    "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "3aeda99373238e1b",
+   "id": "440a4081834b604e",
    "name": "golang.org/x/text",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3401,15 +3533,16 @@
     "cpe:2.3:a:golang:x\\/text:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/text@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68="
+    "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "21745d7a384e749e",
+   "id": "efdd42535e2eeff3",
    "name": "golang.org/x/text",
    "version": "v0.8.0",
    "type": "go-module",
@@ -3425,15 +3558,13 @@
     "cpe:2.3:a:golang:x\\/text:v0.8.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/text@v0.8.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68="
    }
   },
   {
-   "id": "c802204b1b66a8ce",
+   "id": "12cc4ccb27cd588b",
    "name": "golang.org/x/time",
    "version": "v0.0.0-20220722155302-e5dcc9cfc0b9",
    "type": "go-module",
@@ -3449,15 +3580,16 @@
     "cpe:2.3:a:golang:x\\/time:v0.0.0-20220722155302-e5dcc9cfc0b9:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/time@v0.0.0-20220722155302-e5dcc9cfc0b9",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:ftMN5LMiBFjbzleLqtoBZk7KdJwhuybIU+FckUHgoyQ="
+    "h1Digest": "h1:ftMN5LMiBFjbzleLqtoBZk7KdJwhuybIU+FckUHgoyQ=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "4db0a33bfd332518",
+   "id": "4316fc603ed8bf69",
    "name": "golang.org/x/time",
    "version": "v0.3.0",
    "type": "go-module",
@@ -3473,15 +3605,16 @@
     "cpe:2.3:a:golang:x\\/time:v0.3.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/time@v0.3.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4="
+    "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "809ff2d90315206e",
+   "id": "f0530a72748668c5",
    "name": "golang.org/x/time",
    "version": "v0.3.0",
    "type": "go-module",
@@ -3497,15 +3630,16 @@
     "cpe:2.3:a:golang:x\\/time:v0.3.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/time@v0.3.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4="
+    "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "777e029a70ca83c3",
+   "id": "31465c82ee794a6d",
    "name": "golang.org/x/time",
    "version": "v0.3.0",
    "type": "go-module",
@@ -3521,15 +3655,13 @@
     "cpe:2.3:a:golang:x\\/time:v0.3.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/golang.org/x/time@v0.3.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4="
    }
   },
   {
-   "id": "441c609d1b40114f",
+   "id": "488d85c09c9c1b52",
    "name": "google.golang.org/genproto",
    "version": "v0.0.0-20220822174746-9e6da59bd2fc",
    "type": "go-module",
@@ -3545,15 +3677,16 @@
     "cpe:2.3:a:google:genproto:v0.0.0-20220822174746-9e6da59bd2fc:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/google.golang.org/genproto@v0.0.0-20220822174746-9e6da59bd2fc",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:Nf+EdcTLHR8qDNN/KfkQL0u0ssxt9OhbaWCl5C0ucEI="
+    "h1Digest": "h1:Nf+EdcTLHR8qDNN/KfkQL0u0ssxt9OhbaWCl5C0ucEI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "823bd97cf2ba1d34",
+   "id": "9797abff59982df4",
    "name": "google.golang.org/grpc",
    "version": "v1.49.0",
    "type": "go-module",
@@ -3569,15 +3702,16 @@
     "cpe:2.3:a:google:grpc:v1.49.0:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/google.golang.org/grpc@v1.49.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:WTLtQzmQori5FUH25Pq4WT22oCsv8USpQ+F6rqtsmxw="
+    "h1Digest": "h1:WTLtQzmQori5FUH25Pq4WT22oCsv8USpQ+F6rqtsmxw=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "1dd433cde29cb0b9",
+   "id": "512369e3ed843752",
    "name": "google.golang.org/protobuf",
    "version": "v1.28.1",
    "type": "go-module",
@@ -3593,15 +3727,16 @@
     "cpe:2.3:a:google:protobuf:v1.28.1:*:*:*:*:*:*:*"
    ],
    "purl": "pkg:golang/google.golang.org/protobuf@v1.28.1",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:d0NfwRgPtno5B1Wa6L2DAG+KivqkdutMf1UhdNx175w="
+    "h1Digest": "h1:d0NfwRgPtno5B1Wa6L2DAG+KivqkdutMf1UhdNx175w=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "ad54106db664b557",
+   "id": "bbe27353c9ea493a",
    "name": "gopkg.in/square/go-jose.v2",
    "version": "v2.6.0",
    "type": "go-module",
@@ -3615,15 +3750,16 @@
    "language": "go",
    "cpes": [],
    "purl": "pkg:golang/gopkg.in/square/go-jose.v2@v2.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.19.5",
     "architecture": "amd64",
-    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI="
+    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "15d617ccb0562697",
+   "id": "61d1e9fab1668273",
    "name": "gopkg.in/square/go-jose.v2",
    "version": "v2.6.0",
    "type": "go-module",
@@ -3637,15 +3773,16 @@
    "language": "go",
    "cpes": [],
    "purl": "pkg:golang/gopkg.in/square/go-jose.v2@v2.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "amd64",
-    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI="
+    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "74a1f6f3b6cfb003",
+   "id": "511805f2f620ba52",
    "name": "gopkg.in/square/go-jose.v2",
    "version": "v2.6.0",
    "type": "go-module",
@@ -3659,15 +3796,16 @@
    "language": "go",
    "cpes": [],
    "purl": "pkg:golang/gopkg.in/square/go-jose.v2@v2.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20",
+    "goCompiledVersion": "go1.20.3",
     "architecture": "arm64",
-    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI="
+    "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI=",
+    "mainModule": "command-line-arguments"
    }
   },
   {
-   "id": "da403ff14d2ad258",
+   "id": "4d61f6cc29fb3a45",
    "name": "gopkg.in/square/go-jose.v2",
    "version": "v2.6.0",
    "type": "go-module",
@@ -3681,10 +3819,8 @@
    "language": "go",
    "cpes": [],
    "purl": "pkg:golang/gopkg.in/square/go-jose.v2@v2.6.0",
-   "metadataType": "GolangMetadata",
+   "metadataType": "GolangModMetadata",
    "metadata": {
-    "goCompiledVersion": "",
-    "architecture": "",
     "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI="
    }
   }
@@ -3692,752 +3828,767 @@
  "artifactRelationships": [
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "15d617ccb0562697",
+   "child": "1075c318bb96f5af",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "185e1a9a6671626e",
+   "child": "1228868a78c4aa49",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1b62ed74694ab527",
+   "child": "12cc4ccb27cd588b",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1cd8c4ccdd642417",
+   "child": "13b00b533a5608f0",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1cdb2e86c0ccb9d8",
+   "child": "14732289fdecd2da",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1dd433cde29cb0b9",
+   "child": "173d29525fdbb11c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1dddd8b18b6acaab",
+   "child": "177e90ba101e1c8d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1e56163935f671c1",
+   "child": "17f420aa97e56339",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1e6b227a06fabddf",
+   "child": "19777ae7edc4e9e2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1f07cb93250661df",
+   "child": "19a80167436156a9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1fa4c614b50457",
+   "child": "1a6cc998401b6130",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "20193b2dcab2b8a",
+   "child": "1cffbaba680230a2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2124e36efe55e269",
+   "child": "1e1575b30d8c6e92",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "21745d7a384e749e",
+   "child": "1faf5d54bcae2a09",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "22856e73b4bd9684",
+   "child": "1ff1a32554b59bd6",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "22da552187fea095",
+   "child": "205e145b8de3f330",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "22e58afa7a25c4d9",
+   "child": "2152d56229869c31",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2307eb7524d07e66",
+   "child": "231f4025f75944a5",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "23d99ec41e57fab4",
+   "child": "2637e97e84317f3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "25ace461fc33291b",
+   "child": "280355d2c5676dc",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2627ea263065c5fe",
+   "child": "280b469b99b51dba",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "280a6580d1f74dc0",
+   "child": "288b5f7106fb1994",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "28965585cd3e47a9",
+   "child": "28c184e999ef0aa9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2c7dec13df91e73b",
+   "child": "2b2c309f2204c528",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "34ada18361aeeac3",
+   "child": "2ba2ade917d4f2a9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "34c6c463d39da2fc",
+   "child": "2c17aa748d3c30a5",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "37187b638788007c",
+   "child": "2e4d18cfac096b45",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "373ecd7f3d7a63fb",
+   "child": "312d8c80cafd8236",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3ad0a60dce941635",
+   "child": "31465c82ee794a6d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3aeda99373238e1b",
+   "child": "335b11602f598515",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3ce5c719fea2d489",
+   "child": "336a88e9d1a1d2f1",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3d5fcc8e1daf3744",
+   "child": "34ccc30ee7190be7",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "41943ca6535f95a4",
+   "child": "366f5c436b8faccd",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4347c12e71813f2d",
+   "child": "373bfbcd93fa3db3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "441c609d1b40114f",
+   "child": "39048c29dbb3c4f8",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4b883aad3f2cd905",
+   "child": "3bb022a683d8eea7",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4c7dc247b192d7e3",
+   "child": "3c810f2afbcdc919",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4db0a33bfd332518",
+   "child": "3f54fd41ab9481ae",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "51d1b4b669002c6d",
+   "child": "3fa848d4b9c90132",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "525c5b44b3912034",
+   "child": "4316fc603ed8bf69",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "527d544f2514121b",
+   "child": "440a4081834b604e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "53c950bcd7338bbc",
+   "child": "45d613f4917d4911",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "53e9a8526cf4ae73",
+   "child": "479a1ba510d9e4cd",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "59f3632cd66cac24",
+   "child": "488d85c09c9c1b52",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5a5f5250bf3877cf",
+   "child": "48ce0f7fb4b33ea7",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5a67c4ed53293e73",
+   "child": "4d61f6cc29fb3a45",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5c0e2d9f72737da1",
+   "child": "50304e75059df989",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5d8034f8b4478102",
+   "child": "511805f2f620ba52",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5f8bcebfc911346f",
+   "child": "512369e3ed843752",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "63fa148ff94eeeb7",
+   "child": "533e8c48ef19bb3b",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "654ac4436b608875",
+   "child": "5379bf03b4cfbe89",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "69119fef3a6efed5",
+   "child": "55a0594fdf8086e2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6b5c0e4434cc1501",
+   "child": "566d99276630993e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6dba0a5e4716e03",
+   "child": "5ddd667051d9c571",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "727c8b18205ca64f",
+   "child": "5ff736fd05b61039",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "74a1f6f3b6cfb003",
+   "child": "61d1e9fab1668273",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "74ffc8528acbcf5a",
+   "child": "629610c62e15ce75",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "75ab58358a5c2ca5",
+   "child": "64521a93c0b40cc5",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "75d5c5233eb642e6",
+   "child": "64c78f576f1f5265",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "767f04331a7a0876",
+   "child": "6649fe9997f9d12",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "777e029a70ca83c3",
+   "child": "6713db84575350ea",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "7946873b49e21327",
+   "child": "671e7a4767586b87",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "7a30007c8e3784b8",
+   "child": "67baced4a94883f2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "7f4aafd6e126a500",
+   "child": "6f2626679bc0face",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "809ff2d90315206e",
+   "child": "73114ccc5802f74f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "82136002302425c5",
+   "child": "79420f4e6fb08e29",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "823bd97cf2ba1d34",
+   "child": "7d8202cd3b48eebc",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "871b11a5d2b66c08",
+   "child": "81ae9ec60bc149cf",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "87267ff655007cf7",
+   "child": "839680c9f7c8f3e2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "89601bace4d3c48b",
+   "child": "86a2523b9bcd2d5d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "897db775dec31273",
+   "child": "86dce0356a01d76e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "8993258930811525",
+   "child": "87a1209bc551e65c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "91d29e47993703ab",
+   "child": "895dd219c1190de2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9394f8bd4af539e1",
+   "child": "8d157d560ab54404",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "972fa1558d058c15",
+   "child": "8e63236636531384",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "973b4985e71091e0",
+   "child": "8efee23a23fa6375",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9751733b4c61e7b0",
+   "child": "94485673ccc114b0",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "97a3b11476062c76",
+   "child": "965404179e0b694",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "97fcefcfd627c260",
+   "child": "96b14d7a5110edee",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "988899ad264e7064",
+   "child": "971b363f1318d408",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9b36b13203ada18b",
+   "child": "972dc4f5f2202e5d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9bdd2528875b6ea0",
+   "child": "9797abff59982df4",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9d89d4d7ffabed97",
+   "child": "9aad06ccd55a4f31",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9d8eb25a9ed9d9a3",
+   "child": "a107a9daa0abefe0",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9dab1bcf84042d31",
+   "child": "a4061aa9476379eb",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9df9e436daf3aa35",
+   "child": "a8ceee5f18c5362e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a00a3483201efe2f",
+   "child": "a8f53a0fb7015f22",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a0cfa130b2de66a2",
+   "child": "a99d05db525736a3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a12ce0454e72dfbb",
+   "child": "aba2609b232a80db",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a35e34c39a4504f8",
+   "child": "ac277b9581e153c5",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a4b0096d23d0fbb0",
+   "child": "ac7240e9e94f63be",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a4f4508bfaee437a",
+   "child": "acf22992064c8e83",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a565fb64bbe030f0",
+   "child": "ad8ef5550be39f43",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a8ca81c59a99d51b",
+   "child": "aefae87d5755a9df",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "aa1f996ebd9f43d6",
+   "child": "b0a66511a44b7931",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "aab48e1051b32721",
+   "child": "b114d76754f7e49",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "acd0778b779ea8db",
+   "child": "b3b4a3cfb62fe9f3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ad54106db664b557",
+   "child": "b6078d1fca94622c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ae1eeaa5b17c4365",
+   "child": "b7bca8cd969dc0b3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "aead81f15b9e22e3",
+   "child": "b89f5d786ba59072",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b017fb9f45f0eb46",
+   "child": "b8c6784754ba4491",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b2fdc050912d2b69",
+   "child": "b935284ddca082b8",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b406e7288df4132a",
+   "child": "bb5ce721255da8c1",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b527caccb63cad6b",
+   "child": "bbe27353c9ea493a",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b5f27f736f2d92cd",
+   "child": "bbebaa674b259cf6",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b853d19b612d0e7b",
+   "child": "bbeee21740bd93db",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b969d2019d7cbca6",
+   "child": "bc5e39b35b334e61",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "baa895af5828cfd8",
+   "child": "be2e8756cd60a781",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "bcfe97b457eaa653",
+   "child": "be631f2eb1a8209f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c2dfea2aee2c1cbd",
+   "child": "bfe4c1b3da4f782",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c4fd460c425734d5",
+   "child": "c28273b530577c36",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c5d65690cb717c34",
+   "child": "c31eae7303116a2a",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c802204b1b66a8ce",
+   "child": "c36cccafda882062",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c9ceb9532a3d2612",
+   "child": "c598f749a58010d0",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ca815e1fe85ae6b7",
+   "child": "c668d768dd2d1da1",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "cd5f770e15a302e3",
+   "child": "ca3c49ab7bce06e6",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ce5555d0576c28c5",
+   "child": "cc3b3531ae4cf8ee",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "cf36388a02e04789",
+   "child": "cce7a9f21924fd27",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d1ca0ea431d31b60",
+   "child": "cd0469f33951c630",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d4c175777a4f5df1",
+   "child": "ceddf32254e255a9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d5661b8c1339beb9",
+   "child": "d58dd2a48efdc75f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d568c7fb88f1c69f",
+   "child": "d8faf3a5bb2a327d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d6d21ee97e5e6df1",
+   "child": "d92d2f2a53fc44c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d9be227324e1d1d4",
+   "child": "db09e909477fd0bb",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "da19c5e18325f0",
+   "child": "db983303dc31596f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "da403ff14d2ad258",
+   "child": "dc0a5ff7a573622",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "dae8148e4dbd9d13",
+   "child": "dc17a7875dde235b",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "db7a7220a1fc79b6",
+   "child": "df45fef91329ecdd",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "dcd71d5935f45e2d",
+   "child": "df7fa4a48793300d",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "dddfe69048f005b2",
+   "child": "dfa8540d44df57b9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "df1e89b674431678",
+   "child": "e0ab69c3c2c28495",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "e2afee0e5f24ca02",
+   "child": "e2cce37b28e8ea1c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "e340aa9179d888d8",
+   "child": "e6815e7d918a2392",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "e7df72f26089a8bb",
+   "child": "e6b052bdc52b0df1",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "e95a3e23e2971654",
+   "child": "e8e157af3b893fad",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ed498e1d6e0cd897",
+   "child": "ecff4c977f343ffe",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ed69a587cd548c31",
+   "child": "ed9a7e14bb8263e4",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ef86e2d467c5580b",
+   "child": "ee2fcbab9f74ed92",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f1e826adb7210a4a",
+   "child": "ee6b298810d748df",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f65bb86cfa13c94e",
+   "child": "efdd42535e2eeff3",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f80da181f7130aeb",
+   "child": "f0530a72748668c5",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f88cbf9768032b99",
+   "child": "f19ac3f41fd4fc7a",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f93e1c4f8d84d924",
+   "child": "f1a060c49a5f8907",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f9ae478a40accf5a",
+   "child": "f3085bc9433a2dad",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f9b811ad98e80478",
+   "child": "f37968ee79c1c375",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fd4c187566338f70",
+   "child": "f58f1a598487df5f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fe652e3b7dc91d62",
+   "child": "f622902c81babf8e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fe727e440e71d78b",
+   "child": "f76a48c5b53231c4",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ff9168f34fb329ad",
+   "child": "f7b0d6b7be381958",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ffeccb7b6f2b1478",
+   "child": "f8a807b6785598fc",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "fa80b8979af0a564",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "fac887c3e4c9e044",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "ffe37c3488ac1f68",
    "type": "contains"
   }
  ],
@@ -4478,6 +4629,7 @@
     "search-unindexed-archives": false,
     "search-indexed-archives": true
    },
+   "attest": {},
    "file-metadata": {
     "cataloger": {
      "enabled": false,
@@ -4517,27 +4669,13 @@
     "auth": []
    },
    "exclude": [],
-   "attest": {
-    "key": "",
-    "cert": "",
-    "noUpload": false,
-    "force": false,
-    "recursive": false,
-    "replace": false,
-    "fulcioUrl": "https://fulcio.sigstore.dev",
-    "fulcio_identity_token": "",
-    "insecure_skip_verify": false,
-    "rekorUrl": "https://rekor.sigstore.dev",
-    "oidcIssuer": "https://oauth2.sigstore.dev/auth",
-    "oidcClientId": "sigstore",
-    "OIDCRedirectURL": ""
-   },
    "platform": "",
-   "name": ""
+   "name": "",
+   "parallelism": 1
   }
  },
  "schema": {
-  "version": "6.0.0",
-  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-6.0.0.json"
+  "version": "7.0.1",
+  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-7.0.1.json"
  }
 }
