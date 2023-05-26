@@ -14,7 +14,7 @@
   frameworks the chance to get faster offers.
 - Bootstrap: Combine dashboard.yaml, dasboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
   k3s during the bootstrap process.
-- Restart all K8 agents after the K8 server crashed to be sure the cluster state is clean.
+- Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
 
 ## v0.4.0
 

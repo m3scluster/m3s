@@ -11,7 +11,6 @@ export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export K3S_RESOLV_CONF=/etc/k3sresolv.conf
-export KUBECONFIG=/mnt/mesos/sandbox/kubeconfig.yaml
 export BRANCH=master
 export ARCH=`dpkg --print-architecture`
 
@@ -31,12 +30,10 @@ curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/
 if [[ "$K3SFRAMEWORK_TYPE" == "server" ]]
 then
   curl -L http://dl.k8s.io/release/$KUBERNETES_VERSION/bin/linux/${ARCH}/kubectl > $MESOS_SANDBOX/kubectl
-  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/server.${ARCH} > $MESOS_SANDBOX/server
-  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/update.sh > $MESOS_SANDBOX/update
+  curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/controller.${ARCH} > $MESOS_SANDBOX/controller
   chmod +x $MESOS_SANDBOX/kubectl
-  chmod +x $MESOS_SANDBOX/server
-  chmod +x $MESOS_SANDBOX/update
-  exec $MESOS_SANDBOX/server &
+  chmod +x $MESOS_SANDBOX/controller
+  exec $MESOS_SANDBOX/controller &
 fi
 if [[ "$K3SFRAMEWORK_TYPE" == "agent" ]]
 then

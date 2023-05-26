@@ -31,12 +31,8 @@ func init() {
 	framework.MesosSSL = stringToBool(os.Getenv("MESOS_SSL"))
 	framework.PortRangeFrom, _ = strconv.Atoi(util.Getenv("PORTRANGE_FROM", "31000"))
 	framework.PortRangeTo, _ = strconv.Atoi(util.Getenv("PORTRANGE_TO", "32000"))
-	config.AppName = "Mesos K3S Framework"
-	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/dev/bootstrap/bootstrap.sh")
-	config.BootstrapCredentials.Username = util.Getenv("BOOTSTRAP_AUTH_USERNAME", "")
-	config.BootstrapCredentials.Password = util.Getenv("BOOTSTRAP_AUTH_PASSWORD", "")
-	config.BootstrapSSLKey = util.Getenv("BOOTSTRAP_SSL_KEY_BASE64", "")
-	config.BootstrapSSLCrt = util.Getenv("BOOTSTRAP_SSL_CRT_BASE64", "")
+	config.AppName = "Apache Mesos K3S Framework"
+	config.BootstrapURL = util.Getenv("BOOTSTRAP_URL", "https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh")
 	config.CGroupV2 = stringToBool(util.Getenv("CGROUP_V2", "false"))
 	config.DSMax, _ = strconv.Atoi(util.Getenv("DS_COUNT", "1"))
 	config.EventLoopTime, _ = time.ParseDuration(util.Getenv("HEARTBEAT_INTERVAL", "15s"))
@@ -59,8 +55,9 @@ func init() {
 	config.DSMySQLUsername = util.Getenv("DS_MYSQL_USERNAME", "root")
 	config.DSMySQLPassword = util.Getenv("DS_MYSQL_PASSWORD", "password")
 	config.DSMySQLSSL = stringToBool(util.Getenv("DS_MYSQL_SSL", "false"))
+	config.KubeConfig = util.Getenv("KUBECONFIG", "/etc/rancher/k3s/k3s.yaml")
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
-	config.K3SServerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", "6443"))
+	config.K3SServerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", strconv.Itoa(framework.PortRangeFrom)))
 	config.K3SServerCPU, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU", "0.1"), 64)
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "2000"), 64)
 	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10  --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --kube-scheduler-arg='leader-elect=false' --snapshotter=native --flannel-backend=vxlan ")
@@ -77,7 +74,7 @@ func init() {
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:3.5.1")
 	config.ImageMySQL = util.Getenv("IMAGE_MYSQL", "docker.io/mariadb:10.8.3")
 	config.ReconcileLoopTime, _ = time.ParseDuration(util.Getenv("RECONCILE_WAIT", "10m"))
-	config.RefuseOffers, _ = strconv.ParseFloat(util.Getenv("REFUSE_OFFERS", "120.0"), 64)
+	config.RefuseOffers, _ = strconv.ParseFloat(util.Getenv("REFUSE_OFFERS", "60.0"), 64)
 	config.ReviveLoopTime, _ = time.ParseDuration(util.Getenv("REVIVE_WAIT", "1m"))
 	config.RedisServer = util.Getenv("REDIS_SERVER", "127.0.0.1:6379")
 	config.RedisPassword = util.Getenv("REDIS_PASSWORD", "")
@@ -154,6 +151,7 @@ func init() {
 		tmp := config.Domain
 		config.Domain = "." + tmp
 	}
+
 }
 
 func stringToBool(par string) bool {

@@ -47,25 +47,25 @@ func (e *Mesos) Revive() {
 	}
 	err := e.Call(revive)
 	if err != nil {
-		logrus.Error("Call Revive: ", err)
+		logrus.WithField("func", "mesos.Revive").Error("Call Revive: ", err)
 	}
 }
 
 // SuppressFramework if all Tasks are running, suppress framework offers
 func (e *Mesos) SuppressFramework() {
-	logrus.WithField("func", "mesos.SupressFramework").Debug("Framework Suppress")
+	logrus.WithField("func", "mesos.SuppressFramework").Debug("Framework Suppress")
 	suppress := &mesosproto.Call{
 		Type: mesosproto.Call_SUPPRESS,
 	}
 	err := e.Call(suppress)
 	if err != nil {
-		logrus.Error("Suppress Framework Call: ")
+		logrus.WithField("func", "mesos.SuppressFramework").Error("Suppress Framework Call: ")
 	}
 }
 
 // Kill a Task with the given taskID
 func (e *Mesos) Kill(taskID string, agentID string) error {
-	logrus.WithField("func", "mesos.Kill").Debug("Kill task ", taskID)
+	logrus.WithField("func", "mesos.Kill").Info("Kill task ", taskID)
 	// tell mesos to shutdonw the given task
 	err := e.Call(&mesosproto.Call{
 		Type: mesosproto.Call_KILL,
@@ -110,7 +110,7 @@ func (e *Mesos) Call(message *mesosproto.Call) error {
 	res, err := client.Do(req)
 
 	if err != nil {
-		logrus.Error("Call Message: ", err)
+		logrus.WithField("func", "mesos.Call").Error("Call Message: ", err)
 		return err
 	}
 
@@ -119,7 +119,7 @@ func (e *Mesos) Call(message *mesosproto.Call) error {
 	if res.StatusCode != 202 {
 		_, err := io.Copy(os.Stderr, res.Body)
 		if err != nil {
-			logrus.Error("Call Handling: ", err)
+			logrus.WithField("func", "mesos.Call").Error("Call Handling: ", err)
 		}
 		return fmt.Errorf("Error %d", res.StatusCode)
 	}
@@ -130,12 +130,15 @@ func (e *Mesos) Call(message *mesosproto.Call) error {
 // DecodeTask will decode the key into an mesos command struct
 func (e *Mesos) DecodeTask(key string) cfg.Command {
 	var task cfg.Command
-	err := json.NewDecoder(strings.NewReader(key)).Decode(&task)
-	if err != nil {
-		logrus.WithField("func", "DecodeTask").Error("Could not decode task: ", err.Error())
-		return cfg.Command{}
+	if key != "" {
+		err := json.NewDecoder(strings.NewReader(key)).Decode(&task)
+		if err != nil {
+			logrus.WithField("func", "scheduler.DecodeTask").Error("Could not decode task: ", err.Error())
+			return cfg.Command{}
+		}
+		return task
 	}
-	return task
+	return cfg.Command{}
 }
 
 // GetOffer get out the offer for the mesos task
@@ -144,7 +147,7 @@ func (e *Mesos) GetOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (meso
 	var offerret mesosproto.Offer
 
 	for n, offer := range offers.Offers {
-		logrus.Debug("Got Offer From:", offer.GetHostname())
+		logrus.WithField("func", "mesos.GetOffer").Debug("Got Offer From:", offer.GetHostname())
 		offerIds = append(offerIds, offer.ID)
 
 		if cmd.TaskName == "" {
@@ -153,7 +156,7 @@ func (e *Mesos) GetOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (meso
 
 		// if the ressources of this offer does not matched what the command need, the skip
 		if !e.IsRessourceMatched(offer.Resources, cmd) {
-			logrus.Debug("Could not found any matched ressources, get next offer")
+			logrus.WithField("func", "mesos.GetOffer").Debug("Could not found any matched ressources, get next offer")
 			e.Call(e.DeclineOffer(offerIds))
 			continue
 		}
@@ -185,11 +188,11 @@ func (e *Mesos) IsRessourceMatched(ressource []mesosproto.Resource, cmd cfg.Comm
 
 	for _, v := range ressource {
 		if v.GetName() == "cpus" && v.Scalar.GetValue() >= cmd.CPU {
-			logrus.Debug("Matched Offer CPU")
+			logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Matched Offer CPU")
 			cpu = true
 		}
 		if v.GetName() == "mem" && v.Scalar.GetValue() >= cmd.Memory {
-			logrus.Debug("Matched Offer Memory")
+			logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Matched Offer Memory")
 			mem = true
 		}
 		if len(cmd.DockerPortMappings) > 0 {
@@ -197,8 +200,8 @@ func (e *Mesos) IsRessourceMatched(ressource []mesosproto.Resource, cmd cfg.Comm
 				for _, taskPort := range cmd.DockerPortMappings {
 					for _, portRange := range v.GetRanges().Range {
 						if taskPort.HostPort >= uint32(portRange.Begin) && taskPort.HostPort <= uint32(portRange.End) {
-							logrus.Debug("Matched Offer TaskPort: ", taskPort.HostPort)
-							logrus.Debug("Matched Offer RangePort: ", portRange)
+							logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Matched Offer TaskPort: ", taskPort.HostPort)
+							logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Matched Offer RangePort: ", portRange)
 							ports = ports || true
 							break
 						}

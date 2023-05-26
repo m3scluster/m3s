@@ -1,10 +1,7 @@
 package api
 
 import (
-	"crypto/tls"
-	"io"
 	"net/http"
-	"strconv"
 
 	"github.com/sirupsen/logrus"
 )
@@ -20,39 +17,12 @@ func (e *API) V0StatusK8s(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	client := &http.Client{}
-	// #nosec G402
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
-	}
-	req, _ := http.NewRequest("GET", e.BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/status?verbose", nil)
-	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
-	req.Close = true
-	res, err := client.Do(req)
-
-	if err != nil {
-		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
-
-	defer res.Body.Close()
-
-	if res.StatusCode != 200 {
-		logrus.WithField("func", "V0StatusK3s").Error("Response Code: ", res.StatusCode)
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
-
-	content, err := io.ReadAll(res.Body)
-
-	if err != nil {
-		logrus.WithField("func", "V0StatusK3s").Error(err.Error())
-		w.WriteHeader(http.StatusNotAcceptable)
-		return
-	}
-
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
-	w.Write(content)
+
+	if e.K3SAgentStatus {
+		w.Write([]byte("ok"))
+	} else {
+		w.Write([]byte("nok"))
+	}
 }

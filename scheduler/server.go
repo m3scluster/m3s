@@ -3,7 +3,6 @@ package scheduler
 import (
 	"crypto/tls"
 	"fmt"
-	"io"
 	"net/http"
 	"strconv"
 
@@ -87,12 +86,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	protocol := "tcp"
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      0,
-			ContainerPort: 10422,
-			Protocol:      &protocol,
-		},
-		{
-			HostPort:      uint32(e.Framework.PortRangeFrom),
+			HostPort:      uint32(e.Config.K3SServerPort),
 			ContainerPort: 6443,
 			Protocol:      &protocol,
 		},
@@ -110,18 +104,13 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Ports: []mesosproto.Port{
 				{
 					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := "api"; return &x }(),
+					Name:     func() *string { x := "kubernetes"; return &x }(),
 					Protocol: cmd.DockerPortMappings[0].Protocol,
 				},
 				{
 					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := "kubernetes"; return &x }(),
-					Protocol: cmd.DockerPortMappings[1].Protocol,
-				},
-				{
-					Number:   cmd.DockerPortMappings[2].HostPort,
 					Name:     func() *string { x := "http"; return &x }(),
-					Protocol: cmd.DockerPortMappings[2].Protocol,
+					Protocol: cmd.DockerPortMappings[1].Protocol,
 				},
 			},
 		},
@@ -147,32 +136,32 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Value: &e.Config.K3SToken,
 		},
 		{
-			Name:  "BOOTSTRAP_AUTH_USERNAME",
-			Value: &e.Config.BootstrapCredentials.Username,
-		},
-		{
-			Name:  "BOOTSTRAP_AUTH_PASSWORD",
-			Value: &e.Config.BootstrapCredentials.Password,
-		},
-		{
-			Name:  "BOOTSTRAP_SSL_KEY_BASE64",
-			Value: &e.Config.BootstrapSSLKey,
-		},
-		{
-			Name:  "BOOTSTRAP_SSL_CRT_BASE64",
-			Value: &e.Config.BootstrapSSLCrt,
-		},
-		{
-			Name:  "K3S_TOKEN",
-			Value: &e.Config.K3SToken,
-		},
-		{
-			Name:  "K3S_KUBECONFIG_OUTPUT",
-			Value: func() *string { x := "/mnt/mesos/sandbox/kubeconfig.yaml"; return &x }(),
-		},
-		{
 			Name:  "K3S_KUBECONFIG_MODE",
 			Value: func() *string { x := "666"; return &x }(),
+		},
+		{
+			Name:  "KUBECONFIG",
+			Value: func() *string { x := e.Config.KubeConfig; return &x }(),
+		},
+		{
+			Name:  "M3S_CONTROLLER__REDIS_SERVER",
+			Value: func() *string { x := e.Config.RedisServer; return &x }(),
+		},
+		{
+			Name:  "M3S_CONTROLLER__REDIS_PASSWORD",
+			Value: func() *string { x := e.Config.RedisPassword; return &x }(),
+		},
+		{
+			Name:  "M3S_CONTROLLER__REDIS_DB",
+			Value: func() *string { x := strconv.Itoa(e.Config.RedisDB); return &x }(),
+		},
+		{
+			Name:  "M3S_CONTROLLER__REDIS_PREFIX",
+			Value: func() *string { x := e.Framework.FrameworkName; return &x }(),
+		},
+		{
+			Name:  "M3S_CONTROLLER__LOGLEVEL",
+			Value: func() *string { x := e.Config.LogLevel; return &x }(),
 		},
 		{
 			Name:  "MESOS_SANDBOX_VAR",
@@ -254,48 +243,21 @@ func (e *Scheduler) CreateK3SServerString() {
 
 // healthCheckK3s check if the kubernetes server is already running
 func (e *Scheduler) healthCheckK3s() bool {
-	k3sState := false
-
-	if e.Config.K3SServerHostname == "" {
-		return false
-	}
-
-	BootstrapProtocol := "http"
-	if e.Config.BootstrapSSLCrt != "" {
-		BootstrapProtocol = "https"
-	}
-
 	client := &http.Client{}
 	// #nosec G402
 	client.Transport = &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
 	}
-
-	req, _ := http.NewRequest("GET", BootstrapProtocol+"://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerContainerPort)+"/api/m3s/bootstrap/v0/status", nil)
+	req, _ := http.NewRequest("GET", "https://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerPort)+"/", nil)
 	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
 	req.Close = true
 	res, err := client.Do(req)
-	var content []byte
 
 	if err != nil {
-		k3sState = false
-		logrus.WithField("func", "healthCheckK3s").Error("Connection error: ", err.Error())
-		goto end
+		return false
 	}
 
 	defer res.Body.Close()
 
-	content, _ = io.ReadAll(res.Body)
-
-	if string(content) == "ok" {
-		e.Config.M3SStatus.API = "ok"
-		k3sState = true
-	} else {
-		e.Config.M3SStatus.API = "nok"
-		k3sState = false
-	}
-
-end:
-	logrus.WithField("func", "healthCheckK3s").Debug("K3s Manager Health: ", k3sState)
-	return k3sState
+	return true
 }

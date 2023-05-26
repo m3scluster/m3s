@@ -19,9 +19,21 @@ func (e *Scheduler) Heartbeat() {
 
 	dsState := e.healthCheckDatastore()
 	k3sState := e.healthCheckK3s()
-	k3sAgenteState := e.healthCheckAgent()
+	k3sAgentState := e.healthCheckAgent()
 
-	if !k3sState || !k3sAgenteState || !dsState {
+	e.API.K3SAgentStatus = k3sAgentState
+
+	if !dsState {
+		logrus.WithField("func", "scheduler.Heartbeat").Warn("Datastore health: false")
+	}
+	if !k3sState {
+		logrus.WithField("func", "scheduler.Heartbeat").Warn("K3S Server health: false")
+	}
+	if !k3sAgentState {
+		logrus.WithField("func", "scheduler.Heartbeat").Warn("K3S Agent health: false")
+	}
+
+	if !k3sState || !k3sAgentState || !dsState {
 		if !reviveLock {
 			e.Mesos.Revive()
 			reviveLock = true
@@ -40,17 +52,16 @@ func (e *Scheduler) Heartbeat() {
 	}
 
 	// if k3s is running, deploy the agent
-	if k3sState && !k3sAgenteState {
+	if k3sState && !k3sAgentState {
 		e.StartK3SAgent("")
 	}
 
-	if k3sState && k3sAgenteState && dsState {
+	if k3sState && k3sAgentState && dsState {
 		if !suppressLock {
 			e.Mesos.SuppressFramework()
 			suppressLock = true
 			reviveLock = false
 		}
-		e.API.ScheduleCleanup()
 	}
 }
 
@@ -119,5 +130,6 @@ func (e *Scheduler) ReconcileLoop() {
 	for ; true; <-ticker.C {
 		go e.reconcile()
 		go e.implicitReconcile()
+		go e.removeNotExistingAgents()
 	}
 }

@@ -1,10 +1,14 @@
 package scheduler
 
 import (
+	"encoding/json"
 	"fmt"
+	"strconv"
 	"strings"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	corev1 "k8s.io/api/core/v1"
 
 	"github.com/sirupsen/logrus"
 )
@@ -123,6 +127,18 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			Name:  "MESOS_SANDBOX_VAR",
 			Value: &e.Config.MesosSandboxVar,
 		},
+		{
+			Name:  "REDIS_SERVER",
+			Value: &e.Config.RedisServer,
+		},
+		{
+			Name:  "REDIS_PASSWORD",
+			Value: &e.Config.RedisPassword,
+		},
+		{
+			Name:  "REDIS_DB",
+			Value: func() *string { x := strconv.Itoa(e.Config.RedisDB); return &x }(),
+		},
 	}
 
 	if e.Config.K3SAgentLabels != nil {
@@ -134,31 +150,121 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	// store mesos task in DB
-	logrus.WithField("func", "StartK3SAgent").Info("Schedule K3S Agent")
+	logrus.WithField("func", "scheduler.StartK3SAgent").Info("Schedule K3S Agent")
 	e.Redis.SaveTaskRedis(cmd)
 }
 
 // healthCheckAgent check the health of all agents. Return true if all are fine.
 func (e *Scheduler) healthCheckAgent() bool {
 	// Hold the at all state of the agent service.
-	aState := true
+	aState := false
 
 	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") < e.Config.K3SAgentMax {
+		logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3s Agent missing")
 		return false
 	}
 
+	// check the realstate of the kubernetes agents
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
 	for keys.Next(e.Redis.CTX) {
 		key := e.Redis.GetRedisKey(keys.Val())
 		task := e.Mesos.DecodeTask(key)
+		node := e.getK8NodeFromTask(task)
 
-		if task.State == "TASK_RUNNING" {
-			aState = aState && true
-			continue
+		if node.Name != "" {
+			for _, status := range node.Status.Conditions {
+				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionTrue {
+					aState = true
+				}
+				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionUnknown {
+					logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: " + node.Name + "(" + task.TaskID + ")")
+					return false
+				}
+			}
+		} else {
+			logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: ", task.TaskID)
+			return false
 		}
-		aState = aState && false
 	}
 
-	logrus.WithField("func", "healthCheckAgent").Debug("K3s Agent Health: ", aState)
 	return aState
+}
+
+// getTaskFromK8Node will give out the mesos task matched to the K8 node
+func (e *Scheduler) getTaskFromK8Node(node corev1.Node) cfg.Command {
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
+	for keys.Next(e.Redis.CTX) {
+		taskID := e.getTaskIDFromAnnotation(node.Annotations)
+		if taskID != "" {
+			key := e.Redis.GetRedisKey(e.Framework.FrameworkName + ":agent:" + taskID)
+			if key != "" {
+				task := e.Mesos.DecodeTask(key)
+				return task
+			}
+		}
+	}
+	return cfg.Command{}
+}
+
+// getK8NodeFromTask will give out the K8 node from mesos task
+func (e *Scheduler) getK8NodeFromTask(task cfg.Command) corev1.Node {
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*agent*")
+	for keys.Next(e.Redis.CTX) {
+		key := e.Redis.GetRedisKey(keys.Val())
+		var k8Node corev1.Node
+		err := json.NewDecoder(strings.NewReader(key)).Decode(&k8Node)
+		if err != nil {
+			logrus.WithField("func", "scheduler.getK8NodeFromTask").Error("Could not decode kubernetes node: ", err.Error())
+			continue
+		}
+		taskID := e.getTaskIDFromAnnotation(k8Node.Annotations)
+		if taskID == task.TaskID {
+			return k8Node
+		}
+	}
+
+	return corev1.Node{}
+}
+
+// getTaskIDFromAnnotation will return the Mesos Task ID in the annotation string
+func (e *Scheduler) getTaskIDFromAnnotation(annotations map[string]string) string {
+	for i, annotation := range annotations {
+		if i == "k3s.io/node-args" {
+			var args []string
+			err := json.Unmarshal([]byte(annotation), &args)
+			if err != nil {
+				logrus.WithField("func", "scheduler.getTaskIDFromAnnotation").Error("Could not decode kubernetes node annotation: ", err.Error())
+				continue
+			}
+			return args[len(args)-1]
+		}
+	}
+	return ""
+}
+
+// removeNotExistingAgents remove kubernetes from redis if it does not have a Mesos Task. It
+// will also kill the Mesos Task if the Agent is unready but the Task is in state RUNNING.
+func (e *Scheduler) removeNotExistingAgents() {
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*agent*")
+	for keys.Next(e.Redis.CTX) {
+		key := e.Redis.GetRedisKey(keys.Val())
+		var node corev1.Node
+		err := json.NewDecoder(strings.NewReader(key)).Decode(&node)
+		if err != nil {
+			logrus.WithField("func", "scheduler.removeNotExistingAgents").Error("Could not decode kubernetes node: ", err.Error())
+			continue
+		}
+		task := e.getTaskFromK8Node(node)
+		if task.TaskID != "" {
+			for _, status := range node.Status.Conditions {
+				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionUnknown && task.State == "TASK_RUNNING" {
+					logrus.WithField("func", "scheduler.removeNotExistingAgents").Debug("Kill unready Agents: ", node.Name)
+					e.Mesos.Kill(task.TaskID, task.Agent)
+				}
+			}
+		} else {
+			logrus.WithField("func", "scheduler.removeNotExistingAgents").Debug("Remove K8s Agent that does not have running Mesos task: ", node.Name)
+			e.Redis.DelRedisKey(e.Framework.FrameworkName + ":kubernetes:" + node.Name)
+		}
+	}
 }

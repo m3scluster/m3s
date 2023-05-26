@@ -44,13 +44,13 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 }
 
 func (e *API) scaleServer(count int) []byte {
-	r := e.scale(count, e.Config.K3SServerMax, ":server:*")
+	r := e.scale(count, e.Config.K3SServerMax, "server")
 	e.Config.K3SServerMax = count
 	return r
 }
 
 func (e *API) scale(newCount int, oldCount int, key string) []byte {
-	logrus.WithField("func", "api.scale").Debug("Scale "+key+" current: ", oldCount)
+	logrus.WithField("func", "api.scale").Debug("Scale " + key + " current: " + strconv.Itoa(oldCount) + " new: " + strconv.Itoa(newCount))
 
 	d := []byte(strconv.Itoa(newCount - oldCount))
 
@@ -58,7 +58,7 @@ func (e *API) scale(newCount int, oldCount int, key string) []byte {
 	e.Redis.SaveConfig(*e.Config)
 
 	// if scale down, kill not needes agents
-	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + key)
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":" + key + ":*")
 
 	for keys.Next(e.Redis.CTX) {
 		key := e.Redis.GetRedisKey(keys.Val())
