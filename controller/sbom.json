@@ -1,14 +1,17 @@
 {
  "artifacts": [
   {
-   "id": "1655ad821e363715",
+   "id": "49ccba409c69ffe0",
    "name": "github.com/AVENTER-UG/go-logrus-formatter",
    "version": "v0.5.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -24,7 +27,7 @@
    "purl": "pkg:golang/github.com/AVENTER-UG/go-logrus-formatter@v0.5.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -38,7 +41,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -58,56 +64,62 @@
    }
   },
   {
-   "id": "6e623e36d7d33f15",
+   "id": "5ae7825b59b8c2bf",
    "name": "github.com/AVENTER-UG/mesos-m3s/controller",
-   "version": "v0.0.0-20230525104140-5775453495a2",
+   "version": "v0.0.0-20230614121523-caf757e5eab5",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v0.0.0-20230525104140-5775453495a2:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v0.0.0-20230614121523-caf757e5eab5:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v0.0.0-20230525104140-5775453495a2",
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v0.0.0-20230614121523-caf757e5eab5",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goBuildSettings": {
      "-buildmode": "exe",
      "-compiler": "gc",
-     "-ldflags": "-X main.BuildVersion=2023-05-25T10:55:01Z -X main.GitVersion=v0.4.0-46-g5775453 -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/issue-40-controller/bootstrap/.version.json -extldflags \"-static\"",
+     "-ldflags": "-X main.BuildVersion=2023-06-14T13:03:55Z -X main.GitVersion=v0.4.0-48-gcaf757e -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/43-server-node/bootstrap/.version.json -extldflags \"-static\"",
      "CGO_ENABLED": "0",
      "GOAMD64": "v1",
      "GOARCH": "amd64",
      "GOOS": "linux",
      "vcs": "git",
      "vcs.modified": "true",
-     "vcs.revision": "5775453495a26a80f679ab902659ad0b00aceeee",
-     "vcs.time": "2023-05-25T10:41:40Z"
+     "vcs.revision": "caf757e5eab5d999ed4fd776ff49897ddd6797fe",
+     "vcs.time": "2023-06-14T12:15:23Z"
     },
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
    }
   },
   {
-   "id": "fc395e70c771a6e4",
+   "id": "229efe5d62851903",
    "name": "github.com/AVENTER-UG/util",
    "version": "v0.5.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -120,7 +132,7 @@
    "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -134,7 +146,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -151,14 +166,17 @@
    }
   },
   {
-   "id": "5767899463362854",
+   "id": "cc63717a3b5f07b6",
    "name": "github.com/beorn7/perks",
    "version": "v1.0.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -169,7 +187,7 @@
    "purl": "pkg:golang/github.com/beorn7/perks@v1.0.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:VlbKKnNfV8bJzeqoa4cOKqO6bYr3WgKZxO8Z16+hsOM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -183,7 +201,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -198,14 +219,17 @@
    }
   },
   {
-   "id": "7c4ff37268a802ad",
+   "id": "19fa52b72a47a7ab",
    "name": "github.com/cenkalti/backoff/v3",
    "version": "v3.2.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -216,7 +240,7 @@
    "purl": "pkg:golang/github.com/cenkalti/backoff/v3@v3.2.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:cfUAAO3yvKMYKPrvhDuHSwQnhZNk/RMHKdZqKTxfm6M=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -230,7 +254,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -245,14 +272,17 @@
    }
   },
   {
-   "id": "5a51ea654d989ddd",
+   "id": "e40e1cade9c073e9",
    "name": "github.com/cespare/xxhash/v2",
    "version": "v2.2.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -263,7 +293,7 @@
    "purl": "pkg:golang/github.com/cespare/xxhash/v2@v2.2.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -277,7 +307,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -292,14 +325,17 @@
    }
   },
   {
-   "id": "d3e5e7adec16a495",
+   "id": "ed4c60f2be4f5c19",
    "name": "github.com/davecgh/go-spew",
    "version": "v1.1.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -311,7 +347,7 @@
    "purl": "pkg:golang/github.com/davecgh/go-spew@v1.1.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -325,7 +361,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -341,14 +380,17 @@
    }
   },
   {
-   "id": "cd9cb92aa1b21917",
+   "id": "bd2512024a562676",
    "name": "github.com/dgryski/go-rendezvous",
    "version": "v0.0.0-20200823014737-9f7001d12a5f",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -360,7 +402,7 @@
    "purl": "pkg:golang/github.com/dgryski/go-rendezvous@v0.0.0-20200823014737-9f7001d12a5f",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:lO4WD4F/rVNCu3HqELle0jiPLLBs70cWOduZpkS1E78=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -374,7 +416,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -390,14 +435,17 @@
    }
   },
   {
-   "id": "9de995ce432e3700",
+   "id": "afad4c894d37e613",
    "name": "github.com/emicklei/go-restful/v3",
    "version": "v3.10.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -409,7 +457,7 @@
    "purl": "pkg:golang/github.com/emicklei/go-restful/v3@v3.10.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:hIovbnmBTLjHXkqEBUz3HGpXZdM7ZrE9fJIZIqlJLqE=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -423,7 +471,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -439,14 +490,17 @@
    }
   },
   {
-   "id": "b6c6e7a02aaa5d4b",
+   "id": "a9bc9b3fd5d8d30e",
    "name": "github.com/evanphx/json-patch/v5",
    "version": "v5.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -458,7 +512,7 @@
    "purl": "pkg:golang/github.com/evanphx/json-patch/v5@v5.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:b91NhWfaz02IuVxO9faSllyAtNXHMPkC5J8sJCLunww=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -472,7 +526,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -488,14 +545,17 @@
    }
   },
   {
-   "id": "72802e106a82edda",
+   "id": "a9062b883c4e9a30",
    "name": "github.com/fsnotify/fsnotify",
    "version": "v1.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -506,7 +566,7 @@
    "purl": "pkg:golang/github.com/fsnotify/fsnotify@v1.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:n+5WquG0fcWoWp6xPWfHdbskMCQaFnG6PfBrh1Ky4HY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -520,7 +580,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -535,14 +598,17 @@
    }
   },
   {
-   "id": "8ea438946777c9ba",
+   "id": "d690ca09a575982a",
    "name": "github.com/go-logr/logr",
    "version": "v1.2.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -555,7 +621,7 @@
    "purl": "pkg:golang/github.com/go-logr/logr@v1.2.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:2DntVwHkVopvECVRSlL5PSo9eG+cAkDCuckLubN+rq0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -569,7 +635,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -586,14 +655,17 @@
    }
   },
   {
-   "id": "40cd44d4d55883d1",
+   "id": "a8fd3883015de1e7",
    "name": "github.com/go-openapi/jsonpointer",
    "version": "v0.19.6",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -606,7 +678,7 @@
    "purl": "pkg:golang/github.com/go-openapi/jsonpointer@v0.19.6",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:eCs3fxoIi3Wh6vtgmLTOjdhSpiqphQ+DaPn38N2ZdrE=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -620,7 +692,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -637,14 +712,17 @@
    }
   },
   {
-   "id": "1d4aa4d89dd23693",
+   "id": "3f4d3f95a01f885",
    "name": "github.com/go-openapi/jsonreference",
    "version": "v0.20.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -657,7 +735,7 @@
    "purl": "pkg:golang/github.com/go-openapi/jsonreference@v0.20.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:3sVjiK66+uXK/6oQ8xgcRKcFgQ5KXa2KvnJRumpMGbE=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -671,7 +749,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -688,14 +769,17 @@
    }
   },
   {
-   "id": "97c0ec865a634414",
+   "id": "34d74bce678b5db0",
    "name": "github.com/go-openapi/swag",
    "version": "v0.22.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -708,7 +792,7 @@
    "purl": "pkg:golang/github.com/go-openapi/swag@v0.22.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:yMBqmnQ0gyZvEb/+KzuWZOXgllrXT4SADYbvDaXHv/g=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -722,7 +806,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -739,14 +826,17 @@
    }
   },
   {
-   "id": "78f8d3ce8bf6e7e3",
+   "id": "ef807afe98b54ee3",
    "name": "github.com/go-redis/redis/v9",
    "version": "v9.0.0-rc.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -759,7 +849,7 @@
    "purl": "pkg:golang/github.com/go-redis/redis/v9@v9.0.0-rc.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:IN1eI8AvJJeWHjMW/hlFAv2sAfvTun2DVksDDJ3a6a0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -773,7 +863,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -790,14 +883,17 @@
    }
   },
   {
-   "id": "7a7f6852796319a9",
+   "id": "f14ae36b9cec076c",
    "name": "github.com/gogo/protobuf",
    "version": "v1.3.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -808,7 +904,7 @@
    "purl": "pkg:golang/github.com/gogo/protobuf@v1.3.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -822,7 +918,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -837,14 +936,17 @@
    }
   },
   {
-   "id": "4e53a68422ba840e",
+   "id": "69438459a986b1ab",
    "name": "github.com/golang/groupcache",
    "version": "v0.0.0-20210331224755-41bb18bfe9da",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -855,7 +957,7 @@
    "purl": "pkg:golang/github.com/golang/groupcache@v0.0.0-20210331224755-41bb18bfe9da",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:oI5xCqsCo564l8iNU+DwB5epxmsaqB+rhGL0m5jtYqE=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -869,7 +971,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -884,14 +989,17 @@
    }
   },
   {
-   "id": "fe2a7c908e29a2ce",
+   "id": "514600051c979c24",
    "name": "github.com/golang/protobuf",
    "version": "v1.5.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -902,7 +1010,7 @@
    "purl": "pkg:golang/github.com/golang/protobuf@v1.5.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:KhyjKVUg7Usr/dYsdSqoFveMYd5ko72D+zANwlG1mmg=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -916,7 +1024,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -931,14 +1042,17 @@
    }
   },
   {
-   "id": "25a7993f5c081729",
+   "id": "7a45f3e84d58f556",
    "name": "github.com/google/gnostic",
    "version": "v0.6.9",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -949,7 +1063,7 @@
    "purl": "pkg:golang/github.com/google/gnostic@v0.6.9",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:ZK/5VhkoX835RikCHpSUJV9a+S3e1zLh59YnyWeBW+0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -963,7 +1077,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -978,14 +1095,17 @@
    }
   },
   {
-   "id": "5602cdeeee1f91e5",
+   "id": "9fc039894195d8fe",
    "name": "github.com/google/go-cmp",
    "version": "v0.5.9",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -997,7 +1117,7 @@
    "purl": "pkg:golang/github.com/google/go-cmp@v0.5.9",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:O2Tfq5qg4qc4AmwVlvv0oLiVAGB7enBSJ2x2DqQFi38=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1011,7 +1131,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1027,14 +1150,17 @@
    }
   },
   {
-   "id": "c5218dea56f58ffc",
+   "id": "fcb6ed20bdcff719",
    "name": "github.com/google/gofuzz",
    "version": "v1.2.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1045,7 +1171,7 @@
    "purl": "pkg:golang/github.com/google/gofuzz@v1.2.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:xRy4A+RhZaiKjJ1bPfwQ8sedCA+YS2YcCHW6ec7JMi0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1059,7 +1185,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1074,14 +1203,17 @@
    }
   },
   {
-   "id": "12df2678af666185",
+   "id": "186c3c2659aceb01",
    "name": "github.com/google/uuid",
    "version": "v1.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1092,7 +1224,7 @@
    "purl": "pkg:golang/github.com/google/uuid@v1.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:t6JiXgmwXMjEs8VusXIJk2BXHsn+wx8BZdTaoZ5fu7I=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1106,7 +1238,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1121,14 +1256,17 @@
    }
   },
   {
-   "id": "ad2b0766b5f58a66",
+   "id": "29f374a4f9783184",
    "name": "github.com/hashicorp/errwrap",
    "version": "v1.1.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1139,7 +1277,7 @@
    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.1.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:OxrOeh75EUXMY8TBjag2fzXGZ40LB6IKw45YeGUDY2I=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1153,7 +1291,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1168,14 +1309,17 @@
    }
   },
   {
-   "id": "ef4e71af1695619",
+   "id": "364d4dba47f411ce",
    "name": "github.com/hashicorp/go-cleanhttp",
    "version": "v0.5.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1187,7 +1331,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-cleanhttp@v0.5.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:035FKYIWjmULyFRBKPs8TBQoi0x6d9G4xc9neXJWAZQ=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1201,7 +1345,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1217,14 +1364,17 @@
    }
   },
   {
-   "id": "673dcde6cdda9d70",
+   "id": "780b6903a9da6574",
    "name": "github.com/hashicorp/go-multierror",
    "version": "v1.1.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1236,7 +1386,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:H5DkEtf6CXdFp0N0Em5UCwQpXMWke8IA0+lD48awMYo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1250,7 +1400,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1266,14 +1419,17 @@
    }
   },
   {
-   "id": "58ff5e8fa1d36dd2",
+   "id": "717301c98479e604",
    "name": "github.com/hashicorp/go-retryablehttp",
    "version": "v0.7.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1285,7 +1441,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-retryablehttp@v0.7.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1299,7 +1455,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1315,14 +1474,17 @@
    }
   },
   {
-   "id": "655b79659020cdbf",
+   "id": "31ab86b021bdab31",
    "name": "github.com/hashicorp/go-rootcerts",
    "version": "v1.0.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1334,7 +1496,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-rootcerts@v1.0.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:jzhAVGtqPKbwpyCPELlgNWhE1znq+qwJtW5Oi2viEzc=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1348,7 +1510,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1364,14 +1529,17 @@
    }
   },
   {
-   "id": "6ac7736a548195d",
+   "id": "39ad55477d914ec8",
    "name": "github.com/hashicorp/go-secure-stdlib/parseutil",
    "version": "v0.1.7",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1383,7 +1551,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/parseutil@v0.1.7",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:UpiO20jno/eV1eVZcxqWnUohyKRe1g8FPV/xH1s/2qs=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1397,7 +1565,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1413,14 +1584,17 @@
    }
   },
   {
-   "id": "a7c0617656cdf424",
+   "id": "b2b40abb929c3df6",
    "name": "github.com/hashicorp/go-secure-stdlib/strutil",
    "version": "v0.1.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1432,7 +1606,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-secure-stdlib/strutil@v0.1.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:kes8mmyCpxJsI7FTwtzRqEy9CdjCtrXrXGuOpxEA7Ts=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1446,7 +1620,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1462,14 +1639,17 @@
    }
   },
   {
-   "id": "c2ae8562f04e943e",
+   "id": "3ed4137061b8dc7",
    "name": "github.com/hashicorp/go-sockaddr",
    "version": "v1.0.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1481,7 +1661,7 @@
    "purl": "pkg:golang/github.com/hashicorp/go-sockaddr@v1.0.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:ztczhD1jLxIRjVejw8gFomI1BQZOe2WoVOu0SyteCQc=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1495,7 +1675,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1511,14 +1694,17 @@
    }
   },
   {
-   "id": "82b2469dba241b98",
+   "id": "1670d5a999a5a7f8",
    "name": "github.com/hashicorp/hcl",
    "version": "v1.0.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1529,7 +1715,7 @@
    "purl": "pkg:golang/github.com/hashicorp/hcl@v1.0.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1543,7 +1729,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1558,14 +1747,17 @@
    }
   },
   {
-   "id": "dc0016e441bb88eb",
+   "id": "6b89da4fe9ee272c",
    "name": "github.com/hashicorp/vault/api",
    "version": "v1.9.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1576,7 +1768,7 @@
    "purl": "pkg:golang/github.com/hashicorp/vault/api@v1.9.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:ab7dI6W8DuCY7yCU8blo0UCYl2oHre/dloCmzMWg9w8=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1590,7 +1782,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1605,14 +1800,17 @@
    }
   },
   {
-   "id": "e067e03d5287bc21",
+   "id": "7c18a422caa5d5d9",
    "name": "github.com/imdario/mergo",
    "version": "v0.3.15",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1623,7 +1821,7 @@
    "purl": "pkg:golang/github.com/imdario/mergo@v0.3.15",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:M8XP7IuFNsqUx6VPK2P9OSmsYsI/YFaGil0uD21V3dM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1637,7 +1835,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1652,14 +1853,17 @@
    }
   },
   {
-   "id": "f6e7836c6841a22b",
+   "id": "7353867a06e2c2c",
    "name": "github.com/josharian/intern",
    "version": "v1.0.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1670,7 +1874,7 @@
    "purl": "pkg:golang/github.com/josharian/intern@v1.0.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:vlS4z54oSdjm0bgjRigI+G1HpF+tI+9rE5LLzOg8HmY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1684,7 +1888,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1699,14 +1906,17 @@
    }
   },
   {
-   "id": "ee9e01d4ba0bdf4",
+   "id": "1b2881915e240579",
    "name": "github.com/json-iterator/go",
    "version": "v1.1.12",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1719,7 +1929,7 @@
    "purl": "pkg:golang/github.com/json-iterator/go@v1.1.12",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:PV8peI4a0ysnczrg+LtxykD8LfKY9ML6u2jnxaEnrnM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1733,7 +1943,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1750,14 +1963,17 @@
    }
   },
   {
-   "id": "ac22bf055ce79f87",
+   "id": "b2fc72d33438cd14",
    "name": "github.com/mailru/easyjson",
    "version": "v0.7.7",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1768,7 +1984,7 @@
    "purl": "pkg:golang/github.com/mailru/easyjson@v0.7.7",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:UGYAvKxe3sBsEDzO8ZeWOSlIQfWFlxbzLZe7hwFURr0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1782,7 +1998,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1797,14 +2016,17 @@
    }
   },
   {
-   "id": "33c13950833de283",
+   "id": "c64bdb49f2d45e7a",
    "name": "github.com/mattn/go-colorable",
    "version": "v0.1.13",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1816,7 +2038,7 @@
    "purl": "pkg:golang/github.com/mattn/go-colorable@v0.1.13",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1830,7 +2052,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1846,14 +2071,17 @@
    }
   },
   {
-   "id": "71afad58be91a829",
+   "id": "b04011cf7ec51ba8",
    "name": "github.com/mattn/go-isatty",
    "version": "v0.0.18",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1865,7 +2093,7 @@
    "purl": "pkg:golang/github.com/mattn/go-isatty@v0.0.18",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:DOKFKCQ7FNG2L1rbrmstDN4QVRdS89Nkh85u68Uwp98=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1879,7 +2107,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1895,14 +2126,17 @@
    }
   },
   {
-   "id": "36d1ab5598e364f6",
+   "id": "36bed7d0d28fcc2d",
    "name": "github.com/matttproud/golang_protobuf_extensions",
    "version": "v1.0.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1914,7 +2148,7 @@
    "purl": "pkg:golang/github.com/matttproud/golang_protobuf_extensions@v1.0.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:mmDVorXM7PCGKw94cs5zkfA9PSy5pEvNWRP0ET0TIVo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1928,7 +2162,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1944,14 +2181,17 @@
    }
   },
   {
-   "id": "685b9e97836b4ba6",
+   "id": "c99190a96b806dd0",
    "name": "github.com/mgutz/ansi",
    "version": "v0.0.0-20200706080929-d51e80ef957d",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1962,7 +2202,7 @@
    "purl": "pkg:golang/github.com/mgutz/ansi@v0.0.0-20200706080929-d51e80ef957d",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:5PJl274Y63IEHC+7izoQE9x6ikvDFZS2mDVS3drnohI=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -1976,7 +2216,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -1998,7 +2241,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2014,14 +2260,17 @@
    }
   },
   {
-   "id": "3ff16eb0630186b",
+   "id": "13600477feccd11",
    "name": "github.com/mitchellh/mapstructure",
    "version": "v1.5.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2032,7 +2281,7 @@
    "purl": "pkg:golang/github.com/mitchellh/mapstructure@v1.5.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:jeMsZIYE/09sWLaz43PL7Gy6RuMjD2eJVyuac5Z2hdY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2046,7 +2295,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2061,14 +2313,17 @@
    }
   },
   {
-   "id": "d249281de85bbacd",
+   "id": "98d1085cb429e1e1",
    "name": "github.com/modern-go/concurrent",
    "version": "v0.0.0-20180306012644-bacd9c7ef1dd",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2081,7 +2336,7 @@
    "purl": "pkg:golang/github.com/modern-go/concurrent@v0.0.0-20180306012644-bacd9c7ef1dd",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:TRLaZ9cD/w8PVh93nsPXa1VrQ6jlwL5oN8l14QlcNfg=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2095,7 +2350,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2112,14 +2370,17 @@
    }
   },
   {
-   "id": "c95020dcf03f5753",
+   "id": "376596edf646fc5a",
    "name": "github.com/modern-go/reflect2",
    "version": "v1.0.2",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2132,7 +2393,7 @@
    "purl": "pkg:golang/github.com/modern-go/reflect2@v1.0.2",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:xBagoLtFs94CBntxluKeaWgTMpvLxC4ur3nMaC9Gz0M=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2146,7 +2407,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2163,14 +2427,17 @@
    }
   },
   {
-   "id": "16a5baafa623aa98",
+   "id": "1315729b79ad9699",
    "name": "github.com/munnerz/goautoneg",
    "version": "v0.0.0-20191010083416-a7dc8b61c822",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2181,7 +2448,7 @@
    "purl": "pkg:golang/github.com/munnerz/goautoneg@v0.0.0-20191010083416-a7dc8b61c822",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:C3w9PqII01/Oq1c1nUAm88MOHcQC9l5mIlSMApZMrHA=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2195,7 +2462,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2210,14 +2480,17 @@
    }
   },
   {
-   "id": "6df91fc23ea0233e",
+   "id": "aa3592f23254e1a2",
    "name": "github.com/pkg/errors",
    "version": "v0.9.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2228,7 +2501,7 @@
    "purl": "pkg:golang/github.com/pkg/errors@v0.9.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2242,7 +2515,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2257,14 +2533,17 @@
    }
   },
   {
-   "id": "c5a778d0bede6628",
+   "id": "62703478727630d5",
    "name": "github.com/prometheus/client_golang",
    "version": "v1.14.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2276,7 +2555,7 @@
    "purl": "pkg:golang/github.com/prometheus/client_golang@v1.14.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:nJdhIvne2eSX/XRAFV9PcvFFRbrjbcTUj0VP62TMhnw=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2290,7 +2569,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2306,14 +2588,17 @@
    }
   },
   {
-   "id": "52eb2eb4fe6f6f37",
+   "id": "b0e4e76d4ba36306",
    "name": "github.com/prometheus/client_model",
    "version": "v0.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2325,7 +2610,7 @@
    "purl": "pkg:golang/github.com/prometheus/client_model@v0.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:UBgGFHqYdG/TPFD1B1ogZywDqEkwp3fBMvqdiQ7Xew4=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2339,7 +2624,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2355,14 +2643,17 @@
    }
   },
   {
-   "id": "3dd8f5d76fbcedb5",
+   "id": "b48b87de7c0b88a1",
    "name": "github.com/prometheus/common",
    "version": "v0.42.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2373,7 +2664,7 @@
    "purl": "pkg:golang/github.com/prometheus/common@v0.42.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:EKsfXEYo4JpWMHH5cg+KOUWeuJSov1Id8zGR8eeI1YM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2387,7 +2678,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2402,14 +2696,17 @@
    }
   },
   {
-   "id": "a26bd4669da2d14f",
+   "id": "5b679837337f1252",
    "name": "github.com/prometheus/procfs",
    "version": "v0.9.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2420,7 +2717,7 @@
    "purl": "pkg:golang/github.com/prometheus/procfs@v0.9.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:wzCHvIvM5SxWqYvwgVL7yJY8Lz3PKn49KQtpgMYJfhI=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2434,7 +2731,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2449,14 +2749,17 @@
    }
   },
   {
-   "id": "19a20a83c3f3e71",
+   "id": "279bce44a61c169d",
    "name": "github.com/russross/blackfriday",
    "version": "v1.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2467,7 +2770,7 @@
    "purl": "pkg:golang/github.com/russross/blackfriday@v1.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:KqfZb0pUVN2lYqZUYRddxF4OR8ZMURnJIG5Y3VRLtww=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2481,7 +2784,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2496,14 +2802,17 @@
    }
   },
   {
-   "id": "495f0818d00994b8",
+   "id": "95085baf727a9c28",
    "name": "github.com/ryanuber/go-glob",
    "version": "v1.0.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2515,7 +2824,7 @@
    "purl": "pkg:golang/github.com/ryanuber/go-glob@v1.0.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:iQh3xXAumdQ+4Ufa5b25cRpC5TYKlno6hsv6Cb3pkBk=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2529,7 +2838,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2545,14 +2857,17 @@
    }
   },
   {
-   "id": "f33c548ed2d603fd",
+   "id": "84fc1018f3629968",
    "name": "github.com/sirupsen/logrus",
    "version": "v1.9.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2563,7 +2878,7 @@
    "purl": "pkg:golang/github.com/sirupsen/logrus@v1.9.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2577,7 +2892,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2592,14 +2910,17 @@
    }
   },
   {
-   "id": "743ac61d3a5533db",
+   "id": "2246ebf5cf53de22",
    "name": "github.com/spf13/pflag",
    "version": "v1.0.5",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2610,7 +2931,7 @@
    "purl": "pkg:golang/github.com/spf13/pflag@v1.0.5",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:iy+VFUOCP1a+8yFto/drg2CJ5u0yRoB7fZw3DKv/JXA=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2624,7 +2945,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2646,7 +2970,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2666,7 +2993,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2679,14 +3009,17 @@
    }
   },
   {
-   "id": "754cd05e89bd2c3c",
+   "id": "9d29297062a91183",
    "name": "golang.org/x/crypto",
    "version": "v0.7.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2697,7 +3030,7 @@
    "purl": "pkg:golang/golang.org/x/crypto@v0.7.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:AvwMYaRytfdeVt3u6mLaxYtErKYjxA2OXjJ1HHq6t3A=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2711,7 +3044,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2726,14 +3062,17 @@
    }
   },
   {
-   "id": "54e4db5862af5197",
+   "id": "ec140a1d6d224e18",
    "name": "golang.org/x/net",
    "version": "v0.8.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2744,7 +3083,7 @@
    "purl": "pkg:golang/golang.org/x/net@v0.8.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:Zrh2ngAOFYneWTAIAPethzeaQLuHwhuBkuV6ZiRnUaQ=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2758,7 +3097,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2773,14 +3115,17 @@
    }
   },
   {
-   "id": "2e7354569ded956a",
+   "id": "e107f70b7d73049f",
    "name": "golang.org/x/oauth2",
    "version": "v0.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2791,7 +3136,7 @@
    "purl": "pkg:golang/golang.org/x/oauth2@v0.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:Lh8GPgSKBfWSwFvtuWOfeI3aAAnbXTSutYxJiOJFgIw=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2805,7 +3150,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2820,14 +3168,17 @@
    }
   },
   {
-   "id": "dc9d440e0702e3d",
+   "id": "591d2a2aa755104e",
    "name": "golang.org/x/sys",
    "version": "v0.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2838,7 +3189,7 @@
    "purl": "pkg:golang/golang.org/x/sys@v0.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:MVltZSvRTcU2ljQOhs94SXPftV6DCNnZViHeQps87pQ=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2852,7 +3203,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2867,14 +3221,17 @@
    }
   },
   {
-   "id": "13a816d1d8d1929b",
+   "id": "6cfa42465220e3f2",
    "name": "golang.org/x/term",
    "version": "v0.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2885,7 +3242,7 @@
    "purl": "pkg:golang/golang.org/x/term@v0.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:clScbb1cHjoCkyRbWwBEUZ5H/tIFu5TAXIqaZD0Gcjw=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2899,7 +3256,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2914,14 +3274,17 @@
    }
   },
   {
-   "id": "1e54c09b87ea0bd1",
+   "id": "43bf4bac06a6420e",
    "name": "golang.org/x/text",
    "version": "v0.8.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2932,7 +3295,7 @@
    "purl": "pkg:golang/golang.org/x/text@v0.8.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:57P1ETyNKtuIjB4SRd15iJxuhj8Gc416Y78H3qgMh68=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2946,7 +3309,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2961,14 +3327,17 @@
    }
   },
   {
-   "id": "fc956f9a6a6e5512",
+   "id": "1417c96700296bda",
    "name": "golang.org/x/time",
    "version": "v0.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -2979,7 +3348,7 @@
    "purl": "pkg:golang/golang.org/x/time@v0.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:rg5rLMjNzMS1RkNLzCG38eapWhnYLFYXDXj2gOlr8j4=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -2993,7 +3362,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3008,14 +3380,17 @@
    }
   },
   {
-   "id": "6288cb33d523c0e0",
+   "id": "423ff1c4b7dae43a",
    "name": "gomodules.xyz/jsonpatch/v2",
    "version": "v2.2.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3026,7 +3401,7 @@
    "purl": "pkg:golang/gomodules.xyz/jsonpatch/v2@v2.2.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:4pT439QV83L+G9FkcCriY6EkpcK6r6bK+A5FBUMI7qY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3040,7 +3415,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3062,7 +3440,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3077,14 +3458,17 @@
    }
   },
   {
-   "id": "5ed4fb362dcbece3",
+   "id": "d0cc16b4e20d70a4",
    "name": "google.golang.org/protobuf",
    "version": "v1.30.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3095,7 +3479,7 @@
    "purl": "pkg:golang/google.golang.org/protobuf@v1.30.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:kPPoIgf3TsEvrm0PFe15JQ+570QVxYzEvvHqChK+cng=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3109,7 +3493,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3124,14 +3511,17 @@
    }
   },
   {
-   "id": "2aa27d733f48ebfe",
+   "id": "97c1474f25b9387b",
    "name": "gopkg.in/inf.v0",
    "version": "v0.9.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3140,7 +3530,7 @@
    "purl": "pkg:golang/gopkg.in/inf.v0@v0.9.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:73M5CoZyi3ZLMOyDlQh031Cx6N9NDJ2Vvfl76EDAgDc=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3154,7 +3544,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3167,14 +3560,17 @@
    }
   },
   {
-   "id": "77ec407a62d2c76c",
+   "id": "284d9400238c517f",
    "name": "gopkg.in/square/go-jose.v2",
    "version": "v2.6.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3183,7 +3579,7 @@
    "purl": "pkg:golang/gopkg.in/square/go-jose.v2@v2.6.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:NGk74WTnPKBNUhNzQX7PYcTLUjoq7mzKk2OKbvwk2iI=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3197,7 +3593,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3210,14 +3609,17 @@
    }
   },
   {
-   "id": "4654a7755dbc091c",
+   "id": "6bb5b0eb771aa988",
    "name": "gopkg.in/yaml.v2",
    "version": "v2.4.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3226,7 +3628,7 @@
    "purl": "pkg:golang/gopkg.in/yaml.v2@v2.4.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3240,7 +3642,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3253,14 +3658,17 @@
    }
   },
   {
-   "id": "acf99a46dc51711e",
+   "id": "91dbbf6357f932cd",
    "name": "gopkg.in/yaml.v3",
    "version": "v3.0.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3269,7 +3677,7 @@
    "purl": "pkg:golang/gopkg.in/yaml.v3@v3.0.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3283,7 +3691,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3296,14 +3707,17 @@
    }
   },
   {
-   "id": "3810fffc40e0a8",
+   "id": "b7c94d9304c19bfc",
    "name": "k8s.io/api",
    "version": "v0.26.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3312,7 +3726,7 @@
    "purl": "pkg:golang/k8s.io/api@v0.26.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:emf74GIQMTik01Aum9dPP0gAypL8JTLl/lHa4V9RFSU=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3326,7 +3740,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3339,14 +3756,17 @@
    }
   },
   {
-   "id": "8afeed8ad23b6aa4",
+   "id": "8c3780cd99d1a280",
    "name": "k8s.io/apimachinery",
    "version": "v0.26.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3355,7 +3775,7 @@
    "purl": "pkg:golang/k8s.io/apimachinery@v0.26.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:dQx6PNETJ7nODU3XPtrwkfuubs6w7sX0M8n61zHIV/k=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3369,7 +3789,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3382,14 +3805,17 @@
    }
   },
   {
-   "id": "8a9bc000d16c2fca",
+   "id": "e61bba18bca1a0b6",
    "name": "k8s.io/client-go",
    "version": "v0.26.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3398,7 +3824,7 @@
    "purl": "pkg:golang/k8s.io/client-go@v0.26.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:k1UY+KXfkxV2ScEL3gilKcF7761xkYsSD6BC9szIu8s=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3412,7 +3838,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3425,14 +3854,17 @@
    }
   },
   {
-   "id": "bf15bb2ae29e41aa",
+   "id": "6220710eb2a2b816",
    "name": "k8s.io/component-base",
    "version": "v0.26.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3441,7 +3873,7 @@
    "purl": "pkg:golang/k8s.io/component-base@v0.26.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:oC0WMK/ggcbGDTkdcqefI4wIZRYdK3JySx9/HADpV0g=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3455,7 +3887,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3468,14 +3903,17 @@
    }
   },
   {
-   "id": "bfa7b206dbbb5c4a",
+   "id": "85a23ed510f94daa",
    "name": "k8s.io/klog/v2",
    "version": "v2.90.1",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3486,7 +3924,7 @@
    "purl": "pkg:golang/k8s.io/klog/v2@v2.90.1",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:m4bYOKall2MmOiRaR1J+We67Do7vm9KiQVlT96lnHUw=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3500,7 +3938,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3515,14 +3956,17 @@
    }
   },
   {
-   "id": "4c7b5877af8fda",
+   "id": "18fe26a6daf9b65d",
    "name": "k8s.io/kube-openapi",
    "version": "v0.0.0-20230327201221-f5883ff37f0c",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3531,7 +3975,7 @@
    "purl": "pkg:golang/k8s.io/kube-openapi@v0.0.0-20230327201221-f5883ff37f0c",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:EFfsozyzZ/pggw5qNx7ftTVZdp7WZl+3ih89GEjYEK8=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3545,7 +3989,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3558,14 +4005,17 @@
    }
   },
   {
-   "id": "c029e8eec81bdd12",
+   "id": "259f73cafd410840",
    "name": "k8s.io/utils",
    "version": "v0.0.0-20230313181309-38a27ef9d749",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3574,7 +4024,7 @@
    "purl": "pkg:golang/k8s.io/utils@v0.0.0-20230313181309-38a27ef9d749",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:xMMXJlJbsU8w3V5N2FLDQ8YgU8s1EoULdbQBcAeNJkY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3588,7 +4038,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3601,14 +4054,17 @@
    }
   },
   {
-   "id": "574d04c28d8c5f6e",
+   "id": "3ce4e53f5e4a3511",
    "name": "sigs.k8s.io/controller-runtime",
    "version": "v0.14.6",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3617,7 +4073,7 @@
    "purl": "pkg:golang/sigs.k8s.io/controller-runtime@v0.14.6",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:oxstGVvXGNnMvY7TAESYk+lzr6S3V5VFxQ6d92KcwQA=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3631,7 +4087,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3644,14 +4103,17 @@
    }
   },
   {
-   "id": "55e725a4ae9d5cf1",
+   "id": "816412be7a889a5f",
    "name": "sigs.k8s.io/json",
    "version": "v0.0.0-20221116044647-bc3834ca7abd",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3660,7 +4122,7 @@
    "purl": "pkg:golang/sigs.k8s.io/json@v0.0.0-20221116044647-bc3834ca7abd",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:EDPBXCAspyGV4jQlpZSudPeMmr1bNJefnuqLsRAsHZo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3674,7 +4136,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3687,14 +4152,17 @@
    }
   },
   {
-   "id": "41a7585f82c0a81e",
+   "id": "5c4e14e623ae5ee3",
    "name": "sigs.k8s.io/structured-merge-diff/v4",
    "version": "v4.2.3",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3709,7 +4177,7 @@
    "purl": "pkg:golang/sigs.k8s.io/structured-merge-diff/v4@v4.2.3",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:PRbqxJClWWYMNV1dhaG4NsibJbArud9kFxnAMREiWFE=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3723,7 +4191,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3742,14 +4213,17 @@
    }
   },
   {
-   "id": "eaef81228ff2821e",
+   "id": "f31a272cab87b00b",
    "name": "sigs.k8s.io/yaml",
    "version": "v1.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
     {
-     "path": "controller.amd64"
+     "path": "controller.amd64",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3758,7 +4232,7 @@
    "purl": "pkg:golang/sigs.k8s.io/yaml@v1.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
-    "goCompiledVersion": "go1.20.3",
+    "goCompiledVersion": "go1.20.4",
     "architecture": "amd64",
     "h1Digest": "h1:a2VclLzOGrwOHDiV8EfBGhvjHvP46CtW5j6POvhYGGo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller"
@@ -3772,7 +4246,10 @@
    "foundBy": "go-mod-file-cataloger",
    "locations": [
     {
-     "path": "go.mod"
+     "path": "go.mod",
+     "annotations": {
+      "evidence": "primary"
+     }
     }
    ],
    "licenses": [],
@@ -3787,18 +4264,703 @@
  ],
  "artifactRelationships": [
   {
+   "parent": "1228868a78c4aa49",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1315729b79ad9699",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "13600477feccd11",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1417c96700296bda",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "14732289fdecd2da",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1670d5a999a5a7f8",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "17f420aa97e56339",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "186c3c2659aceb01",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "18fe26a6daf9b65d",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "19a80167436156a9",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "19fa52b72a47a7ab",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1a6cc998401b6130",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1b2881915e240579",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "2246ebf5cf53de22",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "229efe5d62851903",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "259f73cafd410840",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "279bce44a61c169d",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "284d9400238c517f",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "29f374a4f9783184",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "2cbc2c4e7faf13df",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "2cf6fdc69aff5b08",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "2e4d18cfac096b45",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "2f11c19d7fb752cf",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "31465c82ee794a6d",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "31ab86b021bdab31",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "32c8e6330c9c0a08",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "34d74bce678b5db0",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "364d4dba47f411ce",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "36bed7d0d28fcc2d",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "373bfbcd93fa3db3",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "375dcb4f2d96e508",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "376596edf646fc5a",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3878189631e7272",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "39ad55477d914ec8",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3ce4e53f5e4a3511",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3ea5f873786c35c0",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3ed4137061b8dc7",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3eda2dffa3632991",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "3f4d3f95a01f885",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "423ff1c4b7dae43a",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "43bf4bac06a6420e",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "4456b57c5f6c8697",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "49ccba409c69ffe0",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "4a8d241dc9aa95e5",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "4beb51e99392ba13",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "4c239520ba1b1f58",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "4d61f6cc29fb3a45",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "50304e75059df989",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "514600051c979c24",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "54d28db4ae4c8937",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "56d0a4237993d235",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "56dae56bf126ee26",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "574b26f2a63ae3d3",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "591d2a2aa755104e",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "5ae7825b59b8c2bf",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "5b679837337f1252",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "5c4e14e623ae5ee3",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "60c49a397d0327d4",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "620fbaf9c02864ad",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "6220710eb2a2b816",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "626540c3adc12109",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "62703478727630d5",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "68d7be73c57b8fd9",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "68e0595428a72720",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "69438459a986b1ab",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "6992968ad1a4d8bd",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "6b89da4fe9ee272c",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "6bb5b0eb771aa988",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "6cfa42465220e3f2",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "717301c98479e604",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "7353867a06e2c2c",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "780b6903a9da6574",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "798554191de76402",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "7a45f3e84d58f556",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "7c18a422caa5d5d9",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "7f70f0b712792452",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "816412be7a889a5f",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "81ae9ec60bc149cf",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "81c6dc2583bd6b11",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "84dc8064a4975130",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "84fc1018f3629968",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "85a23ed510f94daa",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "865d91184d425072",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "86a2523b9bcd2d5d",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "86dce0356a01d76e",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "8c3780cd99d1a280",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "8ec39a6e4c516acd",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "91dbbf6357f932cd",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "941bd04ba4a0aaf3",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "95085baf727a9c28",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "965404179e0b694",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "971b363f1318d408",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "97c1474f25b9387b",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "98d1085cb429e1e1",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "9d29297062a91183",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "9f74046362004ff4",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "9fc039894195d8fe",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "9fd3c6d63599efce",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a4d88786acdc47de",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a8fd3883015de1e7",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a9062b883c4e9a30",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a9b1588770518d9d",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a9bc9b3fd5d8d30e",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "aa3592f23254e1a2",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "aba2609b232a80db",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ad8ef5550be39f43",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "aee951808ac2dc48",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "aefae87d5755a9df",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "afad4c894d37e613",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b03a1ea2b628a550",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b04011cf7ec51ba8",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b05fe1fd88cbcb5",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b0e4e76d4ba36306",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b2b40abb929c3df6",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b2fc72d33438cd14",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b48b87de7c0b88a1",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b6078d1fca94622c",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b7c94d9304c19bfc",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "b8c6784754ba4491",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ba5b08931d0e112f",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "bb5ce721255da8c1",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "bc5b9575517bf4f",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "bd2512024a562676",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "bd73a1dddee3e578",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c0e6ff7f6751ebfb",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c28273b530577c36",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c31eae7303116a2a",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c598f749a58010d0",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c64bdb49f2d45e7a",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c668d768dd2d1da1",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c6e1240d23bf190f",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c9747887ef19e31f",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "c99190a96b806dd0",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ca3c49ab7bce06e6",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "cc63717a3b5f07b6",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "cd0469f33951c630",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "1228868a78c4aa49",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "12df2678af666185",
+   "child": "1315729b79ad9699",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "13a816d1d8d1929b",
+   "child": "13600477feccd11",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "1417c96700296bda",
    "type": "contains"
   },
   {
@@ -3808,12 +4970,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1655ad821e363715",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "16a5baafa623aa98",
+   "child": "1670d5a999a5a7f8",
    "type": "contains"
   },
   {
@@ -3823,7 +4980,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "19a20a83c3f3e71",
+   "child": "186c3c2659aceb01",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "18fe26a6daf9b65d",
    "type": "contains"
   },
   {
@@ -3833,27 +4995,47 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "19fa52b72a47a7ab",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "1a6cc998401b6130",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1d4aa4d89dd23693",
+   "child": "1b2881915e240579",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "1e54c09b87ea0bd1",
+   "child": "2246ebf5cf53de22",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "25a7993f5c081729",
+   "child": "229efe5d62851903",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2aa27d733f48ebfe",
+   "child": "259f73cafd410840",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "279bce44a61c169d",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "284d9400238c517f",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "29f374a4f9783184",
    "type": "contains"
   },
   {
@@ -3873,11 +5055,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2e7354569ded956a",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "2f11c19d7fb752cf",
    "type": "contains"
   },
@@ -3888,17 +5065,27 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "31ab86b021bdab31",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "32c8e6330c9c0a08",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "33c13950833de283",
+   "child": "34d74bce678b5db0",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "36d1ab5598e364f6",
+   "child": "364d4dba47f411ce",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "36bed7d0d28fcc2d",
    "type": "contains"
   },
   {
@@ -3913,7 +5100,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3810fffc40e0a8",
+   "child": "376596edf646fc5a",
    "type": "contains"
   },
   {
@@ -3923,7 +5110,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3dd8f5d76fbcedb5",
+   "child": "39ad55477d914ec8",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "3ce4e53f5e4a3511",
    "type": "contains"
   },
   {
@@ -3933,22 +5125,27 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "3ed4137061b8dc7",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "3eda2dffa3632991",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "3ff16eb0630186b",
+   "child": "3f4d3f95a01f885",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "40cd44d4d55883d1",
+   "child": "423ff1c4b7dae43a",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "41a7585f82c0a81e",
+   "child": "43bf4bac06a6420e",
    "type": "contains"
   },
   {
@@ -3958,12 +5155,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4654a7755dbc091c",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "495f0818d00994b8",
+   "child": "49ccba409c69ffe0",
    "type": "contains"
   },
   {
@@ -3983,17 +5175,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4c7b5877af8fda",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "4d61f6cc29fb3a45",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "4e53a68422ba840e",
    "type": "contains"
   },
   {
@@ -4003,27 +5185,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "52eb2eb4fe6f6f37",
+   "child": "514600051c979c24",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "54d28db4ae4c8937",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "54e4db5862af5197",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "55e725a4ae9d5cf1",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5602cdeeee1f91e5",
    "type": "contains"
   },
   {
@@ -4043,27 +5210,22 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "574d04c28d8c5f6e",
+   "child": "591d2a2aa755104e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5767899463362854",
+   "child": "5ae7825b59b8c2bf",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "58ff5e8fa1d36dd2",
+   "child": "5b679837337f1252",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5a51ea654d989ddd",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "5ed4fb362dcbece3",
+   "child": "5c4e14e623ae5ee3",
    "type": "contains"
   },
   {
@@ -4078,27 +5240,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "6220710eb2a2b816",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "626540c3adc12109",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6288cb33d523c0e0",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "655b79659020cdbf",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "673dcde6cdda9d70",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "685b9e97836b4ba6",
+   "child": "62703478727630d5",
    "type": "contains"
   },
   {
@@ -4113,52 +5265,42 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "69438459a986b1ab",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "6992968ad1a4d8bd",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6ac7736a548195d",
+   "child": "6b89da4fe9ee272c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6df91fc23ea0233e",
+   "child": "6bb5b0eb771aa988",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6e623e36d7d33f15",
+   "child": "6cfa42465220e3f2",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "71afad58be91a829",
+   "child": "717301c98479e604",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "72802e106a82edda",
+   "child": "7353867a06e2c2c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "743ac61d3a5533db",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "754cd05e89bd2c3c",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "77ec407a62d2c76c",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "78f8d3ce8bf6e7e3",
+   "child": "780b6903a9da6574",
    "type": "contains"
   },
   {
@@ -4168,17 +5310,22 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "7a7f6852796319a9",
+   "child": "7a45f3e84d58f556",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "7c4ff37268a802ad",
+   "child": "7c18a422caa5d5d9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "7f70f0b712792452",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "816412be7a889a5f",
    "type": "contains"
   },
   {
@@ -4193,12 +5340,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "82b2469dba241b98",
+   "child": "84dc8064a4975130",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "84dc8064a4975130",
+   "child": "84fc1018f3629968",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "85a23ed510f94daa",
    "type": "contains"
   },
   {
@@ -4218,17 +5370,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "8a9bc000d16c2fca",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "8afeed8ad23b6aa4",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "8ea438946777c9ba",
+   "child": "8c3780cd99d1a280",
    "type": "contains"
   },
   {
@@ -4238,7 +5380,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "91dbbf6357f932cd",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "941bd04ba4a0aaf3",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "95085baf727a9c28",
    "type": "contains"
   },
   {
@@ -4253,12 +5405,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "97c0ec865a634414",
+   "child": "97c1474f25b9387b",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9de995ce432e3700",
+   "child": "98d1085cb429e1e1",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "9d29297062a91183",
    "type": "contains"
   },
   {
@@ -4268,12 +5425,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9fd3c6d63599efce",
+   "child": "9fc039894195d8fe",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a26bd4669da2d14f",
+   "child": "9fd3c6d63599efce",
    "type": "contains"
   },
   {
@@ -4283,7 +5440,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a7c0617656cdf424",
+   "child": "a8fd3883015de1e7",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "a9062b883c4e9a30",
    "type": "contains"
   },
   {
@@ -4293,22 +5455,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "a9bc9b3fd5d8d30e",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "aa3592f23254e1a2",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "aba2609b232a80db",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ac22bf055ce79f87",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "acf99a46dc51711e",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ad2b0766b5f58a66",
    "type": "contains"
   },
   {
@@ -4328,7 +5485,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "afad4c894d37e613",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b03a1ea2b628a550",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b04011cf7ec51ba8",
    "type": "contains"
   },
   {
@@ -4338,12 +5505,32 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b0e4e76d4ba36306",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b2b40abb929c3df6",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b2fc72d33438cd14",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b48b87de7c0b88a1",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b6078d1fca94622c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b6c6e7a02aaa5d4b",
+   "child": "b7c94d9304c19bfc",
    "type": "contains"
   },
   {
@@ -4368,22 +5555,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "bd2512024a562676",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "bd73a1dddee3e578",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "bf15bb2ae29e41aa",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "bfa7b206dbbb5c4a",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c029e8eec81bdd12",
    "type": "contains"
   },
   {
@@ -4398,17 +5575,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c2ae8562f04e943e",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "c31eae7303116a2a",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c5218dea56f58ffc",
    "type": "contains"
   },
   {
@@ -4418,7 +5585,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c5a778d0bede6628",
+   "child": "c64bdb49f2d45e7a",
    "type": "contains"
   },
   {
@@ -4433,12 +5600,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c95020dcf03f5753",
+   "child": "c9747887ef19e31f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "c9747887ef19e31f",
+   "child": "c99190a96b806dd0",
    "type": "contains"
   },
   {
@@ -4448,12 +5615,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "cd0469f33951c630",
+   "child": "cc63717a3b5f07b6",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "cd9cb92aa1b21917",
+   "child": "cd0469f33951c630",
    "type": "contains"
   },
   {
@@ -4463,12 +5630,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d249281de85bbacd",
+   "child": "d0cc16b4e20d70a4",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d3e5e7adec16a495",
+   "child": "d690ca09a575982a",
    "type": "contains"
   },
   {
@@ -4483,17 +5650,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "dc0016e441bb88eb",
+   "child": "e107f70b7d73049f",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "dc9d440e0702e3d",
+   "child": "e40e1cade9c073e9",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "e067e03d5287bc21",
+   "child": "e61bba18bca1a0b6",
    "type": "contains"
   },
   {
@@ -4503,12 +5670,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "eaef81228ff2821e",
+   "child": "eb7d7fc6b8b1176e",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "eb7d7fc6b8b1176e",
+   "child": "ec140a1d6d224e18",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "ed4c60f2be4f5c19",
    "type": "contains"
   },
   {
@@ -4523,12 +5695,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ee9e01d4ba0bdf4",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "ef4e71af1695619",
+   "child": "ef807afe98b54ee3",
    "type": "contains"
   },
   {
@@ -4543,12 +5710,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f33c548ed2d603fd",
+   "child": "f14ae36b9cec076c",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f6e7836c6841a22b",
+   "child": "f31a272cab87b00b",
    "type": "contains"
   },
   {
@@ -4563,12 +5730,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fc395e70c771a6e4",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fc956f9a6a6e5512",
+   "child": "fcb6ed20bdcff719",
    "type": "contains"
   },
   {
@@ -4577,9 +5739,133 @@
    "type": "contains"
   },
   {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fe2a7c908e29a2ce",
-   "type": "contains"
+   "parent": "ceddf32254e255a9",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "d0cc16b4e20d70a4",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "d690ca09a575982a",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "da9670ff65ba35e8",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "db983303dc31596f",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e107f70b7d73049f",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e40e1cade9c073e9",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e61bba18bca1a0b6",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e69c0beffd356805",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "eb7d7fc6b8b1176e",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ec140a1d6d224e18",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ed4c60f2be4f5c19",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "eda3c029b6521398",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ee2fcbab9f74ed92",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "ef807afe98b54ee3",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "efdd42535e2eeff3",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "f02bdaaf65eabc23",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "f14ae36b9cec076c",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "f31a272cab87b00b",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "f739edefa0832a33",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "fac887c3e4c9e044",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  },
+  {
+   "parent": "fcb6ed20bdcff719",
+   "child": "6110bf46e3c407e",
+   "type": "evident-by"
+  },
+  {
+   "parent": "fd518a14d7bba2d3",
+   "child": "ed9ca1d5b0eb32bc",
+   "type": "evident-by"
+  }
+ ],
+ "files": [
+  {
+   "id": "6110bf46e3c407e",
+   "location": {
+    "path": "controller.amd64"
+   }
+  },
+  {
+   "id": "ed9ca1d5b0eb32bc",
+   "location": {
+    "path": "go.mod"
+   }
   }
  ],
  "source": {
@@ -4618,6 +5904,16 @@
     },
     "search-unindexed-archives": false,
     "search-indexed-archives": true
+   },
+   "golang": {
+    "search-local-mod-cache-licenses": false,
+    "local-mod-cache-dir": "",
+    "search-remote-licenses": false,
+    "proxy": "",
+    "no-proxy": ""
+   },
+   "linux-kernel": {
+    "catalog-modules": true
    },
    "attest": {},
    "file-metadata": {
@@ -4661,11 +5957,12 @@
    "exclude": [],
    "platform": "",
    "name": "",
-   "parallelism": 1
+   "parallelism": 1,
+   "default-image-pull-source": ""
   }
  },
  "schema": {
-  "version": "7.0.1",
-  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-7.0.1.json"
+  "version": "7.1.5",
+  "url": "https://raw.githubusercontent.com/anchore/syft/main/schema/json/schema-7.1.5.json"
  }
 }

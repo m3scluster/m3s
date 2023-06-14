@@ -75,7 +75,6 @@ func (e *Scheduler) defaultCommand(taskID string) cfg.Command {
 
 func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) []mesosproto.TaskInfo {
 	d, _ := json.Marshal(&cmd)
-	logrus.Debug("HandleOffers cmd: ", util.PrettyJSON(d))
 
 	contype := mesosproto.ContainerInfo_DOCKER.Enum()
 

@@ -39,7 +39,7 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 
 	switch *update.Status.State {
 	case mesosproto.TASK_FAILED, mesosproto.TASK_KILLED, mesosproto.TASK_LOST, mesosproto.TASK_ERROR, mesosproto.TASK_FINISHED:
-		logrus.WithField("func", "scheduler.HandleUpdate").Warn("Task State: " + task.State + " " + task.TaskID)
+		logrus.WithField("func", "scheduler.HandleUpdate").Warn("Task State: " + task.State + " " + task.TaskID + " (" + task.TaskName + ")")
 		e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
 		// remove unready K8 node from redis
 		if task.TaskName == e.Framework.FrameworkName+":agent" {
@@ -49,23 +49,17 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 
 		return e.Mesos.Call(msg)
 	case mesosproto.TASK_RUNNING:
-		logrus.WithField("func", "scheduler.HandleUpdate").Info("Task State: " + task.State + " " + task.TaskID)
+		logrus.WithField("func", "scheduler.HandleUpdate").Info("Task State: " + task.State + " " + task.TaskID + " (" + task.TaskName + ")")
 		task.MesosAgent = e.Mesos.GetAgentInfo(update.Status.GetAgentID().Value)
 		task.NetworkInfo = e.Mesos.GetNetworkInfo(task.TaskID)
 		task.Agent = update.Status.GetAgentID().Value
 		// remember information for the boostrap server to reach it later
 		if task.TaskName == e.Framework.FrameworkName+":server" {
 			// if the framework is running as container, and the task hostname is the same like the frameworks one,
-			// then use the containerport instead of the random hostport
 			if e.Config.DockerRunning && (task.MesosAgent.Hostname == e.Config.Hostname) {
-				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].ContainerPort)
 				e.Config.K3SServerHostname = task.Hostname
-			} else {
-				e.Config.K3SServerContainerPort = int(task.DockerPortMappings[0].HostPort)
 			}
 			e.Config.K3SServerPort = int(task.DockerPortMappings[0].HostPort)
-
-			//e.API.AgentRestart()
 		}
 	}
 

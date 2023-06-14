@@ -42,7 +42,6 @@ func Subscribe(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Scheduler {
 		Config:    cfg,
 		Framework: frm,
 		Mesos:     *mesos.New(cfg, frm),
-		Redis:     redis.New(cfg, frm),
 	}
 
 	subscribeCall := &mesosproto.Call{
@@ -105,7 +104,7 @@ func (e *Scheduler) EventLoop() {
 		var event mesosproto.Event // Event as ProtoBuf
 		err := jsonpb.UnmarshalString(line, &event)
 		if err != nil {
-			logrus.WithField("func", "scheduler.EventLoop").Error("Could not unmarshal Mesos Master data: ", err.Error())
+			logrus.WithField("func", "scheduler.EventLoop").Warn("Could not unmarshal Mesos Master data: ", err.Error())
 			continue
 		}
 
@@ -128,7 +127,7 @@ func (e *Scheduler) EventLoop() {
 			// Search Failed containers and restart them
 			err = e.HandleOffers(event.Offers)
 			if err != nil {
-				logrus.WithField("func", "scheduler.EventLoop").Error("Switch Event HandleOffers: ", err)
+				logrus.WithField("func", "scheduler.EventLoop").Warn("Switch Event HandleOffers: ", err)
 			}
 		}
 	}
@@ -176,7 +175,7 @@ func (e *Scheduler) portInUse(port uint32) bool {
 		if ports != nil {
 			for _, hostport := range ports.GetPorts() {
 				if hostport.Number == port {
-					logrus.Debug("Port in use: ", port)
+					logrus.WithField("func", "scheduler.portInUse").Debug("Port in use: ", port)
 					return true
 				}
 			}
@@ -256,7 +255,6 @@ func (e *Scheduler) reconcile() {
 	})
 
 	if err != nil {
-		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
 		logrus.WithField("func", "scheduler.reconcile").Debug("Reconcile Error: ", err)
 	}
 }
@@ -270,7 +268,6 @@ func (e *Scheduler) implicitReconcile() {
 	})
 
 	if err != nil {
-		e.API.ErrorMessage(3, "Reconcile_Error", err.Error())
 		logrus.WithField("func", "scheduler.implicitReconcile").Debug("Reconcile Error: ", err)
 	}
 }
