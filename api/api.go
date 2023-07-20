@@ -37,7 +37,6 @@ func New(cfg *cfg.Config, frm *cfg.FrameworkConfig) *API {
 		Framework:         frm,
 		Mesos:             *mesos.New(cfg, frm),
 		BootstrapProtocol: "http",
-		Redis:             redis.New(cfg, frm),
 	}
 
 	if e.Config.BootstrapSSLCrt != "" {

@@ -68,7 +68,7 @@ func init() {
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "0.1"), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "2000"), 64)
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
-	config.LogLevel = util.Getenv("LOGLEVEL", "info")
+	config.LogLevel = util.Getenv("LOGLEVEL", "DEBUG")
 	config.Principal = util.Getenv("MESOS_PRINCIPAL", "")
 	config.ImageK3S = util.Getenv("IMAGE_K3S", "avhost/ubuntu-m3s:22.04")
 	config.ImageETCD = util.Getenv("IMAGE_ETCD", "docker.io/bitnami/etcd:3.5.1")

@@ -65,18 +65,54 @@ var _ reconcile.Reconciler = &reconcileReplicaSet{}
 
 // Reconcile after kubernetes events happen. This function will store node information in redis.
 func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
-	nodes := &corev1.Node{}
-	err := r.client.Get(ctx, request.NamespacedName, nodes)
+	node := &corev1.Node{}
+	err := r.client.Get(ctx, request.NamespacedName, node)
 	if err != nil {
 		return reconcile.Result{}, fmt.Errorf("could not find pods: %s", err)
 	}
 
-	nodeName := nodes.ObjectMeta.Name
+	r.setTaint(node)
+
+	nodeName := node.ObjectMeta.Name
 	logrus.WithField("func", "controller.Reconciler").Debug(nodeName)
-	d, _ := json.Marshal(&nodes)
+	d, _ := json.Marshal(&node)
 	Redis.SetRedisKey(d, Config.RedisPrefix+":kubernetes:"+nodeName)
 
+	err = r.client.Update(ctx, node)
+	if err != nil {
+		return reconcile.Result{}, fmt.Errorf("could not write node: %s", err)
+	}
+
 	return reconcile.Result{}, nil
+}
+
+// setTain will prevent to run other pods then the control-plane on the kubernetes master server
+func (r *reconcileReplicaSet) setTaint(node *corev1.Node) {
+	for i := range node.Labels {
+		if i == "node-role.kubernetes.io/master" {
+			taint := corev1.Taint{
+				Key:    "node-role.kubernetes.io/master",
+				Value:  "NoSchedule",
+				Effect: corev1.TaintEffectNoSchedule,
+			}
+
+			if !r.taintExist(node.Spec.Taints, "node-role.kubernetes.io/master", "NoSchedule", corev1.TaintEffectNoSchedule) {
+				logrus.WithField("func", "controller.setTaint").Debug("Set Taint on: ", node.ObjectMeta.Name)
+				node.Spec.Taints = append(node.Spec.Taints, taint)
+			}
+		}
+	}
+}
+
+// taintExist will check (true) if the given taint already exist
+func (r *reconcileReplicaSet) taintExist(taint []corev1.Taint, key string, value string, effect corev1.TaintEffect) bool {
+	for _, i := range taint {
+		if i.Key == key && i.Value == value && i.Effect == effect {
+			return true
+		}
+	}
+
+	return false
 }
 
 // CleanupNodes will cleanup unready nodes
@@ -101,7 +137,7 @@ func CleanupNodes() {
 func startController() {
 	Redis = redis.New(&Config)
 	Redis.Connect()
-	time.Sleep(10 * time.Second)
+	time.Sleep(60 * time.Second)
 
 	// get kubeconfig
 	kubeconfig, err := config.GetConfig()
@@ -132,7 +168,9 @@ func startController() {
 		logrus.WithField("func", "controller.startController").Error(err, "unable to create kubernetes node")
 		return
 	}
-	go Heartbeat()
+
+	waitForKubernetesMasterReady(Client)
+	logrus.WithField("func", "controller.startController").Info("Kubernetes Manager is ready")
 
 	// Setup a new controller to reconcile ReplicaSets
 	logrus.WithField("func", "controller.startController").Info("Setting up controller")
@@ -147,14 +185,14 @@ func startController() {
 		return
 	}
 
-	loadDefaultYAML()
+	go Heartbeat()
+	go loadDefaultYAML()
 
 	logrus.WithField("func", "main").Info("starting manager")
 	if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
 		logrus.WithField("func", "controller.startController").Error(err, "unable to run manager")
 		return
 	}
-
 }
 
 func loadDefaultYAML() {
@@ -179,6 +217,17 @@ func loadDefaultYAML() {
 		Resource(obj.GetKind()).
 		Namespace(obj.GetNamespace()).
 		Body(obj).Do(context.TODO())
+}
+
+func waitForKubernetesMasterReady(clientset *kubernetes.Clientset) {
+	logrus.WithField("func", "controller.waitForKubernetesMasterReady").Info("Wait until Kubernetes Manager is ready")
+	for {
+		_, err := clientset.ServerVersion()
+		if err == nil {
+			return
+		}
+		time.Sleep(2 * time.Second)
+	}
 }
 
 func init() {

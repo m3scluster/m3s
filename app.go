@@ -75,9 +75,13 @@ func main() {
 
 	// connect to redis
 	r := redis.New(&config, &framework)
+	if !r.Connect() {
+		logrus.WithField("func", "main").Fatal("Could not connect to redis DB")
+	}
 
 	// get API
 	a := api.New(&config, &framework)
+	a.Redis = r
 
 	// load framework state from DB
 	var oldFramework cfg.FrameworkConfig
@@ -153,6 +157,7 @@ func main() {
 		case <-ticker.C:
 			e := scheduler.Subscribe(&config, &framework)
 			e.API = a
+			e.Redis = r
 			e.EventLoop()
 		}
 	}

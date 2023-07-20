@@ -20,7 +20,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 
 			// if the ressources of this offer does not matched what the command need, the skip
 			if !e.Mesos.IsRessourceMatched(offer.Resources, cmd) {
-				logrus.WithField("func", "scheduler.getOffer").Debug("Could not found any matched ressources, get next offer")
+				logrus.WithField("func", "scheduler.getOffer").Debug("Could not found any matched resources, get next offer")
 				e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 				continue
 			}
@@ -84,13 +84,13 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 			e.Framework.CommandChan <- cmd
 			return nil
 		}
-		logrus.WithField("func", "scheduler.HandleOffers").Debug("Take Offer From:", takeOffer.GetHostname())
 		// if the offer does not have id's, we skip it and restore the chan.
 		if takeOffer.ID.Value == "" {
 			logrus.WithField("func", "schueduler.HandleOffers").Error("OfferIds are empty.")
 			e.Framework.CommandChan <- cmd
 			return nil
 		}
+		logrus.WithField("func", "scheduler.HandleOffers").Info("Take Offer from " + takeOffer.GetHostname() + " for task " + cmd.TaskID + " (" + cmd.TaskName + ")")
 
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0

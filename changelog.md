@@ -15,6 +15,7 @@
 - Bootstrap: Combine dashboard.yaml, dasboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
   k3s during the bootstrap process.
 - Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
+- Add Kubernetes taint to prevent pods to run on the Kubernetes management node.
 
 ## v0.4.0
 

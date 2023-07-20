@@ -101,7 +101,7 @@ func (e *Scheduler) CheckState() {
 
 			e.Redis.SaveTaskRedis(task)
 
-			logrus.Info("Scheduled Mesos Task: ", task.TaskName)
+			logrus.WithField("func", "scheduler.CheckState").Info("Scheduled Mesos Task: ", task.TaskName)
 		}
 
 		// Remove corrupt tasks
