@@ -1,9 +1,14 @@
 # mesos-m3s
-[![Discussion](https://img.shields.io/static/v1?label=Support&message=Discussion&color=brightgreen)](https://github.com/m3scluster/m3s/discussions)
-[![Chat](https://img.shields.io/static/v1?label=Support&message=Chat&color=brightgreen)](https://matrix.to/#/#support:matrix.aventer.biz?via=matrix.aventer.biz)
-[![Docs](https://img.shields.io/static/v1?label=Docs&message=Support&color=brightgreen)](https://aventer-ug.github.io/mesos-m3s/index.html)
+[![Discussion](https://img.shields.io/static/v1?label=&message=Discussion&color=brightgreen)](https://github.com/m3scluster/m3s/discussions)
+[![Issues](https://img.shields.io/static/v1?label=&message=Issues&color=brightgreen)](https://github.com/m3scluster/m3s/issues)
+[![Chat](https://img.shields.io/static/v1?label=&message=Chat&color=brightgreen)](https://matrix.to/#/#mesosk3s:matrix.aventer.biz?via=matrix.aventer.biz)
+[![Docs](https://img.shields.io/static/v1?label=&message=Docs&color=brightgreen)](https://m3scluster.github.io/m3s/)
 
 Mesos Framework to run Kubernetes (K3S)
+
+## Issues
+
+To open an issue, please use this place: https://github.com/m3scluster/m3s/issues
 
 ## Requirements
 
