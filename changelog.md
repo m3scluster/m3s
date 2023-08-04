@@ -11,8 +11,8 @@
 - Fix port detection if the framework is running as container at the same servers like the datastore and K8 manager
 - Add support for Server labels
 - Add REFUSE_OFFERS to tell mesos it does not have to send new offers during the next seconds (default: 120.0). That will give other 
-  frameworks the chance to get faster offers.
-- Bootstrap: Combine dashboard.yaml, dasboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
+  frameworks the chance to get offers more quickly.
+- Bootstrap: Combine dashboard.yaml, dashboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
   k3s during the bootstrap process.
 - Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
 - Add Kubernetes taint to prevent pods to run on the Kubernetes management node.

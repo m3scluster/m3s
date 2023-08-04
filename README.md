@@ -1,8 +1,9 @@
 # mesos-m3s
 [![Discussion](https://img.shields.io/static/v1?label=&message=Discussion&color=brightgreen)](https://github.com/m3scluster/m3s/discussions)
 [![Issues](https://img.shields.io/static/v1?label=&message=Issues&color=brightgreen)](https://github.com/m3scluster/m3s/issues)
-[![Chat](https://img.shields.io/static/v1?label=&message=Chat&color=brightgreen)](https://matrix.to/#/#mesosk3s:matrix.aventer.biz?via=matrix.aventer.biz)
+[![Chat](https://img.shields.io/static/v1?label=&message=Chat&color=brightgreen)](https://matrix.to/#/#mesos:matrix.aventer.biz?via=matrix.aventer.biz)
 [![Docs](https://img.shields.io/static/v1?label=&message=Docs&color=brightgreen)](https://m3scluster.github.io/m3s/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/avhost/mesos-m3s)](https://hub.docker.com/repository/docker/avhost/mesos-m3s/)
 
 Mesos Framework to run Kubernetes (K3S)
 
