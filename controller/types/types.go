@@ -13,4 +13,5 @@ type Config struct {
 	KubernetesConfig string
 	Heartbeat        time.Duration
 	DefaultYAML      string
+	EnableTaint      bool
 }

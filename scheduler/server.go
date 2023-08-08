@@ -164,6 +164,17 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Value: func() *string { x := e.Config.LogLevel; return &x }(),
 		},
 		{
+			Name: "M3S_CONTROLLER__ENABLE_TAINT",
+			Value: func() *string {
+				x := "false"
+				if e.Config.K3SEnableTaint {
+					x = "true"
+					return &x
+				}
+				return &x
+			}(),
+		},
+		{
 			Name:  "MESOS_SANDBOX_VAR",
 			Value: &e.Config.MesosSandboxVar,
 		},

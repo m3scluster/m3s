@@ -152,6 +152,12 @@ func init() {
 		config.Domain = "." + tmp
 	}
 
+	if strings.Compare(util.Getenv("K3S_ENABLE_TAINT", "true"), "false") == 0 {
+		config.K3SEnableTaint = false
+	} else {
+		config.K3SEnableTaint = true
+	}
+
 }
 
 func stringToBool(par string) bool {

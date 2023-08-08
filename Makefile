@@ -80,4 +80,4 @@ version:
 	@echo "Saved under .version.json"
 
 check: go-fmt sboom seccheck
-all: check version cont build push
+all: check version cont build

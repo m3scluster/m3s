@@ -68,6 +68,7 @@ type Config struct {
 	K3SAgentDISK                float64
 	K3SDocker                   string
 	K3SToken                    string
+	K3SEnableTaint              bool
 	Listen                      string
 	LogLevel                    string
 	M3SStatus                   M3SStatus

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/AVENTER-UG/mesos-m3s/controller/redis"
@@ -71,7 +72,9 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 		return reconcile.Result{}, fmt.Errorf("could not find pods: %s", err)
 	}
 
-	r.setTaint(node)
+	if Config.EnableTaint {
+		r.setTaint(node)
+	}
 
 	nodeName := node.ObjectMeta.Name
 	logrus.WithField("func", "controller.Reconciler").Debug(nodeName)
@@ -240,6 +243,12 @@ func init() {
 	Config.KubernetesConfig = util.Getenv("KUBECONFIG", "/etc/rancher/k3s/k3s.yaml")
 	Config.DefaultYAML = util.Getenv("M3S_CONTROLLER__DEFAULT_YAML", "/mnt/mesos/sandbox/default.yaml")
 	Config.Heartbeat, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__HEARTBEAT_TIME", "2m"))
+
+	if strings.Compare(util.Getenv("M3S_CONTROLLER__ENABLE_TAINT", "true"), "false") == 0 {
+		Config.EnableTaint = false
+	} else {
+		Config.EnableTaint = true
+	}
 
 	util.SetLogging(Config.LogLevel, false, Config.AppName)
 	logrus.Println(Config.AppName + " build " + BuildVersion + " git " + GitVersion)
