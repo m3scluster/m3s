@@ -21,3 +21,34 @@ spec:
         ports:
           - name: web
             containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  ports:
+    - protocol: TCP
+      name: web
+      port: 80
+  selector:
+    app: nginx
+
+---
+
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: nginx-traefik
+  namespace: default
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`your.example.com`)
+    kind: Rule
+    services:
+    - name: nginx-service
+      port: 80            

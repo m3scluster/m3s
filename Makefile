@@ -50,7 +50,7 @@ cont:
 	@cp controller/controller.amd64 bootstrap/
 
 push:
-	@echo ">>>> Publish docker image"
+	@echo ">>>> Publish docker image" ${BRANCH}
 	@docker buildx create --use --name buildkit
 	@docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 	@docker buildx rm buildkit

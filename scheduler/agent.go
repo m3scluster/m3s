@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -178,16 +179,31 @@ func (e *Scheduler) healthCheckAgent() bool {
 				}
 				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionUnknown {
 					logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: " + node.Name + "(" + task.TaskID + ")")
+					e.cleanupUnreadyTask(task)
 					return false
 				}
 			}
 		} else {
 			logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: ", task.TaskID)
+			e.cleanupUnreadyTask(task)
 			return false
 		}
 	}
 
 	return aState
+}
+
+// cleanupUnreadyTask if a Mesos task is still unready after CleanupLoopTime Minutes, then it have to be removed.
+func (e *Scheduler) cleanupUnreadyTask(task cfg.Command) {
+	timeDiff := time.Now().Sub(task.StateTime).Minutes()
+	if timeDiff >= e.Config.CleanupLoopTime.Minutes() {
+		if task.MesosAgent.ID == "" {
+			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		} else {
+			e.Mesos.Kill(task.TaskID, task.MesosAgent.ID)
+		}
+		logrus.WithField("func", "scheduler.cleanupUnreadyTask").Warningf("Cleanup Unhealthy Mesos Task: %s", task.TaskID)
+	}
 }
 
 // getTaskFromK8Node will give out the mesos task matched to the K8 node
