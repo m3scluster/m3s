@@ -22,18 +22,17 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 
 	cmd := e.defaultCommand(taskID)
 
-	protocol := "tcp"
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
 			HostPort:      0,
 			ContainerPort: 80,
-			Protocol:      &protocol,
+			Protocol:      func() *string { x := "http"; return &x }(),
 		},
 		{
 			HostPort:      0,
 			ContainerPort: 443,
-			Protocol:      &protocol,
+			Protocol:      func() *string { x := "https"; return &x }(),
 		},
 	}
 
@@ -92,18 +91,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		Visibility: 2,
 		Name:       &cmd.TaskName,
 		Ports: &mesosproto.Ports{
-			Ports: []mesosproto.Port{
-				{
-					Number:   cmd.DockerPortMappings[0].HostPort,
-					Name:     func() *string { x := strings.ToLower(e.Framework.FrameworkName) + "-http"; return &x }(),
-					Protocol: cmd.DockerPortMappings[0].Protocol,
-				},
-				{
-					Number:   cmd.DockerPortMappings[1].HostPort,
-					Name:     func() *string { x := strings.ToLower(e.Framework.FrameworkName) + "-https"; return &x }(),
-					Protocol: cmd.DockerPortMappings[1].Protocol,
-				},
-			},
+			Ports: e.getDiscoveryInfoPorts(cmd),
 		},
 	}
 
@@ -153,6 +141,27 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	// store mesos task in DB
 	logrus.WithField("func", "scheduler.StartK3SAgent").Info("Schedule K3S Agent")
 	e.Redis.SaveTaskRedis(cmd)
+}
+
+// Get the discoveryinfo ports of the compose file
+func (e *Scheduler) getDiscoveryInfoPorts(cmd cfg.Command) []mesosproto.Port {
+	var disport []mesosproto.Port
+	for i, c := range cmd.DockerPortMappings {
+		var tmpport mesosproto.Port
+		p := func() *string { x := strings.ToLower(e.Framework.FrameworkName) + "-" + *c.Protocol; return &x }()
+		tmpport.Name = p
+		tmpport.Number = c.HostPort
+		tmpport.Protocol = c.Protocol
+
+		// Docker understand only tcp and udp.
+		if *c.Protocol != "udp" && *c.Protocol != "tcp" {
+			cmd.DockerPortMappings[i].Protocol = func() *string { x := "tcp"; return &x }()
+		}
+
+		disport = append(disport, tmpport)
+	}
+
+	return disport
 }
 
 // healthCheckAgent check the health of all agents. Return true if all are fine.
