@@ -74,8 +74,6 @@ func (e *Scheduler) defaultCommand(taskID string) cfg.Command {
 }
 
 func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cmd cfg.Command) []mesosproto.TaskInfo {
-	d, _ := json.Marshal(&cmd)
-
 	contype := mesosproto.ContainerInfo_DOCKER.Enum()
 
 	// Set Container Network Mode
@@ -145,7 +143,7 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cm
 		}
 	}
 
-	d, _ = json.Marshal(&msg)
+	d, _ := json.Marshal(&msg)
 	logrus.Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
 	return []mesosproto.TaskInfo{msg}

@@ -148,7 +148,10 @@ func (e *Scheduler) getDiscoveryInfoPorts(cmd cfg.Command) []mesosproto.Port {
 	var disport []mesosproto.Port
 	for i, c := range cmd.DockerPortMappings {
 		var tmpport mesosproto.Port
-		p := func() *string { x := strings.ToLower(e.Framework.FrameworkName) + "-" + *c.Protocol; return &x }()
+		p := func() *string {
+			x := strings.ToLower(e.Framework.FrameworkName) + "-" + *c.Protocol
+			return &x
+		}()
 		tmpport.Name = p
 		tmpport.Number = c.HostPort
 		tmpport.Protocol = c.Protocol
@@ -204,7 +207,7 @@ func (e *Scheduler) healthCheckAgent() bool {
 
 // cleanupUnreadyTask if a Mesos task is still unready after CleanupLoopTime Minutes, then it have to be removed.
 func (e *Scheduler) cleanupUnreadyTask(task cfg.Command) {
-	timeDiff := time.Now().Sub(task.StateTime).Minutes()
+	timeDiff := time.Since(task.StateTime).Minutes()
 	if timeDiff >= e.Config.CleanupLoopTime.Minutes() {
 		if task.MesosAgent.ID == "" {
 			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
