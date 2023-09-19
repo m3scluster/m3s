@@ -23,7 +23,8 @@ done
 
 ## dockerd is a part of the uses avhost/ubuntu-m3s:focal docker image
 exec /usr/local/bin/dockerd &
-exec /usr/bin/cri-dockerd &
+sleep 20
+exec /usr/bin/cri-dockerd --network-plugin=cni --cni-bin-dir=/usr/lib/cni --cni-conf-dir=/var/lib/rancher/k3s/agent/etc/cni/net.d/ &
 
 curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION=${INSTALL_K3S_VERSION} INSTALL_K3S_SKIP_ENABLE=${INSTALL_K3S_SKIP_ENABLE=$} INSTALL_K3S_SKIP_START=${INSTALL_K3S_SKIP_START} sh -s - --docker
 curl https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/bootstrap/default.yaml > $MESOS_SANDBOX/default.yaml

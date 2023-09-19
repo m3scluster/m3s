@@ -40,6 +40,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.Privileged = true
 	cmd.Memory = e.Config.K3SAgentMEM
 	cmd.CPU = e.Config.K3SAgentCPU
+	cmd.Disk = e.Config.K3SAgentDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":agent"
 	cmd.Hostname = e.Framework.FrameworkName + "agent" + e.Config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SAgentString + e.Config.K3SDocker + " --with-node-id " + cmd.TaskID + "'"
@@ -185,14 +186,17 @@ func (e *Scheduler) healthCheckAgent() bool {
 		node := e.getK8NodeFromTask(task)
 
 		if node.Name != "" {
+			timeDiff := time.Since(node.CreationTimestamp.Time).Minutes()
 			for _, status := range node.Status.Conditions {
-				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionTrue {
-					aState = true
-				}
-				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionUnknown {
-					logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: " + node.Name + "(" + task.TaskID + ")")
-					e.cleanupUnreadyTask(task)
-					return false
+				if status.Type == corev1.NodeReady {
+					if status.Status == corev1.ConditionTrue {
+						aState = true
+					}
+					if (status.Status == corev1.ConditionFalse || status.Status == corev1.ConditionUnknown) && timeDiff >= e.Config.K3SNodeTimeout.Minutes() {
+						logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: " + node.Name + "(" + task.TaskID + ")")
+						e.cleanupUnreadyTask(task)
+						return false
+					}
 				}
 			}
 		} else {
