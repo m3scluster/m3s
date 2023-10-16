@@ -128,8 +128,8 @@ func (e *Scheduler) ReconcileLoop() {
 	ticker := time.NewTicker(e.Config.ReconcileLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
-		go e.reconcile()
-		go e.implicitReconcile()
+		e.reconcile()
+		e.implicitReconcile()
 		go e.removeNotExistingAgents()
 	}
 }

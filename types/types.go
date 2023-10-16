@@ -43,6 +43,7 @@ type Config struct {
 	ImageETCD                   string
 	ImageMySQL                  string
 	KubeConfig                  string
+	K3SNodeTimeout              time.Duration
 	K3SCustomDomain             string
 	K3SContainerDisk            string
 	K3SServerURL                string

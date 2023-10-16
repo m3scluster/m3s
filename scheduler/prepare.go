@@ -14,8 +14,10 @@ func (e *Scheduler) defaultResources(cmd cfg.Command) []mesosproto.Resource {
 	CPU := "cpus"
 	MEM := "mem"
 	PORT := "ports"
+	DISK := "disk"
 	cpu := cmd.CPU
 	mem := cmd.Memory
+	disk := cmd.Disk
 
 	res := []mesosproto.Resource{
 		{
@@ -27,6 +29,11 @@ func (e *Scheduler) defaultResources(cmd cfg.Command) []mesosproto.Resource {
 			Name:   MEM,
 			Type:   mesosproto.SCALAR.Enum(),
 			Scalar: &mesosproto.Value_Scalar{Value: mem},
+		},
+		{
+			Name:   DISK,
+			Type:   mesosproto.SCALAR.Enum(),
+			Scalar: &mesosproto.Value_Scalar{Value: disk},
 		},
 	}
 

@@ -24,6 +24,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Memory = e.Config.K3SServerMEM
 	cmd.CPU = e.Config.K3SServerCPU
+	cmd.Disk = e.Config.K3SServerDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":server"
 	cmd.Hostname = e.Framework.FrameworkName + "server" + e.Config.Domain
 	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --kube-controller-manager-arg='leader-elect=false' --kube-scheduler-arg='leader-elect=false' -tls-san=" + e.Framework.FrameworkName + "server'"

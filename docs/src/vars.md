@@ -10,7 +10,6 @@ The following environment variables are available:
 | BOOTSTRAP_URL | https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/master/bootstrap/bootstrap.sh | Bootstrap Script to pre configure the server/agent container |
 | CGROUP_V2             | false | Enable support for CGroupV2 | 
 | CLEANUP_WAIT          | 3m | Time when M3s start to cleanup unhealthy nodes |
-| DOCKER_CNI            | bride | If we do not use Mesos CNI, we can also use docker network |
 | DOCKER_SOCK           | | The docker sock file |
 | DOCKER_ULIMIT         | 1048576 | Number of max open files (soft and hardlimit)  |
 | DOCKER_MEMORY_SWAP    | 1000 | Limit how much memory swap the container could use (in MB)|
