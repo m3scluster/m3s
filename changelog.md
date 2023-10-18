@@ -16,6 +16,8 @@
   k3s during the bootstrap process.
 - Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
 - Add Kubernetes taint to prevent pods to run on the Kubernetes management node. With K§S_ENABLE_TAINT you can enable(true and default)/disable(disable) these feature.
+- Update K3s to Version 1.25.2
+- Move environment variable KUBERNETES_VERSION from bootstrap file into m3s framework.
 
 ## v0.4.0
 

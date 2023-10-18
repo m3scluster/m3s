@@ -6,7 +6,6 @@ echo "nameserver 8.8.8.8" > /etc/k3sresolv.conf
 apt-get update -y
 mkdir -p /etc/cni/net.d
 
-export KUBERNETES_VERSION=v1.24.4
 export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true

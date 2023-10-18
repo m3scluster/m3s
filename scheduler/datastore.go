@@ -170,7 +170,7 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 // set etcd parameter of the mesos task
 func (e *Scheduler) setETCD(cmd *cfg.Command) {
 	cmd.ContainerImage = e.Config.ImageETCD
-	cmd.Command = "/opt/bitnami/etcd/bin/etcd --listen-client-urls http://0.0.0.0:" + e.Config.DSPort + " --election-timeout '50000' --heartbeat-interval '5000'"
+	cmd.Command = "/usr/local/bin/etcd --listen-client-urls http://0.0.0.0:" + e.Config.DSPort + " --election-timeout '50000' --heartbeat-interval '5000'"
 	cmd.Shell = true
 	AdvertiseURL := "http://" + cmd.Hostname + ":" + e.Config.DSPort
 
@@ -189,17 +189,10 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 			Name:  "ETCD_ADVERTISE_CLIENT_URLS",
 			Value: &AdvertiseURL,
 		},
-		{
-			Name: "ETCD_DATA_DIR",
-			Value: func() *string {
-				x := "/tmp/data"
-				return &x
-			}(),
-		},
 	}
 	cmd.Volumes = []mesosproto.Volume{
 		{
-			ContainerPath: "/tmp/data",
+			ContainerPath: "/default.etcd",
 			Mode:          mesosproto.RW.Enum(),
 			Source: &mesosproto.Volume_Source{
 				Type: mesosproto.Volume_Source_DOCKER_VOLUME,

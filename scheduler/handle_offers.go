@@ -95,6 +95,11 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 		var taskInfo []mesosproto.TaskInfo
 		RefuseSeconds := 5.0
 
+		// #bugfix k3s 1.28.2 - if task is the server, add tls-san with the agents hostname
+		if cmd.TaskName == e.Framework.FrameworkName+":server" {
+			cmd.Command = cmd.Command + " --tls-san=" + takeOffer.GetHostname() + "'"
+		}
+
 		// build the mesos task info object with the current offer
 		taskInfo = e.prepareTaskInfoExecuteContainer(takeOffer.AgentID, cmd)
 

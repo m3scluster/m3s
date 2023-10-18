@@ -102,6 +102,10 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			Value: &cmd.TaskName,
 		},
 		{
+			Name:  "KUBERNETES_VERSION",
+			Value: &e.Config.KubernetesVersion,
+		},
+		{
 			Name:  "K3SFRAMEWORK_TYPE",
 			Value: func() *string { x := "agent"; return &x }(),
 		},

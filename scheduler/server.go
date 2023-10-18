@@ -27,7 +27,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.Disk = e.Config.K3SServerDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":server"
 	cmd.Hostname = e.Framework.FrameworkName + "server" + e.Config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --kube-controller-manager-arg='leader-elect=false' --kube-scheduler-arg='leader-elect=false' -tls-san=" + e.Framework.FrameworkName + "server'"
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --tls-san=" + e.Framework.FrameworkName + "server"
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: e.Config.K3SContainerDisk})
@@ -123,6 +123,10 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 		{
 			Name:  "SERVICE_NAME",
 			Value: &cmd.TaskName,
+		},
+		{
+			Name:  "KUBERNETES_VERSION",
+			Value: &e.Config.KubernetesVersion,
 		},
 		{
 			Name:  "K3SFRAMEWORK_TYPE",
