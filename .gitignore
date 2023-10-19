@@ -18,3 +18,4 @@ controller/controller.arm64
 docs/examples/config.cnf
 docs/examples/create-user.yaml
 mesos-m3s.code-workspace
+controller/sbom.txt
