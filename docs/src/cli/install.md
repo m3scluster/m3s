@@ -68,5 +68,10 @@ Commands:
 
 ## Install Mesos-CLI
 
-Download the mesos-cli binary for linux from [here](https://www.aventer.biz/files/sw/Linux/mesos-cli.zip). Extract
-the mesos-cli and copy the file into your PATH directory.
+The Apache Mesos CLI can be installed via python pip.
+
+```bash
+
+pip install avmesos-cli
+
+```
