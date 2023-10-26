@@ -23,6 +23,8 @@ func (e *API) V0ClusterRestart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	e.ClusterRestart()
+
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
 }
