@@ -63,8 +63,8 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/cluster/shutdown", e.V0ClusterShutdown).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/start", e.V0ClusterStart).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/restart", e.V0ClusterRestart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/capabilities", e.V0CapabilitiesDisclosure).Methods("GET")
 	rtr.NotFoundHandler = http.HandlerFunc(e.NotFound)
-
 	return rtr
 }
 
