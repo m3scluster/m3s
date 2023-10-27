@@ -17,7 +17,8 @@
 - Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
 - Add Kubernetes taint to prevent pods to run on the Kubernetes management node. With K§S_ENABLE_TAINT you can enable(true and default)/disable(disable) these feature.
 - Change the mesos cli plugin to avmesos-cli.
-- Fix ClusterRestart API (thanks to https://github.com/itsoksarvesh).
+- Fix ClusterRestart API [#14](https://github.com/AVENTER-UG/mesos-m3s/pull/14) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
+- Add API to disclosure API capabilities [#16](https://github.com/AVENTER-UG/mesos-m3s/pull/16) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
 
 ## v0.4.0
 
