@@ -19,6 +19,8 @@
 - Change the mesos cli plugin to avmesos-cli.
 - Fix ClusterRestart API [#14](https://github.com/AVENTER-UG/mesos-m3s/pull/14) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
 - Add API to disclosure API capabilities [#16](https://github.com/AVENTER-UG/mesos-m3s/pull/16) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
+- Update K3s to Version 1.25.2
+- Move environment variable KUBERNETES_VERSION from bootstrap file into m3s framework.
 
 ## v0.4.0
 
