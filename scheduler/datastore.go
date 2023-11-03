@@ -151,6 +151,10 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 				return &x
 			}(),
 		},
+		{
+			Name:  "TZ",
+			Value: &e.Config.TimeZone,
+		},
 	}
 	cmd.Volumes = []mesosproto.Volume{
 		{
