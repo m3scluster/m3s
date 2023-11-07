@@ -184,6 +184,10 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Name:  "MESOS_SANDBOX_VAR",
 			Value: &e.Config.MesosSandboxVar,
 		},
+		{
+			Name:  "TZ",
+			Value: &e.Config.TimeZone,
+		},
 	}
 
 	if e.Config.K3SServerLabels != nil {

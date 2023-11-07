@@ -134,6 +134,10 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			Name:  "REDIS_DB",
 			Value: func() *string { x := strconv.Itoa(e.Config.RedisDB); return &x }(),
 		},
+		{
+			Name:  "TZ",
+			Value: &e.Config.TimeZone,
+		},
 	}
 
 	if e.Config.K3SAgentLabels != nil {
