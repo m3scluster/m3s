@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: jumpbox
+  namespace: default
+spec:
+  containers:
+  - image: ubuntu
+    name: jumpbox
+    command: ["/bin/bash", "-c", "--"]
+    args: ["apt-get update -y; apt install -y dnsutils iputils-ping; while true; do sleep 30; done;"]
+    resources:
+      requests:
+        memory: 500M
+
