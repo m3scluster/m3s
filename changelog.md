@@ -22,6 +22,8 @@
 - Update K3s to Version 1.25.2
 - Move environment variable KUBERNETES_VERSION from bootstrap file into m3s framework.
 - Add Timezone support via env variable `TZ` [#17](https://github.com/AVENTER-UG/mesos-m3s/pull/17) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
+- Set Kubernetes agent nodes to unscheduled until all agent nodes are not ready.
+- Update golang libraries.
 
 ## v0.4.0
 

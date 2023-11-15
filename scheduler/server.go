@@ -53,6 +53,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			OutputFile: func() *string { x := "bootstrap"; return &x }(),
 		},
 	}
+
 	cmd.Volumes = []mesosproto.Volume{
 		{
 			ContainerPath: "/var/lib/rancher/k3s",
