@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
@@ -78,4 +79,23 @@ func (e *API) scale(newCount int, oldCount int, key string) []byte {
 	}
 
 	return d
+}
+
+// Server will scale down all K8 servers & agents instances and scale up again.
+func (e *API) ServerRestart() {
+	e.serverAndAgentStop()
+
+	ticker := time.NewTicker(e.Config.EventLoopTime)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") == 0 &&
+			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 {
+			logrus.WithField("func", "api.V0ServerRestart").Debug("All services down")
+			goto start
+		}
+	}
+
+start:
+	ticker.Stop()
+	e.serverAndAgentStart()
 }

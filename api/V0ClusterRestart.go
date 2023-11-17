@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -10,8 +11,12 @@ import (
 // V0ClusterRestart - Restart the cluster
 // example:
 // curl -X PUT 127.0.0.1:10000/v0/cluster/restart
-func (e *API) V0ClusterRestart(w http.ResponseWriter, r *http.Request) {
-	logrus.WithField("func", "api.V0ClusterRestart").Debug("Restart Cluster")
+func (e *API) V0Restart(w http.ResponseWriter, r *http.Request) {
+	logrus.WithField("func", "api.V0Restart").Debug("Restart Cluster")
+
+	pathFragments := strings.Split(r.URL.Path, "/")
+
+	component := pathFragments[4]
 
 	if !e.CheckAuth(r, w) {
 		w.WriteHeader(http.StatusUnauthorized)
@@ -23,21 +28,32 @@ func (e *API) V0ClusterRestart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	e.ClusterRestart()
+	switch component {
+	case "cluster":
+		e.ClusterRestart(false)
+	case "ds":
+		e.ClusterRestart(true)
+	case "server":
+		e.ServerRestart()
+	case "agent":
+		e.AgentRestart()
+	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
+	w.Write([]byte("Restart Scheduled."))
 }
 
 // ClusterRestart will scale down all K8 instances and scale up again.
-func (e *API) ClusterRestart() {
-	e.clusterStop(false)
+func (e *API) ClusterRestart(ds bool) {
+	e.clusterStop(ds)
 
 	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") == 0 &&
-			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 {
+			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 &&
+			(!ds && e.Redis.CountRedisKey(e.Framework.FrameworkName+":datastore:*", "") == 0) {
 			logrus.WithField("func", "api.V0ClusterRestart").Debug("All services down")
 			goto start
 		}

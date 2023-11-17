@@ -89,6 +89,9 @@ type Config struct {
 	VolumeDS                    string
 	Version                     M3SVersion
 	TimeZone                    string
+	DSMaxRestore                int
+	K3SServerMaxRestore         int
+	K3SAgentMaxRestore          int
 }
 
 // M3SStatus store the current TaskState of the M3s services

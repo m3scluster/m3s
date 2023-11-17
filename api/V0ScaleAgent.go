@@ -51,7 +51,7 @@ func (e *API) agentStop() {
 	// Save current amount of services for the case of restart but only
 	// if the amount is not 0
 	if e.Config.K3SAgentMax != 0 {
-		e.K3SAgentMaxRestore = e.Config.K3SAgentMax
+		e.Config.K3SAgentMaxRestore = e.Config.K3SAgentMax
 	}
 
 	e.scaleAgent(0)
@@ -61,7 +61,7 @@ func (e *API) agentStop() {
 // agentStart will scale up the agents
 func (e *API) agentStart() {
 	logrus.WithField("func", "api.agentStart").Debug("Start Agent")
-	e.scaleAgent(e.K3SAgentMaxRestore)
+	e.scaleAgent(e.Config.K3SAgentMaxRestore)
 }
 
 // AgentRestart will scale down all K8 agents and scale up again.
