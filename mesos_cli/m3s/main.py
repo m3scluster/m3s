@@ -168,7 +168,7 @@ class M3s(PluginBase):
             data = self.write_endpoint(
                 framework_address,
                 "/api/m3s/v0/cluster/shutdown",
-                self,
+                self.m3sconfig,
                 "PUT"
             )
             print(data)
@@ -181,7 +181,7 @@ class M3s(PluginBase):
             data = self.write_endpoint(
                 framework_address,
                 "/api/m3s/v0/cluster/start",
-                self,
+                self.m3sconfig,
                 "PUT"
             )
             print(data)
@@ -194,7 +194,7 @@ class M3s(PluginBase):
             data = self.write_endpoint(
                 framework_address,
                 "/api/m3s/v0/cluster/restart",
-                self,
+                self.m3sconfig,
                 "PUT"
             )
             print(data)
@@ -231,7 +231,7 @@ class M3s(PluginBase):
             data = http.read_endpoint(
                 framework_address,
                 "/api/m3s/v0/" + service + "/scale/" + argv["<count>"],
-                self,
+                self.m3sconfig,                
             )
             print(data)
         else:
@@ -284,7 +284,7 @@ class M3s(PluginBase):
             self.get_framework_id(argv), master, config
         )
         data = http.read_endpoint(
-            framework_address, "/api/m3s/v0/server/version", config)
+            framework_address, "/api/m3s/v0/server/version", self.m3sconfig)
 
         print(data)
 
@@ -311,12 +311,12 @@ class M3s(PluginBase):
 
         if argv["--m3s"]:
             data = http.read_endpoint(
-                framework_address, "/api/m3s/v0/status/m3s", config)
+                framework_address, "/api/m3s/v0/status/m3s", self.m3sconfig)
             print(data)
 
         if argv["--kubernetes"]:
             data = http.read_endpoint(
-                framework_address, "/api/m3s/v0/status/k8s", config)
+                framework_address, "/api/m3s/v0/status/k8s", self.m3sconfig)
             print(data)
 
     def list(self, argv):
@@ -401,6 +401,10 @@ class M3s(PluginBase):
             if filename is not None:
                 data = open(filename, "rb")
                 content = data.read()
+            if config.ssl_verify() is not True:
+                http = urllib3.PoolManager(cert_reqs='CERT_NONE')
+            else:
+                http = urllib3.PoolManager()                                
             http_response = http.request(
                 method,
                 url,

@@ -59,6 +59,7 @@ func (e *Scheduler) Heartbeat() {
 	if k3sState && k3sAgentState && dsState {
 		if !suppressLock {
 			e.Mesos.SuppressFramework()
+			e.removeNotExistingAgents()
 			suppressLock = true
 			reviveLock = false
 		}
