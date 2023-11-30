@@ -24,6 +24,9 @@ func (e *API) V0CapabilitiesDisclosure(w http.ResponseWriter, r *http.Request) {
 
 	capabilities := []string{}
 	capabilities = append(capabilities, "cluster-restart, /api/m3s/v0/cluster/restart, PUT")
+	capabilities = append(capabilities, "server-restart, /api/m3s/v0/server/restart, PUT")
+	capabilities = append(capabilities, "agent-restart, /api/m3s/v0/agent/restart, PUT")
+	capabilities = append(capabilities, "ds-restart, /api/m3s/v0/ds/restart, PUT")
 	capabilities = append(capabilities, "cluster-start, /api/m3s/v0/cluster/start, PUT")
 	capabilities = append(capabilities, "cluster-shutdown, /api/m3s/v0/cluster/shutdown, PUT")
 	capabilities = append(capabilities, "k3s-count-agents, /api/m3s/v0/agent/scale, GET")
@@ -35,6 +38,12 @@ func (e *API) V0CapabilitiesDisclosure(w http.ResponseWriter, r *http.Request) {
 	capabilities = append(capabilities, "scale-datastore, /api/m3s/v0/datastore/scale/{count}, GET")
 	capabilities = append(capabilities, "status-k3s, /api/m3s/v0/status/k3s, GET")
 	capabilities = append(capabilities, "status-m3s, /api/m3s/v0/status/m3s, GET")
+	capabilities = append(capabilities, "adjust-server-cpus, /api/m3s/v0/server/cps/{cpus}, PUT")
+	capabilities = append(capabilities, "adjust-agent-cpus, /api/m3s/v0/agent/cps/{cpus}, PUT")
+	capabilities = append(capabilities, "adjust-ds-cpus, /api/m3s/v0/ds/cps/{cpus}, PUT")
+	capabilities = append(capabilities, "adjust-server-memory, /api/m3s/v0/server/memory/{memory}, PUT")
+	capabilities = append(capabilities, "adjust-agent-memory, /api/m3s/v0/agent/memory/{memory}, PUT")
+	capabilities = append(capabilities, "adjust-ds-memory, /api/m3s/v0/ds/memory/{memory}, PUT")
 
 	response, _ := json.Marshal(capabilities)
 	w.Write(response)

@@ -30,7 +30,13 @@ func (e *API) V0ClusterStart(w http.ResponseWriter, r *http.Request) {
 
 func (e *API) clusterStart() {
 	logrus.WithField("func", "api.clusterStart").Debug("Start Cluster")
-	e.scaleDatastore(e.DSMaxRestore)
-	e.scaleServer(e.K3SServerMaxRestore)
-	e.scaleAgent(e.K3SAgentMaxRestore)
+	e.scaleDatastore(e.Config.DSMaxRestore)
+	e.scaleServer(e.Config.K3SServerMaxRestore)
+	e.scaleAgent(e.Config.K3SAgentMaxRestore)
+}
+
+func (e *API) serverAndAgentStart() {
+	logrus.WithField("func", "api.clusterStart").Debug("Start Cluster")
+	e.scaleServer(e.Config.K3SServerMaxRestore)
+	e.scaleAgent(e.Config.K3SAgentMaxRestore)
 }

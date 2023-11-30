@@ -19,15 +19,12 @@ import (
 
 // API Service include all the current vars and global config
 type API struct {
-	Config              *cfg.Config
-	Framework           *cfg.FrameworkConfig
-	Mesos               mesos.Mesos
-	Redis               *redis.Redis
-	BootstrapProtocol   string
-	DSMaxRestore        int
-	K3SServerMaxRestore int
-	K3SAgentMaxRestore  int
-	K3SAgentStatus      bool
+	Config            *cfg.Config
+	Framework         *cfg.FrameworkConfig
+	Mesos             mesos.Mesos
+	Redis             *redis.Redis
+	BootstrapProtocol string
+	K3SAgentStatus    bool
 }
 
 // New will create a new API object
@@ -62,8 +59,17 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/status/k8s", e.V0StatusK8s).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/cluster/shutdown", e.V0ClusterShutdown).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/cluster/start", e.V0ClusterStart).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/cluster/restart", e.V0ClusterRestart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/cluster/restart", e.V0Restart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/server/restart", e.V0Restart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/agent/restart", e.V0Restart).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/ds/restart", e.V0Restart).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/capabilities", e.V0CapabilitiesDisclosure).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/server/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/server/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/agent/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/agent/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/ds/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/ds/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
 	rtr.NotFoundHandler = http.HandlerFunc(e.NotFound)
 	return rtr
 }

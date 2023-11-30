@@ -32,10 +32,12 @@ func (e *API) clusterStop(ds bool) {
 	// Save current amount of services for the case of restart but only
 	// if the amount is not 0
 	if e.Config.DSMax != 0 && e.Config.K3SServerMax != 0 && e.Config.K3SAgentMax != 0 {
-		e.DSMaxRestore = e.Config.DSMax
-		e.K3SServerMaxRestore = e.Config.K3SServerMax
-		e.K3SAgentMaxRestore = e.Config.K3SAgentMax
+		e.Config.DSMaxRestore = e.Config.DSMax
+		e.Config.K3SServerMaxRestore = e.Config.K3SServerMax
+		e.Config.K3SAgentMaxRestore = e.Config.K3SAgentMax
 	}
+
+	e.Redis.SaveConfig(*e.Config)
 
 	e.scaleAgent(0)
 	e.scaleServer(0)
@@ -44,4 +46,20 @@ func (e *API) clusterStop(ds bool) {
 	}
 
 	e.Mesos.SuppressFramework()
+}
+
+// serverAndAgentStop will scale down only the server & agents
+func (e *API) serverAndAgentStop() {
+	// Save current amount of services for the case of restart but only
+	// if the amount is not 0
+	if e.Config.K3SServerMax != 0 && e.Config.K3SAgentMax != 0 {
+		e.Config.K3SServerMaxRestore = e.Config.K3SServerMax
+		e.Config.K3SAgentMaxRestore = e.Config.K3SAgentMax
+	}
+
+	e.Redis.SaveConfig(*e.Config)
+
+	e.scaleAgent(0)
+	e.scaleServer(0)
+
 }
