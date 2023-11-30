@@ -24,6 +24,7 @@
 - Add Timezone support via env variable `TZ` [#17](https://github.com/AVENTER-UG/mesos-m3s/pull/17) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
 - Set Kubernetes agent nodes to unscheduled until all agent nodes are not ready.
 - Update golang libraries.
+- Add API to restart agent, datastore and server and update CPU and MEM Ressources [#18](https://github.com/AVENTER-UG/mesos-m3s/pull/18) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
 
 ## v0.4.0
 
