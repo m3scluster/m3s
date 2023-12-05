@@ -48,13 +48,14 @@ func (e *API) V0Restart(w http.ResponseWriter, r *http.Request) {
 func (e *API) ClusterRestart(ds bool) {
 	e.clusterStop(ds)
 
+	logrus.WithField("func", "api.V0Restart").Debug("All services scheduled for stop.")
 	ticker := time.NewTicker(e.Config.EventLoopTime)
 	defer ticker.Stop()
 	for ; true; <-ticker.C {
 		if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") == 0 &&
 			e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == 0 &&
-			(!ds && e.Redis.CountRedisKey(e.Framework.FrameworkName+":datastore:*", "") == 0) {
-			logrus.WithField("func", "api.V0ClusterRestart").Debug("All services down")
+			(!ds || e.Redis.CountRedisKey(e.Framework.FrameworkName+":datastore:*", "") == 0) {
+			logrus.WithField("func", "api.V0Restart").Debug("All services down")
 			goto start
 		}
 	}
