@@ -133,9 +133,9 @@
    }
   },
   {
-   "id": "603dbd8b4c37b258",
+   "id": "a96a6e519cae8796",
    "name": "github.com/AVENTER-UG/mesos-m3s/controller",
-   "version": "v2023-11-16T20",
+   "version": "v2023-12-06T15",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -149,20 +149,20 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-11-16T20:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-11-16T20",
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-12-06T15",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goBuildSettings": {
      "-buildmode": "exe",
      "-compiler": "gc",
-     "-ldflags": "-X main.BuildVersion=2023-11-16T20:44:01Z -X main.GitVersion=v0.4.0-72-g2c0d682 -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/unscheduled/bootstrap/.version.json -extldflags \"-static\"",
+     "-ldflags": "-X main.BuildVersion=2023-12-06T15:42:02Z -X main.GitVersion=v0.4.0-81-g0175d0c -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/change-server-check/bootstrap/.version.json -extldflags \"-static\"",
      "CGO_ENABLED": "0",
      "DefaultGODEBUG": "panicnil=1",
      "GOAMD64": "v1",
@@ -170,8 +170,8 @@
      "GOOS": "linux",
      "vcs": "git",
      "vcs.modified": "true",
-     "vcs.revision": "2c0d6822ee7848a7e9a479cc78d94034d939789e",
-     "vcs.time": "2023-11-15T22:57:55Z"
+     "vcs.revision": "0175d0caf119180714210c4c769a75741124a17e",
+     "vcs.time": "2023-12-06T15:26:09Z"
     },
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
@@ -5177,11 +5177,6 @@
    "type": "evident-by"
   },
   {
-   "parent": "603dbd8b4c37b258",
-   "child": "2ba73a525c04cad0",
-   "type": "evident-by"
-  },
-  {
    "parent": "606a78f24692edea",
    "child": "2ba73a525c04cad0",
    "type": "evident-by"
@@ -5448,6 +5443,11 @@
   },
   {
    "parent": "a960c5440b6ce7f5",
+   "child": "2ba73a525c04cad0",
+   "type": "evident-by"
+  },
+  {
+   "parent": "a96a6e519cae8796",
    "child": "2ba73a525c04cad0",
    "type": "evident-by"
   },
@@ -5858,11 +5858,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "603dbd8b4c37b258",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "606a78f24692edea",
    "type": "contains"
   },
@@ -6129,6 +6124,11 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "a960c5440b6ce7f5",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "a96a6e519cae8796",
    "type": "contains"
   },
   {

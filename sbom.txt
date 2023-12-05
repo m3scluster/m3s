@@ -1,9 +1,8 @@
 NAME                                                 VERSION                               TYPE      
 github.com/AVENTER-UG/go-logrus-formatter            v0.5.4                                go-module  
 github.com/AVENTER-UG/mesos-m3s                      v0.4.0                                go-module  
-github.com/AVENTER-UG/mesos-m3s/controller           v2023-11-15T21                        go-module  
+github.com/AVENTER-UG/mesos-m3s/controller           v2023-12-06T15                        go-module  
 github.com/AVENTER-UG/mesos-util                     v0.0.43                               go-module  
-github.com/AVENTER-UG/util                           v0.5.3                                go-module  
 github.com/AVENTER-UG/util                           v0.5.4                                go-module  
 github.com/Showmax/go-fqdn                           v1.0.0                                go-module  
 github.com/beorn7/perks                              v1.0.1                                go-module  
@@ -17,7 +16,6 @@ github.com/fsnotify/fsnotify                         v1.6.0                     
 github.com/fsnotify/fsnotify                         v1.7.0                                go-module  
 github.com/go-jose/go-jose/v3                        v3.0.1                                go-module  
 github.com/go-logr/logr                              v1.3.0                                go-module  
-github.com/go-logr/zapr                              v1.2.4                                go-module  
 github.com/go-logr/zapr                              v1.3.0                                go-module  
 github.com/go-openapi/jsonpointer                    v0.20.0                               go-module  
 github.com/go-openapi/jsonreference                  v0.20.2                               go-module  
@@ -64,7 +62,6 @@ github.com/ryanuber/go-glob                          v1.0.0                     
 github.com/sirupsen/logrus                           v1.9.3                                go-module  
 github.com/spf13/pflag                               v1.0.5                                go-module  
 go.uber.org/multierr                                 v1.11.0                               go-module  
-go.uber.org/zap                                      v1.25.0                               go-module  
 go.uber.org/zap                                      v1.26.0                               go-module  
 golang.org/x/crypto                                  v0.15.0                               go-module  
 golang.org/x/exp                                     v0.0.0-20231110203233-9a3e6036ecaa    go-module  
@@ -80,13 +77,9 @@ google.golang.org/protobuf                           v1.31.0                    
 gopkg.in/inf.v0                                      v0.9.1                                go-module  
 gopkg.in/yaml.v2                                     v2.4.0                                go-module  
 gopkg.in/yaml.v3                                     v3.0.1                                go-module  
-k8s.io/api                                           v0.28.3                               go-module  
 k8s.io/api                                           v0.28.4                               go-module  
-k8s.io/apimachinery                                  v0.28.3                               go-module  
 k8s.io/apimachinery                                  v0.28.4                               go-module  
-k8s.io/client-go                                     v0.28.3                               go-module  
 k8s.io/client-go                                     v0.28.4                               go-module  
-k8s.io/component-base                                v0.28.3                               go-module  
 k8s.io/component-base                                v0.28.4                               go-module  
 k8s.io/klog/v2                                       v2.110.1                              go-module  
 k8s.io/kube-openapi                                  v0.0.0-20231113174909-778a5567bc1e    go-module  
