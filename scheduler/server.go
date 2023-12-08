@@ -1,12 +1,13 @@
 package scheduler
 
 import (
-	"crypto/tls"
+	"encoding/json"
 	"fmt"
-	"net/http"
 	"strconv"
+	"strings"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	corev1 "k8s.io/api/core/v1"
 
 	"github.com/sirupsen/logrus"
 )
@@ -27,7 +28,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.Disk = e.Config.K3SServerDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":server"
 	cmd.Hostname = e.Framework.FrameworkName + "server" + e.Config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --tls-san=" + e.Framework.FrameworkName + "server"
+	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --tls-san=" + e.Framework.FrameworkName + "server" + "  --node-label m3s.aventer.biz/taskid=" + cmd.TaskID
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: e.Config.K3SContainerDisk})
@@ -263,23 +264,27 @@ func (e *Scheduler) CreateK3SServerString() {
 	e.Config.K3SServerURL = server
 }
 
+// removeNotExistingAgents remove kubernetes from redis if it does not have a Mesos Task. It
 // healthCheckK3s check if the kubernetes server is already running
 func (e *Scheduler) healthCheckK3s() bool {
-	client := &http.Client{}
-	// #nosec G402
-	client.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: e.Config.SkipSSL},
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*server*")
+	for keys.Next(e.Redis.CTX) {
+		key := e.Redis.GetRedisKey(keys.Val())
+		var node corev1.Node
+		err := json.NewDecoder(strings.NewReader(key)).Decode(&node)
+		if err != nil {
+			logrus.WithField("func", "scheduler.healthCheckK3s").Error("Could not decode kubernetes node: ", err.Error())
+			continue
+		}
+
+		task := e.getTaskFromK8Node(node, "server")
+		if task.TaskID != "" {
+			for _, status := range node.Status.Conditions {
+				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionTrue && task.State == "TASK_RUNNING" {
+					return true
+				}
+			}
+		}
 	}
-	req, _ := http.NewRequest("GET", "https://"+e.Config.K3SServerHostname+":"+strconv.Itoa(e.Config.K3SServerPort)+"/", nil)
-	req.SetBasicAuth(e.Config.BootstrapCredentials.Username, e.Config.BootstrapCredentials.Password)
-	req.Close = true
-	res, err := client.Do(req)
-
-	if err != nil {
-		return false
-	}
-
-	defer res.Body.Close()
-
-	return true
+	return false
 }

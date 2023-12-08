@@ -12,6 +12,7 @@ type Config struct {
 	RedisPrefix      string
 	KubernetesConfig string
 	Heartbeat        time.Duration
+	UnscheduleTime   time.Duration
 	DefaultYAML      string
 	EnableTaint      bool
 }

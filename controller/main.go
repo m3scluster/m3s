@@ -47,12 +47,16 @@ var (
 	Client *kubernetes.Clientset
 	// Framework config
 	Framework framework.Config
+	// ReadyNodes is the amount of ready K8 nodes
+	ReadyNodes int
 )
 
 // reconcileReplicaSet reconciles ReplicaSets
 type reconcileReplicaSet struct {
 	// client can be used to retrieve objects from the APIServer.
 	client client.Client
+	// ctx Kubernetes Context
+	ctx context.Context
 }
 
 // Heartbeat - call several function after the configure time
@@ -62,6 +66,42 @@ func Heartbeat() {
 	for ; true; <-ticker.C {
 		logrus.WithField("func", "controller.Heartbeat").Debug("Heartbeat")
 		go CleanupNodes()
+		// update framework config
+		go loadFrameworkConfig()
+	}
+}
+
+// UnscheduleBeat - call the (un)scheduler function
+func UnscheduleBeat() {
+	ticker := time.NewTicker(Config.UnscheduleTime)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		logrus.WithField("func", "controller.UnscheduleBeat").Debug("UnscheduleBeat")
+
+		nodeReady := 0
+		keys := Redis.GetAllRedisKeys(Config.RedisPrefix + ":kubernetes:*agent*")
+		for keys.Next(Redis.CTX) {
+			key := Redis.GetRedisKey(keys.Val())
+			var k8Node corev1.Node
+			err := json.NewDecoder(strings.NewReader(key)).Decode(&k8Node)
+			if err != nil {
+				logrus.WithField("func", "controller.UnscheduleBeat").Error("Could not decode kubernetes node: ", err.Error())
+				continue
+			}
+			for _, condition := range k8Node.Status.Conditions {
+				if condition.Type == corev1.NodeReady && condition.Status == corev1.ConditionTrue {
+					nodeReady++
+				}
+			}
+			if setUnscheduled(&k8Node) {
+				_, err = Client.CoreV1().Nodes().Update(context.TODO(), &k8Node, metav1.UpdateOptions{})
+				if err != nil {
+					logrus.WithField("func", "controller.UnscheduledBeat").Errorf("could not write node: %s", err)
+				}
+			}
+		}
+
+		ReadyNodes = nodeReady
 	}
 }
 
@@ -70,6 +110,7 @@ var _ reconcile.Reconciler = &reconcileReplicaSet{}
 
 // Reconcile after kubernetes events happen. This function will store node information in redis.
 func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.Request) (reconcile.Result, error) {
+	r.ctx = ctx
 	node := &corev1.Node{}
 	err := r.client.Get(ctx, request.NamespacedName, node)
 	if err != nil {
@@ -80,19 +121,22 @@ func (r *reconcileReplicaSet) Reconcile(ctx context.Context, request reconcile.R
 		r.setTaint(node)
 	}
 
-	setUnscheduled(node)
-
 	nodeName := node.ObjectMeta.Name
 	logrus.WithField("func", "controller.Reconciler").Debug(nodeName)
-	d, _ := json.Marshal(&node)
-	Redis.SetRedisKey(d, Config.RedisPrefix+":kubernetes:"+nodeName)
 
-	err = r.client.Update(ctx, node)
-	if err != nil {
-		return reconcile.Result{}, fmt.Errorf("could not write node: %s", err)
-	}
+	d, _ := json.Marshal(&node)
+	Redis.SetRedisKey(d, Config.RedisPrefix+":kubernetes:"+node.ObjectMeta.Name)
 
 	return reconcile.Result{}, nil
+}
+
+// update node will update the node in K8
+func (r *reconcileReplicaSet) updateNode(node *corev1.Node) {
+	err := r.client.Update(r.ctx, node)
+	if err != nil {
+		logrus.WithField("func", "controller.updateNode").Errorf("could not write node: %s", err)
+		return
+	}
 }
 
 // setTain will prevent to run other pods then the control-plane on the kubernetes master server
@@ -108,6 +152,7 @@ func (r *reconcileReplicaSet) setTaint(node *corev1.Node) {
 			if !r.taintExist(node.Spec.Taints, "node-role.kubernetes.io/master", "NoSchedule", corev1.TaintEffectNoSchedule) {
 				logrus.WithField("func", "controller.setTaint").Debug("Set Taint on: ", node.ObjectMeta.Name)
 				node.Spec.Taints = append(node.Spec.Taints, taint)
+				r.updateNode(node)
 			}
 		}
 	}
@@ -116,54 +161,31 @@ func (r *reconcileReplicaSet) setTaint(node *corev1.Node) {
 // setUnscheduled set all nodes to unscheduled. It will be set to scheduled when the amount
 // of running nodes are equal to max-agent. The idea behind that is, to be sure that all pods
 // only comes up when the cluster is ready at all.
-func setUnscheduled(node *corev1.Node) {
+// return true if state changed
+func setUnscheduled(node *corev1.Node) bool {
 	if strings.Contains(node.ObjectMeta.Name, "server") {
-		return
-	}
-	// Mark the node as unschedulable
-	readyNodes := countReadyAgents()
-
-	if readyNodes == -1 {
-		return
+		return false
 	}
 
-	if Framework.K3SAgentMax != countReadyAgents() {
+	if ReadyNodes == -1 {
+		return false
+	}
+
+	if Framework.K3SAgentMax != ReadyNodes {
 		if !node.Spec.Unschedulable {
 			node.Spec.Unschedulable = true
 			logrus.WithField("func", "controller.SetUnscheduled").Infof("Unschedule Node: %s", node.ObjectMeta.Name)
 		}
-		return
+		return true
 	}
 
-	if node.Spec.Unschedulable {
+	if Framework.K3SAgentMax == ReadyNodes && node.Spec.Unschedulable {
 		node.Spec.Unschedulable = false
 		logrus.WithField("func", "controller.SetUnscheduled").Infof("Schedule Node: %s", node.ObjectMeta.Name)
-	}
-}
-
-// countReadyAgents will return the number of ready nodes
-func countReadyAgents() int {
-	nodes, err := Client.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		logrus.WithField("func", "controller.CountReadyNodes").Error(err.Error())
-		return -1
+		return true
 	}
 
-	nodeReady := 0
-	for _, node := range nodes.Items {
-		// only count agents
-		if strings.Contains(node.ObjectMeta.Name, "server") {
-			continue
-		}
-
-		for _, condition := range node.Status.Conditions {
-			if condition.Type == corev1.NodeReady && condition.Status == corev1.ConditionTrue {
-				nodeReady++
-			}
-		}
-	}
-
-	return nodeReady
+	return false
 }
 
 // taintExist will check (true) if the given taint already exist
@@ -186,8 +208,6 @@ func CleanupNodes() {
 	}
 
 	for _, node := range nodes.Items {
-		setUnscheduled(&node)
-
 		for _, condition := range node.Status.Conditions {
 			if condition.Type == corev1.NodeReady && condition.Status != corev1.ConditionTrue {
 				// remove unready nodes from kubernetes and redis db
@@ -198,7 +218,7 @@ func CleanupNodes() {
 	}
 }
 
-func startController() {
+func loadFrameworkConfig() {
 	Redis = redis.New(&Config)
 	Redis.Connect()
 	time.Sleep(60 * time.Second)
@@ -207,6 +227,11 @@ func startController() {
 	if key != "" {
 		json.Unmarshal([]byte(key), &Framework)
 	}
+}
+
+func startController() {
+	// load framework config
+	loadFrameworkConfig()
 
 	// get kubeconfig
 	kubeconfig, err := config.GetConfig()
@@ -261,6 +286,7 @@ func startController() {
 	}
 
 	go Heartbeat()
+	go UnscheduleBeat()
 	go loadDefaultYAML()
 
 	logrus.WithField("func", "main").Info("starting manager")
@@ -315,6 +341,7 @@ func init() {
 	Config.KubernetesConfig = util.Getenv("KUBECONFIG", "/etc/rancher/k3s/k3s.yaml")
 	Config.DefaultYAML = util.Getenv("M3S_CONTROLLER__DEFAULT_YAML", "/mnt/mesos/sandbox/default.yaml")
 	Config.Heartbeat, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__HEARTBEAT_TIME", "2m"))
+	Config.UnscheduleTime, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__UNSCHEDULE_TIME", "10s"))
 
 	if strings.Compare(util.Getenv("M3S_CONTROLLER__ENABLE_TAINT", "true"), "false") == 0 {
 		Config.EnableTaint = false

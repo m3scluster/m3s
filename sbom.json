@@ -235,9 +235,9 @@
    }
   },
   {
-   "id": "67afe809ff83d53b",
+   "id": "e27470fc8cb3bf36",
    "name": "github.com/AVENTER-UG/mesos-m3s/controller",
-   "version": "v2023-11-15T21",
+   "version": "v2023-12-06T15",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -251,20 +251,20 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-11-15T21",
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-12-06T15",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goBuildSettings": {
      "-buildmode": "exe",
      "-compiler": "gc",
-     "-ldflags": "-X main.BuildVersion=2023-11-15T21:40:23Z -X main.GitVersion=v0.4.0-68-g5fb67de -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/unscheduled/bootstrap/.version.json -extldflags \"-static\"",
+     "-ldflags": "-X main.BuildVersion=2023-12-06T15:42:02Z -X main.GitVersion=v0.4.0-81-g0175d0c -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/change-server-check/bootstrap/.version.json -extldflags \"-static\"",
      "CGO_ENABLED": "0",
      "DefaultGODEBUG": "panicnil=1",
      "GOAMD64": "v1",
@@ -272,8 +272,8 @@
      "GOOS": "linux",
      "vcs": "git",
      "vcs.modified": "true",
-     "vcs.revision": "5fb67def79c99475f8dbc1aa365d17d6bcfa6965",
-     "vcs.time": "2023-11-07T09:25:49Z"
+     "vcs.revision": "0175d0caf119180714210c4c769a75741124a17e",
+     "vcs.time": "2023-12-06T15:26:09Z"
     },
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
@@ -284,9 +284,9 @@
    }
   },
   {
-   "id": "54d02816720000a0",
+   "id": "4cb1157c41403162",
    "name": "github.com/AVENTER-UG/mesos-m3s/controller",
-   "version": "v2023-11-15T21",
+   "version": "v2023-12-06T15",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -300,20 +300,20 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-11-15T21:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER-UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos-m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:mesos_m3s\\/controller:v2023-12-06T15:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-11-15T21",
+   "purl": "pkg:golang/github.com/AVENTER-UG/mesos-m3s/controller@v2023-12-06T15",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goBuildSettings": {
      "-buildmode": "exe",
      "-compiler": "gc",
-     "-ldflags": "-X main.BuildVersion=2023-11-15T21:40:23Z -X main.GitVersion=v0.4.0-68-g5fb67de -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/unscheduled/bootstrap/.version.json -extldflags \"-static\"",
+     "-ldflags": "-X main.BuildVersion=2023-12-06T15:42:02Z -X main.GitVersion=v0.4.0-81-g0175d0c -X main.VersionURL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/change-server-check/bootstrap/.version.json -extldflags \"-static\"",
      "CGO_ENABLED": "0",
      "DefaultGODEBUG": "panicnil=1",
      "GOAMD64": "v1",
@@ -321,8 +321,8 @@
      "GOOS": "linux",
      "vcs": "git",
      "vcs.modified": "true",
-     "vcs.revision": "5fb67def79c99475f8dbc1aa365d17d6bcfa6965",
-     "vcs.time": "2023-11-07T09:25:49Z"
+     "vcs.revision": "0175d0caf119180714210c4c769a75741124a17e",
+     "vcs.time": "2023-12-06T15:26:09Z"
     },
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
@@ -435,9 +435,9 @@
    }
   },
   {
-   "id": "6e25c0b643634a42",
+   "id": "07b4be42686afc0d",
    "name": "github.com/AVENTER-UG/util",
-   "version": "v0.5.3",
+   "version": "v0.5.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -451,16 +451,16 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:util:v0.5.3:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:util:v0.5.3:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:util:v0.5.3:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:util:v0.5.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:util:v0.5.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:util:v0.5.4:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
+   "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg=",
+    "h1Digest": "h1:h3y854TIzJdvjWatjar0ezAGjZ4dCFsJ+0BCZ4BsgYM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -468,9 +468,9 @@
    }
   },
   {
-   "id": "fae373fddfd008b7",
+   "id": "b0731a93c6f39ffa",
    "name": "github.com/AVENTER-UG/util",
-   "version": "v0.5.3",
+   "version": "v0.5.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -484,16 +484,16 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:AVENTER-UG:util:v0.5.3:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER_UG:util:v0.5.3:*:*:*:*:*:*:*",
-    "cpe:2.3:a:AVENTER:util:v0.5.3:*:*:*:*:*:*:*"
+    "cpe:2.3:a:AVENTER-UG:util:v0.5.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER_UG:util:v0.5.4:*:*:*:*:*:*:*",
+    "cpe:2.3:a:AVENTER:util:v0.5.4:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.3",
+   "purl": "pkg:golang/github.com/AVENTER-UG/util@v0.5.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:ihs8IaE3tV5GVlw5SqeMX4zHPqYyiOGkRO7aNz+OcUg=",
+    "h1Digest": "h1:h3y854TIzJdvjWatjar0ezAGjZ4dCFsJ+0BCZ4BsgYM=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -1642,9 +1642,9 @@
    }
   },
   {
-   "id": "d926d8989ae51228",
+   "id": "072dbf77a09d7c45",
    "name": "github.com/go-logr/zapr",
-   "version": "v1.2.4",
+   "version": "v1.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -1658,16 +1658,16 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:go-logr:zapr:v1.2.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_logr:zapr:v1.2.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:zapr:v1.2.4:*:*:*:*:*:*:*"
+    "cpe:2.3:a:go-logr:zapr:v1.3.0:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go_logr:zapr:v1.3.0:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go:zapr:v1.3.0:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/go-logr/zapr@v1.2.4",
+   "purl": "pkg:golang/github.com/go-logr/zapr@v1.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:QHVo+6stLbfJmYGkQ7uGHUCu5hnAFAj6mDe6Ea0SeOo=",
+    "h1Digest": "h1:XGdV8XW8zdwFiwOA2Dryh1gj2KRQyOOoNmBy4EplIcQ=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -1675,9 +1675,9 @@
    }
   },
   {
-   "id": "f9ec103ddd95a0b9",
+   "id": "e9accf777b56c7d2",
    "name": "github.com/go-logr/zapr",
-   "version": "v1.2.4",
+   "version": "v1.3.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -1691,16 +1691,16 @@
    "licenses": [],
    "language": "go",
    "cpes": [
-    "cpe:2.3:a:go-logr:zapr:v1.2.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go_logr:zapr:v1.2.4:*:*:*:*:*:*:*",
-    "cpe:2.3:a:go:zapr:v1.2.4:*:*:*:*:*:*:*"
+    "cpe:2.3:a:go-logr:zapr:v1.3.0:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go_logr:zapr:v1.3.0:*:*:*:*:*:*:*",
+    "cpe:2.3:a:go:zapr:v1.3.0:*:*:*:*:*:*:*"
    ],
-   "purl": "pkg:golang/github.com/go-logr/zapr@v1.2.4",
+   "purl": "pkg:golang/github.com/go-logr/zapr@v1.3.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:QHVo+6stLbfJmYGkQ7uGHUCu5hnAFAj6mDe6Ea0SeOo=",
+    "h1Digest": "h1:XGdV8XW8zdwFiwOA2Dryh1gj2KRQyOOoNmBy4EplIcQ=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -6227,9 +6227,9 @@
    }
   },
   {
-   "id": "2cce79d6319f3200",
+   "id": "2c517d42b949da9a",
    "name": "go.uber.org/zap",
-   "version": "v1.25.0",
+   "version": "v1.26.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -6243,12 +6243,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/go.uber.org/zap@v1.25.0",
+   "purl": "pkg:golang/go.uber.org/zap@v1.26.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:4Hvk6GtkucQ790dqmj7l1eEnRdKm3k3ZUrUMS2d5+5c=",
+    "h1Digest": "h1:sI7k6L95XOKS281NhVKOFCUNIvv9e0w4BF8N3u+tCRo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -6256,9 +6256,9 @@
    }
   },
   {
-   "id": "b855db62d58772dc",
+   "id": "1ad5088a994c083e",
    "name": "go.uber.org/zap",
-   "version": "v1.25.0",
+   "version": "v1.26.0",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -6272,12 +6272,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/go.uber.org/zap@v1.25.0",
+   "purl": "pkg:golang/go.uber.org/zap@v1.26.0",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:4Hvk6GtkucQ790dqmj7l1eEnRdKm3k3ZUrUMS2d5+5c=",
+    "h1Digest": "h1:sI7k6L95XOKS281NhVKOFCUNIvv9e0w4BF8N3u+tCRo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7642,9 +7642,9 @@
    }
   },
   {
-   "id": "16ef02e260ac6095",
+   "id": "f7f08d8569c3e320",
    "name": "k8s.io/api",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7658,12 +7658,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/api@v0.28.3",
+   "purl": "pkg:golang/k8s.io/api@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:Gj1HtbSdB4P08C8rs9AR94MfSGpRhJgsS+GF9V26xMM=",
+    "h1Digest": "h1:8ZBrLjwosLl/NYgv1P7EQLqoO8MGQApnbgH8tu3BMzY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7671,9 +7671,9 @@
    }
   },
   {
-   "id": "de7c329fdabd1d2f",
+   "id": "9aef48d49c30f439",
    "name": "k8s.io/api",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7687,12 +7687,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/api@v0.28.3",
+   "purl": "pkg:golang/k8s.io/api@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:Gj1HtbSdB4P08C8rs9AR94MfSGpRhJgsS+GF9V26xMM=",
+    "h1Digest": "h1:8ZBrLjwosLl/NYgv1P7EQLqoO8MGQApnbgH8tu3BMzY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7746,9 +7746,9 @@
    }
   },
   {
-   "id": "873f6be2d9b10ee7",
+   "id": "e9067211aaf76168",
    "name": "k8s.io/apimachinery",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7762,12 +7762,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/apimachinery@v0.28.3",
+   "purl": "pkg:golang/k8s.io/apimachinery@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:B1wYx8txOaCQG0HmYF6nbpU8dg6HvA06x5tEffvOe7A=",
+    "h1Digest": "h1:zOSJe1mc+GxuMnFzD4Z/U1wst50X28ZNsn5bhgIIao8=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7775,9 +7775,9 @@
    }
   },
   {
-   "id": "b1d78f5e4750f0b3",
+   "id": "d08a8299642b2d73",
    "name": "k8s.io/apimachinery",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7791,12 +7791,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/apimachinery@v0.28.3",
+   "purl": "pkg:golang/k8s.io/apimachinery@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:B1wYx8txOaCQG0HmYF6nbpU8dg6HvA06x5tEffvOe7A=",
+    "h1Digest": "h1:zOSJe1mc+GxuMnFzD4Z/U1wst50X28ZNsn5bhgIIao8=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7850,9 +7850,9 @@
    }
   },
   {
-   "id": "9b573b32525f12c4",
+   "id": "962f4442e72480ea",
    "name": "k8s.io/client-go",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7866,12 +7866,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/client-go@v0.28.3",
+   "purl": "pkg:golang/k8s.io/client-go@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:2OqNb72ZuTZPKCl+4gTKvqao0AMOl9f3o2ijbAj3LI4=",
+    "h1Digest": "h1:Np5ocjlZcTrkyRJ3+T3PkXDpe4UpatQxj85+xjaD2wY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7879,9 +7879,9 @@
    }
   },
   {
-   "id": "056ba240e02cfb9e",
+   "id": "bdd3a498414803e5",
    "name": "k8s.io/client-go",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7895,12 +7895,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/client-go@v0.28.3",
+   "purl": "pkg:golang/k8s.io/client-go@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:2OqNb72ZuTZPKCl+4gTKvqao0AMOl9f3o2ijbAj3LI4=",
+    "h1Digest": "h1:Np5ocjlZcTrkyRJ3+T3PkXDpe4UpatQxj85+xjaD2wY=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7931,9 +7931,9 @@
    }
   },
   {
-   "id": "71c94dfb247c68ae",
+   "id": "6116faaa75afca9d",
    "name": "k8s.io/component-base",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7947,12 +7947,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/component-base@v0.28.3",
+   "purl": "pkg:golang/k8s.io/component-base@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:rDy68eHKxq/80RiMb2Ld/tbH8uAE75JdCqJyi6lXMzI=",
+    "h1Digest": "h1:c/iQLWPdUgI90O+T9TeECg8o7N3YJTiuz2sKxILYcYo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -7960,9 +7960,9 @@
    }
   },
   {
-   "id": "a17d3c6a6b51905f",
+   "id": "94a034babf447ff7",
    "name": "k8s.io/component-base",
-   "version": "v0.28.3",
+   "version": "v0.28.4",
    "type": "go-module",
    "foundBy": "go-module-binary-cataloger",
    "locations": [
@@ -7976,12 +7976,12 @@
    "licenses": [],
    "language": "go",
    "cpes": [],
-   "purl": "pkg:golang/k8s.io/component-base@v0.28.3",
+   "purl": "pkg:golang/k8s.io/component-base@v0.28.4",
    "metadataType": "GolangBinMetadata",
    "metadata": {
     "goCompiledVersion": "go1.21.4",
     "architecture": "amd64",
-    "h1Digest": "h1:rDy68eHKxq/80RiMb2Ld/tbH8uAE75JdCqJyi6lXMzI=",
+    "h1Digest": "h1:c/iQLWPdUgI90O+T9TeECg8o7N3YJTiuz2sKxILYcYo=",
     "mainModule": "github.com/AVENTER-UG/mesos-m3s/controller",
     "goCryptoSettings": [
      "standard-crypto"
@@ -8802,13 +8802,18 @@
    "type": "evident-by"
   },
   {
-   "parent": "056ba240e02cfb9e",
-   "child": "b073ceb048103add",
+   "parent": "05891a2794311e43",
+   "child": "3fc5a8d3d86e9790",
    "type": "evident-by"
   },
   {
-   "parent": "05891a2794311e43",
-   "child": "3fc5a8d3d86e9790",
+   "parent": "072dbf77a09d7c45",
+   "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
+   "parent": "07b4be42686afc0d",
+   "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
@@ -8892,11 +8897,6 @@
    "type": "evident-by"
   },
   {
-   "parent": "16ef02e260ac6095",
-   "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
    "parent": "17142b3ecc72fe0d",
    "child": "084c29fb3c1563d8",
    "type": "evident-by"
@@ -8919,6 +8919,11 @@
   {
    "parent": "1a22dfc696d1734f",
    "child": "084c29fb3c1563d8",
+   "type": "evident-by"
+  },
+  {
+   "parent": "1ad5088a994c083e",
+   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -9027,13 +9032,13 @@
    "type": "evident-by"
   },
   {
-   "parent": "2c6404f9ddbae119",
-   "child": "084c29fb3c1563d8",
+   "parent": "2c517d42b949da9a",
+   "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
-   "parent": "2cce79d6319f3200",
-   "child": "f1aa2bdafb224a39",
+   "parent": "2c6404f9ddbae119",
+   "child": "084c29fb3c1563d8",
    "type": "evident-by"
   },
   {
@@ -9237,6 +9242,11 @@
    "type": "evident-by"
   },
   {
+   "parent": "4cb1157c41403162",
+   "child": "b073ceb048103add",
+   "type": "evident-by"
+  },
+  {
    "parent": "4d31621e7323f706",
    "child": "084c29fb3c1563d8",
    "type": "evident-by"
@@ -9279,11 +9289,6 @@
   {
    "parent": "53f16c3810544724",
    "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
-   "parent": "54d02816720000a0",
-   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -9382,6 +9387,11 @@
    "type": "evident-by"
   },
   {
+   "parent": "6116faaa75afca9d",
+   "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
    "parent": "61b36f7c0c7e6d20",
    "child": "b073ceb048103add",
    "type": "evident-by"
@@ -9422,17 +9432,7 @@
    "type": "evident-by"
   },
   {
-   "parent": "67afe809ff83d53b",
-   "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
    "parent": "6c1523228a9a2c92",
-   "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
-   "parent": "6e25c0b643634a42",
    "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
@@ -9464,11 +9464,6 @@
   {
    "parent": "714942048eeb16c2",
    "child": "084c29fb3c1563d8",
-   "type": "evident-by"
-  },
-  {
-   "parent": "71c94dfb247c68ae",
-   "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
@@ -9582,11 +9577,6 @@
    "type": "evident-by"
   },
   {
-   "parent": "873f6be2d9b10ee7",
-   "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
    "parent": "8766280d7b3ed19e",
    "child": "b073ceb048103add",
    "type": "evident-by"
@@ -9652,8 +9642,18 @@
    "type": "evident-by"
   },
   {
+   "parent": "94a034babf447ff7",
+   "child": "b073ceb048103add",
+   "type": "evident-by"
+  },
+  {
    "parent": "9626bcc1ba6a3ee3",
    "child": "b073ceb048103add",
+   "type": "evident-by"
+  },
+  {
+   "parent": "962f4442e72480ea",
+   "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
@@ -9687,8 +9687,8 @@
    "type": "evident-by"
   },
   {
-   "parent": "9b573b32525f12c4",
-   "child": "f1aa2bdafb224a39",
+   "parent": "9aef48d49c30f439",
+   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -9723,11 +9723,6 @@
   },
   {
    "parent": "a099aad81ea095f4",
-   "child": "b073ceb048103add",
-   "type": "evident-by"
-  },
-  {
-   "parent": "a17d3c6a6b51905f",
    "child": "b073ceb048103add",
    "type": "evident-by"
   },
@@ -9817,17 +9812,17 @@
    "type": "evident-by"
   },
   {
+   "parent": "b0731a93c6f39ffa",
+   "child": "b073ceb048103add",
+   "type": "evident-by"
+  },
+  {
    "parent": "b07fed7369fbf243",
    "child": "084c29fb3c1563d8",
    "type": "evident-by"
   },
   {
    "parent": "b0ca66bb8bfd3c36",
-   "child": "b073ceb048103add",
-   "type": "evident-by"
-  },
-  {
-   "parent": "b1d78f5e4750f0b3",
    "child": "b073ceb048103add",
    "type": "evident-by"
   },
@@ -9892,11 +9887,6 @@
    "type": "evident-by"
   },
   {
-   "parent": "b855db62d58772dc",
-   "child": "b073ceb048103add",
-   "type": "evident-by"
-  },
-  {
    "parent": "b86c79735e3522d5",
    "child": "084c29fb3c1563d8",
    "type": "evident-by"
@@ -9929,6 +9919,11 @@
   {
    "parent": "bcd2cb1dff9b3413",
    "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
+   "parent": "bdd3a498414803e5",
+   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -10048,12 +10043,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "056ba240e02cfb9e",
+   "child": "05891a2794311e43",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "05891a2794311e43",
+   "child": "072dbf77a09d7c45",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "07b4be42686afc0d",
    "type": "contains"
   },
   {
@@ -10138,11 +10138,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "16ef02e260ac6095",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "17142b3ecc72fe0d",
    "type": "contains"
   },
@@ -10164,6 +10159,11 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "1a22dfc696d1734f",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "1ad5088a994c083e",
    "type": "contains"
   },
   {
@@ -10273,12 +10273,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2c6404f9ddbae119",
+   "child": "2c517d42b949da9a",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "2cce79d6319f3200",
+   "child": "2c6404f9ddbae119",
    "type": "contains"
   },
   {
@@ -10483,6 +10483,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "4cb1157c41403162",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "4d31621e7323f706",
    "type": "contains"
   },
@@ -10524,11 +10529,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "53f16c3810544724",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "54d02816720000a0",
    "type": "contains"
   },
   {
@@ -10628,6 +10628,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "6116faaa75afca9d",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "61b36f7c0c7e6d20",
    "type": "contains"
   },
@@ -10668,17 +10673,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "67afe809ff83d53b",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "6c1523228a9a2c92",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "6e25c0b643634a42",
    "type": "contains"
   },
   {
@@ -10709,11 +10704,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "714942048eeb16c2",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "71c94dfb247c68ae",
    "type": "contains"
   },
   {
@@ -10828,11 +10818,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "873f6be2d9b10ee7",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "8766280d7b3ed19e",
    "type": "contains"
   },
@@ -10898,7 +10883,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "94a034babf447ff7",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "9626bcc1ba6a3ee3",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "962f4442e72480ea",
    "type": "contains"
   },
   {
@@ -10933,7 +10928,7 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "9b573b32525f12c4",
+   "child": "9aef48d49c30f439",
    "type": "contains"
   },
   {
@@ -10969,11 +10964,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "a099aad81ea095f4",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "a17d3c6a6b51905f",
    "type": "contains"
   },
   {
@@ -11063,17 +11053,17 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "b0731a93c6f39ffa",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b07fed7369fbf243",
    "type": "contains"
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b0ca66bb8bfd3c36",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b1d78f5e4750f0b3",
    "type": "contains"
   },
   {
@@ -11138,11 +11128,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "b855db62d58772dc",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "b86c79735e3522d5",
    "type": "contains"
   },
@@ -11174,6 +11159,11 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "bcd2cb1dff9b3413",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "bdd3a498414803e5",
    "type": "contains"
   },
   {
@@ -11273,6 +11263,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "d08a8299642b2d73",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "d1595d52850137fa",
    "type": "contains"
   },
@@ -11328,11 +11323,6 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "d926d8989ae51228",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "d9276343fc274863",
    "type": "contains"
   },
@@ -11364,11 +11354,6 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "dc1cfde30f757a4a",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "de7c329fdabd1d2f",
    "type": "contains"
   },
   {
@@ -11408,6 +11393,11 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "e27470fc8cb3bf36",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "e691d8caa3c5760e",
    "type": "contains"
   },
@@ -11419,6 +11409,16 @@
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "e8f015bed2f048c2",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "e9067211aaf76168",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "e9accf777b56c7d2",
    "type": "contains"
   },
   {
@@ -11483,17 +11483,12 @@
   },
   {
    "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
+   "child": "f7f08d8569c3e320",
+   "type": "contains"
+  },
+  {
+   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
    "child": "f8d7005cc7403132",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "f9ec103ddd95a0b9",
-   "type": "contains"
-  },
-  {
-   "parent": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8",
-   "child": "fae373fddfd008b7",
    "type": "contains"
   },
   {
@@ -11539,6 +11534,11 @@
   {
    "parent": "cf941c6b5aab9820",
    "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
+   "parent": "d08a8299642b2d73",
+   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -11597,11 +11597,6 @@
    "type": "evident-by"
   },
   {
-   "parent": "d926d8989ae51228",
-   "child": "f1aa2bdafb224a39",
-   "type": "evident-by"
-  },
-  {
    "parent": "d9276343fc274863",
    "child": "084c29fb3c1563d8",
    "type": "evident-by"
@@ -11634,11 +11629,6 @@
   {
    "parent": "dc1cfde30f757a4a",
    "child": "084c29fb3c1563d8",
-   "type": "evident-by"
-  },
-  {
-   "parent": "de7c329fdabd1d2f",
-   "child": "b073ceb048103add",
    "type": "evident-by"
   },
   {
@@ -11677,6 +11667,11 @@
    "type": "evident-by"
   },
   {
+   "parent": "e27470fc8cb3bf36",
+   "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
    "parent": "e691d8caa3c5760e",
    "child": "3fc5a8d3d86e9790",
    "type": "evident-by"
@@ -11688,6 +11683,16 @@
   },
   {
    "parent": "e8f015bed2f048c2",
+   "child": "b073ceb048103add",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e9067211aaf76168",
+   "child": "f1aa2bdafb224a39",
+   "type": "evident-by"
+  },
+  {
+   "parent": "e9accf777b56c7d2",
    "child": "b073ceb048103add",
    "type": "evident-by"
   },
@@ -11752,18 +11757,13 @@
    "type": "evident-by"
   },
   {
-   "parent": "f8d7005cc7403132",
+   "parent": "f7f08d8569c3e320",
    "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
-   "parent": "f9ec103ddd95a0b9",
-   "child": "b073ceb048103add",
-   "type": "evident-by"
-  },
-  {
-   "parent": "fae373fddfd008b7",
-   "child": "b073ceb048103add",
+   "parent": "f8d7005cc7403132",
+   "child": "f1aa2bdafb224a39",
    "type": "evident-by"
   },
   {
