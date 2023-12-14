@@ -208,6 +208,8 @@ type Command struct {
 	LinuxInfo          mesosproto.LinuxInfo `protobuf:"bytes,11,opt,name=linux_info,json=linuxInfo" json:"linux_info,omitempty"`
 	PullPolicy         string
 	MesosAgent         MesosSlaves
+	EnableHealthCheck  bool
+	Health             mesosproto.HealthCheck
 }
 
 // MesosAgent
