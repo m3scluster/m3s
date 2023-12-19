@@ -1,9 +1,7 @@
 package scheduler
 
 import (
-	"net"
 	"strconv"
-	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -89,37 +87,11 @@ func (e *Scheduler) healthCheckDatastore() bool {
 		if task.State == "TASK_RUNNING" && len(task.NetworkInfo) > 0 {
 			// if the framework is running as container, and the task hostname is the same like the frameworks one,
 			// then use the containerport instead of the random hostport
-			if e.Config.DockerRunning && (task.MesosAgent.Hostname == e.Config.Hostname) {
-				if e.connectPort(task.Hostname, task.DockerPortMappings[0].GetContainerPort()) {
-					dsState = true
-				}
-			} else {
-				if e.connectPort(task.MesosAgent.Hostname, task.DockerPortMappings[0].GetHostPort()) {
-					dsState = true
-				}
-			}
+			dsState = true
 		}
 	}
 
 	return dsState
-}
-
-// check if the remote port is listening
-func (e *Scheduler) connectPort(host string, port uint32) bool {
-	timeout := 5 * time.Second
-	conn, err := net.DialTimeout("tcp", net.JoinHostPort(host, strconv.FormatUint(uint64(port), 10)), timeout)
-	if err != nil {
-		logrus.WithField("func", "connectPort").Debug("Hostname: ", host)
-		logrus.WithField("func", "connectPort").Debug("Port: ", strconv.FormatUint(uint64(port), 10))
-		logrus.WithField("func", "connectPort").Debug("Error: ", err.Error())
-		return false
-	}
-	if conn != nil {
-		defer conn.Close()
-		return true
-	}
-
-	return false
 }
 
 // set mysql parameter of the mesos task
@@ -169,6 +141,14 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 			},
 		},
 	}
+
+	cmd.EnableHealthCheck = true
+	cmd.Health.Command = &mesosproto.CommandInfo{
+		Value: func() *string {
+			x := "mysqladmin ping -h localhost"
+			return &x
+		}(),
+	}
 }
 
 // set etcd parameter of the mesos task
@@ -206,5 +186,16 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 				},
 			},
 		},
+	}
+
+	cmd.EnableHealthCheck = true
+	cmd.Health.DelaySeconds = func() *float64 { x := 60.0; return &x }()
+
+	cmd.Health.Command = &mesosproto.CommandInfo{
+		Environment: &cmd.Environment,
+		Value: func() *string {
+			x := "etcdctl endpoint health --endpoints=http://127.0.0.1:" + e.Config.DSPort
+			return &x
+		}(),
 	}
 }

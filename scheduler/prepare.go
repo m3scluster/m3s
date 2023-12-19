@@ -150,6 +150,10 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cm
 		}
 	}
 
+	if cmd.EnableHealthCheck {
+		msg.HealthCheck = &cmd.Health
+	}
+
 	d, _ := json.Marshal(&msg)
 	logrus.Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
