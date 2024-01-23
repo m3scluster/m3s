@@ -59,6 +59,10 @@ docs:
 	@echo ">>>> Build docs"
 	$(MAKE) -C $@
 
+plugin: 
+	@echo ">>> Build plugins"
+	cd plugins; $(MAKE)	
+
 update-gomod:
 	go get -u
 	go mod tidy

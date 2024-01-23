@@ -1,6 +1,7 @@
 package types
 
 import (
+	"plugin"
 	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
@@ -76,6 +77,8 @@ type Config struct {
 	M3SStatus                   M3SStatus
 	MesosSandboxVar             string
 	Principal                   string
+	PluginsEnable               bool
+	Plugins                     map[string]*plugin.Plugin
 	ReconcileLoopTime           time.Duration
 	RefuseOffers                float64
 	ReviveLoopTime              time.Duration

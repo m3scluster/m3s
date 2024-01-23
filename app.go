@@ -13,9 +13,9 @@ import (
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	"github.com/AVENTER-UG/mesos-m3s/scheduler"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	"github.com/sirupsen/logrus"
 
 	util "github.com/AVENTER-UG/util/util"
-	"github.com/sirupsen/logrus"
 )
 
 // BuildVersion of m3s
@@ -130,7 +130,7 @@ func main() {
 	}
 
 	if config.SSLCrt != "" && config.SSLKey != "" {
-		logrus.Debug("Enable TLS")
+		logrus.WithField("func", "main").Debug("Enable TLS")
 		crt := decodeBase64Cert(config.SSLCrt)
 		key := decodeBase64Cert(config.SSLKey)
 		certs, err := tls.X509KeyPair(crt, key)
@@ -147,6 +147,8 @@ func main() {
 			server.ListenAndServe()
 		}
 	}()
+
+	go loadPlugins(r)
 
 	//	this loop is for resubscribtion purpose
 	ticker := time.NewTicker(2 * time.Second)

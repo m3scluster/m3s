@@ -26,6 +26,9 @@
 - Update golang libraries.
 - Add API to restart agent, datastore and server and update CPU and MEM Ressources [#18](https://github.com/AVENTER-UG/mesos-m3s/pull/18) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
 - Change datastore healtcheck to Mesos internal check mechanism.
+- Add support to develope plugins for m3s. As example we have add two plugins.
+- Add Kafka plugin to stream Mesos event messages to kafka. To enable plugin support, set `M3S_PLUGIN=true`
+
 
 ## v0.4.0
 

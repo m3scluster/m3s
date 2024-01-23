@@ -123,6 +123,7 @@ func (e *Scheduler) EventLoop() {
 			e.HandleUpdate(&event)
 			// save configuration
 			e.Redis.SaveConfig(*e.Config)
+			go e.callPluginEvent(event)
 		case mesosproto.Event_OFFERS:
 			// Search Failed containers and restart them
 			err = e.HandleOffers(event.Offers)
@@ -269,5 +270,25 @@ func (e *Scheduler) implicitReconcile() {
 
 	if err != nil {
 		logrus.WithField("func", "scheduler.implicitReconcile").Debug("Reconcile Error: ", err)
+	}
+}
+
+func (e *Scheduler) callPluginEvent(event mesosproto.Event) {
+	if e.Config.PluginsEnable {
+		for _, p := range e.Config.Plugins {
+			symbol, err := p.Lookup("Event")
+			if err != nil {
+				logrus.WithField("func", "scheduler.callPluginEvent").Error("Error lookup event function in plugin: ", err.Error())
+				continue
+			}
+
+			eventPluginFunc, ok := symbol.(func(mesosproto.Event))
+			if !ok {
+				logrus.WithField("func", "main.initPlugins").Error("Error plugin does not have init function")
+				continue
+			}
+
+			eventPluginFunc(event)
+		}
 	}
 }
