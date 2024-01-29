@@ -17,9 +17,10 @@ func Init(r *redis.Redis) string {
 		Redis: r,
 	}
 
+	logrus.WithField("func", "plugin").Info("Example Plugin")
+
 	return "example"
 }
 
 func Event(event mesosproto.Event) {
-	logrus.WithField("func", "plugin").Info("Example Plugin")
 }
