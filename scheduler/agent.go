@@ -11,7 +11,7 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // StartK3SAgent is starting a agent container with the given IDs

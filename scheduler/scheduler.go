@@ -284,7 +284,7 @@ func (e *Scheduler) callPluginEvent(event mesosproto.Event) {
 
 			eventPluginFunc, ok := symbol.(func(mesosproto.Event))
 			if !ok {
-				logrus.WithField("func", "main.initPlugins").Error("Error plugin does not have init function")
+				logrus.WithField("func", "main.callPluginEvent").Error("Error plugin does not have Event function")
 				continue
 			}
 
