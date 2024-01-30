@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strings"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	"github.com/sirupsen/logrus"
 	corev1 "k8s.io/api/core/v1"
 )
 

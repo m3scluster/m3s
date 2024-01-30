@@ -9,7 +9,7 @@ import (
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	corev1 "k8s.io/api/core/v1"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // StartK3SServer Start K3S with the given id

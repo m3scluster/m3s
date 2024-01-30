@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // V0GetKubeconfig will return the kubernetes config file

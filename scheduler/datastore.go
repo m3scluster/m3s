@@ -6,7 +6,7 @@ import (
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // StartDatastore is starting the datastore container

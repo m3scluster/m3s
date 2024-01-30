@@ -3,7 +3,7 @@ package scheduler
 import (
 	"time"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 var reviveLock bool

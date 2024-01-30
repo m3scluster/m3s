@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // V0Restart - Restart cluster or datastore, server or agent.

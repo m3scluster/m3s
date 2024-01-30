@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // V0ClusterShutdown - Shutdown the whole K8 cluster

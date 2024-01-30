@@ -14,8 +14,8 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/AVENTER-UG/util/util"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/sirupsen/logrus"
 )
 
 // Scheduler include all the current vars and global config

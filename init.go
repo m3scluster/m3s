@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	util "github.com/AVENTER-UG/util/util"
 	"github.com/Showmax/go-fqdn"
-	"github.com/sirupsen/logrus"
 
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
