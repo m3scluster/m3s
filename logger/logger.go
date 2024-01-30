@@ -24,44 +24,52 @@ func WithField(key string, value interface{}) *Logger {
 }
 
 func (e *Logger) Debug(args ...interface{}) {
-	callPluginEvent(args...)
+	callPluginEvent("DEBUG", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Debug(args...)
 }
 
 func (e *Logger) Info(args ...interface{}) {
-	callPluginEvent(args...)
+	callPluginEvent("INFO", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Info(args...)
 }
 
 func (e *Logger) Error(args ...interface{}) {
+	callPluginEvent("ERROR", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Error(args...)
 }
 
 func (e *Logger) Warn(args ...interface{}) {
+	callPluginEvent("WARN", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Warn(args...)
 }
 
 func (e *Logger) Warning(args ...interface{}) {
+	callPluginEvent("WARN", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Warning(args...)
 }
 
 func (e *Logger) Warningf(format string, args ...interface{}) {
+	callPluginEvent("WARN", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Warningf(format, args...)
 }
 
 func (e *Logger) Trace(args ...interface{}) {
+	callPluginEvent("TRACE", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Trace(args...)
 }
 
 func (e *Logger) Fatal(args ...interface{}) {
+	callPluginEvent("FATAL", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Fatal(args...)
 }
 
 func Fatal(text ...interface{}) {
+	callPluginEvent("FATAL", text...)
 	logrus.Fatal(text...)
 }
 
 func Println(text ...interface{}) {
+	callPluginEvent("PLAIN", text...)
 	logrus.Println(text...)
 }
 
@@ -73,22 +81,20 @@ func SetPlugins(plugin map[string]*plugin.Plugin) {
 	Plugins = plugin
 }
 
-func callPluginEvent(args ...interface{}) {
+func callPluginEvent(info string, args ...interface{}) {
 	if len(Plugins) > 0 {
 		for _, p := range Plugins {
 			symbol, err := p.Lookup("Logging")
 			if err != nil {
-				logrus.WithField("func", "logger.callPluginEvent").Error("Error lookup event function in plugin: ", err.Error())
 				continue
 			}
 
-			loggingPluginFunc, ok := symbol.(func(...interface{}))
+			loggingPluginFunc, ok := symbol.(func(string, ...interface{}))
 			if !ok {
-				logrus.WithField("func", "main.callPluginEvent").Error("Error plugin does not have logging function")
 				continue
 			}
 
-			loggingPluginFunc(args...)
+			loggingPluginFunc(info, args...)
 		}
 	}
 }

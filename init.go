@@ -181,8 +181,6 @@ func loadPlugins(r *redis.Redis) {
 	if config.PluginsEnable {
 		config.Plugins = map[string]*plugin.Plugin{}
 
-		logrus.SetPlugins(config.Plugins)
-
 		plugins, err := filepath.Glob("plugins/*.so")
 		if err != nil {
 			logrus.WithField("func", "main.loadPlugins").Info("No Plugins found")
@@ -212,6 +210,7 @@ func loadPlugins(r *redis.Redis) {
 			name := initPluginFunc(r)
 			config.Plugins[name] = p
 		}
+		logrus.SetPlugins(config.Plugins)
 	}
 }
 

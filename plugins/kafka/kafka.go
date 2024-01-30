@@ -34,7 +34,7 @@ func Init(r *redis.Redis) string {
 }
 
 func Event(event mesosproto.Event) {
-	logrus.WithField("func", "plugin.kafka.Event").Info("Kafka Plugin")
+	logrus.WithField("func", "plugin.kafka.Event").Trace("Kafka Plugin")
 	if plugin != nil {
 		msg, err := json.Marshal(&event)
 		if err != nil {
@@ -43,6 +43,19 @@ func Event(event mesosproto.Event) {
 		}
 
 		plugin.kafkaWrite("Event_Update", string(msg))
+	}
+}
+
+func Logging(info string, args ...interface{}) {
+	logrus.WithField("func", "plugin.kafka.Logging").Trace("Kafka Plugin")
+	if plugin != nil {
+		msg, err := json.Marshal(&args)
+		if err != nil {
+			logrus.WithField("func", "plugin.kafka.Logging").Errorf("Could not marshal interface: %s", err)
+			return
+		}
+
+		plugin.kafkaWrite(info, string(msg))
 	}
 }
 
