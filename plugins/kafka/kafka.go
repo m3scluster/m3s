@@ -42,12 +42,13 @@ func Event(event mesosproto.Event) {
 			return
 		}
 
-		plugin.kafkaWrite("Event_Update", string(msg))
+		topic := plugin.Topic + "_mesos"
+		plugin.kafkaWrite("Event_Update", string(msg), &topic)
 	}
 }
 
 func Logging(info string, args ...interface{}) {
-	logrus.WithField("func", "plugin.kafka.Logging").Trace("Kafka Plugin")
+	logrus.WithField("func", "plugin.kafka.Logging").Debug("Kafka Logging")
 	if plugin != nil {
 		msg, err := json.Marshal(&args)
 		if err != nil {
@@ -55,7 +56,8 @@ func Logging(info string, args ...interface{}) {
 			return
 		}
 
-		plugin.kafkaWrite(info, string(msg))
+		topic := plugin.Topic + "_logging"
+		plugin.kafkaWrite(info, string(msg), &topic)
 	}
 }
 
@@ -74,7 +76,7 @@ func kafkaInit() *kafka.Producer {
 }
 
 func (p *Plugins) kafkaEvent() {
-	logrus.WithField("func", "plugin.kafka.kafkaEvent").Info("Kafka Write Event")
+	logrus.WithField("func", "plugin.kafka.kafkaEvent").Debug("Kafka Write Event")
 	if p.Producer != nil {
 		for e := range p.Producer.Events() {
 			switch ev := e.(type) {
@@ -90,10 +92,10 @@ func (p *Plugins) kafkaEvent() {
 	}
 }
 
-func (p *Plugins) kafkaWrite(key string, data string) {
+func (p *Plugins) kafkaWrite(key string, data string, topic *string) {
 	if p.Producer != nil {
 		p.Producer.Produce(&kafka.Message{
-			TopicPartition: kafka.TopicPartition{Topic: &p.Topic, Partition: kafka.PartitionAny},
+			TopicPartition: kafka.TopicPartition{Topic: topic, Partition: kafka.PartitionAny},
 			Key:            []byte(key),
 			Value:          []byte(data),
 		}, nil)
