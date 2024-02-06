@@ -3,7 +3,7 @@ package api
 import (
 	"net/http"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // V0StatusK8s gives out the current status of the K8s services

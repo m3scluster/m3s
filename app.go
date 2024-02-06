@@ -10,10 +10,10 @@ import (
 	"time"
 
 	"github.com/AVENTER-UG/mesos-m3s/api"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	"github.com/AVENTER-UG/mesos-m3s/scheduler"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	"github.com/sirupsen/logrus"
 
 	util "github.com/AVENTER-UG/util/util"
 )

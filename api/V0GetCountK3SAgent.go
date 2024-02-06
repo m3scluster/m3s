@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	"github.com/sirupsen/logrus"
 )
 
 // V0GetCountK3SAgent will write out the current count of Kubernetes Agents and the expected one.

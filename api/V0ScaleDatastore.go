@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strconv"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 )
 
 // V0ScaleDatastore will scale the k3s agent service

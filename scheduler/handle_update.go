@@ -3,7 +3,7 @@ package scheduler
 import (
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 
-	"github.com/sirupsen/logrus"
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // HandleUpdate will handle the offers event of mesos

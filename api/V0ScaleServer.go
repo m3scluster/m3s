@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 )
 
 // V0ScaleK3SServer will scale the k3s server service

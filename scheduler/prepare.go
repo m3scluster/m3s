@@ -3,10 +3,10 @@ package scheduler
 import (
 	"encoding/json"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/AVENTER-UG/util/util"
-	"github.com/sirupsen/logrus"
 )
 
 // default resources of the mesos task
@@ -155,7 +155,7 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent mesosproto.AgentID, cm
 	}
 
 	d, _ := json.Marshal(&msg)
-	logrus.Debug("HandleOffers msg: ", util.PrettyJSON(d))
+	logrus.WithField("func", "scheduler.prepareTaskInfoExecuteContainer").Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
 	return []mesosproto.TaskInfo{msg}
 }

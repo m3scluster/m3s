@@ -14,8 +14,8 @@ import (
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/AVENTER-UG/util/util"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/sirupsen/logrus"
 )
 
 // Scheduler include all the current vars and global config
@@ -284,7 +284,7 @@ func (e *Scheduler) callPluginEvent(event mesosproto.Event) {
 
 			eventPluginFunc, ok := symbol.(func(mesosproto.Event))
 			if !ok {
-				logrus.WithField("func", "main.initPlugins").Error("Error plugin does not have init function")
+				logrus.WithField("func", "main.callPluginEvent").Error("Error plugin does not have Event function")
 				continue
 			}
 

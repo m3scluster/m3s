@@ -6,8 +6,8 @@ import (
 
 	"encoding/json"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 
 	//"io/ioutil"
 	"net/http"

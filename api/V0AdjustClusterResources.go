@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gorilla/mux"
-	"github.com/sirupsen/logrus"
 )
 
 // V0AdjustClusterResources will adjust the resource allocated to the k3s clusters

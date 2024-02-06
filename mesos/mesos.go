@@ -9,10 +9,10 @@ import (
 	"net/http"
 	"strings"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/gogo/protobuf/jsonpb"
-	"github.com/sirupsen/logrus"
 )
 
 // Mesos include all the current vars and global config
