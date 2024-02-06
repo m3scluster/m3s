@@ -18,6 +18,7 @@ func Init(r *redis.Redis) string {
 	}
 
 	logrus.WithField("func", "plugin").Info("Example Plugin")
+
 	return "example"
 }
 

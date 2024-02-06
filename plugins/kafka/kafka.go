@@ -8,6 +8,7 @@ import (
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	"github.com/AVENTER-UG/mesos-m3s/redis"
+	"github.com/AVENTER-UG/util/util"
 	"github.com/sirupsen/logrus"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
@@ -25,16 +26,19 @@ func Init(r *redis.Redis) string {
 	plugin = &Plugins{
 		Redis:    r,
 		Producer: kafkaInit(),
-		Topic:    "m3s_log",
+		Topic:    util.Getenv("KAFKA_PLUGIN_TOPIC", "m3s_log"),
 	}
 
 	go plugin.kafkaEvent()
+
+	logrus.WithField("func", "plugin.kafka.Event").Info("Kafka Plugin")
 
 	return "kafka"
 }
 
 func Event(event mesosproto.Event) {
 	logrus.WithField("func", "plugin.kafka.Event").Trace("Kafka Plugin")
+
 	if plugin != nil {
 		msg, err := json.Marshal(&event)
 		if err != nil {
