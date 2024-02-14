@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	api "github.com/AVENTER-UG/mesos-m3s/api"
+	"github.com/AVENTER-UG/mesos-m3s/controller"
 	"github.com/AVENTER-UG/mesos-m3s/mesos"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	"github.com/AVENTER-UG/mesos-m3s/redis"
@@ -20,13 +21,14 @@ import (
 
 // Scheduler include all the current vars and global config
 type Scheduler struct {
-	Config    *cfg.Config
-	Framework *cfg.FrameworkConfig
-	Mesos     mesos.Mesos
-	Client    *http.Client
-	Req       *http.Request
-	API       *api.API
-	Redis     *redis.Redis
+	Config     *cfg.Config
+	Framework  *cfg.FrameworkConfig
+	Mesos      mesos.Mesos
+	Client     *http.Client
+	Req        *http.Request
+	API        *api.API
+	Redis      *redis.Redis
+	Kubernetes *controller.Controller
 }
 
 // Marshaler to serialize Protobuf Message to JSON

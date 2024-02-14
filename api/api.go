@@ -6,6 +6,7 @@ import (
 
 	"encoding/json"
 
+	"github.com/AVENTER-UG/mesos-m3s/controller"
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/gorilla/mux"
 
@@ -23,6 +24,7 @@ type API struct {
 	Framework         *cfg.FrameworkConfig
 	Mesos             mesos.Mesos
 	Redis             *redis.Redis
+	Kubernetes        *controller.Controller
 	BootstrapProtocol string
 	K3SAgentStatus    bool
 }

@@ -132,5 +132,6 @@ func (e *Scheduler) ReconcileLoop() {
 		e.reconcile()
 		e.implicitReconcile()
 		go e.removeNotExistingAgents()
+		go e.Kubernetes.CleanupNodes()
 	}
 }

@@ -331,3 +331,40 @@ type MesosTasks struct {
 		Container mesosproto.ContainerInfo `json:"container"`
 	} `json:"tasks"`
 }
+
+type K8Cluster struct {
+	Server                string `yaml:"server"`
+	InsecureSkipTLSVerify bool   `yaml:"insecure-skip-tls-verify,omitempty"`
+}
+type K8Clusters struct {
+	Cluster K8Cluster `yaml:"cluster"`
+	Name    string    `yaml:"name"`
+}
+
+type K8Context struct {
+	Cluster string `yaml:"cluster"`
+	User    string `yaml:"user"`
+}
+
+type K8Contexts struct {
+	Context K8Context `yaml:"context"`
+	Name    string    `yaml:"name"`
+}
+
+type K8User struct {
+	Token string `yaml:"token"`
+}
+type K8Users struct {
+	User K8User `yaml:"user"`
+	Name string `yaml:"name"`
+}
+
+type K8KubeConfig struct {
+	APIVersion     string       `yaml:"apiVersion"`
+	Kind           string       `yaml:"kind"`
+	Preferences    struct{}     `yaml:"preferences"`
+	Clusters       []K8Clusters `yaml:"clusters"`
+	Contexts       []K8Contexts `yaml:"contexts"`
+	CurrentContext string       `yaml:"current-context"`
+	Users          []K8Users    `yaml:"users"`
+}

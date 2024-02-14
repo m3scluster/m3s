@@ -17,7 +17,7 @@ func (e *API) V0ClusterShutdown(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	e.clusterStop(true)
+	go e.clusterStop(true)
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Header().Set("Api-Service", "v0")
