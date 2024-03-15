@@ -28,14 +28,29 @@ func (e *Logger) Debug(args ...interface{}) {
 	logrus.WithField(e.Key, e.Value).Debug(args...)
 }
 
+func (e *Logger) Debugf(format string, args ...interface{}) {
+	callPluginEvent("DEBUG", args, e.Value)
+	logrus.WithField(e.Key, e.Value).Debugf(format, args...)
+}
+
 func (e *Logger) Info(args ...interface{}) {
 	callPluginEvent("INFO", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Info(args...)
 }
 
+func (e *Logger) Infof(format string, args ...interface{}) {
+	callPluginEvent("INFO", args, e.Value)
+	logrus.WithField(e.Key, e.Value).Infof(format, args...)
+}
+
 func (e *Logger) Error(args ...interface{}) {
 	callPluginEvent("ERROR", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Error(args...)
+}
+
+func (e *Logger) Errorf(format string, args ...interface{}) {
+	callPluginEvent("ERROR", args, e.Value)
+	logrus.WithField(e.Key, e.Value).Errorf(format, args...)
 }
 
 func (e *Logger) Warn(args ...interface{}) {
@@ -56,6 +71,11 @@ func (e *Logger) Warningf(format string, args ...interface{}) {
 func (e *Logger) Trace(args ...interface{}) {
 	callPluginEvent("TRACE", args, e.Value)
 	logrus.WithField(e.Key, e.Value).Trace(args...)
+}
+
+func (e *Logger) Tracef(format string, args ...interface{}) {
+	callPluginEvent("TRACE", args, e.Value)
+	logrus.WithField(e.Key, e.Value).Tracef(format, args...)
 }
 
 func (e *Logger) Fatal(args ...interface{}) {
@@ -79,6 +99,10 @@ func SetLogLevel(level logrus.Level) {
 
 func SetPlugins(plugin map[string]*plugin.Plugin) {
 	Plugins = plugin
+}
+
+func SetFormatter(formatter logrus.Formatter) {
+	logrus.SetFormatter(formatter)
 }
 
 func callPluginEvent(info string, args ...interface{}) {

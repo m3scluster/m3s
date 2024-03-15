@@ -277,13 +277,20 @@ func (e *Scheduler) healthCheckK3s() bool {
 			continue
 		}
 
-		task := e.getTaskFromK8Node(node, "server")
+		task := e.Kubernetes.GetTaskFromK8Node(node, "server")
 		if task.TaskID != "" {
 			for _, status := range node.Status.Conditions {
-				if status.Type == corev1.NodeReady && status.Status == corev1.ConditionTrue && task.State == "TASK_RUNNING" {
-					return true
+				if status.Type == corev1.NodeReady {
+					if status.Status == corev1.ConditionTrue && task.State == "TASK_RUNNING" {
+						logrus.WithField("func", "scheduler.healthCheckK3s").Debugf("Node (%s) ready: %s", node.Name, task.TaskID)
+						return true
+					} else {
+						logrus.WithField("func", "scheduler.healthCheckK3s").Errorf("Node (%s) not ready: %s", node.Name, task.TaskID)
+					}
 				}
 			}
+		} else {
+			logrus.WithField("func", "scheduler.healthCheckK3s").Error("Could not find taskID for node: ", node.Name)
 		}
 	}
 	return false

@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/AVENTER-UG/mesos-m3s/api"
+	"github.com/AVENTER-UG/mesos-m3s/controller"
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	"github.com/AVENTER-UG/mesos-m3s/scheduler"
@@ -79,10 +80,6 @@ func main() {
 		logrus.WithField("func", "main").Fatal("Could not connect to redis DB")
 	}
 
-	// get API
-	a := api.New(&config, &framework)
-	a.Redis = r
-
 	// load framework state from DB
 	var oldFramework cfg.FrameworkConfig
 	key := r.GetRedisKey(framework.FrameworkName + ":framework")
@@ -115,6 +112,10 @@ func main() {
 
 	// The Hostname should ever be set after reading the state file.
 	framework.FrameworkInfo.Hostname = &framework.FrameworkHostname
+
+	// get API
+	a := api.New(&config, &framework)
+	a.Redis = r
 
 	server := &http.Server{
 		Addr:              listen,
@@ -150,6 +151,13 @@ func main() {
 
 	go loadPlugins(r)
 
+	// create a kubernetes client
+	k8 := controller.New(&config, &framework)
+	k8.Redis = r
+
+	// set kubernetes client to API
+	a.Kubernetes = k8
+
 	//	this loop is for resubscribtion purpose
 	ticker := time.NewTicker(2 * time.Second)
 	defer ticker.Stop()
@@ -160,6 +168,10 @@ func main() {
 			e := scheduler.Subscribe(&config, &framework)
 			e.API = a
 			e.Redis = r
+			e.Kubernetes = k8
+			k8.CreateClient()
+			go k8.CreateController()
+			go k8.UnscheduleBeat()
 			e.EventLoop()
 		}
 	}

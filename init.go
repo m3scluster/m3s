@@ -39,7 +39,7 @@ func init() {
 	config.CGroupV2 = stringToBool(util.Getenv("CGROUP_V2", "false"))
 	config.DSMax, _ = strconv.Atoi(util.Getenv("DS_COUNT", "1"))
 	config.EventLoopTime, _ = time.ParseDuration(util.Getenv("HEARTBEAT_INTERVAL", "15s"))
-	config.CleanupLoopTime, _ = time.ParseDuration(util.Getenv("CLEANUP_WAIT", "3m"))
+	config.CleanupLoopTime, _ = time.ParseDuration(util.Getenv("CLEANUP_WAIT", "5m"))
 	config.Credentials.Username = util.Getenv("AUTH_USERNAME", "")
 	config.Credentials.Password = util.Getenv("AUTH_PASSWORD", "")
 	config.Domain = util.Getenv("DOMAIN", ".local")
@@ -175,6 +175,7 @@ func init() {
 	} else {
 		config.PluginsEnable = true
 	}
+
 }
 
 func loadPlugins(r *redis.Redis) {

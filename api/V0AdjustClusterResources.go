@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -42,8 +41,6 @@ func (e *API) V0AdjustClusterResources(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusNotAcceptable)
 			return
 		}
-
-		fmt.Println(resource)
 
 		switch component {
 		case "ds":

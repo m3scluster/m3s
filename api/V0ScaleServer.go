@@ -68,9 +68,15 @@ func (e *API) scale(newCount int, oldCount int, key string) []byte {
 		e.Redis.SaveTaskRedis(task)
 
 		if newCount < oldCount {
+			node := e.Kubernetes.GetK8NodeFromTask(task)
+			if task.TaskName == e.Framework.FrameworkName+":agent" && node.Name != "" {
+				// remove the agent nodes before we kill the agent
+				e.Kubernetes.DeleteNode(node.Name)
+				logrus.WithField("func", "api.scale").Debug("Delete Node: ", task.TaskID)
+				time.Sleep(5 * time.Second)
+			}
 			e.Mesos.Kill(task.TaskID, task.Agent)
-			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
-			logrus.WithField("func", "api.scale").Debug("TaskID: ", task.TaskID)
+			logrus.WithField("func", "api.scale").Debug("Scale Down TaskID: ", task.TaskID)
 		}
 		if newCount > oldCount {
 			e.Mesos.Revive()

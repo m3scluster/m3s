@@ -42,8 +42,14 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 		logrus.WithField("func", "scheduler.HandleUpdate").Warn("Task State: " + task.State + " " + task.TaskID + " (" + task.TaskName + ")")
 		e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
 		// remove unready K8 node from redis
+		if task.TaskName == e.Framework.FrameworkName+":server" {
+			node := e.Kubernetes.GetK8NodeFromTask(task)
+			e.Redis.DelRedisKey(e.Framework.FrameworkName + ":kubernetes:" + node.Name)
+		}
 		if task.TaskName == e.Framework.FrameworkName+":agent" {
-			node := e.getK8NodeFromTask(task)
+			node := e.Kubernetes.GetK8NodeFromTask(task)
+			e.Kubernetes.DeleteNode(node.Name)
+			e.Kubernetes.SetUnschedule()
 			e.Redis.DelRedisKey(e.Framework.FrameworkName + ":kubernetes:" + node.Name)
 		}
 
@@ -60,6 +66,7 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 				e.Config.K3SServerHostname = task.Hostname
 			}
 			e.Config.K3SServerPort = int(task.DockerPortMappings[0].HostPort)
+			e.Kubernetes.Init()
 		}
 	}
 

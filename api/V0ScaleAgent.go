@@ -46,7 +46,7 @@ func (e *API) V0ScaleK3SAgent(w http.ResponseWriter, r *http.Request) {
 
 // agentStop will scale down the agent
 func (e *API) agentStop() {
-	logrus.WithField("func", "api.Sgenttop").Debug("Shutdown Agent")
+	logrus.WithField("func", "api.agentStop").Debug("Shutdown Agent")
 
 	// Save current amount of services for the case of restart but only
 	// if the amount is not 0

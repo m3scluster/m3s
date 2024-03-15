@@ -28,6 +28,7 @@
 - Change datastore healtcheck to Mesos internal check mechanism.
 - Add support to develope plugins for m3s. As example we have add two plugins.
 - Add Kafka plugin to stream Mesos event messages to kafka. To enable plugin support, set `M3S_PLUGIN=true`
+- Move kubernetes controller into the framework to optimise K8 node handling
 
 
 ## v0.4.0
