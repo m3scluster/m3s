@@ -47,32 +47,18 @@ func New(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Controller {
 	log.SetLogger(zap.New(zap.UseDevMode(false), zap.Level(zapcore.Level(4))))
 	logrus.WithField("func", "Controller.New").Info("Create M3S-K8 Controller")
 
+	go e.heartbeat()
+
 	return e
 }
 
-func (e *Controller) Init() {
-	go func() {
-		ticker := time.NewTicker(time.Second * 10)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-ticker.C:
-				if e.CreateClient() {
-					e.CreateController()
-					go e.UnscheduleBeat()
-					ticker.Stop()
-				}
-			}
-		}
-	}()
-	logrus.WithField("func", "Controller.Init").Debug("Init M3S-K8 Controller")
-}
-
-func (e *Controller) CreateClient() bool {
+func (e *Controller) CreateClient() {
 	config := e.Redis.GetRedisKey(e.Redis.Prefix + ":kubernetes_config")
 
-	if config == "" {
-		return false
+	for config == "" {
+		logrus.WithField("func", "controller.CreateClient").Info("kubernetes_config does not exist. Retry!")
+		config = e.Redis.GetRedisKey(e.Redis.Prefix + ":kubernetes_config")
+		time.Sleep(30 * time.Second)
 	}
 
 	destURL := e.Config.K3SServerHostname + ":" + strconv.Itoa(e.Config.K3SServerPort)
@@ -82,16 +68,14 @@ func (e *Controller) CreateClient() bool {
 	e.Kubeconfig, err = clientcmd.RESTConfigFromKubeConfig([]byte(config))
 	if err != nil {
 		logrus.WithField("func", "controller.CreateClient").Error("Load K8 config error: ", err.Error())
-		return false
+		return
 	}
 
 	e.Client, err = kubernetes.NewForConfig(e.Kubeconfig)
 	if err != nil {
 		logrus.WithField("func", "controller.CreateClient").Error("Create K8 clientset error: ", err.Error())
-		return false
+		return
 	}
-
-	return true
 }
 
 func (e *Controller) waitForKubernetesMasterReady() {
@@ -99,10 +83,9 @@ func (e *Controller) waitForKubernetesMasterReady() {
 	for {
 		_, err := e.Client.ServerVersion()
 		if err == nil {
-			logrus.WithField("func", "controller.waitForKubernetesMasterReady").Info("Kubernetes is ready")
+			logrus.WithField("func", "controller.isReady").Info("Kubernetes is ready")
 			return
 		}
-		logrus.WithField("func", "controller.waitForKubernetesMasterReady").Debug(err.Error())
 		time.Sleep(30 * time.Second)
 	}
 }
@@ -116,7 +99,6 @@ func (e *Controller) CreateController() {
 		return
 	}
 
-	e.waitForKubernetesMasterReady()
 	logrus.WithField("func", "controller.CreateController").Info("Controller is ready")
 
 	// Setup a new controller to reconcile ReplicaSets
@@ -174,22 +156,54 @@ func (e *Controller) CleanupNodes() {
 	}
 }
 
+func (e *Controller) updateServerLabel() {
+	if e.Client != nil {
+		nodes, err := e.Client.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+		if err != nil {
+			logrus.WithField("func", "controller.UpdateServerLabel").Error(err.Error())
+			return
+		}
+
+		for _, node := range nodes.Items {
+			if !strings.Contains(node.Name, "server") {
+				continue
+			}
+
+			task := e.Redis.GetTaskByHostname(node.Name)
+			if task.TaskID == "" {
+				continue
+			}
+
+			labelKey := "m3s.aventer.biz/taskid"
+			labelValue := task.TaskID
+
+			if !e.isLabelEqual(node.Labels, labelKey, labelValue) {
+				node.Labels[labelKey] = labelValue
+				logrus.WithField("func", "controller.updateServerLabel").Infof("Update label (m3s.aventer.biz/taskid=%s) of %s", task.TaskID, node.Name)
+			}
+
+			_, err = e.Client.CoreV1().Nodes().Update(context.Background(), &node, metav1.UpdateOptions{})
+			if err != nil {
+				logrus.WithField("func", "controller.updateServerLabel").Info("Could not update node: ", err.Error())
+				continue
+			}
+		}
+	}
+}
+
+func (e *Controller) isLabelEqual(labels map[string]string, key string, value string) bool {
+	for i, label := range labels {
+		if i == key && label == value {
+			logrus.WithField("func", "controller.GetTaskIDFromLabel").Tracef("Label %s TaskID %s", i, label)
+			return true
+		}
+	}
+	return false
+}
+
 func (e *Controller) DeleteNode(nodeName string) {
 	e.Client.CoreV1().Nodes().Delete(context.Background(), nodeName, metav1.DeleteOptions{})
 	e.CleanupNodes()
-}
-
-// UnscheduleBeat - call the (un)scheduler function
-func (e *Controller) UnscheduleBeat() {
-	ticker := time.NewTicker(e.Config.EventLoopTime)
-	defer ticker.Stop()
-	for ; true; <-ticker.C {
-		if !e.CheckReadyState() {
-			e.SetUnschedule()
-		} else {
-			e.SetSchedule()
-		}
-	}
 }
 
 // Unschedule Node
@@ -294,7 +308,7 @@ func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) cfg.Comman
 				task := e.Mesos.DecodeTask(key)
 				return task
 			} else {
-				logrus.WithField("func", "controller.GetTaskFromNode").Errorf("Could not found key of taskID %s", taskID)
+				logrus.WithField("func", "controller.GetTaskFromK8Node").Tracef("Could not found key of taskID %s", taskID)
 			}
 		}
 	}
@@ -310,7 +324,7 @@ func (e *Controller) GetK8NodeFromTask(task cfg.Command) corev1.Node {
 		var k8Node corev1.Node
 		err := json.NewDecoder(strings.NewReader(key)).Decode(&k8Node)
 		if err != nil {
-			logrus.WithField("func", "scheduler.getK8NodeFromTask").Error("Could not decode kubernetes node: ", err.Error())
+			logrus.WithField("func", "scheduler.getK8NodeFromTask").Trace("Could not decode kubernetes node: ", err.Error())
 			continue
 		}
 		taskID := e.GetTaskIDFromLabel(k8Node.Labels)
@@ -358,4 +372,25 @@ func (e *Controller) GetTaskIDFromAnnotation(annotations map[string]string) stri
 		}
 	}
 	return ""
+}
+
+func (e *Controller) heartbeat() {
+	ticker := time.NewTicker(e.Config.EventLoopTime)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		logrus.WithField("func", "controller.Heartbeat").Debug("Heartbeat")
+		// create controller and client if it does not exist
+		if e.Client == nil {
+			e.CreateClient()
+			e.waitForKubernetesMasterReady()
+			go e.CreateController()
+		} else {
+			e.updateServerLabel()
+			if !e.CheckReadyState() {
+				e.SetUnschedule()
+			} else {
+				e.SetSchedule()
+			}
+		}
+	}
 }
