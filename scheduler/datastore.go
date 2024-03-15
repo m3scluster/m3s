@@ -127,6 +127,10 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 			Name:  "TZ",
 			Value: &e.Config.TimeZone,
 		},
+		{
+			Name:  "MESOS_TASK_ID",
+			Value: &cmd.TaskID,
+		},
 	}
 	cmd.Volumes = []mesosproto.Volume{
 		{
@@ -172,6 +176,10 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 		{
 			Name:  "ETCD_ADVERTISE_CLIENT_URLS",
 			Value: &AdvertiseURL,
+		},
+		{
+			Name:  "MESOS_TASK_ID",
+			Value: &cmd.TaskID,
 		},
 	}
 	cmd.Volumes = []mesosproto.Volume{

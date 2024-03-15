@@ -101,6 +101,12 @@ func main() {
 		config.K3SServerURL = oldconfig.K3SServerURL
 		config.K3SAgentMax = oldconfig.K3SAgentMax
 		config.DSMax = oldconfig.DSMax
+
+		// Add Missing Restore Values to handle the usecase of starting a hibernated cluster after reboot/framework restarts
+		config.K3SServerMax = oldconfig.K3SServerMax
+		config.DSMaxRestore = oldconfig.DSMaxRestore
+		config.K3SServerMaxRestore = oldconfig.K3SServerMaxRestore
+		config.K3SAgentMaxRestore = oldconfig.K3SAgentMaxRestore
 	}
 
 	r.SaveConfig(config)

@@ -15,13 +15,15 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 		// if the constraints does not match, return an empty offer
 		logrus.WithField("func", "scheduler.getOffer").Debug("Get Offer for: ", cmd.TaskName)
 		for n, offer := range offers.Offers {
-			logrus.WithField("func", "scheduler.getOffer").Debug("Got Offer From:", offer.GetHostname())
+			logrus.WithField("func", "scheduler.getOffer").Debug("Got Offer From:", offer.GetHostname(), " with offer ID:", offer.GetID())
 			offerIds = append(offerIds, offer.ID)
 
 			// if the ressources of this offer does not matched what the command need, the skip
 			if !e.Mesos.IsRessourceMatched(offer.Resources, cmd) {
 				logrus.WithField("func", "scheduler.getOffer").Debug("Could not found any matched resources, get next offer")
 				e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
+				// Empty Offer IDs since all have already been declined and the one we need is taken out
+				offerIds = nil
 				continue
 			}
 			// Check Constraints of server, agent and datastore
@@ -32,6 +34,8 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 					logrus.WithField("func", "scheduler.getOffer").Debug("Set Server Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
+				// Take out the offer ID which we need
+				offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 			}
 			if cmd.TaskName == e.Framework.FrameworkName+":agent" {
 				if e.Config.K3SAgentConstraintHostname == "" {
@@ -40,6 +44,8 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 					logrus.WithField("func", "scheduler.getOffer").Debug("Set Agent Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
+				// Take out the offer ID which we need
+				offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 			}
 			if cmd.TaskName == e.Framework.FrameworkName+":datastore" {
 				if e.Config.DSConstraintHostname == "" {
@@ -48,12 +54,14 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (
 					logrus.WithField("func", "scheduler.getOffer").Debug("Set Datastore Constraint to:", offer.GetHostname())
 					offerret = offers.Offers[n]
 				}
+				// Take out the offer ID which we need
+				offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 			}
 		}
 	}
 
 	// remove the offer we took
-	offerIds = e.removeOffer(offerIds, offerret.ID.Value)
+	// offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 	return offerret, offerIds
 }
 
@@ -131,13 +139,13 @@ func (e *Scheduler) HandleOffers(offers *mesosproto.Event_Offers) error {
 			return err
 		}
 		// decline unneeded offer
-		logrus.WithField("func", "scheduler.HandleOffers").Debug("Offer Decline: ", offerIds)
+		// logrus.WithField("func", "scheduler.HandleOffers").Debug("Offer Decline: ", offerIds)
 		return e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 
 	default:
 		// decline unneeded offer
 		_, offerIds := e.Mesos.GetOffer(offers, cfg.Command{})
-		logrus.WithField("func", "scheduler.HandleOffers").Debug("Decline unneeded offer: ", offerIds)
+		logrus.WithField("func", "scheduler.HandleOffers").Debug("Declining unneeded offers")
 		return e.Mesos.Call(e.Mesos.DeclineOffer(offerIds))
 	}
 }

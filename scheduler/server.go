@@ -190,6 +190,10 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Name:  "TZ",
 			Value: &e.Config.TimeZone,
 		},
+		{
+			Name:  "MESOS_TASK_ID",
+			Value: &cmd.TaskID,
+		},
 	}
 
 	if e.Config.K3SServerLabels != nil {

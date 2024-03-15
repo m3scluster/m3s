@@ -100,10 +100,16 @@ type Config struct {
 
 // M3SStatus store the current TaskState of the M3s services
 type M3SStatus struct {
-	Server    map[string]string
-	Agent     map[string]string
+	Server    map[string]K3SNodeStatus
+	Agent     map[string]K3SNodeStatus
 	API       string
 	Datastore map[string]string
+}
+
+// M3sNodeStatus represents the MESOS TASK STATUS and its corresponding K3S Name
+type K3SNodeStatus struct {
+	Status      string
+	K3sNodeName string
 }
 
 // State will have the state of all tasks stated by this framework

@@ -138,6 +138,10 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			Name:  "TZ",
 			Value: &e.Config.TimeZone,
 		},
+		{
+			Name:  "MESOS_TASK_ID",
+			Value: &cmd.TaskID,
+		},
 	}
 
 	if e.Config.K3SAgentLabels != nil {

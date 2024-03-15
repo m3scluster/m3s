@@ -160,15 +160,31 @@ func (e *Mesos) GetOffer(offers *mesosproto.Event_Offers, cmd cfg.Command) (meso
 		if !e.IsRessourceMatched(offer.Resources, cmd) {
 			logrus.WithField("func", "mesos.GetOffer").Debug("Could not found any matched ressources, get next offer")
 			e.Call(e.DeclineOffer(offerIds))
+			offerIds = nil
 			continue
 		}
 		offerret = offers.Offers[n]
+		offerIds = e.removeOffer(offerIds, offerret.ID.Value)
 	}
 	return offerret, offerIds
 }
 
+// remove the offer we took from the list
+func (e *Mesos) removeOffer(offers []mesosproto.OfferID, clean string) []mesosproto.OfferID {
+	var offerIds []mesosproto.OfferID
+	for _, offer := range offers {
+		if offer.Value != clean {
+			offerIds = append(offerIds, offer)
+		}
+	}
+	return offerIds
+}
+
 // DeclineOffer will decline the given offers
 func (e *Mesos) DeclineOffer(offerIds []mesosproto.OfferID) *mesosproto.Call {
+
+	logrus.WithField("func", "scheduler.HandleOffers").Debug("Offer Decline: ", offerIds)
+
 	refuseSeconds := 120.0
 
 	decline := &mesosproto.Call{

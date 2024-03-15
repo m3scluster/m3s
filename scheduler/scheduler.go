@@ -110,6 +110,8 @@ func (e *Scheduler) EventLoop() {
 			continue
 		}
 
+		logrus.WithField("func", "scheduler.EventLoop").Debug("Event Received from Mesos: ", event.Type)
+
 		switch event.Type {
 		case mesosproto.Event_SUBSCRIBED:
 			logrus.WithField("func", "scheduler.EventLoop").Info("Subscribed")
