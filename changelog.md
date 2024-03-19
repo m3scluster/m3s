@@ -30,6 +30,14 @@
 - Add Kafka plugin to stream Mesos event messages to kafka. To enable plugin support, set `M3S_PLUGIN=true`
 - Move kubernetes controller into the framework to optimise K8 node handling
 
+## v0.4.1
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/9
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/5
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/4
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/3
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/2
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/1
 
 ## v0.4.0
 
