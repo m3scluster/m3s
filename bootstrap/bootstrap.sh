@@ -3,7 +3,6 @@
 ## Example of how to set a custom upstream DNS
 echo "nameserver 8.8.8.8" > /etc/k3sresolv.conf
 
-apt-get update -y
 mkdir -p /etc/cni/net.d
 
 export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
