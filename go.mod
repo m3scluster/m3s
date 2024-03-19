@@ -13,6 +13,7 @@ require (
 	github.com/joonix/log v0.0.0-20230221083239-7988383bab32
 	github.com/mesos/mesos-go v0.0.11
 	github.com/rancher/wrangler v1.1.2
+	github.com/redis/go-redis/v9 v9.5.1
 	github.com/sirupsen/logrus v1.9.3
 	go.uber.org/zap v1.27.0
 	k8s.io/api v0.29.3

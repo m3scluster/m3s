@@ -4,7 +4,7 @@ import (
 	"context"
 
 	cfg "github.com/AVENTER-UG/mesos-m3s/controller/types"
-	goredis "github.com/go-redis/redis/v9"
+	goredis "github.com/redis/go-redis/v9"
 
 	"github.com/sirupsen/logrus"
 )
