@@ -33,6 +33,9 @@
 ## v0.4.1
 
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/9
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/8
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/7
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/6
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/5
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/4
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/3
