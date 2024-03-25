@@ -1,12 +1,12 @@
 package scheduler
 
 import (
-	"encoding/json"
 	"fmt"
 	"strconv"
-	"strings"
+	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
+	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	corev1 "k8s.io/api/core/v1"
 
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
@@ -268,34 +268,63 @@ func (e *Scheduler) CreateK3SServerString() {
 	e.Config.K3SServerURL = server
 }
 
-// removeNotExistingAgents remove kubernetes from redis if it does not have a Mesos Task. It
 // healthCheckK3s check if the kubernetes server is already running
 func (e *Scheduler) healthCheckK3s() bool {
-	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*server*")
+	return e.healthCheckNode("server", e.Config.K3SServerMax)
+}
+
+// healthCheckNode check if the kubernetes node is already running and in ready state
+func (e *Scheduler) healthCheckNode(kind string, max int) bool {
+	// Hold the at all state of the agent service.
+	aState := false
+
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":"+kind+":*", "") < max {
+		logrus.WithField("func", "scheduler.healthCheckNode").Warningf("K3s %s missing", kind)
+		return false
+	}
+
+	// check the realstate of the kubernetes agents
+	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":" + kind + ":*")
 	for keys.Next(e.Redis.CTX) {
 		key := e.Redis.GetRedisKey(keys.Val())
-		var node corev1.Node
-		err := json.NewDecoder(strings.NewReader(key)).Decode(&node)
-		if err != nil {
-			logrus.WithField("func", "scheduler.healthCheckK3s").Error("Could not decode kubernetes node: ", err.Error())
-			continue
-		}
+		task := e.Mesos.DecodeTask(key)
+		node := e.Kubernetes.GetK8NodeFromTask(task)
 
-		task := e.Kubernetes.GetTaskFromK8Node(node, "server")
-		if task.TaskID != "" {
+		timeDiff := time.Since(task.StateTime).Minutes()
+		if node.Name != "" {
 			for _, status := range node.Status.Conditions {
 				if status.Type == corev1.NodeReady {
-					if status.Status == corev1.ConditionTrue && task.State == "TASK_RUNNING" {
-						logrus.WithField("func", "scheduler.healthCheckK3s").Debugf("Node (%s) ready: %s", node.Name, task.TaskID)
-						return true
-					} else {
-						logrus.WithField("func", "scheduler.healthCheckK3s").Errorf("Node (%s) not ready: %s", node.Name, task.TaskID)
+					if status.Status == corev1.ConditionTrue {
+						aState = true
+					}
+					if (status.Status == corev1.ConditionFalse || status.Status == corev1.ConditionUnknown) && timeDiff >= e.Config.K3SNodeTimeout.Minutes() {
+						logrus.WithField("func", "scheduler.healthCheckNode").Warningf("K3S %s (%s) not ready", node.Name, task.TaskID)
+						e.cleanupUnreadyTask(task)
+						return false
 					}
 				}
 			}
 		} else {
-			logrus.WithField("func", "scheduler.healthCheckK3s").Error("Could not find taskID for node: ", node.Name)
+			if timeDiff >= e.Config.K3SNodeTimeout.Minutes() {
+				logrus.WithField("func", "scheduler.healthCheckNode").Warningf("K3S %s (%s) not ready", node.Name, task.TaskID)
+				e.cleanupUnreadyTask(task)
+			}
+			return false
 		}
 	}
-	return false
+
+	return aState
+}
+
+// cleanupUnreadyTask if a Mesos task is still unready after CleanupLoopTime Minutes, then it has to be removed.
+func (e *Scheduler) cleanupUnreadyTask(task cfg.Command) {
+	timeDiff := time.Since(task.StateTime).Minutes()
+	if timeDiff >= e.Config.CleanupLoopTime.Minutes() {
+		if task.MesosAgent.ID == "" {
+			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
+		} else {
+			e.Mesos.Kill(task.TaskID, task.MesosAgent.ID)
+		}
+		logrus.WithField("func", "scheduler.cleanupUnreadyTask").Warningf("Cleanup Unhealthy Mesos Task: %s", task.TaskID)
+	}
 }

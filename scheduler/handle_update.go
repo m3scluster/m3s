@@ -66,7 +66,6 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 				e.Config.K3SServerHostname = task.Hostname
 			}
 			e.Config.K3SServerPort = int(task.DockerPortMappings[0].HostPort)
-			e.Kubernetes.Init()
 		}
 	}
 

@@ -92,7 +92,7 @@ func init() {
 	config.VolumeDriver = util.Getenv("VOLUME_DRIVER", "local")
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s/server")
 	config.VolumeDS = util.Getenv("VOLUME_DS", "/data/k3s/datastore")
-	config.TimeZone = util.Getenv("TZ", "Africa/Abidjan") // Africa/Abidjan is the timezone identifier for UTC/GMT i.e. 00:00
+	config.TimeZone = util.Getenv("TZ", "Etc/UTC")
 	config.DSMaxRestore = 0
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0

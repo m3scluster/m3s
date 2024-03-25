@@ -13,14 +13,11 @@ import (
 	framework "github.com/AVENTER-UG/mesos-m3s/types"
 	util "github.com/AVENTER-UG/util/util"
 	"github.com/sirupsen/logrus"
-	"go.uber.org/zap/zapcore"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/serializer/yaml"
 	"k8s.io/client-go/kubernetes"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
-	"sigs.k8s.io/controller-runtime/pkg/log"
-	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 )
 
 var (
@@ -152,7 +149,14 @@ func init() {
 }
 
 func main() {
-	// need to be set in newer k8 controller libs
-	log.SetLogger(zap.New(zap.UseDevMode(false), zap.Level(zapcore.Level(4))))
-	startController()
+	ticker := time.NewTicker(time.Second * 10)
+	defer ticker.Stop()
+	for ; true; <-ticker.C {
+		startController()
+		content := Redis.GetRedisKey(Config.RedisPrefix + ":kubernetes_config")
+		if content != "" {
+			ticker.Stop()
+		}
+	}
+
 }

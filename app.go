@@ -161,7 +161,7 @@ func main() {
 	k8 := controller.New(&config, &framework)
 	k8.Redis = r
 
-	// set kubernetes client to API
+	// add kubernetes pointer to API
 	a.Kubernetes = k8
 
 	//	this loop is for resubscribtion purpose
@@ -175,9 +175,6 @@ func main() {
 			e.API = a
 			e.Redis = r
 			e.Kubernetes = k8
-			k8.CreateClient()
-			go k8.CreateController()
-			go k8.UnscheduleBeat()
 			e.EventLoop()
 		}
 	}

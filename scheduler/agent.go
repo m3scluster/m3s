@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -183,56 +182,7 @@ func (e *Scheduler) getDiscoveryInfoPorts(cmd cfg.Command) []mesosproto.Port {
 
 // healthCheckAgent check the health of all agents. Return true if all are fine.
 func (e *Scheduler) healthCheckAgent() bool {
-	// Hold the at all state of the agent service.
-	aState := false
-
-	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") < e.Config.K3SAgentMax {
-		logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3s Agent missing")
-		return false
-	}
-
-	// check the realstate of the kubernetes agents
-	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":agent:*")
-	for keys.Next(e.Redis.CTX) {
-		key := e.Redis.GetRedisKey(keys.Val())
-		task := e.Mesos.DecodeTask(key)
-		node := e.Kubernetes.GetK8NodeFromTask(task)
-
-		if node.Name != "" {
-			timeDiff := time.Since(node.CreationTimestamp.Time).Minutes()
-			for _, status := range node.Status.Conditions {
-				if status.Type == corev1.NodeReady {
-					if status.Status == corev1.ConditionTrue {
-						aState = true
-					}
-					if (status.Status == corev1.ConditionFalse || status.Status == corev1.ConditionUnknown) && timeDiff >= e.Config.K3SNodeTimeout.Minutes() {
-						logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: " + node.Name + "(" + task.TaskID + ")")
-						e.cleanupUnreadyTask(task)
-						return false
-					}
-				}
-			}
-		} else {
-			logrus.WithField("func", "scheduler.healthCheckAgent").Warning("K3S Agent not ready: ", task.TaskID)
-			e.cleanupUnreadyTask(task)
-			return false
-		}
-	}
-
-	return aState
-}
-
-// cleanupUnreadyTask if a Mesos task is still unready after CleanupLoopTime Minutes, then it has to be removed.
-func (e *Scheduler) cleanupUnreadyTask(task cfg.Command) {
-	timeDiff := time.Since(task.StateTime).Minutes()
-	if timeDiff >= e.Config.CleanupLoopTime.Minutes() {
-		if task.MesosAgent.ID == "" {
-			e.Redis.DelRedisKey(task.TaskName + ":" + task.TaskID)
-		} else {
-			e.Mesos.Kill(task.TaskID, task.MesosAgent.ID)
-		}
-		logrus.WithField("func", "scheduler.cleanupUnreadyTask").Warningf("Cleanup Unhealthy Mesos Task: %s", task.TaskID)
-	}
+	return e.healthCheckNode("agent", e.Config.K3SAgentMax)
 }
 
 // removeNotExistingAgents remove kubernetes from redis if it does not have a Mesos Task. It

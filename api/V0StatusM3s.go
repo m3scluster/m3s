@@ -1,18 +1,18 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	"github.com/AVENTER-UG/mesos-m3s/types"
-	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // V0StatusM3s gives out the current status of the M3s services
 // example:
-// curl -X GET 127.0.0.1:10000/v0/status/m3s
+// curl -X GET 127.0.0.1:10000/api/m3s/v0/status/m3s
 func (e *API) V0StatusM3s(w http.ResponseWriter, r *http.Request) {
 	logrus.WithField("func", "api.V0StatusM3s").Debug("Call")
 
@@ -40,19 +40,15 @@ func (e *API) getStatus() {
 
 	K3sNodeTaskMap := map[string]string{}
 
-	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":kubernetes:*")
-	for keys.Next(e.Redis.CTX) {
-		key := e.Redis.GetRedisKey(keys.Val())
-		var node corev1.Node
-		err := json.NewDecoder(strings.NewReader(key)).Decode(&node)
-		if err != nil {
-			logrus.WithField("func", "scheduler.V0GetKubeVersion").Error("Could not decode kubernetes node: ", err.Error())
-			continue
-		}
+	nodes, err := e.Kubernetes.Client.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+	if err != nil {
+		logrus.WithField("func", "api.getStatus").Error("Could not get nodes from controller: ", err.Error())
+	}
 
-		taskID := e.GetTaskIDFromLabel(node.Labels)
+	for _, node := range nodes.Items {
+		taskID := e.Kubernetes.GetTaskIDFromLabel(node.Labels)
 		if taskID == "" {
-			taskID = e.GetTaskIDFromAnnotation(node.Annotations)
+			taskID = e.Kubernetes.GetTaskIDFromAnnotation(node.Annotations)
 		}
 
 		K3sNodeTaskMap[taskID] = node.Name
@@ -81,37 +77,4 @@ func (e *API) getStatus() {
 			}
 		}
 	}
-}
-
-// GetTaskIDFromAnnotation will return the Mesos Task ID in the annotation string
-func (e *API) GetTaskIDFromAnnotation(annotations map[string]string) string {
-	for i, annotation := range annotations {
-		if i == "k3s.io/node-args" {
-			var args []string
-			err := json.Unmarshal([]byte(annotation), &args)
-			if err != nil {
-				logrus.WithField("func", "scheduler.GetTaskIDFromAnnotation").Error("Could not decode kubernetes node annotation: ", err.Error())
-				continue
-			}
-			for _, arg := range args {
-				if strings.Contains(arg, "taskid") {
-					value := strings.Split(arg, "=")
-					if len(value) == 2 {
-						return value[1]
-					}
-				}
-			}
-		}
-	}
-	return ""
-}
-
-// GetTaskIDFromLabel will return the Mesos Task ID in the label string
-func (e *API) GetTaskIDFromLabel(labels map[string]string) string {
-	for i, label := range labels {
-		if i == "m3s.aventer.biz/taskid" {
-			return label
-		}
-	}
-	return ""
 }

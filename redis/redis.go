@@ -96,6 +96,26 @@ func (e *Redis) GetTaskFromEvent(update *mesosproto.Event_Update) cfg.Command {
 	return cfg.Command{}
 }
 
+// GetTaskByHostname will give out the Mesos task by Hostname
+func (e *Redis) GetTaskByHostname(hostname string) cfg.Command {
+	// search matched taskid in redis and update the status
+	keys := e.GetAllRedisKeys(e.Prefix + ":*")
+	for keys.Next(e.CTX) {
+		// ignore redis keys if they are not mesos tasks
+		if e.CheckIfNotTask(keys) {
+			continue
+		}
+
+		key := e.GetRedisKey(keys.Val())
+		task := e.Mesos.DecodeTask(key)
+		if task.Hostname == hostname {
+			return task
+		}
+	}
+
+	return cfg.Command{}
+}
+
 // CountRedisKey will get back the count of the redis key
 func (e *Redis) CountRedisKey(pattern string, ignoreState string) int {
 	keys := e.GetAllRedisKeys(pattern)
