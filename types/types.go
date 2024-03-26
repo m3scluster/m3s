@@ -69,6 +69,7 @@ type Config struct {
 	K3SAgentCPU                 float64
 	K3SAgentMEM                 float64
 	K3SAgentDISK                float64
+	K3SAgentTCPPort             int
 	K3SDocker                   string
 	K3SToken                    string
 	K3SEnableTaint              bool

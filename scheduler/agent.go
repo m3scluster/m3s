@@ -35,6 +35,17 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		},
 	}
 
+	if e.Config.K3SAgentTCPPort > 0 {
+		tmpTcpPort := []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+			{
+				HostPort:      0,
+				ContainerPort: uint32(e.Config.K3SAgentTCPPort),
+				Protocol:      func() *string { x := "tcp"; return &x }(),
+			},
+		}
+		cmd.DockerPortMappings = append(cmd.DockerPortMappings, tmpTcpPort...)
+	}
+
 	cmd.Shell = true
 	cmd.Privileged = true
 	cmd.Memory = e.Config.K3SAgentMEM

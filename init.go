@@ -74,6 +74,7 @@ func init() {
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "2.0"), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "2000"), 64)
 	config.K3SAgentDISK, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_DISK", "10000"), 64)
+	config.K3SAgentTCPPort, _ = strconv.Atoi(util.Getenv("K3S_AGENT_TCP_PORT", "0"))
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
 	config.LogLevel = util.Getenv("LOGLEVEL", "DEBUG")
 	config.Principal = util.Getenv("MESOS_PRINCIPAL", "")

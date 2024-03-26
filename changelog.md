@@ -31,6 +31,9 @@
 - Move kubernetes controller into the framework to optimise Kubernetes node handling and healthchecks
 - Update taskid label of Kubernetes controll-plane node after restart
 - Fix and optimise mesos offerhandling 
+- Add support for a TCP port beside HTTP and HTTPS at the Kubernetes agent. It will be configures and
+  enabled with the env variable `K3S_AGENT_TCP_PORT`.
+  
 
 ## v0.4.1
 

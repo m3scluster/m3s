@@ -33,6 +33,7 @@ The following environment variables are available:
 | K3S_AGENT_LABELS | [{"key":"traefik.enable","value":"true"},{"key":"traefik.http.routers.m3s.entrypoints","value":"web"},{"key":"traefik.http.routers.m3s.service","value":"m3s-http"},{"key":"traefik.http.routers.m3s.rule","value":"HostRegexp(`example.com`, `{subdomain:[a-z]+}.example.com`)"}] | Configure custom labels for the container. In these example, we will use lables for traefik. |
 | K3S_AGENT_COUNT  | 1 | Amount of running K3s agents |
 | K3S_AGENT_CONSTRAINT  | |  Tell Mesos to start the K3s agent on that hostname |
+| K3S_AGENT_TCP_PORT | 0 | Enable and configure suport for a TCP port at the Kubernetes Agent |
 | K3S_CUSTOM_DOMAIN     | cloud.local | The network Domain we will use for the K3s cni |
 | K3S_CONTAINER_DISK    | 30gb | Disk size of the K3S container |
 | K3S_DS_CONSTRAINT  | <hostname> | Tell Mesos to start the datastore on this hostname |
