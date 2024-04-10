@@ -9,7 +9,7 @@ export INSTALL_K3S_VERSION=$KUBERNETES_VERSION+k3s1
 export INSTALL_K3S_SKIP_ENABLE=true
 export INSTALL_K3S_SKIP_START=true
 export K3S_RESOLV_CONF=/etc/k3sresolv.conf
-export BRANCH=master
+export BRANCH=server-token
 export ARCH=`dpkg --print-architecture`
 
 ## Export json as environment variables

@@ -14,5 +14,6 @@ type Config struct {
 	Heartbeat        time.Duration
 	UnscheduleTime   time.Duration
 	DefaultYAML      string
+	ServerTokenPath  string
 	EnableTaint      bool
 }

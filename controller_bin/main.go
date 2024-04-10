@@ -78,6 +78,7 @@ func startController() {
 		logrus.WithField("func", "controller.startController").Error("Error reading file:", err)
 	} else {
 		Redis.SetRedisKey(content, Config.RedisPrefix+":kubernetes_config")
+		loadServerToken()
 	}
 
 	// Create kubernetes client
@@ -115,6 +116,17 @@ func loadDefaultYAML() {
 		Body(obj).Do(context.TODO())
 }
 
+func loadServerToken() {
+	logrus.WithField("func", "loadServerToken").Info("Load K3s Server Token: ", Config.ServerTokenPath)
+
+	tokenFile, err := os.ReadFile(Config.ServerTokenPath)
+	if err != nil {
+		logrus.WithField("func", "controller.loadServerToken").Error("could not load server token file: ", Config.ServerTokenPath)
+		return
+	}
+	Redis.SetRedisKey(tokenFile, Config.RedisPrefix+":kubernetes_servertoken")
+}
+
 func waitForKubernetesMasterReady(clientset *kubernetes.Clientset) {
 	logrus.WithField("func", "controller.waitForKubernetesMasterReady").Info("Wait until Kubernetes Manager is ready")
 	for {
@@ -137,6 +149,7 @@ func init() {
 	Config.DefaultYAML = util.Getenv("M3S_CONTROLLER__DEFAULT_YAML", "/mnt/mesos/sandbox/default.yaml")
 	Config.Heartbeat, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__HEARTBEAT_TIME", "2m"))
 	Config.UnscheduleTime, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__UNSCHEDULE_TIME", "10s"))
+	Config.ServerTokenPath = util.Getenv("M3S_CONTROLLER__SERVER_TOKEN_PATH", "/var/lib/rancher/k3s/server/token")
 
 	if strings.Compare(util.Getenv("M3S_CONTROLLER__ENABLE_TAINT", "true"), "false") == 0 {
 		Config.EnableTaint = false
