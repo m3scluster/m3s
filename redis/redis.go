@@ -75,7 +75,7 @@ func (e *Redis) DelRedisKey(key string) int64 {
 }
 
 // GetTaskFromEvent get out the key by a mesos event
-func (e *Redis) GetTaskFromEvent(update *mesosproto.Event_Update) cfg.Command {
+func (e *Redis) GetTaskFromEvent(update *mesosproto.Event_Update) *cfg.Command {
 	// search matched taskid in redis and update the status
 	keys := e.GetAllRedisKeys(e.Prefix + ":*")
 	for keys.Next(e.CTX) {
@@ -87,17 +87,17 @@ func (e *Redis) GetTaskFromEvent(update *mesosproto.Event_Update) cfg.Command {
 		key := e.GetRedisKey(keys.Val())
 		task := e.Mesos.DecodeTask(key)
 
-		if task.TaskID == update.Status.TaskID.Value {
+		if task.TaskID == update.Status.TaskId.GetValue() {
 			task.State = update.Status.State.String()
 			return task
 		}
 	}
 
-	return cfg.Command{}
+	return &cfg.Command{}
 }
 
 // GetTaskByHostname will give out the Mesos task by Hostname
-func (e *Redis) GetTaskByHostname(hostname string) cfg.Command {
+func (e *Redis) GetTaskByHostname(hostname string) *cfg.Command {
 	// search matched taskid in redis and update the status
 	keys := e.GetAllRedisKeys(e.Prefix + ":*")
 	for keys.Next(e.CTX) {
@@ -113,7 +113,7 @@ func (e *Redis) GetTaskByHostname(hostname string) cfg.Command {
 		}
 	}
 
-	return cfg.Command{}
+	return &cfg.Command{}
 }
 
 // CountRedisKey will get back the count of the redis key
@@ -183,13 +183,13 @@ func (e *Redis) Connect() bool {
 }
 
 // SaveTaskRedis store mesos task in DB
-func (e *Redis) SaveTaskRedis(cmd cfg.Command) {
+func (e *Redis) SaveTaskRedis(cmd *cfg.Command) {
 	d, _ := json.Marshal(&cmd)
 	e.SetRedisKey(d, cmd.TaskName+":"+cmd.TaskID)
 }
 
 // SaveFrameworkRedis store mesos framework in DB
-func (e *Redis) SaveFrameworkRedis(framework cfg.FrameworkConfig) {
+func (e *Redis) SaveFrameworkRedis(framework *cfg.FrameworkConfig) {
 	d, _ := json.Marshal(&framework)
 	e.SetRedisKey(d, e.Prefix+":framework")
 }

@@ -68,7 +68,7 @@ func (e *API) scale(newCount int, oldCount int, key string) []byte {
 		e.Redis.SaveTaskRedis(task)
 
 		if newCount < oldCount {
-			node := e.Kubernetes.GetK8NodeFromTask(task)
+			node := e.Kubernetes.GetK8NodeFromTask(*task)
 			if task.TaskName == e.Framework.FrameworkName+":agent" && node.Name != "" {
 				// remove the agent nodes before we kill the agent
 				e.Kubernetes.DeleteNode(node.Name)
