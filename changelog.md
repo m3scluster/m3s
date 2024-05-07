@@ -34,9 +34,13 @@
 - Add support for a TCP port beside HTTP and HTTPS at the Kubernetes agent. It will be configures and
   enabled with the env variable `K3S_AGENT_TCP_PORT`.
 - Migrate from gogo protobuf to golang protobuf. Update mesos proto files.
-  
+
 
 ## v0.4.1
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/11
+
+## v0.4.2
 
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/9
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/8
