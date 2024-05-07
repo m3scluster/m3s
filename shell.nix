@@ -4,7 +4,11 @@ stdenv.mkDerivation {
 name = "go-env";
 
 buildInputs = [
-  go
+    go
+    syft
+    grype
+    docker
+    trivy
 ];
 
 SOURCE_DATE_EPOCH = 315532800;

@@ -2,10 +2,10 @@
 
 #vars
 IMAGENAME=mesos-m3s
-TAG=`git describe`
+TAG=$(shell git describe)
 BUILDDATE=$(shell date -u +%Y%m%d)
 IMAGEFULLNAME=avhost/${IMAGENAME}
-BRANCH=`git symbolic-ref --short HEAD | tr -d "heads/" `
+BRANCH=$(shell git symbolic-ref --short HEAD | xargs basename)
 VERSION_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/.version.json
 LASTCOMMIT=$(shell git log -1 --pretty=short | tail -n 1 | tr -d " " | tr -d "UPDATE:")
 
@@ -32,7 +32,7 @@ endif
 
 build:
 	@echo ">>>> Build docker image branch:" ${BRANCH}_${BUILDDATE}
-	@docker buildx build --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
+	@docker build --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH}_${BUILDDATE} .
 
 build-bin:
 	@echo ">>>> Build binary"
@@ -69,6 +69,9 @@ sboom:
 	syft dir:. > sbom.txt
 	syft dir:. -o json > sbom.json
 
+imagecheck: build
+	trivy image ${IMAGEFULLNAME}:${BRANCH}_${BUILDDATE}	
+
 go-fmt:
 	@gofmt -w .
 
@@ -78,5 +81,5 @@ version:
 	@cat .version.json
 	@echo "Saved under .version.json"
 
-check: go-fmt sboom seccheck
+check: go-fmt sboom seccheck imagecheck
 all: check version controller-bin build
