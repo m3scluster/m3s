@@ -1,34 +1,18 @@
 # Changelog
 
-## master
+## v0.4.3
 
-- Add implicit reconcile to remove unknown Mesos Tasks
-- Add limitation of memory swap (DOCKER_MEMORY_SWAP, default value "1000" MB) the container can use
-- Add API and cli to shutdown the K8 cluster (does not delete persistence volumes)
-- Add API and cli to start the K8 cluster after a shutdown
-- Add API and cli to restart the K8 cluster 
-- Change kubeapi to a fix hostport. It would ever be the first port of the framework portrange
-- Fix port detection if the framework is running as container at the same servers like the datastore and K8 manager
-- Add support for Server labels
-- Add REFUSE_OFFERS to tell mesos it does not have to send new offers during the next seconds (default: 120.0). That will give other 
-  frameworks the chance to get offers more quickly.
-- Bootstrap: Combine dashboard.yaml, dashboard_auth.yaml and dashboard_traefik.yaml into default.yaml. These file is the place to customize 
-  k3s during the bootstrap process.
-- Rewrite bootstrap server as Kubernetes Controller to simplify the bootstrap process and optimize cluster health checks.
-- Add Kubernetes taint to prevent pods to run on the Kubernetes management node. With K3S_ENABLE_TAINT you can enable(true and default)/disable(disable) these feature.
-- Change the mesos cli plugin to avmesos-cli.
-- Fix ClusterRestart API [#14](https://github.com/AVENTER-UG/mesos-m3s/pull/14) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
-- Add API to disclosure API capabilities [#16](https://github.com/AVENTER-UG/mesos-m3s/pull/16) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
-- Update K3s to Version 1.25.2
-- Move environment variable KUBERNETES_VERSION from bootstrap file into m3s framework.
-- Add Timezone support via env variable `TZ` [#17](https://github.com/AVENTER-UG/mesos-m3s/pull/17) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
-- Set Kubernetes agent nodes to unscheduled until all agent nodes are not ready.
-- Update golang libraries.
-- Add API to restart agent, datastore and server and update CPU and MEM Ressources [#18](https://github.com/AVENTER-UG/mesos-m3s/pull/18) (thanks to [@itsoksarvesh](https://github.com/itsoksarvesh)).
-- Change datastore healtcheck to Mesos internal check mechanism.
-- Add support to develope plugins for m3s. As example we have add two plugins.
-- Add Kafka plugin to stream Mesos event messages to kafka. To enable plugin support, set `M3S_PLUGIN=true`
-- Move kubernetes controller into the framework to optimise K8 node handling
+- FIX: Update go modudles
+- FIX: Update K8S modules + bootstrap for cgroupsv2
+
+## v0.4.2
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/15
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/16
+
+## v0.4.1
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/11
 
 ## v0.4.1
 

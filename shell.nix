@@ -2,6 +2,7 @@ with import <nixpkgs> {};
 
 stdenv.mkDerivation {
 name = "go-env";
+S_NETWORK = "host";
 
 buildInputs = [
   go
