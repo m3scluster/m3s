@@ -295,7 +295,7 @@ func (e *Controller) SetSchedule() {
 }
 
 // GetTaskFromK8Node will give out the mesos task matched to the K8 node
-func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) cfg.Command {
+func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) *cfg.Command {
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":" + kind + ":*")
 	for keys.Next(e.Redis.CTX) {
 		taskID := e.GetTaskIDFromLabel(node.Labels)
@@ -312,7 +312,7 @@ func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) cfg.Comman
 			}
 		}
 	}
-	return cfg.Command{}
+	return &cfg.Command{}
 }
 
 // GetK8NodeFromTask will give out the K8 node from mesos task

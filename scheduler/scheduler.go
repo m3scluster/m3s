@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"crypto/tls"
 	"net/http"
+	"strconv"
 	"strings"
 
 	api "github.com/AVENTER-UG/mesos-m3s/api"
@@ -14,9 +15,9 @@ import (
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
 	"github.com/AVENTER-UG/util/util"
+	"google.golang.org/protobuf/encoding/protojson"
 
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
-	"github.com/gogo/protobuf/jsonpb"
 )
 
 // Scheduler include all the current vars and global config
@@ -31,11 +32,10 @@ type Scheduler struct {
 	Kubernetes *controller.Controller
 }
 
-// Marshaler to serialize Protobuf Message to JSON
-var marshaller = jsonpb.Marshaler{
-	EnumsAsInts: false,
-	Indent:      " ",
-	OrigName:    true,
+var marshaller = protojson.MarshalOptions{
+	UseEnumNumbers: false,
+	Indent:         " ",
+	UseProtoNames:  true,
 }
 
 // Subscribe to the mesos backend
@@ -47,14 +47,14 @@ func Subscribe(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Scheduler {
 	}
 
 	subscribeCall := &mesosproto.Call{
-		FrameworkID: e.Framework.FrameworkInfo.ID,
-		Type:        mesosproto.Call_SUBSCRIBE,
+		FrameworkId: e.Framework.FrameworkInfo.Id,
+		Type:        mesosproto.Call_SUBSCRIBE.Enum(),
 		Subscribe: &mesosproto.Call_Subscribe{
 			FrameworkInfo: &e.Framework.FrameworkInfo,
 		},
 	}
 	logrus.WithField("func", "scheduler.Subscribe").Debug(subscribeCall)
-	body, _ := marshaller.MarshalToString(subscribeCall)
+	body, _ := marshaller.Marshal(subscribeCall)
 	client := &http.Client{}
 	// #nosec G402
 	client.Transport = &http.Transport{
@@ -89,7 +89,7 @@ func (e *Scheduler) EventLoop() {
 	reader := bufio.NewReader(res.Body)
 
 	line, _ := reader.ReadString('\n')
-	_ = strings.TrimSuffix(line, "\n")
+	bytesCount, _ := strconv.Atoi(strings.Trim(line, "\n"))
 
 	go e.HeartbeatLoop()
 	go e.ReconcileLoop()
@@ -97,14 +97,22 @@ func (e *Scheduler) EventLoop() {
 	for {
 		// Read line from Mesos
 		line, err = reader.ReadString('\n')
+		_ = strings.Trim(line, "\n")
+		// skip if no data
+		if line == "" || len(line)-1 < bytesCount {
+			continue
+		}
+		data := line[:bytesCount]
+		bytesCount, _ = strconv.Atoi(line[bytesCount : len(line)-1])
+
 		if err != nil {
 			logrus.WithField("func", "scheduler.EventLoop").Error("Error to read data from Mesos Master: ", err.Error())
 			return
 		}
-		line = strings.TrimSuffix(line, "\n")
+
 		// Read important data
 		var event mesosproto.Event // Event as ProtoBuf
-		err := jsonpb.UnmarshalString(line, &event)
+		err := protojson.Unmarshal([]byte(data), &event)
 		if err != nil {
 			logrus.WithField("func", "scheduler.EventLoop").Warn("Could not unmarshal Mesos Master data: ", err.Error())
 			continue
@@ -112,23 +120,23 @@ func (e *Scheduler) EventLoop() {
 
 		logrus.WithField("func", "scheduler.EventLoop").Debug("Event Received from Mesos: ", event.Type)
 
-		switch event.Type {
-		case mesosproto.Event_SUBSCRIBED:
+		switch event.Type.Number() {
+		case mesosproto.Event_SUBSCRIBED.Number():
 			logrus.WithField("func", "scheduler.EventLoop").Info("Subscribed")
-			logrus.WithField("func", "scheduler.EventLoop").Debug("FrameworkId: ", event.Subscribed.GetFrameworkID())
-			e.Framework.FrameworkInfo.ID = event.Subscribed.GetFrameworkID()
+			logrus.WithField("func", "scheduler.EventLoop").Debug("FrameworkId: ", event.Subscribed.GetFrameworkId())
+			e.Framework.FrameworkInfo.Id = event.Subscribed.GetFrameworkId()
 			e.Framework.MesosStreamID = res.Header.Get("Mesos-Stream-Id")
 
 			e.reconcile()
 			e.CheckState()
-			e.Redis.SaveFrameworkRedis(*e.Framework)
+			e.Redis.SaveFrameworkRedis(e.Framework)
 			e.Redis.SaveConfig(*e.Config)
-		case mesosproto.Event_UPDATE:
+		case mesosproto.Event_UPDATE.Number():
 			e.HandleUpdate(&event)
 			// save configuration
 			e.Redis.SaveConfig(*e.Config)
-			go e.callPluginEvent(event)
-		case mesosproto.Event_OFFERS:
+			go e.callPluginEvent(&event)
+		case mesosproto.Event_OFFERS.Number():
 			// Search Failed containers and restart them
 			err = e.HandleOffers(event.Offers)
 			if err != nil {
@@ -176,10 +184,10 @@ func (e *Scheduler) portInUse(port uint32) bool {
 		task := e.Mesos.DecodeTask(key)
 
 		// check if the given port is already in use
-		ports := task.Discovery.GetPorts()
-		if ports != nil {
+		if task.Discovery != nil {
+			ports := task.Discovery.Ports
 			for _, hostport := range ports.GetPorts() {
-				if hostport.Number == port {
+				if hostport.GetNumber() == port {
 					logrus.WithField("func", "scheduler.portInUse").Debug("Port in use: ", port)
 					return true
 				}
@@ -199,7 +207,12 @@ func (e *Scheduler) getTaskID(taskID string) string {
 	return taskID
 }
 
-func (e *Scheduler) addDockerParameter(current []mesosproto.Parameter, newValues mesosproto.Parameter) []mesosproto.Parameter {
+func (e *Scheduler) addDockerParameter(current []*mesosproto.Parameter, key string, values string) []*mesosproto.Parameter {
+	newValues := &mesosproto.Parameter{
+		Key:   func() *string { x := key; return &x }(),
+		Value: func() *string { x := values; return &x }(),
+	}
+
 	return append(current, newValues)
 }
 
@@ -207,19 +220,19 @@ func (e *Scheduler) appendString(current []string, newValues string) []string {
 	return append(current, newValues)
 }
 
-func (e *Scheduler) changeDockerPorts(cmd cfg.Command) []mesosproto.ContainerInfo_DockerInfo_PortMapping {
-	var ret []mesosproto.ContainerInfo_DockerInfo_PortMapping
+func (e *Scheduler) changeDockerPorts(cmd *cfg.Command) []*mesosproto.ContainerInfo_DockerInfo_PortMapping {
+	var ret []*mesosproto.ContainerInfo_DockerInfo_PortMapping
 	hostPort := e.getRandomHostPort(len(cmd.Discovery.Ports.Ports))
 	for n, port := range cmd.DockerPortMappings {
-		if port.HostPort == 0 {
-			port.HostPort = hostPort + uint32(n)
+		if *port.HostPort == 0 {
+			port.HostPort = util.Uint32ToPointer(hostPort + uint32(n))
 		}
 		ret = append(ret, port)
 	}
 	return ret
 }
 
-func (e *Scheduler) changeDiscoveryInfo(cmd cfg.Command) mesosproto.DiscoveryInfo {
+func (e *Scheduler) changeDiscoveryInfo(cmd *cfg.Command) *mesosproto.DiscoveryInfo {
 	for i, port := range cmd.DockerPortMappings {
 		cmd.Discovery.Ports.Ports[i].Number = port.HostPort
 	}
@@ -228,7 +241,7 @@ func (e *Scheduler) changeDiscoveryInfo(cmd cfg.Command) mesosproto.DiscoveryInf
 
 // reconcile will ask Mesos about the current state of the given tasks
 func (e *Scheduler) reconcile() {
-	var oldTasks []mesosproto.Call_Reconcile_Task
+	var oldTasks []*mesosproto.Call_Reconcile_Task
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	for keys.Next(e.Redis.CTX) {
 		// continue if the key is not a mesos task
@@ -244,18 +257,18 @@ func (e *Scheduler) reconcile() {
 			continue
 		}
 
-		oldTasks = append(oldTasks, mesosproto.Call_Reconcile_Task{
-			TaskID: mesosproto.TaskID{
-				Value: task.TaskID,
+		oldTasks = append(oldTasks, &mesosproto.Call_Reconcile_Task{
+			TaskId: &mesosproto.TaskID{
+				Value: &task.TaskID,
 			},
-			AgentID: &mesosproto.AgentID{
-				Value: task.Agent,
+			AgentId: &mesosproto.AgentID{
+				Value: &task.MesosAgent.ID,
 			},
 		})
 		logrus.WithField("func", "mesos.Reconcile").Debug("Reconcile Task: ", task.TaskID)
 	}
 	err := e.Mesos.Call(&mesosproto.Call{
-		Type:      mesosproto.Call_RECONCILE,
+		Type:      mesosproto.Call_RECONCILE.Enum(),
 		Reconcile: &mesosproto.Call_Reconcile{Tasks: oldTasks},
 	})
 
@@ -266,9 +279,9 @@ func (e *Scheduler) reconcile() {
 
 // implicitReconcile will ask Mesos which tasks and there state are registert to this framework
 func (e *Scheduler) implicitReconcile() {
-	var noTasks []mesosproto.Call_Reconcile_Task
+	var noTasks []*mesosproto.Call_Reconcile_Task
 	err := e.Mesos.Call(&mesosproto.Call{
-		Type:      mesosproto.Call_RECONCILE,
+		Type:      mesosproto.Call_RECONCILE.Enum(),
 		Reconcile: &mesosproto.Call_Reconcile{Tasks: noTasks},
 	})
 
@@ -277,7 +290,7 @@ func (e *Scheduler) implicitReconcile() {
 	}
 }
 
-func (e *Scheduler) callPluginEvent(event mesosproto.Event) {
+func (e *Scheduler) callPluginEvent(event *mesosproto.Event) {
 	if e.Config.PluginsEnable {
 		for _, p := range e.Config.Plugins {
 			symbol, err := p.Lookup("Event")
@@ -286,7 +299,7 @@ func (e *Scheduler) callPluginEvent(event mesosproto.Event) {
 				continue
 			}
 
-			eventPluginFunc, ok := symbol.(func(mesosproto.Event))
+			eventPluginFunc, ok := symbol.(func(*mesosproto.Event))
 			if !ok {
 				logrus.WithField("func", "main.callPluginEvent").Error("Error plugin does not have Event function")
 				continue

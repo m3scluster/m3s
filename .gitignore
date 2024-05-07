@@ -22,4 +22,5 @@ controller/sbom.txt
 local-env.sh
 .vscode/
 .devcontainer/
+.containername
 plugins/*.so
