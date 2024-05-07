@@ -2,8 +2,7 @@
 
 #vars
 IMAGENAME=mesos-m3s
-TAG=`git describe`
-BUILDDATE=`date -u +%Y-%m-%dT%H:%M:%SZ`
+BUILDDATE=$(shell date -u +%Y%m%d)
 IMAGEFULLNAME=avhost/${IMAGENAME}
 BRANCH=`git symbolic-ref --short HEAD`
 VERSION_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/.version.json
@@ -30,14 +29,8 @@ ifeq (${BRANCH}, master)
 	BRANCH=latest
 endif
 
-ifneq ($(shell echo $(LASTCOMMIT) | grep -E '^v([0-9]+\.){0,2}(\*|[0-9]+)'),)
-	BRANCH=${LASTCOMMIT}
-else
-	BRANCH=latest
-endif
-
 build:
-	@echo ">>>> Build docker image branch:" ${BRANCH}
+	@echo ">>>> Build docker image branch:" ${BRANCH}_${BUILDDATE}
 	@docker buildx build --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 
 build-bin:
@@ -50,8 +43,9 @@ controller-bin:
 	@cp controller_bin/controller.amd64 bootstrap/
 
 push:
-	@echo ">>>> Publish docker image" ${BRANCH}
+	@echo ">>>> Publish docker image" ${BRANCH}_${BUILDDATE}
 	@docker buildx create --use --name buildkit
+	@docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH}_${BUILDDATE} .
 	@docker buildx build --platform linux/arm64,linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 	@docker buildx rm buildkit
 
