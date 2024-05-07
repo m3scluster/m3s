@@ -116,7 +116,7 @@ func (e *Controller) CreateController() {
 	// Watch for Node events and call Reconcile
 	//err = c.Watch(&source.Kind{Type: &corev1.Node{}}, &handler.EnqueueRequestForObject{})
 
-	err = c.Watch(source.Kind(mgr.GetCache(), &corev1.Node{}), &handler.EnqueueRequestForObject{})
+	err = c.Watch(source.Kind(mgr.GetCache(), &corev1.Node{}, &handler.TypedEnqueueRequestForObject[*corev1.Node]{}))
 	if err != nil {
 		logrus.WithField("func", "controller.startController").Error(err, "unable to watch Node")
 		return
