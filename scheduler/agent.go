@@ -46,14 +46,20 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		cmd.DockerPortMappings = append(cmd.DockerPortMappings, tmpTcpPort...)
 	}
 
-	cmd.Shell = true
+	cmd.Shell = false
 	cmd.Privileged = true
 	cmd.Memory = e.Config.K3SAgentMEM
 	cmd.CPU = e.Config.K3SAgentCPU
 	cmd.Disk = e.Config.K3SAgentDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":agent"
 	cmd.Hostname = e.Framework.FrameworkName + "agent" + e.Config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SAgentString + e.Config.K3SDocker + " --with-node-id " + cmd.TaskID + " --kubelet-arg node-labels m3s.aventer.biz/taskid=" + cmd.TaskID + "'"
+	cmd.Command = "/mnt/mesos/sandbox/bootstrap"
+	cmd.Arguments = strings.Split(e.Config.K3SAgentString, " ")
+	if e.Config.K3SDocker != "" {
+		cmd.Arguments = append(cmd.Arguments, e.Config.K3SDocker)
+	}
+	cmd.Arguments = append(cmd.Arguments, "--with-node-id "+cmd.TaskID)
+	cmd.Arguments = append(cmd.Arguments, "--kubelet-arg node-labels m3s.aventer.biz/taskid="+cmd.TaskID)
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)

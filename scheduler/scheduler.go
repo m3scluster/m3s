@@ -98,17 +98,19 @@ func (e *Scheduler) EventLoop() {
 		// Read line from Mesos
 		line, err = reader.ReadString('\n')
 		_ = strings.Trim(line, "\n")
-		// skip if no data
-		if line == "" || len(line)-1 < bytesCount {
-			continue
-		}
-		data := line[:bytesCount]
-		bytesCount, _ = strconv.Atoi(line[bytesCount : len(line)-1])
-
 		if err != nil {
 			logrus.WithField("func", "scheduler.EventLoop").Error("Error to read data from Mesos Master: ", err.Error())
 			return
 		}
+
+		// skip if no data
+		if line == "" || len(line)-1 < bytesCount {
+			logrus.WithField("func", "scheduler.EventLoop").Tracef("Line %s, bytesCount: %d ", line, bytesCount)
+			logrus.WithField("func", "scheduler.EventLoop").Trace("No data from Mesos Master")
+			continue
+		}
+		data := line[:bytesCount]
+		bytesCount, _ = strconv.Atoi(line[bytesCount : len(line)-1])
 
 		// Read important data
 		var event mesosproto.Event // Event as ProtoBuf

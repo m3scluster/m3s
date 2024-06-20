@@ -2,6 +2,7 @@ package scheduler
 
 import (
 	"strconv"
+	"strings"
 
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
@@ -144,10 +145,9 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 	cmd.EnableHealthCheck = true
 	cmd.Health = &mesosproto.HealthCheck{}
 	cmd.Health.Command = &mesosproto.CommandInfo{
-		Value: func() *string {
-			x := "mysqladmin ping -h localhost"
-			return &x
-		}(),
+		Shell:     util.BoolToPointer(false),
+		Value:     util.StringToPointer("mysqladmin"),
+		Arguments: strings.Split("ping -h localhost", " "),
 	}
 }
 
@@ -196,10 +196,8 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 	cmd.Health.DelaySeconds = func() *float64 { x := 60.0; return &x }()
 
 	cmd.Health.Command = &mesosproto.CommandInfo{
+		Shell:       util.BoolToPointer(true),
 		Environment: cmd.Environment,
-		Value: func() *string {
-			x := "etcdctl endpoint health --endpoints=http://127.0.0.1:" + e.Config.DSPort
-			return &x
-		}(),
+		Value:       util.StringToPointer("etcdctl endpoint health --endpoints=http://127.0.0.1:" + e.Config.DSPort),
 	}
 }

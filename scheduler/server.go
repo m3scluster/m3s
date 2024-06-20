@@ -3,6 +3,7 @@ package scheduler
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
@@ -21,7 +22,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 
 	cmd := e.defaultCommand(taskID)
 
-	cmd.Shell = true
+	cmd.Shell = false
 	cmd.Privileged = true
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Memory = e.Config.K3SServerMEM
@@ -29,7 +30,13 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.Disk = e.Config.K3SServerDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":server"
 	cmd.Hostname = e.Framework.FrameworkName + "server" + e.Config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SServerString + e.Config.K3SDocker + " --tls-san=" + e.Framework.FrameworkName + "server" + "  --node-label m3s.aventer.biz/taskid=" + cmd.TaskID
+	cmd.Command = "/mnt/mesos/sandbox/bootstrap"
+	cmd.Arguments = strings.Split(e.Config.K3SServerString, " ")
+	if e.Config.K3SDocker != "" {
+		cmd.Arguments = append(cmd.Arguments, e.Config.K3SDocker)
+	}
+	cmd.Arguments = append(cmd.Arguments, "--tls-san="+e.Framework.FrameworkName+"server")
+	cmd.Arguments = append(cmd.Arguments, "--node-label m3s.aventer.biz/taskid="+cmd.TaskID)
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
@@ -40,7 +47,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
 	if e.Framework.MesosCNI == "" {
-		// net-alias is only supported onuser-defined networks
+		// net-alias is only supported on user-defined networks
 		if e.Config.DockerCNI != "bridge" {
 			cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "net-alias", e.Framework.FrameworkName+"server")
 		}
