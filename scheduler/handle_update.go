@@ -10,10 +10,6 @@ import (
 func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	update := event.Update
 
-	if update.Status.Uuid == nil {
-		return nil
-	}
-
 	msg := &mesosproto.Call{
 		Type: mesosproto.Call_ACKNOWLEDGE.Enum(),
 		Acknowledge: &mesosproto.Call_Acknowledge{

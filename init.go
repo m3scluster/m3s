@@ -66,10 +66,10 @@ func init() {
 	config.K3SServerCPU, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU", "1.0"), 64)
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "2000"), 64)
 	config.K3SServerDISK, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_DISK", "1000"), 64)
-	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cgroup-driver=cgroupfs --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --kube-scheduler-arg='leader-elect=false' --kube-controller-manager-arg='enable-leader-migration=false' --kube-cloud-controller-manager-arg='enable-leader-migration=false' --kube-controller-manager-arg='leader-elect=false' --disable-cloud-controller --snapshotter=native --flannel-backend=vxlan ")
+	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cgroup-driver=cgroupfs --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --kube-scheduler-arg=leader-elect=false --kube-controller-manager-arg=enable-leader-migration=false --kube-cloud-controller-manager-arg=enable-leader-migration=false --kube-controller-manager-arg=leader-elect=false --disable-cloud-controller --snapshotter=native --flannel-backend=vxlan")
 	config.K3SCustomDomain = util.Getenv("K3S_CUSTOM_DOMAIN", "cloud.local")
 	config.K3SContainerDisk = util.Getenv("K3S_CONTAINER_DISK", config.DockerSHMSize)
-	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s agent --snapshotter=native --cgroup-driver=cgroupfs ")
+	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s agent --snapshotter=native --cgroup-driver=cgroupfs")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "2.0"), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "2000"), 64)
@@ -153,7 +153,7 @@ func init() {
 
 	// Enable Docker Engine vor K3S instead critc
 	if strings.Compare(os.Getenv("K3S_DOCKER"), "true") == 0 {
-		config.K3SDocker = " --container-runtime-endpoint unix:///var/run/cri-dockerd.sock "
+		config.K3SDocker = "--container-runtime-endpoint unix:///var/run/cri-dockerd.sock"
 	} else {
 		config.K3SDocker = ""
 	}
@@ -176,7 +176,6 @@ func init() {
 	} else {
 		config.PluginsEnable = true
 	}
-
 }
 
 func loadPlugins(r *redis.Redis) {

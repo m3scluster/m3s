@@ -84,6 +84,13 @@ func (e *Mesos) Kill(taskID string, agentID string) error {
 // Call will send messages to mesos
 func (e *Mesos) Call(message *mesosproto.Call) error {
 	message.FrameworkId = e.Framework.FrameworkInfo.Id
+
+	if message.GetType() == mesosproto.Call_ACKNOWLEDGE {
+		if message.Acknowledge.GetUuid() == nil {
+			return nil
+		}
+	}
+
 	body, err := marshaller.Marshal(message)
 
 	if err != nil {

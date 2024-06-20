@@ -1,5 +1,9 @@
 #!/bin/bash
 
+set -x
+
+COMMAND=$@
+
 ## Example of how to set a custom upstream DNS
 echo "nameserver 8.8.8.8" > /etc/k3sresolv.conf
 
@@ -40,5 +44,5 @@ then
 fi
 
 
-echo $1
-$1
+echo "Command: " ${COMMAND}
+${COMMAND}
