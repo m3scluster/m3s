@@ -60,7 +60,7 @@ sboom:
 	syft dir:. -o json > sbom.json
 
 imagecheck: build
-	trivy image ${IMAGEFULLNAME}:${BRANCH}_${BUILDDATE}	
+	trivy image ${IMAGEFULLNAME}:${BRANCH}
 
 go-fmt:
 	@gofmt -w .
