@@ -94,7 +94,7 @@ func init() {
 	config.VolumeK3SServer = util.Getenv("VOLUME_K3S_SERVER", "/data/k3s/server")
 	config.VolumeDS = util.Getenv("VOLUME_DS", "/data/k3s/datastore")
 	config.TimeZone = util.Getenv("TZ", "Etc/UTC")
-	config.K3SDisableScheduling = stringToBool(util.Getenv("K3SDisableScheduling", "false"))
+	config.K3SDisableScheduling = stringToBool(util.Getenv("K3S_DISABLE_SCHEDULING", "false"))
 	config.DSMaxRestore = 0
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0

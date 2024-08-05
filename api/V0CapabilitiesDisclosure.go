@@ -44,6 +44,8 @@ func (e *API) V0CapabilitiesDisclosure(w http.ResponseWriter, r *http.Request) {
 	capabilities = append(capabilities, "adjust-server-memory, /api/m3s/v0/server/memory/{memory}, PUT")
 	capabilities = append(capabilities, "adjust-agent-memory, /api/m3s/v0/agent/memory/{memory}, PUT")
 	capabilities = append(capabilities, "adjust-ds-memory, /api/m3s/v0/ds/memory/{memory}, PUT")
+	capabilities = append(capabilities, "cordon-agent-nodes, /api/m3s/v0/agent/cordon, PUT")
+	capabilities = append(capabilities, "uncordon-agent-nodes, /api/m3s/v0/agent/uncordon, PUT")
 
 	response, _ := json.Marshal(capabilities)
 	w.Write(response)
