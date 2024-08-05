@@ -17,9 +17,17 @@ func (e *Scheduler) Heartbeat() {
 		e.Redis.Connect()
 	}
 
-	dsState := e.healthCheckDatastore()
-	k3sState := e.healthCheckK3s()
-	k3sAgentState := e.healthCheckAgent()
+	var frameworkSupressed, dsState, k3sState, k3sAgentState bool
+
+	if e.Config.DSMax == 0 && e.Config.K3SServerMax == 0 && e.Config.K3SAgentMax == 0 {
+		frameworkSupressed = true
+		logrus.WithField("func", "scheduler.Heartbeat").Debug("Framework is supressed")
+		goto supressAction
+	}
+
+	dsState = e.healthCheckDatastore()
+	k3sState = e.healthCheckK3s()
+	k3sAgentState = e.healthCheckAgent()
 
 	e.API.K3SAgentStatus = k3sAgentState
 
@@ -56,7 +64,8 @@ func (e *Scheduler) Heartbeat() {
 		e.StartK3SAgent("")
 	}
 
-	if k3sState && k3sAgentState && dsState {
+supressAction:
+	if frameworkSupressed || (k3sState && k3sAgentState && dsState) {
 		if !suppressLock {
 			e.Mesos.SuppressFramework()
 			e.removeNotExistingAgents()
