@@ -107,7 +107,7 @@ func (e *Scheduler) CheckState() {
 			task.Discovery = e.changeDiscoveryInfo(task)
 
 			// add task to communication channel
-			e.Framework.CommandChan <- task
+			e.Framework.CommandChan <- *task
 
 			e.Redis.SaveTaskRedis(task)
 

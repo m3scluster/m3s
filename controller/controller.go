@@ -116,7 +116,7 @@ func (e *Controller) CreateController() {
 	// Watch for Node events and call Reconcile
 	//err = c.Watch(&source.Kind{Type: &corev1.Node{}}, &handler.EnqueueRequestForObject{})
 
-	err = c.Watch(source.Kind(mgr.GetCache(), &corev1.Node{}), &handler.EnqueueRequestForObject{})
+	err = c.Watch(source.Kind(mgr.GetCache(), &corev1.Node{}, &handler.TypedEnqueueRequestForObject[*corev1.Node]{}))
 	if err != nil {
 		logrus.WithField("func", "controller.startController").Error(err, "unable to watch Node")
 		return
@@ -295,7 +295,7 @@ func (e *Controller) SetSchedule() {
 }
 
 // GetTaskFromK8Node will give out the mesos task matched to the K8 node
-func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) cfg.Command {
+func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) *cfg.Command {
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":" + kind + ":*")
 	for keys.Next(e.Redis.CTX) {
 		taskID := e.GetTaskIDFromLabel(node.Labels)
@@ -312,7 +312,7 @@ func (e *Controller) GetTaskFromK8Node(node corev1.Node, kind string) cfg.Comman
 			}
 		}
 	}
-	return cfg.Command{}
+	return &cfg.Command{}
 }
 
 // GetK8NodeFromTask will give out the K8 node from mesos task

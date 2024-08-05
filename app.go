@@ -62,13 +62,12 @@ func main() {
 
 	framework.State = map[string]cfg.State{}
 
-	framework.FrameworkInfo.User = framework.FrameworkUser
-	framework.FrameworkInfo.Name = framework.FrameworkName
-	framework.FrameworkInfo.WebUiURL = &webuiurl
+	framework.FrameworkInfo.User = util.StringToPointer(framework.FrameworkUser)
+	framework.FrameworkInfo.Name = util.StringToPointer(framework.FrameworkName)
+	framework.FrameworkInfo.WebuiUrl = &webuiurl
 	framework.FrameworkInfo.FailoverTimeout = &failoverTimeout
 	framework.FrameworkInfo.Checkpoint = &checkpoint
 	framework.FrameworkInfo.Principal = &config.Principal
-	framework.FrameworkInfo.Role = &framework.FrameworkRole
 
 	//	config.FrameworkInfo.Capabilities = []mesosproto.FrameworkInfo_Capability{
 	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
@@ -86,7 +85,7 @@ func main() {
 	if key != "" {
 		json.Unmarshal([]byte(key), &oldFramework)
 
-		framework.FrameworkInfo.ID = oldFramework.FrameworkInfo.ID
+		framework.FrameworkInfo.Id = oldFramework.FrameworkInfo.Id
 		framework.MesosStreamID = oldFramework.MesosStreamID
 	}
 
@@ -113,7 +112,7 @@ func main() {
 	}
 
 	r.SaveConfig(config)
-	r.SaveFrameworkRedis(framework)
+	r.SaveFrameworkRedis(&framework)
 
 	// set current m3s version
 	config.Version.M3SVersion.GitVersion = GitVersion

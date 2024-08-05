@@ -59,11 +59,11 @@ type Config struct {
 	K3SServerCPU                float64
 	K3SServerMEM                float64
 	K3SServerDISK               float64
-	K3SServerLabels             []mesosproto.Label
+	K3SServerLabels             []*mesosproto.Label
 	K3SAgent                    map[string]string
 	K3SAgentMax                 int
 	K3SAgentString              string
-	K3SAgentLabels              []mesosproto.Label
+	K3SAgentLabels              []*mesosproto.Label
 	K3SAgentConstraint          string
 	K3SAgentConstraintHostname  string
 	K3SAgentCPU                 float64
@@ -188,39 +188,39 @@ type FrameworkConfig struct {
 
 // Command is a chan which include all the Information about the started tasks
 type Command struct {
-	ContainerImage     string                                            `json:"container_image,omitempty"`
-	ContainerType      string                                            `json:"container_type,omitempty"`
-	TaskName           string                                            `json:"task_name,omitempty"`
-	Command            string                                            `json:"command,omitempty"`
-	Hostname           string                                            `json:"hostname,omitempty"`
-	Domain             string                                            `json:"domain,omitempty"`
-	Privileged         bool                                              `json:"privileged,omitempty"`
-	NetworkMode        string                                            `json:"network_mode,omitempty"`
-	Volumes            []mesosproto.Volume                               `protobuf:"bytes,1,rep,name=volumes" json:"volumes,omitempty"`
-	Shell              bool                                              `protobuf:"varint,2,opt,name=shell,def=1" json:"shell,omitempty"`
-	Uris               []mesosproto.CommandInfo_URI                      `protobuf:"bytes,3,rep,name=uris" json:"uris,omitempty"`
-	Environment        mesosproto.Environment                            `protobuf:"bytes,4,opt,name=environment" json:"environment,omitempty"`
-	NetworkInfo        []mesosproto.NetworkInfo                          `protobuf:"bytes,5,opt,name=networkinfo" json:"networkinfo,omitempty"`
-	DockerPortMappings []mesosproto.ContainerInfo_DockerInfo_PortMapping `protobuf:"bytes,6,rep,name=port_mappings,json=portMappings" json:"port_mappings,omitempty"`
-	DockerParameter    []mesosproto.Parameter                            `protobuf:"bytes,7,rep,name=parameters" json:"parameters,omitempty"`
-	Arguments          []string                                          `protobuf:"bytes,8,rep,name=arguments" json:"arguments,omitempty"`
-	Discovery          mesosproto.DiscoveryInfo                          `protobuf:"bytes,9,opt,name=discovery" json:"discovery,omitempty"`
-	Executor           mesosproto.ExecutorInfo                           `protobuf:"bytes,10,opt,name=executor" json:"executor,omitempty"`
+	ContainerImage     string                                             `json:"container_image,omitempty"`
+	ContainerType      string                                             `json:"container_type,omitempty"`
+	TaskName           string                                             `json:"task_name,omitempty"`
+	Command            string                                             `json:"command,omitempty"`
+	Hostname           string                                             `json:"hostname,omitempty"`
+	Domain             string                                             `json:"domain,omitempty"`
+	Privileged         bool                                               `json:"privileged,omitempty"`
+	NetworkMode        string                                             `json:"network_mode,omitempty"`
+	Volumes            []*mesosproto.Volume                               `protobuf:"bytes,1,rep,name=volumes" json:"volumes,omitempty"`
+	Shell              bool                                               `protobuf:"varint,2,opt,name=shell,def=1" json:"shell,omitempty"`
+	Uris               []*mesosproto.CommandInfo_URI                      `protobuf:"bytes,3,rep,name=uris" json:"uris,omitempty"`
+	Environment        *mesosproto.Environment                            `protobuf:"bytes,4,opt,name=environment" json:"environment,omitempty"`
+	NetworkInfo        []*mesosproto.NetworkInfo                          `protobuf:"bytes,5,opt,name=networkinfo" json:"networkinfo,omitempty"`
+	DockerPortMappings []*mesosproto.ContainerInfo_DockerInfo_PortMapping `protobuf:"bytes,6,rep,name=port_mappings,json=portMappings" json:"port_mappings,omitempty"`
+	DockerParameter    []*mesosproto.Parameter                            `protobuf:"bytes,7,rep,name=parameters" json:"parameters,omitempty"`
+	Arguments          []string                                           `protobuf:"bytes,8,rep,name=arguments" json:"arguments,omitempty"`
+	Discovery          *mesosproto.DiscoveryInfo                          `protobuf:"bytes,9,opt,name=discovery" json:"discovery,omitempty"`
+	Executor           *mesosproto.ExecutorInfo                           `protobuf:"bytes,10,opt,name=executor" json:"executor,omitempty"`
 	Restart            string
 	TaskID             string
 	Memory             float64
 	CPU                float64
 	Disk               float64
 	Agent              string
-	Labels             []mesosproto.Label
+	Labels             []*mesosproto.Label
 	State              string
 	StateTime          time.Time
 	Instances          int
-	LinuxInfo          mesosproto.LinuxInfo `protobuf:"bytes,11,opt,name=linux_info,json=linuxInfo" json:"linux_info,omitempty"`
+	LinuxInfo          *mesosproto.LinuxInfo `protobuf:"bytes,11,opt,name=linux_info,json=linuxInfo" json:"linux_info,omitempty"`
 	PullPolicy         string
 	MesosAgent         MesosSlaves
 	EnableHealthCheck  bool
-	Health             mesosproto.HealthCheck
+	Health             *mesosproto.HealthCheck
 }
 
 // MesosAgent
@@ -332,7 +332,7 @@ type MesosTasks struct {
 				ContainerID struct {
 					Value string `json:"value"`
 				} `json:"container_id"`
-				NetworkInfos []mesosproto.NetworkInfo `json:"network_infos"`
+				NetworkInfos []*mesosproto.NetworkInfo `json:"network_infos"`
 			} `json:"container_status,omitempty"`
 		} `json:"statuses"`
 		Discovery mesosproto.DiscoveryInfo `json:"discovery"`

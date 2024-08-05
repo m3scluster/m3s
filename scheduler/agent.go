@@ -6,11 +6,11 @@ import (
 	"strconv"
 	"strings"
 
+	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	util "github.com/AVENTER-UG/util/util"
 	corev1 "k8s.io/api/core/v1"
-
-	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 )
 
 // StartK3SAgent is starting a agent container with the given IDs
@@ -22,44 +22,50 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd := e.defaultCommand(taskID)
 
 	cmd.ContainerImage = e.Config.ImageK3S
-	cmd.DockerPortMappings = []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+	cmd.DockerPortMappings = []*mesosproto.ContainerInfo_DockerInfo_PortMapping{
 		{
-			HostPort:      0,
-			ContainerPort: 80,
-			Protocol:      func() *string { x := "http"; return &x }(),
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(80),
+			Protocol:      util.StringToPointer("http"),
 		},
 		{
-			HostPort:      0,
-			ContainerPort: 443,
-			Protocol:      func() *string { x := "https"; return &x }(),
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(443),
+			Protocol:      util.StringToPointer("https"),
 		},
 	}
 
 	if e.Config.K3SAgentTCPPort > 0 {
-		tmpTcpPort := []mesosproto.ContainerInfo_DockerInfo_PortMapping{
+		tmpTcpPort := []*mesosproto.ContainerInfo_DockerInfo_PortMapping{
 			{
-				HostPort:      0,
-				ContainerPort: uint32(e.Config.K3SAgentTCPPort),
-				Protocol:      func() *string { x := "tcp"; return &x }(),
+				HostPort:      util.Uint32ToPointer(0),
+				ContainerPort: util.Uint32ToPointer(uint32(e.Config.K3SAgentTCPPort)),
+				Protocol:      util.StringToPointer("tcp"),
 			},
 		}
 		cmd.DockerPortMappings = append(cmd.DockerPortMappings, tmpTcpPort...)
 	}
 
-	cmd.Shell = true
+	cmd.Shell = false
 	cmd.Privileged = true
 	cmd.Memory = e.Config.K3SAgentMEM
 	cmd.CPU = e.Config.K3SAgentCPU
 	cmd.Disk = e.Config.K3SAgentDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":agent"
 	cmd.Hostname = e.Framework.FrameworkName + "agent" + e.Config.Domain
-	cmd.Command = "$MESOS_SANDBOX/bootstrap '" + e.Config.K3SAgentString + e.Config.K3SDocker + " --with-node-id " + cmd.TaskID + " --node-label m3s.aventer.biz/taskid=" + cmd.TaskID + "'"
-	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "NET_ADMIN"})
-	cmd.DockerParameter = e.addDockerParameter(make([]mesosproto.Parameter, 0), mesosproto.Parameter{Key: "cap-add", Value: "SYS_ADMIN"})
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "shm-size", Value: e.Config.K3SContainerDisk})
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "memory-swap", Value: fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024)})
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "ulimit", Value: "nofile=" + e.Config.DockerUlimit})
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "cpus", Value: strconv.FormatFloat(e.Config.K3SAgentCPU, 'f', -1, 64)})
+	cmd.Command = "/mnt/mesos/sandbox/bootstrap"
+	cmd.Arguments = strings.Split(e.Config.K3SAgentString, " ")
+	if e.Config.K3SDocker != "" {
+		cmd.Arguments = append(cmd.Arguments, e.Config.K3SDocker)
+	}
+	cmd.Arguments = append(cmd.Arguments, "--with-node-id "+cmd.TaskID)
+	cmd.Arguments = append(cmd.Arguments, "--kubelet-arg node-labels m3s.aventer.biz/taskid="+cmd.TaskID)
+	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
+	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cpus", strconv.FormatFloat(e.Config.K3SAgentCPU, 'f', -1, 64))
 
 	cmd.Instances = e.Config.K3SAgentMax
 
@@ -67,13 +73,13 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	if e.Framework.MesosCNI == "" {
 		// net-alias is only supported onuser-defined networks
 		if e.Config.DockerCNI != "bridge" {
-			cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "net-alias", Value: e.Framework.FrameworkName + "agent"})
+			cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "net-alias", e.Framework.FrameworkName+"agent")
 		}
 	}
 
-	cmd.Uris = []mesosproto.CommandInfo_URI{
+	cmd.Uris = []*mesosproto.CommandInfo_URI{
 		{
-			Value:      e.Config.BootstrapURL,
+			Value:      &e.Config.BootstrapURL,
 			Extract:    func() *bool { x := false; return &x }(),
 			Executable: func() *bool { x := true; return &x }(),
 			Cache:      func() *bool { x := false; return &x }(),
@@ -82,74 +88,75 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, mesosproto.Parameter{Key: "cgroupns", Value: "host"})
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
 
-		cmd.Volumes = []mesosproto.Volume{
+		cmd.Volumes = []*mesosproto.Volume{
 			{
-				ContainerPath: "/sys/fs/cgroup",
-				Mode:          mesosproto.RW.Enum(),
+				ContainerPath: func() *string { x := "/sys/fs/cgroup"; return &x }(),
+				Mode:          mesosproto.Volume_RW.Enum(),
 				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME,
+					Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
 					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
 						Driver: &e.Config.VolumeDriver,
-						Name:   func() string { x := "/sys/fs/cgroup"; return x }(),
+						Name:   func() *string { x := "/sys/fs/cgroup"; return &x }(),
 					},
 				},
 			},
 		}
 	}
 
-	cmd.Discovery = mesosproto.DiscoveryInfo{
-		Visibility: 2,
+	cmd.Discovery = &mesosproto.DiscoveryInfo{
+		Visibility: mesosproto.DiscoveryInfo_EXTERNAL.Enum(),
 		Name:       &cmd.TaskName,
 		Ports: &mesosproto.Ports{
-			Ports: e.getDiscoveryInfoPorts(cmd),
+			Ports: e.getDiscoveryInfoPorts(&cmd),
 		},
 	}
 
-	cmd.Environment.Variables = []mesosproto.Environment_Variable{
+	cmd.Environment = &mesosproto.Environment{}
+	cmd.Environment.Variables = []*mesosproto.Environment_Variable{
 		{
-			Name:  "SERVICE_NAME",
+			Name:  util.StringToPointer("SERVICE_NAME"),
 			Value: &cmd.TaskName,
 		},
 		{
-			Name:  "KUBERNETES_VERSION",
+			Name:  util.StringToPointer("KUBERNETES_VERSION"),
 			Value: &e.Config.KubernetesVersion,
 		},
 		{
-			Name:  "K3SFRAMEWORK_TYPE",
-			Value: func() *string { x := "agent"; return &x }(),
+			Name:  util.StringToPointer("K3SFRAMEWORK_TYPE"),
+			Value: util.StringToPointer("agent"),
 		},
 		{
-			Name:  "K3S_TOKEN",
+			Name:  util.StringToPointer("K3S_TOKEN"),
 			Value: &e.Config.K3SToken,
 		},
 		{
-			Name:  "K3S_URL",
+			Name:  util.StringToPointer("K3S_URL"),
 			Value: &e.Config.K3SServerURL,
 		},
 		{
-			Name:  "MESOS_SANDBOX_VAR",
+			Name:  util.StringToPointer("MESOS_SANDBOX_VAR"),
 			Value: &e.Config.MesosSandboxVar,
 		},
 		{
-			Name:  "REDIS_SERVER",
+			Name:  util.StringToPointer("REDIS_SERVER"),
 			Value: &e.Config.RedisServer,
 		},
 		{
-			Name:  "REDIS_PASSWORD",
+			Name:  util.StringToPointer("REDIS_PASSWORD"),
 			Value: &e.Config.RedisPassword,
 		},
 		{
-			Name:  "REDIS_DB",
-			Value: func() *string { x := strconv.Itoa(e.Config.RedisDB); return &x }(),
+			Name:  util.StringToPointer("REDIS_DB"),
+			Value: util.StringToPointer(strconv.Itoa(e.Config.RedisDB)),
 		},
 		{
-			Name:  "TZ",
+			Name:  util.StringToPointer("TZ"),
 			Value: &e.Config.TimeZone,
 		},
 		{
-			Name:  "MESOS_TASK_ID",
+			Name:  util.StringToPointer("MESOS_TASK_ID"),
 			Value: &cmd.TaskID,
 		},
 	}
@@ -164,12 +171,12 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 
 	// store mesos task in DB
 	logrus.WithField("func", "scheduler.StartK3SAgent").Info("Schedule K3S Agent")
-	e.Redis.SaveTaskRedis(cmd)
+	e.Redis.SaveTaskRedis(&cmd)
 }
 
 // Get the discoveryinfo ports of the compose file
-func (e *Scheduler) getDiscoveryInfoPorts(cmd cfg.Command) []mesosproto.Port {
-	var disport []mesosproto.Port
+func (e *Scheduler) getDiscoveryInfoPorts(cmd *cfg.Command) []*mesosproto.Port {
+	var disport []*mesosproto.Port
 	for i, c := range cmd.DockerPortMappings {
 		var tmpport mesosproto.Port
 		p := func() *string {
@@ -182,10 +189,10 @@ func (e *Scheduler) getDiscoveryInfoPorts(cmd cfg.Command) []mesosproto.Port {
 
 		// Docker understand only tcp and udp.
 		if *c.Protocol != "udp" && *c.Protocol != "tcp" {
-			cmd.DockerPortMappings[i].Protocol = func() *string { x := "tcp"; return &x }()
+			cmd.DockerPortMappings[i].Protocol = util.StringToPointer("tcp")
 		}
 
-		disport = append(disport, tmpport)
+		disport = append(disport, &tmpport)
 	}
 
 	return disport

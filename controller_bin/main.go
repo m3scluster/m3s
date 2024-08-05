@@ -136,7 +136,6 @@ func init() {
 	Config.KubernetesConfig = util.Getenv("KUBECONFIG", "/etc/rancher/k3s/k3s.yaml")
 	Config.DefaultYAML = util.Getenv("M3S_CONTROLLER__DEFAULT_YAML", "/mnt/mesos/sandbox/default.yaml")
 	Config.Heartbeat, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__HEARTBEAT_TIME", "2m"))
-	Config.UnscheduleTime, _ = time.ParseDuration(util.Getenv("M3S_CONTROLLER__UNSCHEDULE_TIME", "10s"))
 
 	if strings.Compare(util.Getenv("M3S_CONTROLLER__ENABLE_TAINT", "true"), "false") == 0 {
 		Config.EnableTaint = false
