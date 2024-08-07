@@ -386,7 +386,7 @@ func (e *Controller) heartbeat() {
 			go e.CreateController()
 		} else {
 			e.updateServerLabel()
-			if !e.CheckReadyState() {
+			if !e.CheckReadyState() || e.Config.K3SDisableScheduling {
 				e.SetUnschedule()
 			} else {
 				e.SetSchedule()

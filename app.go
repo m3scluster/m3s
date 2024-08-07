@@ -106,6 +106,9 @@ func main() {
 		config.DSMaxRestore = oldconfig.DSMaxRestore
 		config.K3SServerMaxRestore = oldconfig.K3SServerMaxRestore
 		config.K3SAgentMaxRestore = oldconfig.K3SAgentMaxRestore
+
+		// Add DisableScheduling if set in existing config
+		config.K3SDisableScheduling = oldconfig.K3SDisableScheduling
 	}
 
 	r.SaveConfig(config)

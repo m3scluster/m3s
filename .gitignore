@@ -22,5 +22,6 @@ controller/sbom.txt
 local-env.sh
 .vscode/
 .devcontainer/
+run-in-m3s.sh
 .containername
 plugins/*.so
