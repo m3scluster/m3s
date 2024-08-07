@@ -2,8 +2,8 @@ cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMT
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/AVENTER-UG/go-logrus-formatter v0.5.4 h1:pT//3WIdLWQYfUGuNdbz3cXQovUh6DDHoUCESxoG5uM=
 github.com/AVENTER-UG/go-logrus-formatter v0.5.4/go.mod h1:EXN8FPKx567UIA2L4jewW7pg48hc3i4fPZ+uBmHXxZI=
-github.com/AVENTER-UG/util v0.5.14 h1:TkP1cPNCwE3hQ7xpbUybFjm6Bj/254Y9QwlBBpx2UV4=
-github.com/AVENTER-UG/util v0.5.14/go.mod h1:6krgaQv8fEi6LsQZGcrG6c6irGfSRSoSIcAAOiJRt3A=
+github.com/AVENTER-UG/util v0.5.15 h1:0FnvGQ/QLBo88+mYrmw9GYtfwHUdQjPm09q3RaluAsE=
+github.com/AVENTER-UG/util v0.5.15/go.mod h1:yl9TGFNYLcZgV9qe7yyJo7U192HRt/cbzejyMkcRQiw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Showmax/go-fqdn v1.0.0 h1:0rG5IbmVliNT5O19Mfuvna9LL7zlHyRfsSvBPZmF9tM=
 github.com/Showmax/go-fqdn v1.0.0/go.mod h1:SfrFBzmDCtCGrnHhoDjuvFnKsWjEQX/Q9ARZvOrJAko=

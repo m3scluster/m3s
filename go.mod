@@ -5,7 +5,7 @@ go 1.22.0
 toolchain go1.22.1
 
 require (
-	github.com/AVENTER-UG/util v0.5.14
+	github.com/AVENTER-UG/util v0.5.15
 	github.com/Showmax/go-fqdn v1.0.0
 	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/gorilla/mux v1.8.1
