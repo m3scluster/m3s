@@ -43,8 +43,8 @@ func (e *API) V0CapabilitiesDisclosure(w http.ResponseWriter, r *http.Request) {
 	capabilities = append(capabilities, "adjust-ds-cpus, /api/m3s/v0/ds/cps/{cpus}, PUT")
 	capabilities = append(capabilities, "adjust-server-memory, /api/m3s/v0/server/memory/{memory}, PUT")
 	capabilities = append(capabilities, "adjust-agent-memory, /api/m3s/v0/agent/memory/{memory}, PUT")
-	capabilities = append(capabilities, "agent-noschedule, /api/m3s/v0/agent/schedule, PUT")
-	capabilities = append(capabilities, "agent-schedule, /api/m3s/v0/agent/schedule, DELETE")
+	capabilities = append(capabilities, "agent-unschedule, /api/m3s/v0/agent/schedule, DELETE")
+	capabilities = append(capabilities, "agent-schedule, /api/m3s/v0/agent/schedule, PUT")
 	capabilities = append(capabilities, "adjust-ds-memory, /api/m3s/v0/ds/memory/{memory}, PUT")
 
 	response, _ := json.Marshal(capabilities)
