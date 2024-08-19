@@ -37,6 +37,9 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 	cmd.Arguments = append(cmd.Arguments, "--tls-san="+e.Framework.FrameworkName+"server")
 	cmd.Arguments = append(cmd.Arguments, "--node-label m3s.aventer.biz/taskid="+cmd.TaskID)
+	if e.Config.K3SEnableTaint {
+		cmd.Arguments = append(cmd.Arguments, "--node-taint node-role.kubernetes.io/master=NoSchedule")
+	}
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)

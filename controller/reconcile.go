@@ -70,6 +70,8 @@ func (r *reconcileReplicaSet) setTaint(node *corev1.Node) {
 				logrus.WithField("func", "controller.setTaint").Debug("Set Taint on: ", node.ObjectMeta.Name)
 				node.Spec.Taints = append(node.Spec.Taints, taint)
 				r.updateNode(node)
+			} else {
+				logrus.WithField("func", "controller.setTaint").Debug("Taint Already Exists on: ", node.ObjectMeta.Name)
 			}
 		}
 	}
