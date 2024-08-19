@@ -23,7 +23,7 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd *cfg.Command) 
 	offerIds := e.getAllOfferIDs(offers)
 
 	// if the constraints does not match, return an empty offer
-	for n, offer := range offers.Offers {
+	for _, offer := range offers.Offers {
 		logrus.WithField("func", "scheduler.getOffer").Debug("Got Offer From:", offer.GetHostname(), " with offer ID:", offer.GetId())
 
 		// Check Constraints of server, agent and datastore
@@ -55,7 +55,6 @@ func (e *Scheduler) getOffer(offers *mesosproto.Event_Offers, cmd *cfg.Command) 
 					logrus.WithField("func", "scheduler.getOffer").Debug("Could not find hostname, get next offer")
 					continue
 				}
-				offerret = offers.Offers[n]
 			}
 		}
 

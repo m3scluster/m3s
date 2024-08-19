@@ -46,6 +46,7 @@ type Config struct {
 	KubeConfig                  string
 	KubernetesVersion           string
 	K3SNodeTimeout              time.Duration
+	K3SNodeEnvironmentVariable  map[string]string
 	K3SCustomDomain             string
 	K3SContainerDisk            string
 	K3SServerURL                string
@@ -98,6 +99,14 @@ type Config struct {
 	K3SServerMaxRestore         int
 	K3SAgentMaxRestore          int
 	K3SDisableScheduling        bool
+	HostConstraintsList         []string
+	K3SServerCPULimit           float64
+	K3SAgentCPULimit            float64
+	DSCPULimit                  float64
+	K3SServerMEMLimit           float64
+	K3SAgentMEMLimit            float64
+	DSMEMLimit                  float64
+	EnforceMesosTaskLimits      bool
 }
 
 // M3SStatus store the current TaskState of the M3s services
@@ -209,7 +218,9 @@ type Command struct {
 	Restart            string
 	TaskID             string
 	Memory             float64
+	MemoryLimit        float64
 	CPU                float64
+	CPULimit           float64
 	Disk               float64
 	Agent              string
 	Labels             []*mesosproto.Label

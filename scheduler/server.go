@@ -27,6 +27,8 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.ContainerImage = e.Config.ImageK3S
 	cmd.Memory = e.Config.K3SServerMEM
 	cmd.CPU = e.Config.K3SServerCPU
+	cmd.CPULimit = e.Config.K3SServerCPULimit
+	cmd.MemoryLimit = e.Config.K3SServerMEMLimit
 	cmd.Disk = e.Config.K3SServerDISK
 	cmd.TaskName = e.Framework.FrameworkName + ":server"
 	cmd.Hostname = e.Framework.FrameworkName + "server" + e.Config.Domain
@@ -37,12 +39,14 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 	cmd.Arguments = append(cmd.Arguments, "--tls-san="+e.Framework.FrameworkName+"server")
 	cmd.Arguments = append(cmd.Arguments, "--node-label m3s.aventer.biz/taskid="+cmd.TaskID)
+	if e.Config.K3SEnableTaint {
+		cmd.Arguments = append(cmd.Arguments, "--node-taint node-role.kubernetes.io/master=NoSchedule:NoSchedule")
+	}
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SServerMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cpus", strconv.FormatFloat(e.Config.K3SServerCPU, 'f', -1, 64))
 
 	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
@@ -203,6 +207,14 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			Name:  util.StringToPointer("MESOS_TASK_ID"),
 			Value: &cmd.TaskID,
 		},
+	}
+
+	for key, value := range e.Config.K3SNodeEnvironmentVariable {
+		env := &mesosproto.Environment_Variable{
+			Name:  &key,
+			Value: &value,
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
 	}
 
 	if e.Config.K3SServerLabels != nil {

@@ -53,6 +53,43 @@ func Subscribe(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Scheduler {
 			FrameworkInfo: &e.Framework.FrameworkInfo,
 		},
 	}
+
+	if len(e.Config.HostConstraintsList) > 0 {
+
+		offerConstraintGroups := []*mesosproto.OfferConstraints_RoleConstraints_Group{}
+		for _, hostname := range e.Config.HostConstraintsList {
+			offerConstraint := mesosproto.OfferConstraints_RoleConstraints_Group{
+				AttributeConstraints: []*mesosproto.AttributeConstraint{
+					{
+						Selector: &mesosproto.AttributeConstraint_Selector{
+							Selector: &mesosproto.AttributeConstraint_Selector_PseudoattributeType_{
+								PseudoattributeType: mesosproto.AttributeConstraint_Selector_HOSTNAME,
+							},
+						},
+						Predicate: &mesosproto.AttributeConstraint_Predicate{
+							Predicate: &mesosproto.AttributeConstraint_Predicate_TextEquals_{
+								TextEquals: &mesosproto.AttributeConstraint_Predicate_TextEquals{
+									Value: &hostname,
+								},
+							},
+						},
+					},
+				},
+			}
+			offerConstraintGroups = append(offerConstraintGroups, &offerConstraint)
+		}
+
+		offerConstraints := &mesosproto.OfferConstraints{
+			RoleConstraints: map[string]*mesosproto.OfferConstraints_RoleConstraints{
+				frm.FrameworkRole: {
+					Groups: offerConstraintGroups,
+				},
+			},
+		}
+
+		subscribeCall.Subscribe.OfferConstraints = offerConstraints
+	}
+
 	logrus.WithField("func", "scheduler.Subscribe").Debug(subscribeCall)
 	body, _ := marshaller.Marshal(subscribeCall)
 	client := &http.Client{}
@@ -131,6 +168,7 @@ func (e *Scheduler) EventLoop() {
 
 			e.reconcile()
 			e.CheckState()
+			go e.callPluginEvent(&event)
 			e.Redis.SaveFrameworkRedis(e.Framework)
 			e.Redis.SaveConfig(*e.Config)
 		case mesosproto.Event_UPDATE.Number():
@@ -247,6 +285,7 @@ func (e *Scheduler) reconcile() {
 	keys := e.Redis.GetAllRedisKeys(e.Framework.FrameworkName + ":*")
 	for keys.Next(e.Redis.CTX) {
 		// continue if the key is not a mesos task
+
 		if e.Redis.CheckIfNotTask(keys) {
 			continue
 		}
@@ -267,7 +306,7 @@ func (e *Scheduler) reconcile() {
 				Value: &task.MesosAgent.ID,
 			},
 		})
-		logrus.WithField("func", "mesos.Reconcile").Debug("Reconcile Task: ", task.TaskID)
+		logrus.WithField("func", "mesos.Reconcile").Debugf("Reconcile Task %s with Task ID: %s", task.TaskID, task.TaskName)
 	}
 	err := e.Mesos.Call(&mesosproto.Call{
 		Type:      mesosproto.Call_RECONCILE.Enum(),

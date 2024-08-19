@@ -23,6 +23,8 @@ func (e *Scheduler) StartDatastore(taskID string) {
 	cmd.Memory = e.Config.DSMEM
 	cmd.CPU = e.Config.DSCPU
 	cmd.Disk = e.Config.DSDISK
+	cmd.CPULimit = e.Config.DSCPULimit
+	cmd.MemoryLimit = e.Config.DSMEMLimit
 	cmd.TaskName = e.Framework.FrameworkName + ":datastore"
 	cmd.Hostname = e.Framework.FrameworkName + "datastore" + e.Config.Domain
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")

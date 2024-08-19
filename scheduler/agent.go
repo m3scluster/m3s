@@ -15,6 +15,7 @@ import (
 
 // StartK3SAgent is starting a agent container with the given IDs
 func (e *Scheduler) StartK3SAgent(taskID string) {
+
 	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") >= e.Config.K3SAgentMax {
 		return
 	}
@@ -51,6 +52,8 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.Memory = e.Config.K3SAgentMEM
 	cmd.CPU = e.Config.K3SAgentCPU
 	cmd.Disk = e.Config.K3SAgentDISK
+	cmd.CPULimit = e.Config.K3SAgentCPULimit
+	cmd.MemoryLimit = e.Config.K3SAgentMEMLimit
 	cmd.TaskName = e.Framework.FrameworkName + ":agent"
 	cmd.Hostname = e.Framework.FrameworkName + "agent" + e.Config.Domain
 	cmd.Command = "/mnt/mesos/sandbox/bootstrap"
@@ -65,7 +68,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cpus", strconv.FormatFloat(e.Config.K3SAgentCPU, 'f', -1, 64))
 
 	cmd.Instances = e.Config.K3SAgentMax
 
@@ -159,6 +161,14 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			Name:  util.StringToPointer("MESOS_TASK_ID"),
 			Value: &cmd.TaskID,
 		},
+	}
+
+	for key, value := range e.Config.K3SNodeEnvironmentVariable {
+		env := &mesosproto.Environment_Variable{
+			Name:  &key,
+			Value: &value,
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
 	}
 
 	if e.Config.K3SAgentLabels != nil {
