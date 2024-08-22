@@ -18,6 +18,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	"sigs.k8s.io/controller-runtime/pkg/metrics/server"
 	"sigs.k8s.io/controller-runtime/pkg/source"
 
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
@@ -93,7 +94,11 @@ func (e *Controller) waitForKubernetesMasterReady() {
 func (e *Controller) CreateController() {
 	// Setup a Manager
 	logrus.WithField("func", "controller.CreateController").Info("Create Controller")
-	mgr, err := manager.New(e.Kubeconfig, manager.Options{})
+	mgr, err := manager.New(e.Kubeconfig, manager.Options{
+		Metrics: server.Options{
+			BindAddress: "0",
+		},
+	})
 	if err != nil {
 		logrus.WithField("func", "controller.CreateController").Error(err, "unable to set up overall controller manager")
 		return
@@ -109,7 +114,7 @@ func (e *Controller) CreateController() {
 		},
 	})
 	if err != nil {
-		logrus.WithField("func", "controller.startController").Error(err, "unable to create controller")
+		logrus.WithField("func", "controller.CreateController").Error(err, "unable to create controller")
 		return
 	}
 
@@ -118,7 +123,7 @@ func (e *Controller) CreateController() {
 
 	err = c.Watch(source.Kind(mgr.GetCache(), &corev1.Node{}, &handler.TypedEnqueueRequestForObject[*corev1.Node]{}))
 	if err != nil {
-		logrus.WithField("func", "controller.startController").Error(err, "unable to watch Node")
+		logrus.WithField("func", "controller.CreateController").Error(err, "unable to watch Node")
 		return
 	}
 

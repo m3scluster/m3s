@@ -13,6 +13,7 @@ buildInputs = [
 
 SOURCE_DATE_EPOCH = 315532800;
 PROJDIR = "${toString ./.}";
+S_NETWORK="host";
 
 shellHook = ''
     export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib"
