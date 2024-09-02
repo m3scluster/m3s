@@ -64,6 +64,7 @@ func main() {
 
 	framework.FrameworkInfo.User = util.StringToPointer(framework.FrameworkUser)
 	framework.FrameworkInfo.Name = util.StringToPointer(framework.FrameworkName)
+	framework.FrameworkInfo.Role = &framework.FrameworkRole
 	framework.FrameworkInfo.WebuiUrl = &webuiurl
 	framework.FrameworkInfo.FailoverTimeout = &failoverTimeout
 	framework.FrameworkInfo.Checkpoint = &checkpoint

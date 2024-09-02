@@ -32,7 +32,6 @@ func (e *Scheduler) HandleUpdate(event *mesosproto.Event) error {
 	}
 
 	task.State = update.Status.State.String()
-
 	switch *update.Status.State {
 	case mesosproto.TaskState_TASK_FAILED, mesosproto.TaskState_TASK_KILLED, mesosproto.TaskState_TASK_LOST, mesosproto.TaskState_TASK_ERROR, mesosproto.TaskState_TASK_FINISHED:
 		logrus.WithField("func", "scheduler.HandleUpdate").Warn("Task State: " + task.State + " " + task.TaskID + " (" + task.TaskName + ")")

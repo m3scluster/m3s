@@ -98,6 +98,7 @@ func init() {
 	config.DSMaxRestore = 0
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0
+	config.EnableHostnameOfferConstraint = stringToBool(util.Getenv("ENABLE_HOSTNAME_OFFER_CONSTRAINT", "true"))
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
@@ -177,6 +178,29 @@ func init() {
 	} else {
 		config.PluginsEnable = true
 	}
+
+	// Hostname Offer constraints
+	if config.EnableHostnameOfferConstraint {
+		if config.K3SServerConstraintHostname == "" || config.K3SAgentConstraintHostname == "" || config.DSConstraintHostname == "" {
+			logrus.WithField("func", "main.init").Warn("Enable Hostname offer constraint is set but individual hostname constraints are not set, ignoring the enable hostname offer constraint.")
+			config.EnableHostnameOfferConstraint = false
+		} else {
+			config.HostConstraintsList = append(config.HostConstraintsList, config.K3SServerConstraintHostname, config.K3SAgentConstraintHostname, config.DSConstraintHostname)
+			config.HostConstraintsList = getUniqueStringList(config.HostConstraintsList)
+		}
+
+		logrus.WithField("func", "nain.init").Info("Setting Offer Constraints on host to: ", strings.Join(config.HostConstraintsList, ","))
+	}
+
+	// Set Custom Environment Variables to the K3S Nodes... Environment variables can be set as key=value,key=value,key=value
+	K3SNodeEnv := util.Getenv("K3S_NODE_ENV", "")
+	if K3SNodeEnv != "" {
+		environmentVariableGroups := strings.Split(K3SNodeEnv, ",")
+		for _, envString := range environmentVariableGroups {
+			splits := strings.Split(envString, "=")
+			config.K3SNodeEnvironmentVariable[splits[0]] = splits[1]
+		}
+	}
 }
 
 func loadPlugins(r *redis.Redis) {
@@ -218,4 +242,17 @@ func loadPlugins(r *redis.Redis) {
 
 func stringToBool(par string) bool {
 	return strings.Compare(par, "true") == 0
+}
+
+func getUniqueStringList(slice []string) []string {
+
+	seen := make(map[string]bool)
+	result := []string{}
+	for _, val := range slice {
+		if _, ok := seen[val]; !ok {
+			seen[val] = true
+			result = append(result, val)
+		}
+	}
+	return result
 }

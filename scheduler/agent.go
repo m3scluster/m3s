@@ -161,6 +161,14 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		},
 	}
 
+	for key, value := range e.Config.K3SNodeEnvironmentVariable {
+		env := &mesosproto.Environment_Variable{
+			Name:  &key,
+			Value: &value,
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
+	}
+
 	if e.Config.K3SAgentLabels != nil {
 		cmd.Labels = e.Config.K3SAgentLabels
 	}

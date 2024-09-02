@@ -12,6 +12,7 @@ import (
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
+	"github.com/AVENTER-UG/util/util"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -209,7 +210,7 @@ func (e *Mesos) DeclineOffer(offerIds []*mesosproto.OfferID) *mesosproto.Call {
 func (e *Mesos) IsRessourceMatched(ressource []*mesosproto.Resource, cmd *cfg.Command) bool {
 	mem := false
 	cpu := false
-	ports := true
+	ports := false
 
 	for _, v := range ressource {
 		if v.GetName() == "cpus" && v.Scalar.GetValue() >= cmd.CPU {
@@ -223,6 +224,7 @@ func (e *Mesos) IsRessourceMatched(ressource []*mesosproto.Resource, cmd *cfg.Co
 		if len(cmd.DockerPortMappings) > 0 {
 			if v.GetName() == "ports" {
 				for _, taskPort := range cmd.DockerPortMappings {
+
 					for _, portRange := range v.GetRanges().Range {
 						portBegin := uint32(portRange.GetBegin())
 						portEnd := uint32(portRange.GetEnd())
@@ -231,11 +233,21 @@ func (e *Mesos) IsRessourceMatched(ressource []*mesosproto.Resource, cmd *cfg.Co
 							logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Matched Offer RangePort: ", portRange)
 							ports = ports || true
 							break
+						} else {
+							logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Did not match Matched Offer TaskPort: ", taskPort.GetHostPort())
+							logrus.WithField("func", "mesos.IsRessourceMatched").Debug("Did not match Offer RangePort: ", portRange)
 						}
 						ports = ports || false
 					}
+
 				}
 			}
+		}
+	}
+
+	if !ports {
+		for _, taskPort := range cmd.DockerPortMappings {
+			taskPort.HostPort = util.Uint32ToPointer(taskPort.GetHostPort() + 1)
 		}
 	}
 
