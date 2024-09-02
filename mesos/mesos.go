@@ -12,7 +12,6 @@ import (
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
 	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
-	"github.com/AVENTER-UG/util/util"
 	"google.golang.org/protobuf/encoding/protojson"
 )
 
@@ -242,12 +241,6 @@ func (e *Mesos) IsRessourceMatched(ressource []*mesosproto.Resource, cmd *cfg.Co
 
 				}
 			}
-		}
-	}
-
-	if !ports {
-		for _, taskPort := range cmd.DockerPortMappings {
-			taskPort.HostPort = util.Uint32ToPointer(taskPort.GetHostPort() + 1)
 		}
 	}
 
