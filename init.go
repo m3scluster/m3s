@@ -99,6 +99,7 @@ func init() {
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0
 	config.EnableHostnameOfferConstraint = stringToBool(util.Getenv("ENABLE_HOSTNAME_OFFER_CONSTRAINT", "true"))
+	config.K3SNodeEnvironmentVariable = make(map[string]string)
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")

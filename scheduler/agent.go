@@ -15,6 +15,7 @@ import (
 
 // StartK3SAgent is starting a agent container with the given IDs
 func (e *Scheduler) StartK3SAgent(taskID string) {
+
 	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") >= e.Config.K3SAgentMax {
 		return
 	}

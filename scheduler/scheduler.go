@@ -168,6 +168,7 @@ func (e *Scheduler) EventLoop() {
 
 			e.reconcile()
 			e.CheckState()
+			go e.callPluginEvent(&event)
 			e.Redis.SaveFrameworkRedis(e.Framework)
 			e.Redis.SaveConfig(*e.Config)
 		case mesosproto.Event_UPDATE.Number():
