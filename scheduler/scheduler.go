@@ -54,7 +54,7 @@ func Subscribe(cfg *cfg.Config, frm *cfg.FrameworkConfig) *Scheduler {
 		},
 	}
 
-	if e.Config.EnableHostnameOfferConstraint {
+	if len(e.Config.HostConstraintsList) > 0 {
 
 		offerConstraintGroups := []*mesosproto.OfferConstraints_RoleConstraints_Group{}
 		for _, hostname := range e.Config.HostConstraintsList {
@@ -306,7 +306,7 @@ func (e *Scheduler) reconcile() {
 				Value: &task.MesosAgent.ID,
 			},
 		})
-		logrus.WithField("func", "mesos.Reconcile").Debug("Reconcile Task: ", task.TaskID, task.TaskName)
+		logrus.WithField("func", "mesos.Reconcile").Debugf("Reconcile Task %s with Task ID: %s", task.TaskID, task.TaskName)
 	}
 	err := e.Mesos.Call(&mesosproto.Call{
 		Type:      mesosproto.Call_RECONCILE.Enum(),

@@ -98,7 +98,6 @@ func init() {
 	config.DSMaxRestore = 0
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0
-	config.EnableHostnameOfferConstraint = stringToBool(util.Getenv("ENABLE_HOSTNAME_OFFER_CONSTRAINT", "true"))
 	config.K3SNodeEnvironmentVariable = make(map[string]string)
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
@@ -181,15 +180,9 @@ func init() {
 	}
 
 	// Hostname Offer constraints
-	if config.EnableHostnameOfferConstraint {
-		if config.K3SServerConstraintHostname == "" || config.K3SAgentConstraintHostname == "" || config.DSConstraintHostname == "" {
-			logrus.WithField("func", "main.init").Warn("Enable Hostname offer constraint is set but individual hostname constraints are not set, ignoring the enable hostname offer constraint.")
-			config.EnableHostnameOfferConstraint = false
-		} else {
-			config.HostConstraintsList = append(config.HostConstraintsList, config.K3SServerConstraintHostname, config.K3SAgentConstraintHostname, config.DSConstraintHostname)
-			config.HostConstraintsList = getUniqueStringList(config.HostConstraintsList)
-		}
-
+	if config.K3SServerConstraintHostname != "" && config.K3SAgentConstraintHostname != "" && config.DSConstraintHostname != "" {
+		config.HostConstraintsList = append(config.HostConstraintsList, config.K3SServerConstraintHostname, config.K3SAgentConstraintHostname, config.DSConstraintHostname)
+		config.HostConstraintsList = getUniqueStringList(config.HostConstraintsList)
 		logrus.WithField("func", "nain.init").Info("Setting Offer Constraints on host to: ", strings.Join(config.HostConstraintsList, ","))
 	}
 
@@ -245,6 +238,7 @@ func stringToBool(par string) bool {
 	return strings.Compare(par, "true") == 0
 }
 
+// func to get a set/unique elements from a string array...
 func getUniqueStringList(slice []string) []string {
 
 	seen := make(map[string]bool)

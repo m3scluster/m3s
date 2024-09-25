@@ -12,6 +12,7 @@ import (
 	"github.com/AVENTER-UG/mesos-m3s/api"
 	"github.com/AVENTER-UG/mesos-m3s/controller"
 	logrus "github.com/AVENTER-UG/mesos-m3s/logger"
+	mesosproto "github.com/AVENTER-UG/mesos-m3s/proto"
 	"github.com/AVENTER-UG/mesos-m3s/redis"
 	"github.com/AVENTER-UG/mesos-m3s/scheduler"
 	cfg "github.com/AVENTER-UG/mesos-m3s/types"
@@ -64,16 +65,16 @@ func main() {
 
 	framework.FrameworkInfo.User = util.StringToPointer(framework.FrameworkUser)
 	framework.FrameworkInfo.Name = util.StringToPointer(framework.FrameworkName)
-	framework.FrameworkInfo.Role = &framework.FrameworkRole
+	framework.FrameworkInfo.Roles = []string{framework.FrameworkRole}
 	framework.FrameworkInfo.WebuiUrl = &webuiurl
 	framework.FrameworkInfo.FailoverTimeout = &failoverTimeout
 	framework.FrameworkInfo.Checkpoint = &checkpoint
 	framework.FrameworkInfo.Principal = &config.Principal
-
-	//	config.FrameworkInfo.Capabilities = []mesosproto.FrameworkInfo_Capability{
-	//		{Type: mesosproto.FrameworkInfo_Capability_RESERVATION_REFINEMENT},
-	//	}
-
+	framework.FrameworkInfo.Capabilities = []*mesosproto.FrameworkInfo_Capability{
+		{
+			Type: mesosproto.FrameworkInfo_Capability_MULTI_ROLE.Enum(),
+		},
+	}
 	// connect to redis
 	r := redis.New(&config, &framework)
 	if !r.Connect() {
