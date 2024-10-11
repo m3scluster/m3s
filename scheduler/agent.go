@@ -79,22 +79,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		}
 	}
 
-	VolumeK3sAgent := "m3slab-framework-bedesar-agent-test"
-
-	cmd.Volumes = []*mesosproto.Volume{
-		{
-			ContainerPath: util.StringToPointer("/var/lib/rancher/k3s/agent/containerd"),
-			Mode:          mesosproto.Volume_RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &e.Config.VolumeDriver,
-					Name:   &VolumeK3sAgent,
-				},
-			},
-		},
-	}
-
 	cmd.Uris = []*mesosproto.CommandInfo_URI{
 		{
 			Value:      &e.Config.BootstrapURL,
