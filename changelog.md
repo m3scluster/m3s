@@ -34,6 +34,11 @@
 - Add support for a TCP port beside HTTP and HTTPS at the Kubernetes agent. It will be configures and
   enabled with the env variable `K3S_AGENT_TCP_PORT`.
 - Migrate from gogo protobuf to golang protobuf. Update mesos proto files.
+- Add Conditional Offer Constraints, Custom Env Variables, Node Taints set from K3s Arguments
+- Fix unneeded Code Removed
+- Disable metrics server for m3s controller to fix port conflict.
+- Add Set Task Limits
+- Fix Status M3s API Panics
 
 
 ## v0.4.1
