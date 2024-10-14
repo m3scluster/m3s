@@ -39,19 +39,20 @@ func (e *API) getStatus() {
 	services := []string{"datastore", "server", "agent"}
 
 	K3sNodeTaskMap := map[string]string{}
-
-	nodes, err := e.Kubernetes.Client.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
-	if err != nil {
-		logrus.WithField("func", "api.getStatus").Error("Could not get nodes from controller: ", err.Error())
-	}
-
-	for _, node := range nodes.Items {
-		taskID := e.Kubernetes.GetTaskIDFromLabel(node.Labels)
-		if taskID == "" {
-			taskID = e.Kubernetes.GetTaskIDFromAnnotation(node.Annotations)
+	if e.Kubernetes.Client != nil {
+		nodes, err := e.Kubernetes.Client.CoreV1().Nodes().List(context.Background(), metav1.ListOptions{})
+		if err != nil {
+			logrus.WithField("func", "api.getStatus").Error("Could not get nodes from controller: ", err.Error())
 		}
 
-		K3sNodeTaskMap[taskID] = node.Name
+		for _, node := range nodes.Items {
+			taskID := e.Kubernetes.GetTaskIDFromLabel(node.Labels)
+			if taskID == "" {
+				taskID = e.Kubernetes.GetTaskIDFromAnnotation(node.Annotations)
+			}
+
+			K3sNodeTaskMap[taskID] = node.Name
+		}
 	}
 
 	for _, service := range services {

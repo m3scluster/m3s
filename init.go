@@ -49,8 +49,10 @@ func init() {
 	config.DockerMemorySwap, _ = strconv.ParseFloat(util.Getenv("DOCKER_MEMORY_SWAP", "1000"), 64)
 	config.DockerCNI = util.Getenv("DOCKER_CNI", "bridge")
 	config.DockerRunning = strings.Compare(os.Getenv("DOCKER_RUNNING"), "true") == 0
-	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "0.1"), 64)
+	config.DSCPU, _ = strconv.ParseFloat(util.Getenv("DS_CPU", "1"), 64)
+	config.DSCPULimit, _ = strconv.ParseFloat(util.Getenv("DS_CPU_LIMIT", util.Getenv("DS_CPU", "1")), 64)
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
+	config.DSMEMLimit, _ = strconv.ParseFloat(util.Getenv("DS_MEM_LIMIT", util.Getenv("DS_MEM", "1000")), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
 	config.DSEtcd = stringToBool(util.Getenv("DS_ETCD", "false"))
 	config.DSPort = util.Getenv("DS_PORT", "3306")
@@ -64,7 +66,9 @@ func init() {
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
 	config.K3SServerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", strconv.Itoa(framework.PortRangeFrom)))
 	config.K3SServerCPU, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU", "1.0"), 64)
+	config.K3SServerCPULimit, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_CPU_LIMIT", util.Getenv("K3S_SERVER_CPU", "1.0")), 64)
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "2000"), 64)
+	config.K3SServerMEMLimit, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM_LIMIT", util.Getenv("K3S_SERVER_MEM", "2000")), 64)
 	config.K3SServerDISK, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_DISK", "1000"), 64)
 	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cgroup-driver=cgroupfs --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --kube-scheduler-arg=leader-elect=false --kube-controller-manager-arg=enable-leader-migration=false --kube-cloud-controller-manager-arg=enable-leader-migration=false --kube-controller-manager-arg=leader-elect=false --disable-cloud-controller --snapshotter=native --flannel-backend=vxlan")
 	config.K3SCustomDomain = util.Getenv("K3S_CUSTOM_DOMAIN", "cloud.local")
@@ -72,7 +76,9 @@ func init() {
 	config.K3SAgentString = util.Getenv("K3S_AGENT_STRING", "/usr/local/bin/k3s agent --snapshotter=native --cgroup-driver=cgroupfs")
 	config.K3SAgentMax, _ = strconv.Atoi(util.Getenv("K3S_AGENT_COUNT", "1"))
 	config.K3SAgentCPU, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU", "2.0"), 64)
+	config.K3SAgentCPULimit, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_CPU_LIMIT", util.Getenv("K3S_AGENT_CPU", "2.0")), 64)
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "2000"), 64)
+	config.K3SAgentMEMLimit, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM_LIMIT", util.Getenv("K3S_AGENT_MEM", "2000")), 64)
 	config.K3SAgentDISK, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_DISK", "10000"), 64)
 	config.K3SAgentTCPPort, _ = strconv.Atoi(util.Getenv("K3S_AGENT_TCP_PORT", "0"))
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
@@ -98,6 +104,8 @@ func init() {
 	config.DSMaxRestore = 0
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0
+	config.K3SNodeEnvironmentVariable = make(map[string]string)
+	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
@@ -177,6 +185,23 @@ func init() {
 	} else {
 		config.PluginsEnable = true
 	}
+
+	// Hostname Offer constraints
+	if config.K3SServerConstraintHostname != "" && config.K3SAgentConstraintHostname != "" && config.DSConstraintHostname != "" {
+		config.HostConstraintsList = append(config.HostConstraintsList, config.K3SServerConstraintHostname, config.K3SAgentConstraintHostname, config.DSConstraintHostname)
+		config.HostConstraintsList = getUniqueStringList(config.HostConstraintsList)
+		logrus.WithField("func", "nain.init").Info("Setting Offer Constraints on host to: ", strings.Join(config.HostConstraintsList, ","))
+	}
+
+	// Set Custom Environment Variables to the K3S Nodes... Environment variables can be set as key=value,key=value,key=value
+	K3SNodeEnv := util.Getenv("K3S_NODE_ENV", "")
+	if K3SNodeEnv != "" {
+		environmentVariableGroups := strings.Split(K3SNodeEnv, ",")
+		for _, envString := range environmentVariableGroups {
+			splits := strings.Split(envString, "=")
+			config.K3SNodeEnvironmentVariable[splits[0]] = splits[1]
+		}
+	}
 }
 
 func loadPlugins(r *redis.Redis) {
@@ -218,4 +243,18 @@ func loadPlugins(r *redis.Redis) {
 
 func stringToBool(par string) bool {
 	return strings.Compare(par, "true") == 0
+}
+
+// func to get a set/unique elements from a string array...
+func getUniqueStringList(slice []string) []string {
+
+	seen := make(map[string]bool)
+	result := []string{}
+	for _, val := range slice {
+		if _, ok := seen[val]; !ok {
+			seen[val] = true
+			result = append(result, val)
+		}
+	}
+	return result
 }

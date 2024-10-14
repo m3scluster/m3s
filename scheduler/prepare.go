@@ -154,6 +154,13 @@ func (e *Scheduler) prepareTaskInfoExecuteContainer(agent *mesosproto.AgentID, c
 		msg.HealthCheck = cmd.Health
 	}
 
+	if e.Config.EnforceMesosTaskLimits {
+		msg.Limits = map[string]*mesosproto.Value_Scalar{
+			"cpus": {Value: &cmd.CPULimit},
+			"mem":  {Value: &cmd.MemoryLimit},
+		}
+	}
+
 	d, _ := json.Marshal(&msg)
 	logrus.WithField("func", "scheduler.prepareTaskInfoExecuteContainer").Debug("HandleOffers msg: ", util.PrettyJSON(d))
 
