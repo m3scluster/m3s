@@ -34,6 +34,16 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			ContainerPort: util.Uint32ToPointer(443),
 			Protocol:      util.StringToPointer("https"),
 		},
+		{
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(6443),
+			Protocol:      util.StringToPointer("tcp"),
+		},
+		{
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(5001),
+			Protocol:      util.StringToPointer("tcp"),
+		},
 	}
 
 	if e.Config.K3SAgentTCPPort > 0 {

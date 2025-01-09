@@ -47,6 +47,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SServerMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", "io.containerd.kata.v2")
 
 	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
@@ -111,6 +112,11 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			ContainerPort: util.Uint32ToPointer(8080),
 			Protocol:      &protocol,
 		},
+		{
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(5001),
+			Protocol:      &protocol,
+		},
 	}
 
 	cmd.Discovery = &mesosproto.DiscoveryInfo{
@@ -127,6 +133,11 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 					Number:   cmd.DockerPortMappings[1].HostPort,
 					Name:     func() *string { x := "http"; return &x }(),
 					Protocol: cmd.DockerPortMappings[1].Protocol,
+				},
+				{
+					Number:   cmd.DockerPortMappings[2].HostPort,
+					Name:     func() *string { x := "http"; return &x }(),
+					Protocol: cmd.DockerPortMappings[2].Protocol,
 				},
 			},
 		},
