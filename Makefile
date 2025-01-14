@@ -73,3 +73,4 @@ version:
 
 check: go-fmt sboom seccheck imagecheck
 all: check version controller-bin build
+

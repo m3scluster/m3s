@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## v0.4.3
 
 - Add implicit reconcile to remove unknown Mesos Tasks
 - Add limitation of memory swap (DOCKER_MEMORY_SWAP, default value "1000" MB) the container can use
@@ -39,7 +39,18 @@
 - Disable metrics server for m3s controller to fix port conflict.
 - Add Set Task Limits
 - Fix Status M3s API Panics
+- FIX: Update go modudles
+- FIX: Update K8S modules + bootstrap for cgroupsv2
 
+## v0.4.2
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/15
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/16
+
+## v0.4.1
+
+- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/11
+>>>>>>> v0.4.3
 
 ## v0.4.1
 
