@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.4.3
+## master
 
 - Add implicit reconcile to remove unknown Mesos Tasks
 - Add limitation of memory swap (DOCKER_MEMORY_SWAP, default value "1000" MB) the container can use
