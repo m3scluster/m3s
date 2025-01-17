@@ -106,6 +106,8 @@ func init() {
 	config.K3SServerMaxRestore = 0
 	config.K3SNodeEnvironmentVariable = make(map[string]string)
 	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
+	config.RestrictDiskAllocation = stringToBool(util.Getenv("RESTRICT_DISK_ALLOCATION", "false"))
+	config.EnableRegistryMirror = stringToBool(util.Getenv("ENABLE_REGISTRY_MIRROR", "false"))
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")

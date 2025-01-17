@@ -49,6 +49,10 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", "io.containerd.kata.v2")
 
+	if e.Config.RestrictDiskAllocation {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SServerDISK))))
+	}
+
 	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
 	if e.Framework.MesosCNI == "" {
@@ -112,11 +116,16 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 			ContainerPort: util.Uint32ToPointer(8080),
 			Protocol:      &protocol,
 		},
-		{
+	}
+
+	if e.Config.EnableRegistryMirror {
+		cmd.DockerPortMappings = append(cmd.DockerPortMappings, &mesosproto.ContainerInfo_DockerInfo_PortMapping{
 			HostPort:      util.Uint32ToPointer(0),
 			ContainerPort: util.Uint32ToPointer(5001),
 			Protocol:      &protocol,
-		},
+		})
+
+		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
 	}
 
 	cmd.Discovery = &mesosproto.DiscoveryInfo{

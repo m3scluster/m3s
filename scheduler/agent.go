@@ -34,16 +34,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 			ContainerPort: util.Uint32ToPointer(443),
 			Protocol:      util.StringToPointer("https"),
 		},
-		{
-			HostPort:      util.Uint32ToPointer(0),
-			ContainerPort: util.Uint32ToPointer(6443),
-			Protocol:      util.StringToPointer("tcp"),
-		},
-		{
-			HostPort:      util.Uint32ToPointer(0),
-			ContainerPort: util.Uint32ToPointer(5001),
-			Protocol:      util.StringToPointer("tcp"),
-		},
 	}
 
 	if e.Config.K3SAgentTCPPort > 0 {
@@ -78,6 +68,29 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
+
+	if e.Config.RestrictDiskAllocation {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISK))))
+	}
+
+	if e.Config.EnableRegistryMirror {
+
+		distributedRegistryPorts := []*mesosproto.ContainerInfo_DockerInfo_PortMapping{
+			{
+				HostPort:      util.Uint32ToPointer(0),
+				ContainerPort: util.Uint32ToPointer(5001),
+				Protocol:      util.StringToPointer("tcp"),
+			},
+			{
+				HostPort:      util.Uint32ToPointer(0),
+				ContainerPort: util.Uint32ToPointer(6443),
+				Protocol:      util.StringToPointer("tcp"),
+			},
+		}
+
+		cmd.DockerPortMappings = append(cmd.DockerPortMappings, distributedRegistryPorts...)
+		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
+	}
 
 	cmd.Instances = e.Config.K3SAgentMax
 

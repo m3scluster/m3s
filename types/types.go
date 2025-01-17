@@ -107,6 +107,8 @@ type Config struct {
 	K3SAgentMEMLimit            float64
 	DSMEMLimit                  float64
 	EnforceMesosTaskLimits      bool
+	RestrictDiskAllocation      bool
+	EnableRegistryMirror        bool
 }
 
 // M3SStatus store the current TaskState of the M3s services
