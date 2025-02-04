@@ -49,6 +49,7 @@ func New(cfg *cfg.Config, frm *cfg.FrameworkConfig) *API {
 func (e *API) Commands() *mux.Router {
 	rtr := mux.NewRouter()
 	rtr.HandleFunc("/api/m3s/versions", e.Versions).Methods("GET")
+	rtr.HandleFunc("/api/m3s/v0/framework", e.V0FrameworkRemoveID).Methods("DELETE")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale/{count}", e.V0ScaleK3SAgent).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/scale", e.V0GetCountK3SAgent).Methods("GET")
 	rtr.HandleFunc("/api/m3s/v0/agent/cordon", e.V0CordonK3SAgent).Methods("PUT")

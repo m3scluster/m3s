@@ -68,4 +68,4 @@ sigs.k8s.io/controller-runtime                   v0.18.4                        
 sigs.k8s.io/json                                 v0.0.0-20221116044647-bc3834ca7abd    go-module  (+1 duplicate)  
 sigs.k8s.io/structured-merge-diff/v4             v4.4.1                                go-module  (+1 duplicate)  
 sigs.k8s.io/yaml                                 v1.4.0                                go-module  (+1 duplicate)  
-stdlib                                           go1.23.4                              go-module
+stdlib                                           go1.22.8                              go-module

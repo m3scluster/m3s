@@ -176,6 +176,13 @@ func (e *Scheduler) EventLoop() {
 			// save configuration
 			e.Redis.SaveConfig(*e.Config)
 			go e.callPluginEvent(&event)
+		case mesosproto.Event_HEARTBEAT.Number():
+			if e.Framework.FrameworkInfo.Id != nil {
+				if e.Framework.FrameworkInfo.Id.GetValue() == "" {
+					logrus.WithField("func", "scheduler.EventLoop").Tracef("HEARBEAT: Could not find framework ID")
+					return
+				}
+			}
 		case mesosproto.Event_OFFERS.Number():
 			// Search Failed containers and restart them
 			err = e.HandleOffers(event.Offers)

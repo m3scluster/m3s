@@ -1,5 +1,10 @@
 # Changelog
 
+## master
+
+- ADD: API Endpoint to cleanup the Framework ID. That will force a resubscription under
+       a new Framework ID.
+
 ## v0.5.0
 
 - Add implicit reconcile to remove unknown Mesos Tasks
@@ -46,17 +51,9 @@
 
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/15
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/16
-
-## v0.4.1
-
-- FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/11
->>>>>>> v0.4.3
-
-## v0.4.1
-
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/11
 
-## v0.4.2
+## v0.4.1
 
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/9
 - FIX-SECURITY: https://github.com/AVENTER-UG/mesos-m3s/security/dependabot/8
