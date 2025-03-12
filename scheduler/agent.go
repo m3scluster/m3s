@@ -68,9 +68,10 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", "runcvm")
 
 	if e.Config.RestrictDiskAllocation {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISK))))
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISKLimit))))
 	}
 
 	if e.Config.EnableRegistryMirror {
@@ -128,6 +129,43 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 				},
 			},
 		}
+	}
+
+	cmd.Volumes = []*mesosproto.Volume{
+		{
+			ContainerPath: func() *string {
+				x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.content"
+				return &x
+			}(),
+			Mode: mesosproto.Volume_RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &e.Config.VolumeDriver,
+					Name: func() *string {
+						x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.content"
+						return &x
+					}(),
+				},
+			},
+		},
+		{
+			ContainerPath: func() *string {
+				x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.native"
+				return &x
+			}(),
+			Mode: mesosproto.Volume_RW.Enum(),
+			Source: &mesosproto.Volume_Source{
+				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
+				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
+					Driver: &e.Config.VolumeDriver,
+					Name: func() *string {
+						x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.native"
+						return &x
+					}(),
+				},
+			},
+		},
 	}
 
 	cmd.Discovery = &mesosproto.DiscoveryInfo{
