@@ -2,7 +2,7 @@ NAME                                             VERSION                        
 github.com/AVENTER-UG/go-logrus-formatter        v0.5.4                                go-module  (+1 duplicate)  
 github.com/AVENTER-UG/mesos-m3s                  v0.4.2                                go-module  (+1 duplicate)  
 github.com/AVENTER-UG/mesos-m3s/controller       v0.0.0-20231107092549-5fb67def79c9    go-module  (+1 duplicate)  
-github.com/AVENTER-UG/mesos-m3s/controller_bin   v2025-01-14T13                        go-module                  
+github.com/AVENTER-UG/mesos-m3s/controller_bin   v2025-02-04T09                        go-module                  
 github.com/AVENTER-UG/util                       v0.5.15                               go-module  (+1 duplicate)  
 github.com/cenkalti/backoff/v3                   v3.2.2                                go-module  (+1 duplicate)  
 github.com/cespare/xxhash/v2                     v2.3.0                                go-module  (+1 duplicate)  
@@ -68,4 +68,4 @@ sigs.k8s.io/controller-runtime                   v0.18.4                        
 sigs.k8s.io/json                                 v0.0.0-20221116044647-bc3834ca7abd    go-module  (+1 duplicate)  
 sigs.k8s.io/structured-merge-diff/v4             v4.4.1                                go-module  (+1 duplicate)  
 sigs.k8s.io/yaml                                 v1.4.0                                go-module  (+1 duplicate)  
-stdlib                                           go1.22.8                              go-module
+stdlib                                           go1.23.4                              go-module
