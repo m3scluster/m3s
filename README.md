@@ -7,6 +7,10 @@
 
 Mesos Framework to run Kubernetes (K3S)
 
+## Funding
+
+[![](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=H553XE4QJ9GJ8)
+
 ## Issues
 
 To open an issue, please use this place: https://github.com/m3scluster/m3s/issues
