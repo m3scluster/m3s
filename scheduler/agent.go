@@ -63,15 +63,21 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 	cmd.Arguments = append(cmd.Arguments, "--with-node-id "+cmd.TaskID)
 	cmd.Arguments = append(cmd.Arguments, "--kubelet-arg node-labels m3s.aventer.biz/taskid="+cmd.TaskID)
+	if e.Config.K3SEnableTaint {
+		cmd.Arguments = append(cmd.Arguments, "--node-taint node.kubernetes.io/unschedulable=true:NoSchedule")
+	}
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "SYS_ADMIN")
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
-	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", "runcvm")
 
 	if e.Config.RestrictDiskAllocation {
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISKLimit))))
+	}
+
+	if e.Config.UseCustomDockerRuntime && e.Config.CustomDockerRuntime != "" {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", e.Config.CustomDockerRuntime)
 	}
 
 	if e.Config.EnableRegistryMirror {
@@ -114,6 +120,8 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
+		logrus.WithField("func", "StartK3SServer").Info("Cgroup V2 Enabled")
+
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
 
 		cmd.Volumes = []*mesosproto.Volume{

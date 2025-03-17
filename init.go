@@ -111,6 +111,8 @@ func init() {
 	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
 	config.RestrictDiskAllocation = stringToBool(util.Getenv("RESTRICT_DISK_ALLOCATION", "false"))
 	config.EnableRegistryMirror = stringToBool(util.Getenv("ENABLE_REGISTRY_MIRROR", "false"))
+	config.UseCustomDockerRuntime = stringToBool(util.Getenv("USE_CUSTOM_DOCKER_RUNTIME", "false"))
+	config.CustomDockerRuntime = util.Getenv("CUSTOM_DOCKER_RUNTIME", "")
 
 	// if agent labels are set, unmarshel it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")

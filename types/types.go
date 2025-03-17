@@ -112,6 +112,8 @@ type Config struct {
 	EnforceMesosTaskLimits      bool
 	RestrictDiskAllocation      bool
 	EnableRegistryMirror        bool
+	UseCustomDockerRuntime      bool
+	CustomDockerRuntime         string
 }
 
 // M3SStatus store the current TaskState of the M3s services
