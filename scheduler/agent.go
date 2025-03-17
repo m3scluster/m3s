@@ -120,8 +120,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		logrus.WithField("func", "StartK3SServer").Info("Cgroup V2 Enabled")
-
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
 
 		cmd.Volumes = []*mesosproto.Volume{
@@ -137,43 +135,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 				},
 			},
 		}
-	}
-
-	cmd.Volumes = []*mesosproto.Volume{
-		{
-			ContainerPath: func() *string {
-				x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.content"
-				return &x
-			}(),
-			Mode: mesosproto.Volume_RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &e.Config.VolumeDriver,
-					Name: func() *string {
-						x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.content"
-						return &x
-					}(),
-				},
-			},
-		},
-		{
-			ContainerPath: func() *string {
-				x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.native"
-				return &x
-			}(),
-			Mode: mesosproto.Volume_RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &e.Config.VolumeDriver,
-					Name: func() *string {
-						x := "/var/lib/rancher/k3s/agent/containerd/io.containerd.snapshotter.v1.native"
-						return &x
-					}(),
-				},
-			},
-		},
 	}
 
 	cmd.Discovery = &mesosproto.DiscoveryInfo{

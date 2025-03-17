@@ -90,7 +90,6 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		logrus.WithField("func", "StartK3SServer").Info("Cgroup V2 Enabled")
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
 
 		tmpVol := &mesosproto.Volume{
