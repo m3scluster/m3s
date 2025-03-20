@@ -76,7 +76,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISKLimit))))
 	}
 
-	if e.Config.UseCustomDockerRuntime && e.Config.CustomDockerRuntime != "" {
+	if e.Config.CustomDockerRuntime != "" {
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", e.Config.CustomDockerRuntime)
 	}
 

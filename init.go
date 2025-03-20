@@ -111,10 +111,9 @@ func init() {
 	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
 	config.RestrictDiskAllocation = stringToBool(util.Getenv("RESTRICT_DISK_ALLOCATION", "false"))
 	config.EnableRegistryMirror = stringToBool(util.Getenv("ENABLE_REGISTRY_MIRROR", "false"))
-	config.UseCustomDockerRuntime = stringToBool(util.Getenv("USE_CUSTOM_DOCKER_RUNTIME", "false"))
 	config.CustomDockerRuntime = util.Getenv("CUSTOM_DOCKER_RUNTIME", "")
 
-	// if agent labels are set, unmarshel it into the Mesos Label format.
+	// if agent labels are set, unmarshal it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
@@ -124,7 +123,7 @@ func init() {
 		}
 	}
 
-	// if server labels are set, unmarshel it into the Mesos Label format.
+	// if server labels are set, unmarshal it into the Mesos Label format.
 	labels = os.Getenv("K3S_SERVER_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SServerLabels)
@@ -254,7 +253,6 @@ func stringToBool(par string) bool {
 
 // func to get a set/unique elements from a string array...
 func getUniqueStringList(slice []string) []string {
-
 	seen := make(map[string]bool)
 	result := []string{}
 	for _, val := range slice {

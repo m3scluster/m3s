@@ -112,7 +112,6 @@ type Config struct {
 	EnforceMesosTaskLimits      bool
 	RestrictDiskAllocation      bool
 	EnableRegistryMirror        bool
-	UseCustomDockerRuntime      bool
 	CustomDockerRuntime         string
 }
 
