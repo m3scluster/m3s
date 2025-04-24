@@ -90,21 +90,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
-
-		tmpVol := &mesosproto.Volume{
-			ContainerPath: util.StringToPointer("/sys/fs/cgroup"),
-			Mode:          mesosproto.Volume_RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &e.Config.VolumeDriver,
-					Name:   util.StringToPointer("/sys/fs/cgroup"),
-				},
-			},
-		}
-
-		cmd.Volumes = append(cmd.Volumes, tmpVol)
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "private")
 	}
 
 	protocol := "tcp"
