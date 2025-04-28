@@ -69,6 +69,33 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
 
+	if e.Config.RestrictDiskAllocation {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISKLimit))))
+	}
+
+	if e.Config.CustomDockerRuntime != "" {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", e.Config.CustomDockerRuntime)
+	}
+
+	if e.Config.EnableRegistryMirror {
+
+		distributedRegistryPorts := []*mesosproto.ContainerInfo_DockerInfo_PortMapping{
+			{
+				HostPort:      util.Uint32ToPointer(0),
+				ContainerPort: util.Uint32ToPointer(5001),
+				Protocol:      util.StringToPointer("tcp"),
+			},
+			{
+				HostPort:      util.Uint32ToPointer(0),
+				ContainerPort: util.Uint32ToPointer(6443),
+				Protocol:      util.StringToPointer("tcp"),
+			},
+		}
+
+		cmd.DockerPortMappings = append(cmd.DockerPortMappings, distributedRegistryPorts...)
+		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
+	}
+
 	cmd.Instances = e.Config.K3SAgentMax
 
 	// if mesos cni is unset, then use docker cni
@@ -90,21 +117,7 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
-
-		cmd.Volumes = []*mesosproto.Volume{
-			{
-				ContainerPath: func() *string { x := "/sys/fs/cgroup"; return &x }(),
-				Mode:          mesosproto.Volume_RW.Enum(),
-				Source: &mesosproto.Volume_Source{
-					Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-					DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-						Driver: &e.Config.VolumeDriver,
-						Name:   func() *string { x := "/sys/fs/cgroup"; return &x }(),
-					},
-				},
-			},
-		}
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "private")
 	}
 
 	cmd.Discovery = &mesosproto.DiscoveryInfo{

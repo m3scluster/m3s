@@ -22,6 +22,7 @@ type Config struct {
 	DSCPU                       float64
 	DSMEM                       float64
 	DSDISK                      float64
+	DSDISKLimit                 float64
 	DSConstraint                string
 	DSConstraintHostname        string
 	DSPort                      string
@@ -60,6 +61,7 @@ type Config struct {
 	K3SServerCPU                float64
 	K3SServerMEM                float64
 	K3SServerDISK               float64
+	K3SServerDISKLimit          float64
 	K3SServerLabels             []*mesosproto.Label
 	K3SAgent                    map[string]string
 	K3SAgentMax                 int
@@ -70,6 +72,7 @@ type Config struct {
 	K3SAgentCPU                 float64
 	K3SAgentMEM                 float64
 	K3SAgentDISK                float64
+	K3SAgentDISKLimit           float64
 	K3SAgentTCPPort             int
 	K3SDocker                   string
 	K3SToken                    string
@@ -107,6 +110,9 @@ type Config struct {
 	K3SAgentMEMLimit            float64
 	DSMEMLimit                  float64
 	EnforceMesosTaskLimits      bool
+	RestrictDiskAllocation      bool
+	EnableRegistryMirror        bool
+	CustomDockerRuntime         string
 }
 
 // M3SStatus store the current TaskState of the M3s services

@@ -54,6 +54,7 @@ func init() {
 	config.DSMEM, _ = strconv.ParseFloat(util.Getenv("DS_MEM", "1000"), 64)
 	config.DSMEMLimit, _ = strconv.ParseFloat(util.Getenv("DS_MEM_LIMIT", util.Getenv("DS_MEM", "1000")), 64)
 	config.DSDISK, _ = strconv.ParseFloat(util.Getenv("DS_DISK", "10000"), 64)
+	config.DSDISKLimit, _ = strconv.ParseFloat(util.Getenv("DS_DISK_LIMIT", util.Getenv("DS_DISK", "10000")), 64)
 	config.DSEtcd = stringToBool(util.Getenv("DS_ETCD", "false"))
 	config.DSPort = util.Getenv("DS_PORT", "3306")
 	config.DSMySQL = stringToBool(util.Getenv("DS_MYSQL", "true"))
@@ -70,6 +71,7 @@ func init() {
 	config.K3SServerMEM, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM", "2000"), 64)
 	config.K3SServerMEMLimit, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_MEM_LIMIT", util.Getenv("K3S_SERVER_MEM", "2000")), 64)
 	config.K3SServerDISK, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_DISK", "1000"), 64)
+	config.K3SServerDISKLimit, _ = strconv.ParseFloat(util.Getenv("K3S_SERVER_DISK_LIMIT", util.Getenv("K3S_SERVER_DISK", "1000")), 64)
 	config.K3SServerString = util.Getenv("K3S_SERVER_STRING", "/usr/local/bin/k3s server --cgroup-driver=cgroupfs --cluster-cidr=10.2.0.0/16 --service-cidr=10.3.0.0/16 --cluster-dns=10.3.0.10 --kube-scheduler-arg=leader-elect=false --kube-controller-manager-arg=enable-leader-migration=false --kube-cloud-controller-manager-arg=enable-leader-migration=false --kube-controller-manager-arg=leader-elect=false --disable-cloud-controller --snapshotter=native --flannel-backend=vxlan")
 	config.K3SCustomDomain = util.Getenv("K3S_CUSTOM_DOMAIN", "cloud.local")
 	config.K3SContainerDisk = util.Getenv("K3S_CONTAINER_DISK", config.DockerSHMSize)
@@ -80,6 +82,7 @@ func init() {
 	config.K3SAgentMEM, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM", "2000"), 64)
 	config.K3SAgentMEMLimit, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_MEM_LIMIT", util.Getenv("K3S_AGENT_MEM", "2000")), 64)
 	config.K3SAgentDISK, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_DISK", "10000"), 64)
+	config.K3SAgentDISKLimit, _ = strconv.ParseFloat(util.Getenv("K3S_AGENT_DISK_LIMIT", util.Getenv("K3S_AGENT_DISK", "10000")), 64)
 	config.K3SAgentTCPPort, _ = strconv.Atoi(util.Getenv("K3S_AGENT_TCP_PORT", "0"))
 	config.K3SToken = util.Getenv("K3S_TOKEN", "123456789")
 	config.LogLevel = util.Getenv("LOGLEVEL", "DEBUG")
@@ -106,8 +109,11 @@ func init() {
 	config.K3SServerMaxRestore = 0
 	config.K3SNodeEnvironmentVariable = make(map[string]string)
 	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
+	config.RestrictDiskAllocation = stringToBool(util.Getenv("RESTRICT_DISK_ALLOCATION", "false"))
+	config.EnableRegistryMirror = stringToBool(util.Getenv("ENABLE_REGISTRY_MIRROR", "false"))
+	config.CustomDockerRuntime = util.Getenv("CUSTOM_DOCKER_RUNTIME", "")
 
-	// if agent labels are set, unmarshel it into the Mesos Label format.
+	// if agent labels are set, unmarshal it into the Mesos Label format.
 	labels := os.Getenv("K3S_AGENT_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SAgentLabels)
@@ -117,7 +123,7 @@ func init() {
 		}
 	}
 
-	// if server labels are set, unmarshel it into the Mesos Label format.
+	// if server labels are set, unmarshal it into the Mesos Label format.
 	labels = os.Getenv("K3S_SERVER_LABELS")
 	if labels != "" {
 		err := json.Unmarshal([]byte(labels), &config.K3SServerLabels)
@@ -247,7 +253,6 @@ func stringToBool(par string) bool {
 
 // func to get a set/unique elements from a string array...
 func getUniqueStringList(slice []string) []string {
-
 	seen := make(map[string]bool)
 	result := []string{}
 	for _, val := range slice {

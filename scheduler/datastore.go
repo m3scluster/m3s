@@ -1,6 +1,7 @@
 package scheduler
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -28,6 +29,7 @@ func (e *Scheduler) StartDatastore(taskID string) {
 	cmd.TaskName = e.Framework.FrameworkName + ":datastore"
 	cmd.Hostname = e.Framework.FrameworkName + "datastore" + e.Config.Domain
 	cmd.DockerParameter = e.addDockerParameter(make([]*mesosproto.Parameter, 0), "cap-add", "NET_ADMIN")
+	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.DSMEMLimit)/1024))
 	cmd.Instances = e.Config.DSMax
 	cmd.Shell = false
 
@@ -37,6 +39,14 @@ func (e *Scheduler) StartDatastore(taskID string) {
 		if e.Config.DockerCNI != "bridge" {
 			cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "net-alias", "datastore")
 		}
+	}
+
+	if e.Config.RestrictDiskAllocation {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.DSDISK))))
+	}
+
+	if e.Config.CustomDockerRuntime != "" {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", e.Config.CustomDockerRuntime)
 	}
 
 	// if we use etcd as datastore
@@ -162,6 +172,7 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 
 	AllowNoneAuthentication := "yes"
 
+	cmd.Environment = &mesosproto.Environment{}
 	cmd.Environment.Variables = []*mesosproto.Environment_Variable{
 		{
 			Name:  util.StringToPointer("SERVICE_NAME"),
@@ -179,6 +190,10 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 			Name:  util.StringToPointer("MESOS_TASK_ID"),
 			Value: &cmd.TaskID,
 		},
+		{
+			Name:  util.StringToPointer("TZ"),
+			Value: &e.Config.TimeZone,
+		},
 	}
 	cmd.Volumes = []*mesosproto.Volume{
 		{
@@ -195,6 +210,7 @@ func (e *Scheduler) setETCD(cmd *cfg.Command) {
 	}
 
 	cmd.EnableHealthCheck = true
+	cmd.Health = &mesosproto.HealthCheck{}
 	cmd.Health.DelaySeconds = func() *float64 { x := 60.0; return &x }()
 
 	cmd.Health.Command = &mesosproto.CommandInfo{

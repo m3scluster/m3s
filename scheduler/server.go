@@ -48,6 +48,14 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SServerMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
 
+	if e.Config.RestrictDiskAllocation {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SServerDISKLimit))))
+	}
+
+	if e.Config.CustomDockerRuntime != "" {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "runtime", e.Config.CustomDockerRuntime)
+	}
+
 	cmd.Instances = e.Config.K3SServerMax
 	// if mesos cni is unset, then use docker cni
 	if e.Framework.MesosCNI == "" {
@@ -82,21 +90,7 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 
 	if e.Config.CGroupV2 {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "host")
-
-		tmpVol := &mesosproto.Volume{
-			ContainerPath: util.StringToPointer("/sys/fs/cgroup"),
-			Mode:          mesosproto.Volume_RW.Enum(),
-			Source: &mesosproto.Volume_Source{
-				Type: mesosproto.Volume_Source_DOCKER_VOLUME.Enum(),
-				DockerVolume: &mesosproto.Volume_Source_DockerVolume{
-					Driver: &e.Config.VolumeDriver,
-					Name:   util.StringToPointer("/sys/fs/cgroup"),
-				},
-			},
-		}
-
-		cmd.Volumes = append(cmd.Volumes, tmpVol)
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "cgroupns", "private")
 	}
 
 	protocol := "tcp"
@@ -130,6 +124,22 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 				},
 			},
 		},
+	}
+
+	if e.Config.EnableRegistryMirror {
+		cmd.DockerPortMappings = append(cmd.DockerPortMappings, &mesosproto.ContainerInfo_DockerInfo_PortMapping{
+			HostPort:      util.Uint32ToPointer(0),
+			ContainerPort: util.Uint32ToPointer(5001),
+			Protocol:      &protocol,
+		})
+
+		cmd.Discovery.Ports.Ports = append(cmd.Discovery.Ports.Ports, &mesosproto.Port{
+			Number:   util.Uint32ToPointer(0),
+			Name:     func() *string { x := "http"; return &x }(),
+			Protocol: &protocol,
+		})
+
+		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
 	}
 
 	e.CreateK3SServerString()
