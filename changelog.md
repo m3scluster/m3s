@@ -4,6 +4,12 @@
 
 - ADD: API Endpoint to cleanup the Framework ID. That will force a resubscription under
        a new Framework ID.
+- FIX: CGroupsV2 Support
+- ADD: Enable Disk allocation through the env variable `RESTRICT_DISK_ALLOCATION`
+			 The limits has to be configured through the env variables `K3S_SERVER_DISK_LIMIT` and `K3S_AGENT_DISK_LIMIT`
+- ADD: Custom runtime for docker engine through the env variable `CUSTOM_DOCKER_RUNTIME`
+- ADD: Support for K3s "Distributed Registry mirror". It can be enabled through
+			 the boolean env variable `ENABLE_REGISTRY_MIRROR`.
 
 ## v0.5.0
 
