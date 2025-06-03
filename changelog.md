@@ -10,6 +10,15 @@
 - ADD: Custom runtime for docker engine through the env variable `CUSTOM_DOCKER_RUNTIME`
 - ADD: Support for K3s "Distributed Registry mirror". It can be enabled through
 			 the boolean env variable `ENABLE_REGISTRY_MIRROR`.
+- CHANGE: Update k3s to version 1.31.5
+
+## v0.5.2
+
+- SECURITY Updates
+
+## v0.5.1
+
+- SECURITY Updates
 
 ## v0.5.0
 

@@ -62,7 +62,7 @@ func init() {
 	config.DSMySQLPassword = util.Getenv("DS_MYSQL_PASSWORD", "password")
 	config.DSMySQLSSL = stringToBool(util.Getenv("DS_MYSQL_SSL", "false"))
 	config.KubeConfig = util.Getenv("KUBECONFIG", "/etc/rancher/k3s/k3s.yaml")
-	config.KubernetesVersion = util.Getenv("KUBERNETES_VERSION", "v1.25.2")
+	config.KubernetesVersion = util.Getenv("KUBERNETES_VERSION", "v1.31.5")
 	config.K3SNodeTimeout, _ = time.ParseDuration(util.Getenv("K3S_NODE_TIMEOUT", "10m"))
 	config.K3SServerMax, _ = strconv.Atoi(util.Getenv("K3S_SERVER_COUNT", "1"))
 	config.K3SServerPort, _ = strconv.Atoi(util.Getenv("K3S_SERVER_PORT", strconv.Itoa(framework.PortRangeFrom)))
