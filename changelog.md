@@ -12,6 +12,10 @@
 			 the boolean env variable `ENABLE_REGISTRY_MIRROR`.
 - CHANGE: Update k3s to version 1.31.5
 
+## v0.5.3
+
+- SECURITY Updates
+
 ## v0.5.2
 
 - SECURITY Updates
