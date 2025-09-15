@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.3
+
+- SECURITY: update go modules
+
 ## v0.5.0
 
 - Add implicit reconcile to remove unknown Mesos Tasks
