@@ -30,11 +30,11 @@ controller-bin:
 
 push:
 	@echo ">>>> Publish docker image" ${BRANCH} ${BRANCHSHORT}
-	@docker buildx create --use --name buildkit
+	-docker buildx create --use --name buildkit
 	@docker buildx build --sbom=true --provenance=true --platform linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCH} .
 	@docker buildx build --sbom=true --provenance=true --platform linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:${BRANCHSHORT} .
 	@docker buildx build --sbom=true --provenance=true --platform linux/amd64 --push --build-arg TAG=${TAG} --build-arg BUILDDATE=${BUILDDATE} --build-arg VERSION_URL=${VERSION_URL} -t ${IMAGEFULLNAME}:latest .
-	@docker buildx rm buildkit
+	-docker buildx rm buildkit
 
 docs:
 	@echo ">>>> Build docs"
