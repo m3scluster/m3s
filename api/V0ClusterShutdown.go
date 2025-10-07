@@ -44,6 +44,7 @@ func (e *API) clusterStop(ds bool) {
 	if ds {
 		e.scaleDatastore(0)
 	}
+	e.Redis.SaveConfig(*e.Config)
 
 	e.Mesos.SuppressFramework()
 }

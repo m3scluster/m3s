@@ -42,7 +42,7 @@ func (e *Scheduler) StartDatastore(taskID string) {
 	}
 
 	if e.Config.RestrictDiskAllocation {
-		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.DSDISK))))
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.DSDISKLimit))))
 	}
 
 	if e.Config.CustomDockerRuntime != "" {
@@ -156,6 +156,7 @@ func (e *Scheduler) setMySQL(cmd *cfg.Command) {
 
 	cmd.EnableHealthCheck = true
 	cmd.Health = &mesosproto.HealthCheck{}
+
 	cmd.Health.Command = &mesosproto.CommandInfo{
 		Shell:     util.BoolToPointer(false),
 		Value:     util.StringToPointer("mysqladmin"),

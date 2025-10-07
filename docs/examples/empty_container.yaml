@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-shared-pod
+  labels:
+    app: ubuntu-shared
+spec:
+  securityContext:
+    fsGroup: 0
+  volumes:
+    - name: tmp-shared
+      emptyDir: {}
+  initContainers:
+    - name: init-perms
+      image: busybox
+      command: ["sh", "-c", "chmod 777 /tmp-shared"]
+      volumeMounts:
+        - name: tmp-shared
+          mountPath: /tmp-shared
+  containers:
+    - name: ubuntu-container-1
+      image: ubuntu:latest
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: tmp-shared
+          mountPath: /tmp
+
+    - name: ubuntu-container-2
+      image: ubuntu:latest
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: tmp-shared
+          mountPath: /tmp
+      securityContext:
+        add: ["NET_RAW"]
+
+

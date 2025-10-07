@@ -69,12 +69,7 @@ func (e *API) Commands() *mux.Router {
 	rtr.HandleFunc("/api/m3s/v0/agent/restart", e.V0Restart).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/ds/restart", e.V0Restart).Methods("PUT")
 	rtr.HandleFunc("/api/m3s/v0/capabilities", e.V0CapabilitiesDisclosure).Methods("GET")
-	rtr.HandleFunc("/api/m3s/v0/server/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/server/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/agent/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/agent/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/ds/cpus/{value}", e.V0AdjustClusterResources).Methods("PUT")
-	rtr.HandleFunc("/api/m3s/v0/ds/memory/{value}", e.V0AdjustClusterResources).Methods("PUT")
+	rtr.HandleFunc("/api/m3s/v0/{component}/{resource}/{value}", e.V0AdjustClusterResources).Methods("PUT")
 	rtr.NotFoundHandler = http.HandlerFunc(e.NotFound)
 	return rtr
 }

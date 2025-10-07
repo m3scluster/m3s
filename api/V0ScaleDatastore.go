@@ -45,7 +45,7 @@ func (e *API) V0ScaleDatastore(w http.ResponseWriter, r *http.Request) {
 
 // scaleDatastore - can scale up and down the K8 datastore
 func (e *API) scaleDatastore(count int) []byte {
-	r := e.scale(count, e.Config.DSMax, "datastore")
+	r := e.Scale(count, e.Config.DSMax, "datastore")
 	e.Config.DSMax = count
 	return r
 }

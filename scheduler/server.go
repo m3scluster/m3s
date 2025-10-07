@@ -16,7 +16,12 @@ import (
 
 // StartK3SServer Start K3S with the given id
 func (e *Scheduler) StartK3SServer(taskID string) {
-	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") >= e.Config.K3SServerMax {
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") == e.Config.K3SServerMax {
+		return
+	}
+
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", "") > e.Config.K3SServerMax {
+		e.API.Scale(e.Config.K3SServerMax, e.Redis.CountRedisKey(e.Framework.FrameworkName+":server:*", ""), "server")
 		return
 	}
 
@@ -47,6 +52,10 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "shm-size", e.Config.K3SContainerDisk)
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SServerMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
+
+	for key, value := range e.Config.K3SServerCustomDockerParameters {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, key, value)
+	}
 
 	if e.Config.RestrictDiskAllocation {
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SServerDISKLimit))))
@@ -127,18 +136,6 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 	}
 
 	if e.Config.EnableRegistryMirror {
-		cmd.DockerPortMappings = append(cmd.DockerPortMappings, &mesosproto.ContainerInfo_DockerInfo_PortMapping{
-			HostPort:      util.Uint32ToPointer(0),
-			ContainerPort: util.Uint32ToPointer(5001),
-			Protocol:      &protocol,
-		})
-
-		cmd.Discovery.Ports.Ports = append(cmd.Discovery.Ports.Ports, &mesosproto.Port{
-			Number:   util.Uint32ToPointer(0),
-			Name:     func() *string { x := "http"; return &x }(),
-			Protocol: &protocol,
-		})
-
 		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
 	}
 
@@ -227,6 +224,14 @@ func (e *Scheduler) StartK3SServer(taskID string) {
 		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
 	}
 
+	for key, value := range e.Config.K3SServerNodeEnvironmentVariable {
+		env := &mesosproto.Environment_Variable{
+			Name:  &key,
+			Value: &value,
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
+	}
+
 	if e.Config.K3SServerLabels != nil {
 		cmd.Labels = e.Config.K3SServerLabels
 	}
@@ -294,7 +299,7 @@ func (e *Scheduler) healthCheckNode(kind string, max int) bool {
 	// Hold the at all state of the agent service.
 	aState := false
 
-	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":"+kind+":*", "") < max {
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":"+kind+":*", "") != max {
 		logrus.WithField("func", "scheduler.healthCheckNode").Warningf("K3s %s missing", kind)
 		return false
 	}

@@ -84,7 +84,7 @@ start:
 
 // scaleAgent - can scale up and down the K8 worker nodes
 func (e *API) scaleAgent(count int) []byte {
-	r := e.scale(count, e.Config.K3SAgentMax, "agent")
+	r := e.Scale(count, e.Config.K3SAgentMax, "agent")
 	e.Config.K3SAgentMax = count
 	return r
 }

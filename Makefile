@@ -5,7 +5,7 @@ IMAGENAME=mesos-m3s
 TAG=v0.5.3
 BUILDDATE=$(shell date -u +%Y%m%d)
 IMAGEFULLNAME=avhost/${IMAGENAME}
-BRANCH=$(shell git symbolic-ref --short HEAD | xargs basename)
+BRANCH=${TAG}
 BRANCHSHORT=$(shell echo ${BRANCH} | awk -F. '{ print $$1"."$$2 }')
 VERSION_URL=https://raw.githubusercontent.com/AVENTER-UG/mesos-m3s/${BRANCH}/.version.json
 LASTCOMMIT=$(shell git log -1 --pretty=short | tail -n 1 | tr -d " " | tr -d "UPDATE:")

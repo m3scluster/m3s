@@ -16,7 +16,12 @@ import (
 // StartK3SAgent is starting a agent container with the given IDs
 func (e *Scheduler) StartK3SAgent(taskID string) {
 
-	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") >= e.Config.K3SAgentMax {
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") == e.Config.K3SAgentMax {
+		return
+	}
+
+	if e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", "") > e.Config.K3SAgentMax {
+		e.API.Scale(e.Config.K3SAgentMax, e.Redis.CountRedisKey(e.Framework.FrameworkName+":agent:*", ""), "agent")
 		return
 	}
 
@@ -69,6 +74,10 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "memory-swap", fmt.Sprintf("%.0fg", (e.Config.DockerMemorySwap+e.Config.K3SAgentMEM)/1024))
 	cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "ulimit", "nofile="+e.Config.DockerUlimit)
 
+	for key, value := range e.Config.K3SAgentCustomDockerParameters {
+		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, key, value)
+	}
+
 	if e.Config.RestrictDiskAllocation {
 		cmd.DockerParameter = e.addDockerParameter(cmd.DockerParameter, "storage-opt", fmt.Sprintf("size=%smb", strconv.Itoa(int(e.Config.K3SAgentDISKLimit))))
 	}
@@ -78,21 +87,6 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	if e.Config.EnableRegistryMirror {
-
-		distributedRegistryPorts := []*mesosproto.ContainerInfo_DockerInfo_PortMapping{
-			{
-				HostPort:      util.Uint32ToPointer(0),
-				ContainerPort: util.Uint32ToPointer(5001),
-				Protocol:      util.StringToPointer("tcp"),
-			},
-			{
-				HostPort:      util.Uint32ToPointer(0),
-				ContainerPort: util.Uint32ToPointer(6443),
-				Protocol:      util.StringToPointer("tcp"),
-			},
-		}
-
-		cmd.DockerPortMappings = append(cmd.DockerPortMappings, distributedRegistryPorts...)
 		cmd.Arguments = append(cmd.Arguments, "--embedded-registry")
 	}
 
@@ -177,6 +171,14 @@ func (e *Scheduler) StartK3SAgent(taskID string) {
 	}
 
 	for key, value := range e.Config.K3SNodeEnvironmentVariable {
+		env := &mesosproto.Environment_Variable{
+			Name:  &key,
+			Value: &value,
+		}
+		cmd.Environment.Variables = append(cmd.Environment.Variables, env)
+	}
+
+	for key, value := range e.Config.K3SAgentNodeEnvironmentVariable {
 		env := &mesosproto.Environment_Variable{
 			Name:  &key,
 			Value: &value,

@@ -45,12 +45,12 @@ func (e *API) V0ScaleK3SServer(w http.ResponseWriter, r *http.Request) {
 }
 
 func (e *API) scaleServer(count int) []byte {
-	r := e.scale(count, e.Config.K3SServerMax, "server")
+	r := e.Scale(count, e.Config.K3SServerMax, "server")
 	e.Config.K3SServerMax = count
 	return r
 }
 
-func (e *API) scale(newCount int, oldCount int, key string) []byte {
+func (e *API) Scale(newCount int, oldCount int, key string) []byte {
 	logrus.WithField("func", "api.scale").Debug("Scale " + key + " current: " + strconv.Itoa(oldCount) + " new: " + strconv.Itoa(newCount))
 
 	d := []byte(strconv.Itoa(newCount - oldCount))

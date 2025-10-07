@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"plugin"
@@ -108,6 +109,10 @@ func init() {
 	config.K3SAgentMaxRestore = 0
 	config.K3SServerMaxRestore = 0
 	config.K3SNodeEnvironmentVariable = make(map[string]string)
+	config.K3SServerNodeEnvironmentVariable = make(map[string]string)
+	config.K3SAgentNodeEnvironmentVariable = make(map[string]string)
+	config.K3SServerCustomDockerParameters = make(map[string]string)
+	config.K3SAgentCustomDockerParameters = make(map[string]string)
 	config.EnforceMesosTaskLimits = stringToBool(util.Getenv("ENFORCE_MESOS_TASK_LIMITS", "true"))
 	config.RestrictDiskAllocation = stringToBool(util.Getenv("RESTRICT_DISK_ALLOCATION", "false"))
 	config.EnableRegistryMirror = stringToBool(util.Getenv("ENABLE_REGISTRY_MIRROR", "false"))
@@ -199,13 +204,58 @@ func init() {
 		logrus.WithField("func", "nain.init").Info("Setting Offer Constraints on host to: ", strings.Join(config.HostConstraintsList, ","))
 	}
 
-	// Set Custom Environment Variables to the K3S Nodes... Environment variables can be set as key=value,key=value,key=value
+	// Set Custom Environment Variables to all the K3S Nodes... Environment variables can be set as key=value,key=value,key=value
 	K3SNodeEnv := util.Getenv("K3S_NODE_ENV", "")
 	if K3SNodeEnv != "" {
-		environmentVariableGroups := strings.Split(K3SNodeEnv, ",")
+		environmentVariableGroups := strings.Split(K3SNodeEnv, util.Getenv("K3S_NODE_ENV_DELIMITER", ","))
 		for _, envString := range environmentVariableGroups {
 			splits := strings.Split(envString, "=")
 			config.K3SNodeEnvironmentVariable[splits[0]] = splits[1]
+		}
+	}
+
+	// Set Custom Environment Variables to only the server K3s Nodes... Environment variables can be set as key=value,key=value,key=value with comma being controlled with K3S_NODE_ENV_DELIMITER
+	K3SServerNodeEnv := util.Getenv("K3S_SERVER_NODE_ENV", "")
+	if K3SServerNodeEnv != "" {
+		environmentVariableGroups := strings.Split(K3SServerNodeEnv, util.Getenv("K3S_NODE_ENV_DELIMITER", ","))
+		for _, envString := range environmentVariableGroups {
+			splits := strings.Split(envString, "=")
+			config.K3SServerNodeEnvironmentVariable[splits[0]] = splits[1]
+		}
+	}
+
+	// Set Custom Environment Variables to all the K3S agent Nodes... Environment variables can be set as key=value,key=value,key=value  with comma being controlled with K3S_NODE_ENV_DELIMITER
+	K3SAgentNodeEnv := util.Getenv("K3S_AGENT_NODE_ENV", "")
+	if K3SAgentNodeEnv != "" {
+		environmentVariableGroups := strings.Split(K3SAgentNodeEnv, util.Getenv("K3S_NODE_ENV_DELIMITER", ","))
+		for _, envString := range environmentVariableGroups {
+			splits := strings.Split(envString, "=")
+			config.K3SAgentNodeEnvironmentVariable[splits[0]] = splits[1]
+		}
+	}
+
+	// Set Custom Docker Parameters to all the K3S Server Nodes... Parameters can be set as key=value,key=value,key=value with comma being controlled with K3S_NODE_DOCKER_PARAMETER_DELIMITER
+	K3SServerNodeCustomDockerParameters := util.Getenv("K3S_SERVER_CUSTOM_DOCKER_PARAMETER", "")
+	if K3SServerNodeCustomDockerParameters != "" {
+		parameterGroups := strings.Split(K3SServerNodeCustomDockerParameters, util.Getenv("K3S_NODE_DOCKER_PARAMETER_DELIMITER", ","))
+		for _, parameters := range parameterGroups {
+			key, value, exists := strings.Cut(parameters, "=")
+			fmt.Println(key, value)
+			if exists {
+				config.K3SServerCustomDockerParameters[key] = value
+			}
+		}
+	}
+
+	// Set Custom Docker Parameters to all the K3S Agent Nodes... Parameters can be set as key=value,key=value,key=value with comma being controlled with K3S_NODE_DOCKER_PARAMETER_DELIMITER
+	K3SAgentNodeCustomDockerParameters := util.Getenv("K3S_AGENT_CUSTOM_DOCKER_PARAMETER", "")
+	if K3SAgentNodeCustomDockerParameters != "" {
+		parameterGroups := strings.Split(K3SAgentNodeCustomDockerParameters, util.Getenv("K3S_NODE_DOCKER_PARAMETER_DELIMITER", ","))
+		for _, parameters := range parameterGroups {
+			key, value, exists := strings.Cut(parameters, "=")
+			if exists {
+				config.K3SAgentCustomDockerParameters[key] = value
+			}
 		}
 	}
 }

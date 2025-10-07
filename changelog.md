@@ -11,6 +11,15 @@
 - ADD: Support for K3s "Distributed Registry mirror". It can be enabled through
 			 the boolean env variable `ENABLE_REGISTRY_MIRROR`.
 - CHANGE: Update k3s to version 1.31.5
+- FIX: DSDiskLimit
+- FIX: For shutdown and added Limits to adjust resources API
+- FIX: Scale Down Tasks if more than expected
+- ADD: ENV variable for K3S Node ENV Delimiter
+- DEL: removed explicit port handling for embedded-registry
+- ADD: seperate K3S Server and Agent ENV variable
+- ADD: Custom Docker Parameters Support
+- CHANGE: Refactored AdjustClusterResources API
+- ADD: More Capabilities
 
 ## v0.5.3
 
