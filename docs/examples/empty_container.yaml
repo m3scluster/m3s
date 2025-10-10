@@ -32,6 +32,6 @@ spec:
         - name: tmp-shared
           mountPath: /tmp
       securityContext:
-        add: ["NET_RAW"]
-
+        capabilities:
+          add: ["NET_RAW"]
 
