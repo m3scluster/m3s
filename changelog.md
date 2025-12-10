@@ -1,6 +1,6 @@
 # Changelog
 
-## master
+## v0.6.0
 
 - ADD: API Endpoint to cleanup the Framework ID. That will force a resubscription under
        a new Framework ID.

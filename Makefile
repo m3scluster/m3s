@@ -2,7 +2,7 @@
 
 #vars
 IMAGENAME=mesos-m3s
-TAG=v0.5.3
+TAG=v0.6.0
 BUILDDATE=$(shell date -u +%Y%m%d)
 IMAGEFULLNAME=avhost/${IMAGENAME}
 BRANCH=${TAG}
