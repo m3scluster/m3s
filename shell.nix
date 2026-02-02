@@ -14,7 +14,9 @@ buildInputs = [
 
 SOURCE_DATE_EPOCH = 315532800;
 PROJDIR = "${toString ./.}";
-S_NETWORK="host";
+S_NETWORK="weave";
+S_HOSTNAME = "m3sframework.weave.local";
+S_VOLUME_RW_1 = "/var/run/docker.sock";
 
 shellHook = ''
 		export LD_LIBRARY_PATH="${pkgs.stdenv.cc.cc.lib}/lib"
