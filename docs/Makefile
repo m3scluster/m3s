@@ -1,4 +1,5 @@
-.PHONY: deploy
+all: serve
+
 deploy: book
 	@echo "====> deploying to github"
 	rm -rf /tmp/book
@@ -7,6 +8,13 @@ deploy: book
 	mdbook build
 	cp -rp book/* /tmp/book/
 	cd /tmp/book && \
-		git add -A && \
-		PRE_COMMIT_ALLOW_NO_CONFIG=1 git commit -m "deployed on $(shell date) by ${USER}" && \
-		git push origin gh-pages
+	        git add -A && \
+	        git commit -m "deployed on $(shell date) by ${USER}" && \
+	        git push origin gh-pages
+
+gen:
+	book-summary -v -y
+
+serve: gen
+	mdbook serve
+

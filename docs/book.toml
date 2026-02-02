@@ -1,10 +1,17 @@
 [book]
 authors = ["Andreas Peters"]
 language = "en"
-multilingual = false
 src = "src"
 title = "M3S - Apache Mesos Kubernetes Framework"
 
 [build]
 create-missing = true
-preprocess = ["links", "index"]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.0.2" # do not edit: managed by `mdbook-admonish install`
+
+[preprocessor.open-on-gh]
+command = "mdbook-open-on-gh"
+renderer = ["html"]
+
